@@ -1,0 +1,19 @@
+#!/bin/bash
+echo "Setting environnement"
+BUILD_DIR=$PWD
+
+# Find source path
+source_path="`echo $0 | sed -e 's#/configure##'`"
+source_path_used="yes"
+if test -z "$source_path" -o "$source_path" = "." ; then
+    source_path="`pwd`"
+    source_path_used="no"
+    build_path=$source_path
+else
+    source_path="`cd \"$source_path\"; pwd`"
+    build_path="`pwd`"
+fi
+
+echo "Downloading and building dependencies"
+git submodule update --init
+sh $source_path/third_parties/build_thirdparties.sh
