@@ -30,7 +30,7 @@ const config = {
     },
     output: {
         filename: 'img.js',
-        path: path.resolve("/Users/gorinje/project/player/build", 'dist'),
+        path: path.resolve("@CMAKE_BINARY_DIR@", 'dist'),
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -40,7 +40,7 @@ const config = {
     devServer: {
         open: 'true',
         host: "localhost",
-        contentBase: "/Users/gorinje/project/player/build"
+        contentBase: "@CMAKE_BINARY_DIR@"
       },
 };
 
