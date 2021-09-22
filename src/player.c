@@ -14,10 +14,9 @@ typedef struct __Dec_Entry
 
 Dec_Entry *EMSCRIPTEN_KEEPALIVE setup_acc(const char* args)
 {
-    Dec_Entry *ctx;
-    GF_SAFEALLOC(ctx, Dec_Entry);
-    if (!ctx)
-        return NULL;
+    return 0;
+}
 
-    return ctx;
+int main() {
+    return 0;
 }

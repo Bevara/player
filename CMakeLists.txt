@@ -5,9 +5,12 @@ set(CMAKE_CXX_STANDARD 20)
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 option(DEBUG_MODE "Compile in player in debug mode" ON)
 
-SET(GPAC_CORE
+SET(PLAYER_CORE
 ${CMAKE_SOURCE_DIR}/src/player.c
 )
 
 add_executable(player ${PLAYER_CORE})
-set_target_properties( player PROPERTIES LINK_FLAGS "-s MAIN_MODULE=1" )
+set_target_properties( player 
+                        PROPERTIES 
+                            LINK_FLAGS "-s MAIN_MODULE=1"
+                            SUFFIX ".wasm")
