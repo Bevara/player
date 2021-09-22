@@ -5,7 +5,7 @@ const WorkboxWebpackPlugin = require("workbox-webpack-plugin");
 const isProduction = process.env.NODE_ENV == "production";
 
 const config = {
-    entry: './src/index.ts',
+    entry: './webinterface/index.ts',
     devtool: 'inline-source-map',
     module: {
         rules: [
@@ -34,7 +34,7 @@ const config = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: "index.html",
+            template: "templates/index.html",
           })
     ],
     devServer: {
