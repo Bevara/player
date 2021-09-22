@@ -20,10 +20,9 @@ $source_path/third_parties/build_thirdparties.sh
 
 echo "Configuring emsdk"
 source $source_path/third_parties/emsdk_vers.txt
-cd $source_path/emsdk
-$source_path/emsdk/emsdk install $EMSDK_VERS
-$source_path/emsdk/emsdk activate $EMSDK_VERS
-. $source_path/emsdk/emsdk_env.sh
+$source_path/third_parties/emsdk/emsdk install $EMSDK_VERS
+$source_path/third_parties/emsdk/emsdk activate $EMSDK_VERS
+. $source_path/third_parties/emsdk/emsdk_env.sh
 
 echo "Configuring player"
 cd $BUILD_DIR
