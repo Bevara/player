@@ -16,4 +16,4 @@ fi
 
 echo "Downloading and building dependencies"
 git submodule update --init
-sh $source_path/third_parties/build_thirdparties.sh
+$source_path/third_parties/build_thirdparties.sh
