@@ -2,3 +2,4 @@ build/
 node_modules/
 Chrome_Headless_*/
 dist/
+.DS_Store
