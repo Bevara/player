@@ -14,3 +14,8 @@ set_target_properties( player
                         PROPERTIES 
                             LINK_FLAGS "-s MAIN_MODULE=1"
                             SUFFIX ".wasm")
+
+
+add_custom_target (serve
+  COMMAND npm run serve
+)

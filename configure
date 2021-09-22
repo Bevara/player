@@ -18,6 +18,13 @@ echo "Downloading and building dependencies"
 git submodule update --init
 $source_path/third_parties/build_thirdparties.sh
 
+echo "Configuring emsdk"
+source $source_path/third_parties/emsdk_vers.txt
+cd $source_path/emsdk
+$source_path/emsdk/emsdk install $EMSDK_VERS
+$source_path/emsdk/emsdk activate $EMSDK_VERS
+. $source_path/emsdk/emsdk_env.sh
+
 echo "Configuring player"
 cd $BUILD_DIR
 emcmake cmake $source_path
