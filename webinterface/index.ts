@@ -1,7 +1,7 @@
 
 
 import { info } from "./imports";
-import { err } from "./imports/err";
+//import { err } from "./imports/err";
 //import { receiveInstantiationResult } from "./imports/receiveInstantiationResult";
 //import { instantiateArrayBuffer } from "./imports/instantiateArrayBuffer";
 

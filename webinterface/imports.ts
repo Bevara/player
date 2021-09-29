@@ -1,6 +1,6 @@
 import { _emscripten_asm_const_int } from './imports/_emscripten_asm_const_int'
 import { _exit } from './imports/_exit'
-import { ___sys_getpriority } from './imports/__sys_getpriority'
+import { ___sys_getpriority } from './imports/___sys_getpriority'
 import { ___sys_getresuid32 } from './imports/___sys_getresuid32'
 import { ___asctime } from './imports/___asctime'
 import { ___call_sighandler } from './imports/___call_sighandler'
