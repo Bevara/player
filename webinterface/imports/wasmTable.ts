@@ -1,5 +1,6 @@
-function wasmTable()
-{
-console.log ("function wasmTable has not been implemented!")
-}
+const wasmTable = new WebAssembly.Table({
+    'initial': 992,
+    'element': 'anyfunc'
+  });
+
 export {wasmTable}

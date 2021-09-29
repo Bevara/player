@@ -1,5 +1,3 @@
-function ___table_base()
-{
-console.log ("function ___table_base has not been implemented!")
-}
+const ___table_base = 1;
+
 export {___table_base}

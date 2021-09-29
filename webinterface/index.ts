@@ -24,3 +24,4 @@ class UniversalImage extends HTMLImageElement {
     }
 }
 
+customElements.define('universal-img', UniversalImage, {extends: 'img' });
