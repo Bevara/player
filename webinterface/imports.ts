@@ -847,4 +847,4 @@ const info: WebAssembly.Imports = {
     'GOT.func': new Proxy(asmLibraryArg, GOTHandler),
 };
 
-export { info }
+export { info, wasmMemory }

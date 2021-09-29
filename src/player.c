@@ -11,8 +11,11 @@
 
 int EMSCRIPTEN_KEEPALIVE setup_acc(const char *args)
 {
-    /*Dec_Entry *ctx;
-    GF_SAFEALLOC(ctx, Dec_Entry);*/
+    Dec_Entry *ctx;
+    //GF_SAFEALLOC(ctx, Dec_Entry);
+    GF_List *filter_registers;
+    printf("test");
+    //filter_registers = set_dec_entry_args(ctx, args);
     return (args + 1);
 }
 

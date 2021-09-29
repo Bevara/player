@@ -10,6 +10,12 @@ add_definitions(-fpic)
 configure_file(templates/template.webpack.config.js ${CMAKE_SOURCE_DIR}/webpack.config.js)
 configure_file(webinterface/Bevara.ico ${CMAKE_BINARY_DIR}/favicon.ico)
 
+set(USE_DEBUG "-g")
+set(USE_FLAGS "${USE_DEBUG}")
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${USE_FLAGS}")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${USE_FLAGS}")
+
 SET(PLAYER_CORE
 ${CMAKE_SOURCE_DIR}/src/player.c
 ${CMAKE_SOURCE_DIR}/src/parse_info.cpp
@@ -32,6 +38,8 @@ set_target_properties( player
                             )
 
 target_link_libraries(player
+${CMAKE_BINARY_DIR}/third_parties/gpac/src/utils/list.o
+${CMAKE_BINARY_DIR}/third_parties/gpac/src/utils/alloc.o
 #libgpac_static.a
 )
 

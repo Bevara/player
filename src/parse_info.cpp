@@ -30,7 +30,7 @@ extern "C" GF_List *set_dec_entry_args(Dec_Entry *ctx, const char *json)
     }
 
 #if !defined(__EMSCRIPTEN__)
-    //filters = gf_list_new();
+    filters = gf_list_new();
     add_filters(filters);
     ctx->event_callback = test_callback;
     return filters;
@@ -43,12 +43,12 @@ extern "C" GF_List *set_dec_entry_args(Dec_Entry *ctx, const char *json)
 
     if (document.HasMember("entryLibraries"))
     {
-        //filters = gf_list_new();
+        filters = gf_list_new();
 
         const Value &entries = document["entryLibraries"];
         assert(entries.IsArray());
-        /*for (SizeType i = 0; i < entries.Size(); i++)
-            gf_list_add(filters, reinterpret_cast<GF_FilterRegister *>(entries[i].GetInt()));*/
+        for (SizeType i = 0; i < entries.Size(); i++)
+            gf_list_add(filters, reinterpret_cast<GF_FilterRegister *>(entries[i].GetInt()));
     }
 
     return filters;
