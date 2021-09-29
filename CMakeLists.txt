@@ -12,9 +12,17 @@ configure_file(webinterface/Bevara.ico ${CMAKE_BINARY_DIR}/favicon.ico)
 
 SET(PLAYER_CORE
 ${CMAKE_SOURCE_DIR}/src/player.c
+${CMAKE_SOURCE_DIR}/src/parse_info.cpp
+${CMAKE_SOURCE_DIR}/src/fetch_memio.c
 )
 
-include_directories(include third_parties/gpac/include ${CMAKE_BINARY_DIR}/third_parties/gpac)
+include_directories(include
+                    third_parties/gpac/include 
+                    third_parties/rapidjson/include 
+                    ${CMAKE_BINARY_DIR}/third_parties/gpac
+)
+
+
 link_directories(${CMAKE_BINARY_DIR}/third_parties/gpac/bin/gcc)
 
 add_executable(player ${PLAYER_CORE})

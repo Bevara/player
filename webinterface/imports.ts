@@ -8,7 +8,6 @@ import { ___clock_gettime } from './imports/___clock_gettime'
 import { ___cxa_atexit } from './imports/___cxa_atexit'
 import { ___gmtime_r } from './imports/___gmtime_r'
 import { ___heap_base } from './imports/___heap_base'
-import { wasmTable } from './imports/wasmTable'
 import { ___localtime_r } from './imports/___localtime_r'
 import { ___map_file } from './imports/___map_file'
 import { ___memory_base } from './imports/___memory_base'
@@ -396,7 +395,6 @@ import { getTempRet0 } from './imports/getTempRet0'
 import { _getentropy } from './imports/_getentropy'
 import { _getnameinfo } from './imports/_getnameinfo'
 import { _gmtime_r } from './imports/_gmtime_r'
-import { wasmMemory } from './imports/wasmMemory'
 import { _proc_exit } from './imports/_proc_exit'
 import { setTempRet0 } from './imports/setTempRet0'
 import { _strftime } from './imports/_strftime'
@@ -406,10 +404,23 @@ import { __sys_getgid32 } from './imports/__sys_getgid32'
 import { ___sys_mmap2 } from './imports/___sys_mmap2'
 import { ___sys_getgid32 } from './imports/___sys_getgid32'
 import { _emscripten_glScissor } from './imports/_emscripten_glScissor'
+import { ___assert_fail } from './imports/___assert_fail'
 
+const INITIAL_MEMORY = 16777216;
+
+const wasmMemory = new WebAssembly.Memory({
+    'initial': INITIAL_MEMORY / 65536,
+    'maximum': INITIAL_MEMORY / 65536
+});
+
+const wasmTable = new WebAssembly.Table({
+    'initial': 992*4,
+    'element': 'anyfunc'
+  });
 
 const asmLibraryArg: WebAssembly.ModuleImports = {
     "__asctime": ___asctime,
+    "__assert_fail": ___assert_fail,
     "__call_sighandler": ___call_sighandler,
     "__clock_gettime": ___clock_gettime,
     "__cxa_atexit": ___cxa_atexit,

@@ -5,14 +5,7 @@
 #define emscripten_sleep gf_sleep
 #endif
 
-#define GPAC_HAVE_CONFIG_H
-
 #include <stdio.h>
-
-#include <gpac/main.h>
-#include <gpac/filters.h>
-#include <gpac/terminal.h>
-#include <gpac/options.h>
 
 #include "player.h"
 
