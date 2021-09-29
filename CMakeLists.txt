@@ -14,11 +14,18 @@ SET(PLAYER_CORE
 ${CMAKE_SOURCE_DIR}/src/player.c
 )
 
+include_directories(include third_parties/gpac/include ${CMAKE_BINARY_DIR}/third_parties/gpac)
+link_directories(${CMAKE_BINARY_DIR}/third_parties/gpac/bin/gcc)
+
 add_executable(player ${PLAYER_CORE})
 set_target_properties( player 
                         PROPERTIES 
                             LINK_FLAGS "-s MAIN_MODULE=1"
                             )
+
+target_link_libraries(player
+#libgpac_static.a
+)
 
 
 add_custom_target (serve

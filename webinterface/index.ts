@@ -1,27 +1,47 @@
 
 
 import { info } from "./imports";
-//import { err } from "./imports/err";
+//import { err } from "./outputs";
 //import { receiveInstantiationResult } from "./imports/receiveInstantiationResult";
 //import { instantiateArrayBuffer } from "./imports/instantiateArrayBuffer";
 
+
 class UniversalImage extends HTMLImageElement {
-    constructor() {
-        super();
-        console.log("test4");
-        fetch("player.wasm").then(function (response) {
+    loadDecoder(src: string): void {
+        let self = this;
+        console.log("loading decoder");
+        fetch(src).then(function (response) {
             var result = WebAssembly.instantiateStreaming(response, info);
-            /*return result.then(
-                receiveInstantiationResult,
-                function (reason) {
-                    // We expect the most common failure cause to be a bad MIME type for the binary,
-                    // in which case falling back to ArrayBuffer instantiation should work.
-                    err('wasm streaming compile failed: ' + reason);
-                    err('falling back to ArrayBuffer instantiation');
-                    return instantiateArrayBuffer(receiveInstantiationResult);
-                });*/
+            return result.then((result) => {
+                const exports :any = result.instance.exports;
+                const value = exports.setup_acc(17);
+                console.log(value);
+            });
         })
     }
+
+    connectedCallback(): void {
+
+    }
+
+    disconnectedCallback() {
+        console.log('Img has been removed from page.');
+    }
+
+    attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+        if (oldValue === newValue) return;
+        switch (name) {
+            case 'src':
+                break;
+            case 'using':
+                this.loadDecoder(newValue);
+                break;
+            case 'with':
+                break;
+        }
+    }
+
+    static get observedAttributes() { return ['src', 'using', 'with']; }
 }
 
-customElements.define('universal-img', UniversalImage, {extends: 'img' });
+customElements.define('universal-img', UniversalImage, { extends: 'img' });
