@@ -34,7 +34,7 @@ link_directories(${CMAKE_BINARY_DIR}/third_parties/gpac/bin/gcc)
 add_executable(player ${PLAYER_CORE})
 set_target_properties( player 
                         PROPERTIES 
-                            LINK_FLAGS "-s MAIN_MODULE=1"
+                            LINK_FLAGS "-s MAIN_MODULE=1 -s USE_ZLIB=1 -s USE_PTHREADS=1"
                             )
 
 target_link_libraries(player

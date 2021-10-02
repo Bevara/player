@@ -405,6 +405,18 @@ import { ___sys_mmap2 } from './imports/___sys_mmap2'
 import { ___sys_getgid32 } from './imports/___sys_getgid32'
 import { _emscripten_glScissor } from './imports/_emscripten_glScissor'
 import { ___assert_fail } from './imports/___assert_fail'
+import { _gettimeofday } from './imports/_gettimeofday'
+import { _timegm } from './imports/_timegm'
+import { _mktime } from './imports/_mktime'
+import { _system } from './imports/_system'
+import { _getaddrinfo } from './imports/_getaddrinfo'
+import { _pthread_cancel } from './imports/_pthread_cancel'
+import { _dladdr } from './imports/_dladdr'
+import { _dlclose } from './imports/_dlclose'
+import { _dlopen } from './imports/_dlopen'
+import { _dlerror } from './imports/_dlerror'
+import { _dlsym } from './imports/_dlsym'
+import { _localtime_r } from './imports/_localtime_r'
 
 const INITIAL_MEMORY = 16777216;
 
@@ -826,7 +838,19 @@ const asmLibraryArg: WebAssembly.ModuleImports = {
     "setTempRet0": setTempRet0,
     "strftime": _strftime,
     "strftime_l": _strftime_l,
-    "time": _time
+    "time": _time,
+    "gettimeofday": _gettimeofday,
+    "timegm": _timegm,
+    "mktime": _mktime,
+    "system": _system,
+    "getaddrinfo": _getaddrinfo,
+    "pthread_cancel": _pthread_cancel,
+    "dladdr": _dladdr,
+    "dlclose": _dlclose,
+    "dlopen": _dlopen,
+    "dlerror": _dlerror,
+    "dlsym": _dlsym,
+    "localtime_r": _localtime_r,
 };
 
 const GOT: Record<string, WebAssembly.Global> = {};
