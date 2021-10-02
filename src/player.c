@@ -9,17 +9,18 @@
 
 #include "player.h"
 
-int EMSCRIPTEN_KEEPALIVE setup_acc(const char *args)
+Dec_Entry *EMSCRIPTEN_KEEPALIVE setup_acc(const char *args)
 {
     Dec_Entry *ctx;
-    //GF_SAFEALLOC(ctx, Dec_Entry);
+    GF_SAFEALLOC(ctx, Dec_Entry);
     GF_List *filter_registers;
     printf("test");
-    //filter_registers = set_dec_entry_args(ctx, args);
-    return (args + 1);
+    filter_registers = set_dec_entry_args(ctx, args);
+    return ctx;
 }
 
 void EMSCRIPTEN_KEEPALIVE shutdown_acc(Dec_Entry *ctx)
 {
-
+    if (ctx)
+        gf_free(ctx);
 }

@@ -1,7 +1,7 @@
 
 
 import { info, wasmMemory } from "./imports";
-import {stringToUTF8Array} from "./utils/strings";
+import {stringToUTF8Array, UTF8ArrayToString} from "./utils/strings";
 //import { err } from "./outputs";
 //import { receiveInstantiationResult } from "./imports/receiveInstantiationResult";
 //import { instantiateArrayBuffer } from "./imports/instantiateArrayBuffer";
@@ -19,6 +19,7 @@ class UniversalImage extends HTMLImageElement {
     HEAPU32 : Uint32Array = null;
     HEAPF32 : Float32Array = null;
     HEAPF64 : Float64Array = null;
+    decoder: number = null;
 
     updateGlobalBufferAndViews(buf: ArrayBuffer) : void {
         this.buffer = buf;
@@ -43,8 +44,9 @@ class UniversalImage extends HTMLImageElement {
                 var len = (json.length << 2) + 1;
                 const ret = exports.stackAlloc(len);
                 stringToUTF8Array(json, self.HEAPU8, ret, len);
-                const value = exports.setup_acc(JSON.stringify(17));
-                console.log(value);
+                self.decoder = exports.setup_acc(ret);
+                //const test = UTF8ArrayToString(self.HEAPU8,value)
+                console.log(self.decoder);
             });
         })
     }

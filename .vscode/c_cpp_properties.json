@@ -5,7 +5,8 @@
             "includePath": [
                 "${default}",
                 "${workspaceFolder}/include",
-                "${workspaceFolder}/third_parties/gpac/include"
+                "${workspaceFolder}/third_parties/gpac/include",
+                "${workspaceFolder}/third_parties/rapidjson/include"
             ],
             "compilerPath": "/usr/bin/clang",
             "cStandard": "c17",
