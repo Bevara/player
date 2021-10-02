@@ -38,9 +38,9 @@ set_target_properties( player
                             )
 
 target_link_libraries(player
-${CMAKE_BINARY_DIR}/third_parties/gpac/src/utils/list.o
-${CMAKE_BINARY_DIR}/third_parties/gpac/src/utils/alloc.o
-#libgpac_static.a
+#${CMAKE_BINARY_DIR}/third_parties/gpac/src/utils/list.o
+#${CMAKE_BINARY_DIR}/third_parties/gpac/src/utils/alloc.o
+libgpac_static.a
 )
 
 

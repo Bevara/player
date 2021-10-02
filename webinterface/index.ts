@@ -52,6 +52,7 @@ class UniversalImage extends HTMLImageElement {
     }
 
     connectedCallback(): void {
+        console.log("connectedCallback");
         this.updateGlobalBufferAndViews(wasmMemory.buffer);
     }
 
@@ -60,6 +61,7 @@ class UniversalImage extends HTMLImageElement {
     }
 
     attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+        console.log(name+ ":" +oldValue + "->"+newValue);
         if (oldValue === newValue) return;
         switch (name) {
             case 'src':
