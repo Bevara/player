@@ -1,8 +1,8 @@
 
 
-import { info, wasmMemory } from "./imports";
+import { info, wasmMemory, INITIAL_MEMORY } from "./imports";
 import {stringToUTF8Array, UTF8ArrayToString} from "./utils/strings";
-//import { err } from "./outputs";
+import { err, assert } from "./utils/outputs";
 //import { receiveInstantiationResult } from "./imports/receiveInstantiationResult";
 //import { instantiateArrayBuffer } from "./imports/instantiateArrayBuffer";
 
@@ -20,6 +20,7 @@ class UniversalImage extends HTMLImageElement {
     HEAPF32 : Float32Array = null;
     HEAPF64 : Float64Array = null;
     decoder: number = null;
+    INITIAL_MEMORY : number = null;
 
     updateGlobalBufferAndViews(buf: ArrayBuffer) : void {
         this.buffer = buf;
@@ -36,6 +37,14 @@ class UniversalImage extends HTMLImageElement {
     loadDecoder(src: string): void {
         let self = this;
         console.log("loading decoder");
+        this.buffer = wasmMemory.buffer;
+        this.INITIAL_MEMORY = this.buffer.byteLength;
+        assert(this.INITIAL_MEMORY % 65536 === 0);
+        this.updateGlobalBufferAndViews(this.buffer);
+        if (wasmMemory) {
+            this.buffer = wasmMemory.buffer;
+        }
+        
         fetch(src).then(function (response) {
             var result = WebAssembly.instantiateStreaming(response, info);
             return result.then((result) => {

@@ -417,16 +417,44 @@ import { _dlopen } from './imports/_dlopen'
 import { _dlerror } from './imports/_dlerror'
 import { _dlsym } from './imports/_dlsym'
 import { _localtime_r } from './imports/_localtime_r'
+import { _pclose } from './imports/_pclose'
+import { _popen } from './imports/_popen'
+import { _atexit } from './imports/_atexit'
+import { _utimes } from './imports/_utimes'
+import { ___cxa_thread_atexit } from './imports/___cxa_thread_atexit'
+import { _emscripten_get_now } from './imports/_emscripten_get_now'
+import { _emscripten_conditional_set_current_thread_status } from './imports/_emscripten_conditional_set_current_thread_status'
+import { _emscripten_futex_wait } from './imports/_emscripten_futex_wait'
+import { _emscripten_futex_wake } from './imports/_emscripten_futex_wake'
+import { _emscripten_num_logical_cores } from './imports/_emscripten_num_logical_cores'
+import { _emscripten_receive_on_main_thread_js } from './imports/_emscripten_receive_on_main_thread_js'
+import { _emscripten_set_canvas_element_size } from './imports/_emscripten_set_canvas_element_size'
+import { _emscripten_set_current_thread_status } from './imports/_emscripten_set_current_thread_status'
+import { _emscripten_set_thread_name } from './imports/_emscripten_set_thread_name'
+import { _emscripten_set_timeout } from './imports/_emscripten_set_timeout'
+import { _emscripten_unwind_to_js_event_loop } from './imports/_emscripten_unwind_to_js_event_loop'
+import { _emscripten_webgl_create_context } from './imports/_emscripten_webgl_create_context'
+import { __emscripten_notify_thread_queue } from './imports/__emscripten_notify_thread_queue'
+import { ___pthread_create_js } from './imports/___pthread_create_js'
+import { ___pthread_detached_exit } from './imports/___pthread_detached_exit'
+import { ___pthread_exit_run_handlers } from './imports/___pthread_exit_run_handlers'
+import { ___pthread_join_js } from './imports/___pthread_join_js'
+import { ___emscripten_init_main_thread_js } from './imports/___emscripten_init_main_thread_js'
+import { ___call_main } from './imports/___call_main'
+import { _emscripten_check_blocking_allowed } from './imports/_emscripten_check_blocking_allowed'
+
 
 const INITIAL_MEMORY = 16777216;
 
 const wasmMemory = new WebAssembly.Memory({
     'initial': INITIAL_MEMORY / 65536,
     'maximum': INITIAL_MEMORY / 65536
+    ,
+    'shared': true
 });
 
 const wasmTable = new WebAssembly.Table({
-    'initial': 992*4,
+    'initial': 992*100,
     'element': 'anyfunc'
   });
 
@@ -435,6 +463,7 @@ const asmLibraryArg: WebAssembly.ModuleImports = {
     "__assert_fail": ___assert_fail,
     "__call_sighandler": ___call_sighandler,
     "__clock_gettime": ___clock_gettime,
+    "__cxa_thread_atexit": ___cxa_thread_atexit,
     "__cxa_atexit": ___cxa_atexit,
     "__gmtime_r": ___gmtime_r,
     "__heap_base": ___heap_base,
@@ -552,6 +581,7 @@ const asmLibraryArg: WebAssembly.ModuleImports = {
     "__sys_utimensat": ___sys_utimensat,
     "__sys_wait4": ___sys_wait4,
     "__table_base": ___table_base,
+    "_emscripten_notify_thread_queue": __emscripten_notify_thread_queue,
     "_emscripten_throw_longjmp": __emscripten_throw_longjmp,
     "abort": _abort,
     "alBuffer3f": _alBuffer3f,
@@ -646,6 +676,10 @@ const asmLibraryArg: WebAssembly.ModuleImports = {
     "alcProcessContext": _alcProcessContext,
     "alcSuspendContext": _alcSuspendContext,
     "clock_gettime": _clock_gettime,
+    "emscripten_get_now": _emscripten_get_now,
+    "emscripten_conditional_set_current_thread_status": _emscripten_conditional_set_current_thread_status,
+    "emscripten_futex_wait": _emscripten_futex_wait,
+    "emscripten_futex_wake": _emscripten_futex_wake,
     "emscripten_alcDevicePauseSOFT": _emscripten_alcDevicePauseSOFT,
     "emscripten_alcDeviceResumeSOFT": _emscripten_alcDeviceResumeSOFT,
     "emscripten_alcGetStringiSOFT": _emscripten_alcGetStringiSOFT,
@@ -851,6 +885,25 @@ const asmLibraryArg: WebAssembly.ModuleImports = {
     "dlerror": _dlerror,
     "dlsym": _dlsym,
     "localtime_r": _localtime_r,
+    "pclose": _pclose,
+    "popen": _popen,
+    "atexit": _atexit,
+    "utimes": _utimes,
+    "emscripten_num_logical_cores": _emscripten_num_logical_cores,
+    "emscripten_receive_on_main_thread_js": _emscripten_receive_on_main_thread_js,
+    "emscripten_set_canvas_element_size": _emscripten_set_canvas_element_size,
+    "emscripten_set_current_thread_status": _emscripten_set_current_thread_status,
+    "emscripten_set_thread_name": _emscripten_set_thread_name,
+    "emscripten_set_timeout": _emscripten_set_timeout,
+    "emscripten_unwind_to_js_event_loop": _emscripten_unwind_to_js_event_loop,
+    "emscripten_webgl_create_context": _emscripten_webgl_create_context,
+    "__pthread_create_js": ___pthread_create_js,
+  "__pthread_detached_exit": ___pthread_detached_exit,
+  "__pthread_exit_run_handlers": ___pthread_exit_run_handlers,
+  "__pthread_join_js": ___pthread_join_js,
+  "__emscripten_init_main_thread_js": ___emscripten_init_main_thread_js,
+  "__call_main": ___call_main,
+  "emscripten_check_blocking_allowed": _emscripten_check_blocking_allowed,
 };
 
 const GOT: Record<string, WebAssembly.Global> = {};
@@ -871,4 +924,4 @@ const info: WebAssembly.Imports = {
     'GOT.func': new Proxy(asmLibraryArg, GOTHandler),
 };
 
-export { info, wasmMemory }
+export { info, wasmMemory, INITIAL_MEMORY }

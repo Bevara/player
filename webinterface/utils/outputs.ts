@@ -77,7 +77,7 @@ function abort(what: string) {
 }
 
 /** @type {function(*, string=)} */
-function assert(condition: any, text: string): void {
+function assert(condition: any, text?: string): void {
     if (!condition) {
         abort('Assertion failed: ' + text);
     }
