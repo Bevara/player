@@ -83,4 +83,4 @@ function assert(condition: any, text?: string): void {
     }
 }
 
-export { err, warnOnce, assert }
+export { err, warnOnce, assert, abort }

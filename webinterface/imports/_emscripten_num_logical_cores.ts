@@ -1,5 +1,8 @@
+import { ENVIRONMENT_IS_NODE } from "../imports"
+
 function _emscripten_num_logical_cores()
 {
-console.log ("function _emscripten_num_logical_cores has not been implemented!")
+    //if (ENVIRONMENT_IS_NODE) return require('os').cpus().length;
+    return navigator['hardwareConcurrency'];
 }
 export {_emscripten_num_logical_cores}

@@ -1,5 +1,11 @@
-function _time()
+import {HEAP32} from '../index'
+
+function _time(ptr:number)
 {
-console.log ("function _time has not been implemented!")
+    var ret = (Date.now()/1000)|0;
+    if (ptr) {
+      HEAP32[((ptr)>>2)] = ret;
+    }
+    return ret;
 }
 export {_time}

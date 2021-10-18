@@ -1,3 +1,15 @@
+// Determine the runtime environment we are in. You can customize this by
+// setting the ENVIRONMENT setting at compile time (see settings.js).
+
+// Attempt to auto-detect the environment
+var ENVIRONMENT_IS_WEB = typeof window === 'object';
+var ENVIRONMENT_IS_WORKER = typeof importScripts === 'function';
+// N.b. Electron.js environment is simultaneously a NODE-environment, but
+// also a web environment.
+var ENVIRONMENT_IS_NODE = typeof process === 'object' && typeof process.versions === 'object' && typeof process.versions.node === 'string';
+var ENVIRONMENT_IS_SHELL = !ENVIRONMENT_IS_WEB && !ENVIRONMENT_IS_NODE && !ENVIRONMENT_IS_WORKER;
+var ENVIRONMENT_IS_PTHREAD = false;
+
 import { _emscripten_asm_const_int } from './imports/_emscripten_asm_const_int'
 import { _exit } from './imports/_exit'
 import { ___sys_getpriority } from './imports/___sys_getpriority'
@@ -443,21 +455,6 @@ import { ___emscripten_init_main_thread_js } from './imports/___emscripten_init_
 import { ___call_main } from './imports/___call_main'
 import { _emscripten_check_blocking_allowed } from './imports/_emscripten_check_blocking_allowed'
 
-
-const INITIAL_MEMORY = 16777216;
-
-const wasmMemory = new WebAssembly.Memory({
-    'initial': INITIAL_MEMORY / 65536,
-    'maximum': INITIAL_MEMORY / 65536
-    ,
-    'shared': true
-});
-
-const wasmTable = new WebAssembly.Table({
-    'initial': 992*100,
-    'element': 'anyfunc'
-  });
-
 const asmLibraryArg: WebAssembly.ModuleImports = {
     "__asctime": ___asctime,
     "__assert_fail": ___assert_fail,
@@ -467,7 +464,6 @@ const asmLibraryArg: WebAssembly.ModuleImports = {
     "__cxa_atexit": ___cxa_atexit,
     "__gmtime_r": ___gmtime_r,
     "__heap_base": ___heap_base,
-    "__indirect_function_table": wasmTable,
     "__localtime_r": ___localtime_r,
     "__map_file": ___map_file,
     "__memory_base": ___memory_base,
@@ -867,7 +863,6 @@ const asmLibraryArg: WebAssembly.ModuleImports = {
     "getentropy": _getentropy,
     "getnameinfo": _getnameinfo,
     "gmtime_r": _gmtime_r,
-    "memory": wasmMemory,
     "proc_exit": _proc_exit,
     "setTempRet0": setTempRet0,
     "strftime": _strftime,
@@ -898,12 +893,12 @@ const asmLibraryArg: WebAssembly.ModuleImports = {
     "emscripten_unwind_to_js_event_loop": _emscripten_unwind_to_js_event_loop,
     "emscripten_webgl_create_context": _emscripten_webgl_create_context,
     "__pthread_create_js": ___pthread_create_js,
-  "__pthread_detached_exit": ___pthread_detached_exit,
-  "__pthread_exit_run_handlers": ___pthread_exit_run_handlers,
-  "__pthread_join_js": ___pthread_join_js,
-  "__emscripten_init_main_thread_js": ___emscripten_init_main_thread_js,
-  "__call_main": ___call_main,
-  "emscripten_check_blocking_allowed": _emscripten_check_blocking_allowed,
+    "__pthread_detached_exit": ___pthread_detached_exit,
+    "__pthread_exit_run_handlers": ___pthread_exit_run_handlers,
+    "__pthread_join_js": ___pthread_join_js,
+    "__emscripten_init_main_thread_js": ___emscripten_init_main_thread_js,
+    "__call_main": ___call_main,
+    "emscripten_check_blocking_allowed": _emscripten_check_blocking_allowed,
 };
 
 const GOT: Record<string, WebAssembly.Global> = {};
@@ -924,4 +919,4 @@ const info: WebAssembly.Imports = {
     'GOT.func': new Proxy(asmLibraryArg, GOTHandler),
 };
 
-export { info, wasmMemory, INITIAL_MEMORY }
+export { info, ENVIRONMENT_IS_NODE, ENVIRONMENT_IS_PTHREAD }

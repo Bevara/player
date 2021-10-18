@@ -1,5 +1,5 @@
 function ___sys_getpid()
 {
-console.log ("function ___sys_getpid has not been implemented!")
+    return 42;
 }
 export {___sys_getpid}
