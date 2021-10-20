@@ -10,10 +10,10 @@
 #include "player.h"
 
 //GPAC log function
-static void on_gpac_log(void *cbk, GF_LOG_Level ll, GF_LOG_Tool lm, const char *fmt, va_list list)
+/*static void on_gpac_log(void *cbk, GF_LOG_Level ll, GF_LOG_Tool lm, const char *fmt, va_list list)
 {
     printf(fmt, list);
-}
+}*/
 
 Dec_Entry *EMSCRIPTEN_KEEPALIVE setup_acc(const char *args)
 {
@@ -22,7 +22,7 @@ Dec_Entry *EMSCRIPTEN_KEEPALIVE setup_acc(const char *args)
     GF_List *filter_registers;
     //printf("test");
 
-    gf_log_set_callback(ctx, on_gpac_log);
+    //gf_log_set_callback(ctx, on_gpac_log);
     
     gf_sys_init(GF_MemTrackerNone, "0");
     
@@ -36,13 +36,13 @@ Dec_Entry *EMSCRIPTEN_KEEPALIVE setup_acc(const char *args)
 
     fprintf(stderr, "Loading GPAC Terminal\n");
 
-    /*ctx->term = gf_term_new(&ctx->user);
+    ctx->term = gf_term_new(&ctx->user);
     if (!ctx->term)
     {
         fprintf(stderr, "\nInit error - check you have at least one video out and one rasterizer...\nFound modules:\n");
         gf_sys_close();
         return NULL;
-    }*/
+    }
 
     //emscripten_set_main_loop_arg(step_run, ctx, 0, 0);
     //emscripten_set_main_loop_arg(step_run, ctx, 1000,0); //TO BE IMPLEMENTED
