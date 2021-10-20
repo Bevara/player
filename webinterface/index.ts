@@ -1,11 +1,11 @@
 
 
 import { info, GOTHandler } from "./imports";
-import { stringToUTF8Array, UTF8ArrayToString } from "./utils/strings";
+//import { stringToUTF8Array, UTF8ArrayToString } from "./utils/strings";
 import { err, assert } from "./utils/outputs";
 //import { receiveInstantiationResult } from "./imports/receiveInstantiationResult";
 //import { instantiateArrayBuffer } from "./imports/instantiateArrayBuffer";
-import {asmLibraryArg, initRuntime, stackCheckInit} from './player'
+import {asmLibraryArg, initRuntime, stackCheckInit, Module, wasmTable, wasmMemory, stringToUTF8, stackAlloc} from './player'
 
 
 var HEAP32: Int32Array = null;
@@ -17,9 +17,6 @@ var runtimeKeepaliveCounter :number= 0;
 
 /** @type {function(...*):?} */
 var stackSave : Function = null;
-
-/** @type {function(...*):?} */
-var stackAlloc : Function = null;
 
 /** @type {function(...*):?} */
 var _emscripten_run_in_main_runtime_thread_js : Function = null;
@@ -80,16 +77,23 @@ class UniversalImage extends HTMLImageElement {
 
     initExport(){
         stackSave = this.createExportWrapper("stackSave");
-        stackAlloc = this.createExportWrapper("stackAlloc");
+        //stackAlloc = this.createExportWrapper("stackAlloc");
         _emscripten_run_in_main_runtime_thread_js = this.createExportWrapper("emscripten_run_in_main_runtime_thread_js");
         stackRestore = this.createExportWrapper("stackRestore");
+    }
+
+    print() : any {
+        return function (text: string) {
+            if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+            console.log(text);
+        };
     }
 
     loadDecoder(src: string): void {
         let self = this;
 
         fetch(src).then(function (response) {
-            self.wasmMemory = new WebAssembly.Memory({
+           /* self.wasmMemory = new WebAssembly.Memory({
                 'initial': self.INITIAL_MEMORY / 65536,
                 'maximum': self.INITIAL_MEMORY / 65536
                 ,
@@ -107,7 +111,7 @@ class UniversalImage extends HTMLImageElement {
             self.updateGlobalBufferAndViews(self.buffer);
             if (self.wasmMemory) {
                 self.buffer = self.wasmMemory.buffer;
-            }
+            }*/
 
             const info: WebAssembly.Imports = {
                 'env': asmLibraryArg,
@@ -115,14 +119,20 @@ class UniversalImage extends HTMLImageElement {
                 'GOT.mem': new Proxy(asmLibraryArg, GOTHandler),
                 'GOT.func': new Proxy(asmLibraryArg, GOTHandler)
             };
-            info.env["__indirect_function_table"] = self.wasmTable;
-            info.env["memory"] = self.wasmMemory;
+            //info.env["__indirect_function_table"] = self.wasmTable;
+            //info.env["memory"] = self.wasmMemory;
             
-            self.updateGlobalBufferAndViews(self.wasmMemory.buffer);
+            info.env["__indirect_function_table"] = wasmTable;
+            info.env["memory"] = wasmMemory;
+            
+
+            //self.updateGlobalBufferAndViews(self.wasmMemory.buffer);
             var result = WebAssembly.instantiateStreaming(response, info);
             return result.then((result) => {
+                
                 //stackCheckInit();
                 //initRuntime();
+                //Module["print"] = self.print();
 
                 self.exports = result.instance.exports;
                 self.initExport();
@@ -135,8 +145,11 @@ class UniversalImage extends HTMLImageElement {
 
                 const json = JSON.stringify(args);
                 var len = (json.length << 2) + 1;
-                const ret = exports.stackAlloc(len);
-                stringToUTF8Array(json, self.HEAPU8, ret, len);
+                //const ret = exports.stackAlloc(len);
+                //stringToUTF8Array(json, self.HEAPU8, ret, len);
+                
+                const ret = stackAlloc(len);
+                stringToUTF8(json, ret, len);
                 self.decoder = exports.setup_acc(ret);
                 //const test = UTF8ArrayToString(self.HEAPU8,value)
                 console.log(self.decoder);
@@ -154,6 +167,7 @@ class UniversalImage extends HTMLImageElement {
             self.loadDecoder(self.using);
         }
 
+        
         document.body.appendChild(btn);
     }
 
@@ -181,4 +195,4 @@ class UniversalImage extends HTMLImageElement {
 
 customElements.define('universal-img', UniversalImage, { extends: 'img' });
 
-export { HEAP32, HEAPF64, stackSave, stackAlloc, stackRestore, _emscripten_run_in_main_runtime_thread_js}
+export { HEAP32, HEAPF64, stackSave, stackRestore, _emscripten_run_in_main_runtime_thread_js}

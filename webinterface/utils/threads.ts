@@ -1,4 +1,5 @@
-import {stackSave, stackAlloc, stackRestore, HEAPF64, _emscripten_run_in_main_runtime_thread_js} from '../index'
+import {stackSave, stackRestore, HEAPF64, _emscripten_run_in_main_runtime_thread_js} from '../index'
+import {stackAlloc} from '../player'
 
 /** @type{function(number, (number|boolean), ...(number|boolean))} */
 function _emscripten_proxy_to_main_thread_js(index :number, sync : (number|boolean)) {
