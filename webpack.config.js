@@ -41,7 +41,7 @@ const config = {
         open: 'true',
         host: "localhost",
         contentBase: "/Users/gorinje/project/player/build",
-        port:"8081"
+        port:8081
       },
 };
 
