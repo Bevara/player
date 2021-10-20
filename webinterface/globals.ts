@@ -1,0 +1,3 @@
+const ENVIRONMENT_IS_PTHREAD : boolean = false;
+
+export{ENVIRONMENT_IS_PTHREAD}

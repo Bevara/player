@@ -40,7 +40,8 @@ const config = {
     devServer: {
         open: 'true',
         host: "localhost",
-        contentBase: "@CMAKE_BINARY_DIR@"
+        contentBase: "@CMAKE_BINARY_DIR@",
+        port:8081
       },
 };
 

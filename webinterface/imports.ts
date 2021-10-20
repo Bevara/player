@@ -1028,4 +1028,4 @@ const info: WebAssembly.Imports = {
     'GOT.func': new Proxy(asmLibraryArg, GOTHandler),
 };
 
-export { info, ENVIRONMENT_IS_NODE, ENVIRONMENT_IS_PTHREAD }
+export { info, GOT, GOTHandler, ENVIRONMENT_IS_NODE, ENVIRONMENT_IS_PTHREAD }

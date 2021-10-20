@@ -9,12 +9,21 @@
 
 #include "player.h"
 
+//GPAC log function
+static void on_gpac_log(void *cbk, GF_LOG_Level ll, GF_LOG_Tool lm, const char *fmt, va_list list)
+{
+    printf(fmt, list);
+}
+
 Dec_Entry *EMSCRIPTEN_KEEPALIVE setup_acc(const char *args)
 {
     Dec_Entry *ctx;
     GF_SAFEALLOC(ctx, Dec_Entry);
     GF_List *filter_registers;
     //printf("test");
+
+    gf_log_set_callback(ctx, on_gpac_log);
+    
     gf_sys_init(GF_MemTrackerNone, "0");
     
     gf_opts_set_key("core", "audio-output", "SDL Audio Output");

@@ -1,10 +1,12 @@
 
 
-import { info } from "./imports";
+import { info, GOTHandler } from "./imports";
 import { stringToUTF8Array, UTF8ArrayToString } from "./utils/strings";
 import { err, assert } from "./utils/outputs";
 //import { receiveInstantiationResult } from "./imports/receiveInstantiationResult";
 //import { instantiateArrayBuffer } from "./imports/instantiateArrayBuffer";
+import {asmLibraryArg, initRuntime, stackCheckInit} from './player'
+
 
 var HEAP32: Int32Array = null;
 var HEAPF64: Float64Array = null;
@@ -106,11 +108,22 @@ class UniversalImage extends HTMLImageElement {
             if (self.wasmMemory) {
                 self.buffer = self.wasmMemory.buffer;
             }
+
+            const info: WebAssembly.Imports = {
+                'env': asmLibraryArg,
+                'wasi_snapshot_preview1': asmLibraryArg,
+                'GOT.mem': new Proxy(asmLibraryArg, GOTHandler),
+                'GOT.func': new Proxy(asmLibraryArg, GOTHandler)
+            };
             info.env["__indirect_function_table"] = self.wasmTable;
             info.env["memory"] = self.wasmMemory;
+            
             self.updateGlobalBufferAndViews(self.wasmMemory.buffer);
             var result = WebAssembly.instantiateStreaming(response, info);
             return result.then((result) => {
+                //stackCheckInit();
+                //initRuntime();
+
                 self.exports = result.instance.exports;
                 self.initExport();
 
@@ -132,8 +145,16 @@ class UniversalImage extends HTMLImageElement {
     }
 
     connectedCallback(): void {
+        let self = this;
         console.log("connectedCallback");
-        this.loadDecoder(this.using);
+        
+        let btn = document.createElement("button");
+        btn.innerHTML = "Click Me";
+        btn.onclick = function (){
+            self.loadDecoder(self.using);
+        }
+
+        document.body.appendChild(btn);
     }
 
     disconnectedCallback() {
