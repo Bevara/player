@@ -454,6 +454,61 @@ import { ___pthread_join_js } from './imports/___pthread_join_js'
 import { ___emscripten_init_main_thread_js } from './imports/___emscripten_init_main_thread_js'
 import { ___call_main } from './imports/___call_main'
 import { _emscripten_check_blocking_allowed } from './imports/_emscripten_check_blocking_allowed'
+import { _emscripten_cancel_main_loop } from './imports/_emscripten_cancel_main_loop'
+import { _emscripten_force_exit } from './imports/_emscripten_force_exit'
+import { _emscripten_get_element_css_size } from './imports/_emscripten_get_element_css_size'
+import { _emscripten_set_mousedown_callback_on_thread } from './imports/_emscripten_set_mousedown_callback_on_thread'
+import { _emscripten_set_mouseenter_callback_on_thread } from './imports/_emscripten_set_mouseenter_callback_on_thread'
+import { _emscripten_set_mouseleave_callback_on_thread } from './imports/_emscripten_set_mouseleave_callback_on_thread'
+import { _emscripten_set_mousemove_callback_on_thread } from './imports/_emscripten_set_mousemove_callback_on_thread'
+import { _emscripten_set_mouseup_callback_on_thread } from './imports/_emscripten_set_mouseup_callback_on_thread'
+import { _emscripten_set_pointerlockchange_callback_on_thread } from './imports/_emscripten_set_pointerlockchange_callback_on_thread'
+import { _emscripten_set_resize_callback_on_thread } from './imports/_emscripten_set_resize_callback_on_thread'
+import { _emscripten_set_touchcancel_callback_on_thread } from './imports/_emscripten_set_touchcancel_callback_on_thread'
+import { _emscripten_set_touchend_callback_on_thread } from './imports/_emscripten_set_touchend_callback_on_thread'
+import { _emscripten_set_touchmove_callback_on_thread } from './imports/_emscripten_set_touchmove_callback_on_thread'
+import { _emscripten_set_touchstart_callback_on_thread } from './imports/_emscripten_set_touchstart_callback_on_thread'
+import { _emscripten_set_visibilitychange_callback_on_thread } from './imports/_emscripten_set_visibilitychange_callback_on_thread'
+import { _emscripten_set_wheel_callback_on_thread } from './imports/_emscripten_set_wheel_callback_on_thread'
+import { _emscripten_set_focus_callback_on_thread } from './imports/_emscripten_set_focus_callback_on_thread'
+import { _emscripten_set_fullscreenchange_callback_on_thread } from './imports/_emscripten_set_fullscreenchange_callback_on_thread'
+import { _emscripten_set_gamepadconnected_callback_on_thread } from './imports/_emscripten_set_gamepadconnected_callback_on_thread'
+import { _emscripten_set_gamepaddisconnected_callback_on_thread } from './imports/_emscripten_set_gamepaddisconnected_callback_on_thread'
+import { _emscripten_set_keydown_callback_on_thread } from './imports/_emscripten_set_keydown_callback_on_thread'
+import { _emscripten_set_keypress_callback_on_thread } from './imports/_emscripten_set_keypress_callback_on_thread'
+import { _emscripten_set_keyup_callback_on_thread } from './imports/_emscripten_set_keyup_callback_on_thread'
+import { _emscripten_set_blur_callback_on_thread } from './imports/_emscripten_set_blur_callback_on_thread'
+import { _emscripten_sample_gamepad_data } from './imports/_emscripten_sample_gamepad_data'
+import { _emscripten_set_beforeunload_callback_on_thread } from './imports/_emscripten_set_beforeunload_callback_on_thread'
+import { _emscripten_request_fullscreen_strategy } from './imports/_emscripten_request_fullscreen_strategy'
+import { _emscripten_request_pointerlock } from './imports/_emscripten_request_pointerlock'
+import { _emscripten_get_device_pixel_ratio } from './imports/_emscripten_get_device_pixel_ratio'
+import { _emscripten_set_element_css_size } from './imports/_emscripten_set_element_css_size'
+import { _emscripten_has_asyncify } from './imports/_emscripten_has_asyncify'
+import { _emscripten_sleep } from './imports/_emscripten_sleep'
+import { _emscripten_exit_fullscreen } from './imports/_emscripten_exit_fullscreen'
+import { _emscripten_exit_pointerlock } from './imports/_emscripten_exit_pointerlock'
+import { _eglBindAPI } from './imports/_eglBindAPI'
+import { _eglChooseConfig } from './imports/_eglChooseConfig'
+import { _eglCreateContext } from './imports/_eglCreateContext'
+import { _eglCreateWindowSurface } from './imports/_eglCreateWindowSurface'
+import { _eglDestroyContext } from './imports/_eglDestroyContext'
+import { _eglDestroySurface } from './imports/_eglDestroySurface'
+import { _eglGetDisplay } from './imports/_eglGetDisplay'
+import { _eglGetError } from './imports/_eglGetError'
+import { _eglInitialize } from './imports/_eglInitialize'
+import { _eglMakeCurrent } from './imports/_eglMakeCurrent'
+import { _eglQueryString } from './imports/_eglQueryString'
+import { _eglSwapBuffers } from './imports/_eglSwapBuffers'
+import { _eglSwapInterval } from './imports/_eglSwapInterval'
+import { _eglTerminate } from './imports/_eglTerminate'
+import { _eglWaitGL } from './imports/_eglWaitGL'
+import { _eglWaitNative } from './imports/_eglWaitNative'
+import { _eglGetConfigAttrib } from './imports/_eglGetConfigAttrib'
+import { _emscripten_get_battery_status } from './imports/_emscripten_get_battery_status'
+import { _emscripten_get_num_gamepads } from './imports/_emscripten_get_num_gamepads'
+import { _emscripten_get_gamepad_status } from './imports/_emscripten_get_gamepad_status'
+
 
 const asmLibraryArg: WebAssembly.ModuleImports = {
     "__asctime": ___asctime,
@@ -579,6 +634,23 @@ const asmLibraryArg: WebAssembly.ModuleImports = {
     "__table_base": ___table_base,
     "_emscripten_notify_thread_queue": __emscripten_notify_thread_queue,
     "_emscripten_throw_longjmp": __emscripten_throw_longjmp,
+    "emscripten_cancel_main_loop": _emscripten_cancel_main_loop,
+    "emscripten_get_element_css_size": _emscripten_get_element_css_size,
+    "emscripten_set_mousedown_callback_on_thread": _emscripten_set_mousedown_callback_on_thread,
+    "emscripten_set_mouseenter_callback_on_thread": _emscripten_set_mouseenter_callback_on_thread,
+    "emscripten_set_mouseleave_callback_on_thread": _emscripten_set_mouseleave_callback_on_thread,
+    "emscripten_set_mousemove_callback_on_thread": _emscripten_set_mousemove_callback_on_thread,
+    "emscripten_set_mouseup_callback_on_thread": _emscripten_set_mouseup_callback_on_thread,
+    "emscripten_set_pointerlockchange_callback_on_thread": _emscripten_set_pointerlockchange_callback_on_thread,
+    "emscripten_set_resize_callback_on_thread": _emscripten_set_resize_callback_on_thread,
+    "emscripten_set_thread_name": _emscripten_set_thread_name,
+    "emscripten_set_timeout": _emscripten_set_timeout,
+    "emscripten_set_touchcancel_callback_on_thread": _emscripten_set_touchcancel_callback_on_thread,
+    "emscripten_set_touchend_callback_on_thread": _emscripten_set_touchend_callback_on_thread,
+    "emscripten_set_touchmove_callback_on_thread": _emscripten_set_touchmove_callback_on_thread,
+    "emscripten_set_touchstart_callback_on_thread": _emscripten_set_touchstart_callback_on_thread,
+    "emscripten_set_visibilitychange_callback_on_thread": _emscripten_set_visibilitychange_callback_on_thread,
+    "emscripten_set_wheel_callback_on_thread": _emscripten_set_wheel_callback_on_thread,
     "abort": _abort,
     "alBuffer3f": _alBuffer3f,
     "alBuffer3i": _alBuffer3i,
@@ -673,6 +745,7 @@ const asmLibraryArg: WebAssembly.ModuleImports = {
     "alcSuspendContext": _alcSuspendContext,
     "clock_gettime": _clock_gettime,
     "emscripten_get_now": _emscripten_get_now,
+    "emscripten_force_exit": _emscripten_force_exit,
     "emscripten_conditional_set_current_thread_status": _emscripten_conditional_set_current_thread_status,
     "emscripten_futex_wait": _emscripten_futex_wait,
     "emscripten_futex_wake": _emscripten_futex_wake,
@@ -846,6 +919,16 @@ const asmLibraryArg: WebAssembly.ModuleImports = {
     "emscripten_memcpy_big": _emscripten_memcpy_big,
     "emscripten_resize_heap": _emscripten_resize_heap,
     "emscripten_thread_sleep": _emscripten_thread_sleep,
+    "emscripten_sample_gamepad_data": _emscripten_sample_gamepad_data,
+    "emscripten_set_beforeunload_callback_on_thread": _emscripten_set_beforeunload_callback_on_thread,
+    "emscripten_set_focus_callback_on_thread": _emscripten_set_focus_callback_on_thread,
+    "emscripten_set_fullscreenchange_callback_on_thread": _emscripten_set_fullscreenchange_callback_on_thread,
+    "emscripten_set_gamepadconnected_callback_on_thread": _emscripten_set_gamepadconnected_callback_on_thread,
+    "emscripten_set_gamepaddisconnected_callback_on_thread": _emscripten_set_gamepaddisconnected_callback_on_thread,
+    "emscripten_set_keydown_callback_on_thread": _emscripten_set_keydown_callback_on_thread,
+    "emscripten_set_keypress_callback_on_thread": _emscripten_set_keypress_callback_on_thread,
+    "emscripten_set_keyup_callback_on_thread": _emscripten_set_keyup_callback_on_thread,
+    "emscripten_set_blur_callback_on_thread": _emscripten_set_blur_callback_on_thread,
     "environ_get": _environ_get,
     "environ_sizes_get": _environ_sizes_get,
     "execve": _execve,
@@ -888,8 +971,6 @@ const asmLibraryArg: WebAssembly.ModuleImports = {
     "emscripten_receive_on_main_thread_js": _emscripten_receive_on_main_thread_js,
     "emscripten_set_canvas_element_size": _emscripten_set_canvas_element_size,
     "emscripten_set_current_thread_status": _emscripten_set_current_thread_status,
-    "emscripten_set_thread_name": _emscripten_set_thread_name,
-    "emscripten_set_timeout": _emscripten_set_timeout,
     "emscripten_unwind_to_js_event_loop": _emscripten_unwind_to_js_event_loop,
     "emscripten_webgl_create_context": _emscripten_webgl_create_context,
     "__pthread_create_js": ___pthread_create_js,
@@ -899,6 +980,34 @@ const asmLibraryArg: WebAssembly.ModuleImports = {
     "__emscripten_init_main_thread_js": ___emscripten_init_main_thread_js,
     "__call_main": ___call_main,
     "emscripten_check_blocking_allowed": _emscripten_check_blocking_allowed,
+    "emscripten_request_fullscreen_strategy": _emscripten_request_fullscreen_strategy,
+    "emscripten_request_pointerlock": _emscripten_request_pointerlock,
+    "emscripten_get_device_pixel_ratio": _emscripten_get_device_pixel_ratio,
+    "emscripten_set_element_css_size": _emscripten_set_element_css_size,
+    "emscripten_has_asyncify": _emscripten_has_asyncify,
+    "emscripten_sleep": _emscripten_sleep,
+    "emscripten_exit_fullscreen": _emscripten_exit_fullscreen,
+    "emscripten_exit_pointerlock": _emscripten_exit_pointerlock,
+    "eglBindAPI": _eglBindAPI,
+    "eglChooseConfig": _eglChooseConfig,
+    "eglCreateContext": _eglCreateContext,
+    "eglCreateWindowSurface": _eglCreateWindowSurface,
+    "eglDestroyContext": _eglDestroyContext,
+    "eglDestroySurface": _eglDestroySurface,
+    "eglGetConfigAttrib": _eglGetConfigAttrib,
+    "eglGetDisplay": _eglGetDisplay,
+    "eglGetError": _eglGetError,
+    "eglInitialize": _eglInitialize,
+    "eglMakeCurrent": _eglMakeCurrent,
+    "eglQueryString": _eglQueryString,
+    "eglSwapBuffers": _eglSwapBuffers,
+    "eglSwapInterval": _eglSwapInterval,
+    "eglTerminate": _eglTerminate,
+    "eglWaitGL": _eglWaitGL,
+    "eglWaitNative": _eglWaitNative,
+    "emscripten_get_battery_status": _emscripten_get_battery_status,
+    "emscripten_get_num_gamepads": _emscripten_get_num_gamepads,
+    "emscripten_get_gamepad_status": _emscripten_get_gamepad_status,
 };
 
 const GOT: Record<string, WebAssembly.Global> = {};
