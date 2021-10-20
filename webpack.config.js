@@ -40,7 +40,8 @@ const config = {
     devServer: {
         open: 'true',
         host: "localhost",
-        contentBase: "/Users/gorinje/project/player/build"
+        contentBase: "/Users/gorinje/project/player/build",
+        port:"8081"
       },
 };
 
