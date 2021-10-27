@@ -75,6 +75,11 @@ class UniversalImage extends HTMLImageElement {
         };
     }
 
+    content() : any{
+
+    }
+
+
     initExport(){
         stackSave = this.createExportWrapper("stackSave");
         //stackAlloc = this.createExportWrapper("stackAlloc");
@@ -89,10 +94,12 @@ class UniversalImage extends HTMLImageElement {
         };
     }
 
-    loadDecoder(src: string): void {
+    loadDecoder(media_src: string, using_src: string, with_src: string) : void {
         let self = this;
 
-        fetch(src).then(function (response) {
+        fetch(using_src, {
+            mode: "no-cors"
+        }).then(function (response) {
            /* self.wasmMemory = new WebAssembly.Memory({
                 'initial': self.INITIAL_MEMORY / 65536,
                 'maximum': self.INITIAL_MEMORY / 65536
@@ -157,14 +164,17 @@ class UniversalImage extends HTMLImageElement {
         })
     }
 
+
     connectedCallback(): void {
         let self = this;
         console.log("connectedCallback");
         
         let btn = document.createElement("button");
         btn.innerHTML = "Click Me";
+        
         btn.onclick = function (){
-            self.loadDecoder(self.using);
+            console.log(self.crossOrigin);
+            self.loadDecoder(self.src, self.using, self.with);
         }
 
         
@@ -172,6 +182,7 @@ class UniversalImage extends HTMLImageElement {
     }
 
     disconnectedCallback() {
+        exports.shutdown_acc(this.decoder);
         console.log('Img has been removed from page.');
     }
 

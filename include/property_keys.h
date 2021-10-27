@@ -1,6 +1,70 @@
 #ifndef _PROPERTY_KEYS_
 #define _PROPERTY_KEYS_
 
+#define ADD_FILTER "Add_Filter"
+
+#define IMAGE_TYPE "Image_Type"
+#define ANIMATION_TYPE "Animation_Type"
+#define AUDIO_TYPE "Audio_Type"
+
+#define SVG_FORMAT "svg"
+#define RGB_FORMAT "rgb"
+#define RGBA_FORMAT "rgba"
+#define SEPARATED_YUV_FORMAT "separated_yuv"
+#define TXT_FORMAT "txt"
+#define WAV_FORMAT "wav"
+#define PLAYER_FORMAT "player"
+
+#define PLAYER_INPUT "Player_Input" 
+#define PLAYER_STATE "Player_State" 
+#define PLAYER_PLAY "Player_Play"
+#define PLAYER_PAUSE "Player_Pause"
+#define PLAYER_STOP "Player_Stop"
+#define PLAYER_VOLUME "Player_Volume"
+#define PLAYER_MUTE "Player_Mute"
+#define PLAYER_SPEED "Player_Speed"
+#define GET_TIME_IN_MS "Get_Time_in_ms"
+#define NUM_COMPONENTS "Num_Components"
+
+#define ADD_FILTER "Add_Filter"
+
+#define COMPONENT_INFO "Component_Info"
+#define COMPONENT_NAME "Component_Name"
+#define COMPONENT_TYPE "Component_Type"
+#define COMPONENT_FORMAT "Component_Format"
+#define COMPONENT_WIDTH "Component_Width"
+#define COMPONENT_HEIGHT "Component_Height"
+#define COMPONENT_SIZE "Component_Size"
+#define COMPONENT_FRAME_COUNT "Component_Frame_Count"
+#define COMPONENT_FRAME_DELAY "Component_Frame_Delay"
+#define COMPONENT_CURRENT_FRAME "Component_Current_Frame"
+#define COMPONENT_NB_CHANNELS "Component_Nb_Channels"
+#define COMPONENT_SAMPLERATE "Component_Samplerate"
+#define COMPONENT_DURATION "Component_Duration"
+#define DURATION "duration"
+#define DISPLAY_SIZE "display_size"
+#define DISPLAY_WIDTH "width"
+#define DISPLAY_HEIGHT "height"
+#define INFO "info"
+#define COMPONENT_NB_SAMPLE_PER_CHANNEL "Component_Nb_Sample_Per_Channel"
+#define TRANSCODE_TO "transcode"
+#define TRANSCODE_TO_FILE "file"
+
+#define CODEC_NAME "Codec_Name"
+
+#define COMPONENT_DISPLAY_FRAME "Component_Display_Frame"
+#define COMPONENT_CHANNEL "Component_Channel"
+
+
+#define COMPONENT_GET "Component_Get"
+
+#define COMPONENT_Y "Component_Y"
+#define COMPONENT_U "Component_U"
+#define COMPONENT_V "Component_V"
+
+#define NOT_SUPPORTED "Not_Supported"
+#define OPERATION_COMPLETED "Openration_Completed"
+
 //Make sure event char list is aligned with enum in event_constant.h
 #define FOREACH_EVENT(EVENT) \
 	EVENT(GF_EVENT_CLICK)   \

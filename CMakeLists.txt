@@ -11,7 +11,7 @@ configure_file(templates/template.webpack.config.js ${CMAKE_SOURCE_DIR}/webpack.
 configure_file(webinterface/Bevara.ico ${CMAKE_BINARY_DIR}/favicon.ico)
 
 set(USE_DEBUG "-g")
-set(USE_FLAGS "${USE_DEBUG} -s USE_SDL=2")
+set(USE_FLAGS "${USE_DEBUG} -s USE_SDL=2 -s FETCH=1")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${USE_FLAGS}")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${USE_FLAGS}")

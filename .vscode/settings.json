@@ -27,7 +27,8 @@
         "*.idl": "c",
         "options.h": "c",
         "main.h": "c",
-        "setup.h": "c"
+        "setup.h": "c",
+        "player.h": "c"
     },
     "C_Cpp.errorSquiggles": "Enabled"
 }

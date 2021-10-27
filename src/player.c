@@ -15,6 +15,13 @@
     printf(fmt, list);
 }*/
 
+int init_player(Dec_Entry *ctx)
+{
+    gf_term_connect_from_time(ctx->term, ctx->fio_url, 0, 1);
+    
+    return 0;
+}
+
 Dec_Entry *EMSCRIPTEN_KEEPALIVE setup_acc(const char *args)
 {
     Dec_Entry *ctx;
@@ -51,6 +58,29 @@ Dec_Entry *EMSCRIPTEN_KEEPALIVE setup_acc(const char *args)
 
 void EMSCRIPTEN_KEEPALIVE shutdown_acc(Dec_Entry *ctx)
 {
+    if (ctx->term)
+        gf_term_del(ctx->term);
+
     if (ctx)
         gf_free(ctx);
+}
+
+char property[256];
+const char *EMSCRIPTEN_KEEPALIVE get(Dec_Entry *ctx, const char* properties)
+{
+   if (!ctx)
+        return "";
+
+    return parse_json_properties(ctx, properties);
+}
+
+const char *EMSCRIPTEN_KEEPALIVE set(Dec_Entry *ctx, const char* properties)
+{
+
+    return set_json_properties(ctx, properties);
+}
+
+int EMSCRIPTEN_KEEPALIVE step_run(Dec_Entry *ctx)
+{
+    return gf_term_process_step(ctx->term);
 }
