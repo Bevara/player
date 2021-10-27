@@ -25,12 +25,19 @@ class UniversalImage extends HTMLImageElement {
             const img_response = responses[promises.indexOf(downloads["src"])];
             const using_response = responses[promises.indexOf(downloads["using"])];
 
-            let blobs : [Promise<Blob>, Promise<WebAssembly.WebAssemblyInstantiatedSource>] = [img_response.blob(), WebAssembly.instantiateStreaming(using_response, info)];
+            let blobs : [Promise<WebAssembly.WebAssemblyInstantiatedSource>, Promise<ArrayBuffer>] = [WebAssembly.instantiateStreaming(using_response, info), img_response.arrayBuffer()];
             Promise.all(blobs).then((result) => {
-                const img_blob = result[0];
-                const using_wasm = result[1];
-                const exports = using_wasm.instance.exports;
+                const img_array = result[1];
+                const using_wasm = result[0];
+                const exports : any = using_wasm.instance.exports;
+                
+                const ret = exports.stackAlloc(img_array.byteLength);
 
+                
+                exports.njInit();
+
+
+                const img_blob = new Blob([new Uint8Array(img_array, 0, img_array.byteLength)]);
                 self.srcset = URL.createObjectURL(img_blob); 
             });
         }
