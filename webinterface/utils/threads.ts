@@ -1,4 +1,4 @@
-import {stackSave, stackRestore, HEAPF64, _emscripten_run_in_main_runtime_thread_js} from '../index'
+import {stackSave, stackRestore, HEAPF64, _emscripten_run_in_main_runtime_thread_js} from '../UCanvas'
 import {stackAlloc} from '../player'
 
 /** @type{function(number, (number|boolean), ...(number|boolean))} */

@@ -1,4 +1,4 @@
-import {HEAP32} from '../index'
+import {HEAP32} from '../UCanvas'
 
 function _time(ptr:number)
 {

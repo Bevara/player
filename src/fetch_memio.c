@@ -264,7 +264,7 @@ static GF_FileIO *fio_mem_open(GF_FileIO *fileio_ref, const char *url, const cha
 	return gfio;
 }
 
-static const char* custom_headers[3] = {"Token", "00000000-0000-0000-0000-000000000000", NULL};
+//static const char* custom_headers[3] = {"Sec-Fetch-Mode", "no-cors", NULL};
 
 const char *make_fileio(Dec_Entry *entry, const char *inargs, Bool is_input, GF_Err *e)
 {
@@ -297,7 +297,7 @@ const char *make_fileio(Dec_Entry *entry, const char *inargs, Bool is_input, GF_
   emscripten_fetch_attr_t attr;
   emscripten_fetch_attr_init(&attr);
   strcpy(attr.requestMethod, "GET");
-  attr.requestHeaders = custom_headers;
+  //attr.requestHeaders = custom_headers;
 
 
   attr.attributes = EMSCRIPTEN_FETCH_LOAD_TO_MEMORY;
