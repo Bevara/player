@@ -43,6 +43,16 @@ target_link_libraries(player
 libgpac_static.a
 )
 
+SET(SIMPLE_IMG_CORE
+${CMAKE_SOURCE_DIR}/src/simple-img/simple-img.c
+)
+
+add_executable(simple-img ${SIMPLE_IMG_CORE})
+
+set_target_properties( simple-img 
+                        PROPERTIES 
+                            LINK_FLAGS "-g -s ERROR_ON_UNDEFINED_SYMBOLS=0 -s MAIN_MODULE=1 -s USE_ZLIB=1 -s USE_PTHREADS=1 -s ENVIRONMENT=web,worker "
+                            )
 
 add_custom_target (serve
   COMMAND npm run serve
