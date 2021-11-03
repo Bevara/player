@@ -1,4 +1,4 @@
-import {asmLibraryArg, initRuntime, stackCheckInit, Module, wasmTable, wasmMemory, stringToUTF8, stackAlloc} from './player'
+import {HEAPU8, asmLibraryArg, writeArrayToMemory, initRuntime, stackCheckInit, Module, wasmTable, wasmMemory, stringToUTF8, stackAlloc} from './player'
 import { GOTHandler } from "./imports";
 
 const info: WebAssembly.Imports = {
@@ -18,7 +18,7 @@ class UniversalImage extends HTMLImageElement {
 
     connectedCallback() {
         let self = this;
-
+        
         let downloads : {[key: string]: Promise<Response>} = {};
 
         function flushImage(responses : Response[]) : void {
@@ -32,13 +32,52 @@ class UniversalImage extends HTMLImageElement {
                 const exports : any = using_wasm.instance.exports;
                 
                 const ret = exports.stackAlloc(img_array.byteLength);
-
+                const memory = new Uint8Array(exports.memory.buffer)
+                
+                memory.set(new Uint8Array(img_array), ret);
                 
                 exports.njInit();
+                const test = exports.njDecode(ret, img_array.byteLength);
+                if(test != 0){
+                    //exports._free(ret);
+                    console.log("Error decoding the input file.\n")
+                    return;
+                }
+                //exports._free(ret);
 
+                const width = exports.njGetWidth();
+                const height = exports.njGetHeight();
+                const njIsColor = exports.njIsColor();
+                const njGetImage = exports.njGetImage();
+                const njGetImageSize = exports.njGetImageSize();
+                const image = memory.slice(njGetImage, njGetImage+ njGetImageSize);
 
-                const img_blob = new Blob([new Uint8Array(img_array, 0, img_array.byteLength)]);
-                self.srcset = URL.createObjectURL(img_blob); 
+                let canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                var imageData = ctx.createImageData(width, height);
+                canvas.setAttribute('width', width);
+                canvas.setAttribute('height', height);
+                const data = imageData.data;
+                const len = data.length; 
+                var i = 0;
+                var t = 0;
+
+                for(; i < len; i += 4) {
+                    data[i]     = image[t];    
+                    data[i + 1] = image[t + 1];
+                    data[i + 2] = image[t + 2];
+                    data[i + 3] = 255;         
+                
+                    t += 3;
+                }
+                
+                ctx.putImageData(imageData, 0, 0);
+
+                canvas.toBlob(function (blob){
+                    self.srcset = URL.createObjectURL(blob);
+                })                
+
+                exports.njDone();
             });
         }
 
