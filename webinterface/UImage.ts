@@ -1,20 +1,5 @@
-import {HEAPU8, asmLibraryArg, writeArrayToMemory, initRuntime, stackCheckInit, Module, wasmTable, wasmMemory, stringToUTF8, stackAlloc} from './player'
-import { GOTHandler } from "./imports";
-
-const info: WebAssembly.Imports = {
-    'env': asmLibraryArg,
-    'wasi_snapshot_preview1': asmLibraryArg,
-    'GOT.mem': new Proxy(asmLibraryArg, GOTHandler),
-    'GOT.func': new Proxy(asmLibraryArg, GOTHandler)
-};
-info.env["__indirect_function_table"] = wasmTable;
-info.env["memory"] = wasmMemory;
-
-const isPrimeImportObject = {
-    env: {
-    __memory_base: 0,
-    }
-};
+//import {HEAPU8, asmLibraryArg, writeArrayToMemory, initRuntime, stackCheckInit, Module, wasmTable, wasmMemory, stringToUTF8, stackAlloc} from './player'
+import { asmLibraryArg, GOTHandler } from "./imports";
 
 class UniversalImage extends HTMLImageElement {
     using : string;
@@ -31,17 +16,35 @@ class UniversalImage extends HTMLImageElement {
 
             let blobs : [Promise<ArrayBuffer>, 
                 Promise<WebAssembly.Module>,
-                Promise<WebAssembly.Module>] = [img_response.arrayBuffer(), 
+                Promise<WebAssembly.WebAssemblyInstantiatedSource>] = [img_response.arrayBuffer(), 
                                                                         WebAssembly.compileStreaming(using_response),
-                                                                        WebAssembly.compileStreaming(with_response)];
+                                                                        WebAssembly.instantiateStreaming(with_response)];
             Promise.all(blobs).then(async (result) => {
                 const img_array = result[0];
                 const using_wasm_module = result[1];
-                const with_wasm_module = result[2];
+                const with_wasm = result[2];
 
-                const with_wasm = await WebAssembly.instantiate(with_wasm_module, isPrimeImportObject);
-                const exports_with : any = with_wasm.exports;
+                const exports_with : any = with_wasm.instance.exports;
 
+                var wasmTable = new WebAssembly.Table({
+                    'initial': 5442,
+                    'element': 'anyfunc'
+                  });
+                 
+                var INITIAL_MEMORY = 16777216;
+                var wasmMemory = new WebAssembly.Memory({
+                  'initial': INITIAL_MEMORY / 65536,
+                  'maximum': INITIAL_MEMORY / 65536,
+                  'shared': false
+                });
+                
+                const info: WebAssembly.Imports = {
+                    'env': asmLibraryArg,
+                    'wasi_snapshot_preview1': asmLibraryArg,
+                    'GOT.mem': new Proxy(asmLibraryArg, GOTHandler),
+                    'GOT.func': new Proxy(asmLibraryArg, GOTHandler)
+                };
+                
                 info.env["njInit"] = exports_with.njInit;
                 info.env["njDecode"] = exports_with.njDecode;
                 info.env["njGetImage"] = exports_with.njGetImage;
@@ -49,14 +52,14 @@ class UniversalImage extends HTMLImageElement {
                 info.env["njGetWidth"] = exports_with.njGetWidth;
                 info.env["njGetHeight"] = exports_with.njGetHeight;
                
+                info.env["__indirect_function_table"] = wasmTable;
+                info.env["memory"] = wasmMemory;
+
+
                const using_wasm = await WebAssembly.instantiate(using_wasm_module, info);
                const exports_using : any = using_wasm.exports;
                 
-                
-
-                var exports = exports_with;
-                
-                const ret = exports.stackAlloc(img_array.byteLength);
+                const ret = exports_using.stackAlloc(img_array.byteLength);
                 const memory = new Uint8Array(exports_with.memory.buffer);
                 memory.set(new Uint8Array(img_array), ret);
 
@@ -98,8 +101,6 @@ class UniversalImage extends HTMLImageElement {
                 canvas.toBlob(function (blob){
                     self.srcset = URL.createObjectURL(blob);
                 })                
-
-                exports.njDone();
             });
         }
 
