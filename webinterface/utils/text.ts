@@ -18,7 +18,8 @@ var UTF8Decoder = new TextDecoder('utf8');
  * @param {number=} maxBytesToRead
  * @return {string}
  */
- function UTF8ToString(ptr : number, maxBytesToRead : number) {
+ function UTF8ToString(ptr : number, 
+  maxBytesToRead : number) {
     return ptr ? UTF8ArrayToString(this.HEAPU8, ptr, maxBytesToRead) : '';
 }
 

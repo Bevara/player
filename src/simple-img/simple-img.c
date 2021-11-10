@@ -1,6 +1,8 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "common.h"
+
 
 #include <emscripten/emscripten.h>
 #include <emscripten/fetch.h>
@@ -29,7 +31,7 @@ void downloadFailed(emscripten_fetch_t *fetch) {
   emscripten_fetch_close(fetch); // Also free data on failure.
 }
 
-int EMSCRIPTEN_KEEPALIVE constructor(const void* jpeg, const int size)
+int EMSCRIPTEN_KEEPALIVE constructor(const char* attrs, const void* jpeg, const int size)
 {
 
   emscripten_fetch_attr_t attr;
@@ -38,7 +40,7 @@ int EMSCRIPTEN_KEEPALIVE constructor(const void* jpeg, const int size)
   attr.attributes = EMSCRIPTEN_FETCH_LOAD_TO_MEMORY;
   attr.onsuccess = downloadSucceeded;
   attr.onerror = downloadFailed;
-  emscripten_fetch(&attr, "http://bevaraserver.ddns.net/test-signals/Freedom.jpg");
+  emscripten_fetch(&attr, attrs);
 
     njInit();
     return njDecode(jpeg, size);
