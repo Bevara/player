@@ -1,9 +1,9 @@
 import {stackSave, stackRestore, HEAPF64, _emscripten_run_in_main_runtime_thread_js} from '../UCanvas'
-import {stackAlloc} from '../player'
+//import {stackAlloc} from '../player'
 
 /** @type{function(number, (number|boolean), ...(number|boolean))} */
 function _emscripten_proxy_to_main_thread_js(index :number, sync : (number|boolean)) {
-    // Additional arguments are passed after those two, which are the actual
+  /*  // Additional arguments are passed after those two, which are the actual
     // function arguments.
     // The serialization buffer contains the number of call params, and then
     // all the args here.
@@ -27,7 +27,7 @@ function _emscripten_proxy_to_main_thread_js(index :number, sync : (number|boole
     }
     var ret = _emscripten_run_in_main_runtime_thread_js(index, serializedNumCallArgs, args, sync);
     stackRestore(stack);
-    return ret;
+    return ret;*/
   }
 
   export {_emscripten_proxy_to_main_thread_js}

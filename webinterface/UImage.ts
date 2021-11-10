@@ -1,5 +1,13 @@
 //import {HEAPU8, asmLibraryArg, writeArrayToMemory, initRuntime, stackCheckInit, Module, wasmTable, wasmMemory, stringToUTF8, stackAlloc} from './player'
 import { asmLibraryArg, GOTHandler } from "./imports";
+import { _emscripten_start_fetch } from "./imports/_emscripten_start_fetch";
+import { __emscripten_fetch_free } from "./imports/__emscripten_fetch_free";
+
+
+
+import {UTF8ToString, stringToUTF8} from "./utils/text"
+import {Fetch, fetchLoadCachedData, fetchXHR} from "./utils/fetch"
+import {callUserCallback} from "./utils/functions"
 
 class UniversalImage extends HTMLImageElement {
     using : string;
@@ -8,6 +16,9 @@ class UniversalImage extends HTMLImageElement {
         let self = this;
         
         let downloads : {[key: string]: Promise<Response>} = {};
+        function test(){
+            console.log("test");
+        }
 
         function flushImage(responses : Response[]) : void {
             const img_response = responses[promises.indexOf(downloads["src"])];
@@ -44,6 +55,28 @@ class UniversalImage extends HTMLImageElement {
                     'GOT.mem': new Proxy(asmLibraryArg, GOTHandler),
                     'GOT.func': new Proxy(asmLibraryArg, GOTHandler)
                 };
+
+                const mem : Record<string, Function | RelativeIndexable<number> | WebAssembly.Table | Fetch> = {
+                    'HEAP8' : new Int8Array(wasmMemory.buffer),
+                    'HEAP16' : new Int16Array(wasmMemory.buffer),
+                    'HEAP32' : new Int32Array(wasmMemory.buffer),
+                    'HEAPU8' : new Uint8Array(wasmMemory.buffer),
+                    'HEAPU16' : new Uint16Array(wasmMemory.buffer),
+                    'HEAPU32' : new Uint32Array(wasmMemory.buffer),
+                    'HEAPF32' : new Float32Array(wasmMemory.buffer),
+                    'HEAPF64' : new Float64Array(wasmMemory.buffer),
+                    'wasmTable' : wasmTable
+                }
+                
+                mem["UTF8ToString"] = UTF8ToString.bind(mem);
+                mem["stringToUTF8"] = stringToUTF8.bind(mem);
+                mem["Fetch"] = new Fetch(mem);
+                mem["fetchLoadCachedData"] = fetchLoadCachedData.bind(mem);
+                mem["fetchXHR"] = fetchXHR.bind(mem);
+                mem["callUserCallback"] = callUserCallback.bind(mem);
+                
+                info.env["emscripten_start_fetch"] = _emscripten_start_fetch.bind(mem);
+                info.env["_emscripten_fetch_free"] = __emscripten_fetch_free.bind(mem);
                 
                 info.env["njInit"] = exports_with.njInit;
                 info.env["njDecode"] = exports_with.njDecode;
@@ -58,7 +91,10 @@ class UniversalImage extends HTMLImageElement {
 
                const using_wasm = await WebAssembly.instantiate(using_wasm_module, info);
                const exports_using : any = using_wasm.exports;
-                
+
+               
+               mem["_malloc"] = exports_using.stackAlloc;
+
                 const ret = exports_using.stackAlloc(img_array.byteLength);
                 const memory = new Uint8Array(exports_with.memory.buffer);
                 memory.set(new Uint8Array(img_array), ret);

@@ -508,6 +508,11 @@ import { _eglGetConfigAttrib } from './imports/_eglGetConfigAttrib'
 import { _emscripten_get_battery_status } from './imports/_emscripten_get_battery_status'
 import { _emscripten_get_num_gamepads } from './imports/_emscripten_get_num_gamepads'
 import { _emscripten_get_gamepad_status } from './imports/_emscripten_get_gamepad_status'
+import { _emscripten_is_main_browser_thread } from './imports/_emscripten_is_main_browser_thread'
+import { _emscripten_start_fetch } from './imports/_emscripten_start_fetch'
+import { __emscripten_fetch_free } from './imports/__emscripten_fetch_free'
+import { __emscripten_fetch_get_response_headers } from './imports/__emscripten_fetch_get_response_headers'
+import { __emscripten_fetch_get_response_headers_length } from './imports/__emscripten_fetch_get_response_headers_length'
 
 
 const asmLibraryArg: WebAssembly.ModuleImports = {
@@ -1008,6 +1013,11 @@ const asmLibraryArg: WebAssembly.ModuleImports = {
     "emscripten_get_battery_status": _emscripten_get_battery_status,
     "emscripten_get_num_gamepads": _emscripten_get_num_gamepads,
     "emscripten_get_gamepad_status": _emscripten_get_gamepad_status,
+    "emscripten_is_main_browser_thread": _emscripten_is_main_browser_thread,
+    "emscripten_start_fetch": _emscripten_start_fetch,
+    "_emscripten_fetch_free": __emscripten_fetch_free,
+    "_emscripten_fetch_get_response_headers": __emscripten_fetch_get_response_headers,
+    "_emscripten_fetch_get_response_headers_length": __emscripten_fetch_get_response_headers_length,
 };
 
 const GOT: Record<string, WebAssembly.Global> = {};

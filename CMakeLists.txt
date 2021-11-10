@@ -31,17 +31,17 @@ include_directories(include
 
 link_directories(${CMAKE_BINARY_DIR}/third_parties/gpac/bin/gcc)
 
-add_executable(player ${PLAYER_CORE})
-set_target_properties( player 
-                        PROPERTIES 
-                            LINK_FLAGS "-s MAIN_MODULE=1 -s USE_SDL=2 -s FETCH=1 -s USE_ZLIB=1 -s USE_PTHREADS=1 -s ENVIRONMENT=web,worker"
-                            )
+# add_executable(player ${PLAYER_CORE})
+# set_target_properties( player 
+#                         PROPERTIES 
+#                             LINK_FLAGS "-s MAIN_MODULE=1 -s USE_SDL=2 -s FETCH=1 -s USE_ZLIB=1 -s USE_PTHREADS=1 -s ENVIRONMENT=web,worker"
+#                             )
 
-target_link_libraries(player
-#${CMAKE_BINARY_DIR}/third_parties/gpac/src/utils/list.o
-#${CMAKE_BINARY_DIR}/third_parties/gpac/src/utils/alloc.o
-libgpac_static.a
-)
+# target_link_libraries(player
+# #${CMAKE_BINARY_DIR}/third_parties/gpac/src/utils/list.o
+# #${CMAKE_BINARY_DIR}/third_parties/gpac/src/utils/alloc.o
+# libgpac_static.a
+# )
 
 SET(SIMPLE_IMG_CORE
 ${CMAKE_SOURCE_DIR}/src/simple-img/simple-img.c
@@ -51,7 +51,7 @@ add_executable(simple-img ${SIMPLE_IMG_CORE})
 
 set_target_properties( simple-img 
                         PROPERTIES 
-                            LINK_FLAGS "-g -s ERROR_ON_UNDEFINED_SYMBOLS=0 -s MAIN_MODULE=1"
+                            LINK_FLAGS "-g -s ERROR_ON_UNDEFINED_SYMBOLS=0 -s MAIN_MODULE=1 -s FETCH=1"
                             )
 
 add_custom_target (serve
