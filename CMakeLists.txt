@@ -45,6 +45,7 @@ link_directories(${CMAKE_BINARY_DIR}/third_parties/gpac/bin/gcc)
 
 SET(SIMPLE_IMG_CORE
 ${CMAKE_SOURCE_DIR}/src/simple-img/simple-img.c
+${CMAKE_SOURCE_DIR}/src/common/common.cpp
 )
 
 add_executable(simple-img ${SIMPLE_IMG_CORE})

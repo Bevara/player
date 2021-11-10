@@ -28,18 +28,19 @@ class UniversalImage extends HTMLImageElement {
 
                 await self.common.init();
 
-                const ret2 = self.common.stringToUTF8("http://bevaraserver.ddns.net/test-signals/Freedom.jpg");
+                const args: Record<string, string> = {};
+                for (var i = 0, atts = self.attributes, n = atts.length, arr = []; i < n; i++) {
+                    args[atts[i].nodeName] = atts[i].nodeValue;
+                }
+
+                const ret2 = self.common.stringToUTF8(JSON.stringify(args));
         
                 const ret = self.common.exports_using.stackAlloc(img_array.byteLength);
                 const memory = new Uint8Array(self.common.exports_with.memory.buffer);
                 memory.set(new Uint8Array(img_array), ret);
         
-                const test = self.common.exports_using.constructor(ret2, ret, img_array.byteLength);
-                if (test != 0) {
-                    //exports._free(ret);
-                    console.log("Error decoding the input file.\n")
-                    return;
-                }
+                const entry = self.common.exports_using.constructor(ret, img_array.byteLength);
+                self.common.exports_using.set(entry, ret2);
 
                 const njGetImage = self.common.exports_using.getImage();
                 const njGetImageSize = self.common.exports_using.getSize();

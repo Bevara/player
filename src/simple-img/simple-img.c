@@ -1,16 +1,11 @@
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h> 
 
 #include "common.h"
 
 
 #include <emscripten/emscripten.h>
-#include <emscripten/fetch.h>
-
-typedef struct _Entry
-{
-
-} Entry;
 
 extern void njInit(void);
 extern int njDecode(const void* jpeg, const int size);
@@ -19,31 +14,25 @@ extern int njGetImageSize(void);
 extern int njGetWidth(void);
 extern int njGetHeight(void);
 
-
-void downloadSucceeded(emscripten_fetch_t *fetch) {
-  //printf("Finished downloading %llu bytes from URL %s.\n", fetch->numBytes, fetch->url);
-  // The data is now available at fetch->data[0] through fetch->data[fetch->numBytes-1];
-  emscripten_fetch_close(fetch); // Free data associated with the fetch.
-}
-
-void downloadFailed(emscripten_fetch_t *fetch) {
-  //printf("Downloading %s failed, HTTP failure status code: %d.\n", fetch->url, fetch->status);
-  emscripten_fetch_close(fetch); // Also free data on failure.
-}
-
-int EMSCRIPTEN_KEEPALIVE constructor(const char* attrs, const void* jpeg, const int size)
+Entry* EMSCRIPTEN_KEEPALIVE constructor(const void* jpeg, const int size)
 {
+  Entry* entry;
+  entry = malloc(sizeof(Entry));
+  njInit();
+  njDecode(jpeg, size);
 
-  emscripten_fetch_attr_t attr;
-  emscripten_fetch_attr_init(&attr);
-  strcpy(attr.requestMethod, "GET");
-  attr.attributes = EMSCRIPTEN_FETCH_LOAD_TO_MEMORY;
-  attr.onsuccess = downloadSucceeded;
-  attr.onerror = downloadFailed;
-  emscripten_fetch(&attr, attrs);
+  return entry;
+}
 
-    njInit();
-    return njDecode(jpeg, size);
+int EMSCRIPTEN_KEEPALIVE set(Entry* entry, const char* attrs)
+{
+    parse_set(entry, attrs);
+    return 0;
+}
+
+const char* EMSCRIPTEN_KEEPALIVE get(Entry* entry, const char* attrs)
+{
+    return parse_get(entry, attrs);
 }
 
 unsigned char* EMSCRIPTEN_KEEPALIVE getImage(){
