@@ -20,7 +20,10 @@ Entry* EMSCRIPTEN_KEEPALIVE constructor(const void* jpeg, const int size)
   entry = malloc(sizeof(Entry));
   njInit();
   njDecode(jpeg, size);
-
+    entry->image = njGetImage();
+    entry->size = njGetImageSize();
+    entry->width = njGetWidth();
+    entry->height = njGetHeight();
   return entry;
 }
 

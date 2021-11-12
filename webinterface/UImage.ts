@@ -42,18 +42,22 @@ class UniversalImage extends HTMLImageElement {
                 const entry = self.common.exports_using.constructor(ret, img_array.byteLength);
                 self.common.exports_using.set(entry, ret2);
 
-                const njGetImage = self.common.exports_using.getImage();
-                const njGetImageSize = self.common.exports_using.getSize();
-                const width = self.common.exports_using.getWidth();
-                const height = self.common.exports_using.getHeight();
+                const get_json = self.common.stringToUTF8(JSON.stringify([
+                    "getImage", "getSize", "getWidth", "getHeight"
+                ]
+                ));
 
-                const image = memory.slice(njGetImage, njGetImage + njGetImageSize);
+                const json = self.common.exports_using.get(entry, get_json);
+                const response = self.common.UTF8ToString(json);
+                const json_parsed = JSON.parse(response);
+
+                const image = memory.slice(json_parsed.getImage, json_parsed.getImage + json_parsed.getSize);
 
                 let canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
-                var imageData = ctx.createImageData(width, height);
-                canvas.setAttribute('width', width);
-                canvas.setAttribute('height', height);
+                var imageData = ctx.createImageData(json_parsed.getWidth, json_parsed.getHeight);
+                canvas.setAttribute('width', json_parsed.getWidth);
+                canvas.setAttribute('height', json_parsed.getHeight);
                 const data = imageData.data;
                 const len = data.length;
                 var i = 0;

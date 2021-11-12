@@ -10,6 +10,7 @@ class Common {
     exports_with: any;
     exports_using: any;
     _stringToUTF8: any;
+    _UTF8ToString: any;
 
     using_wasm_module: WebAssembly.Module;
 
@@ -53,9 +54,11 @@ class Common {
 
 
         this._stringToUTF8 = stringToUTF8.bind(mem);
+        this._UTF8ToString = UTF8ToString.bind(mem);
 
-        mem["UTF8ToString"] = UTF8ToString.bind(mem);
         mem["stringToUTF8"] = this._stringToUTF8;
+        mem["UTF8ToString"] = this._UTF8ToString;
+
         mem["Fetch"] = new Fetch(mem);
         mem["fetchLoadCachedData"] = fetchLoadCachedData.bind(mem);
         mem["fetchXHR"] = fetchXHR.bind(mem);
@@ -89,7 +92,11 @@ class Common {
         this._stringToUTF8(str, mem, len);
 
         return mem;
-    } 
+    }
+    
+    UTF8ToString(pointer: number) : string {
+        return this._UTF8ToString(pointer);
+    }
 }
 
 export { Common }
