@@ -38,24 +38,6 @@ const char* EMSCRIPTEN_KEEPALIVE get(Entry* entry, const char* attrs)
     return parse_get(entry, attrs);
 }
 
-unsigned char* EMSCRIPTEN_KEEPALIVE getImage(){
-    return njGetImage();
-}
-
-int EMSCRIPTEN_KEEPALIVE getSize(){
-    return njGetImageSize();
-}
-
-int EMSCRIPTEN_KEEPALIVE getHeight(){
-    return njGetHeight();
-}
-
-int EMSCRIPTEN_KEEPALIVE getWidth(){
-    return njGetWidth();
-}
-
-
-
 EMSCRIPTEN_KEEPALIVE void destructor(Entry* entry)
 {
 

@@ -11,6 +11,9 @@ using namespace rapidjson;
 
 void downloadSucceeded(emscripten_fetch_t *fetch)
 {
+  Entry *entry = (Entry *)fetch->userData;
+
+  entry->event_callback(entry);
   //printf("Finished downloading %llu bytes from URL %s.\n", fetch->numBytes, fetch->url);
   // The data is now available at fetch->data[0] through fetch->data[fetch->numBytes-1];
   emscripten_fetch_close(fetch); // Free data associated with the fetch.
@@ -18,6 +21,10 @@ void downloadSucceeded(emscripten_fetch_t *fetch)
 
 void downloadFailed(emscripten_fetch_t *fetch)
 {
+  Entry *entry = (Entry *)fetch->userData;
+
+  entry->event_callback(entry);
+
   //printf("Downloading %s failed, HTTP failure status code: %d.\n", fetch->url, fetch->status);
   emscripten_fetch_close(fetch); // Also free data on failure.
 }
@@ -43,6 +50,12 @@ extern "C" void parse_set(Entry *entry, const char *json)
     attr.onerror = downloadFailed;
     attr.userData = entry;
     emscripten_fetch(&attr, entry->src);
+  }
+  
+  if (document.HasMember("downloadCallback"))
+  {
+    assert(document["downloadCallback"].IsNumber());
+    entry->event_callback = reinterpret_cast<event_callback>(document["downloadCallback"].GetInt());
   }
 }
 

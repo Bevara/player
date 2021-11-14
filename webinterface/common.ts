@@ -6,11 +6,14 @@ import { callUserCallback } from "./utils/functions"
 import { _emscripten_start_fetch } from "./imports/_emscripten_start_fetch";
 import { __emscripten_fetch_free } from "./imports/__emscripten_fetch_free";
 
+import {convertJsFunctionToWasm} from "./utils/functions";
+
 class Common {
     exports_with: any;
     exports_using: any;
     _stringToUTF8: any;
     _UTF8ToString: any;
+    wasmTable :WebAssembly.Table;
 
     using_wasm_module: WebAssembly.Module;
 
@@ -18,14 +21,13 @@ class Common {
     constructor(using_wasm_module: WebAssembly.Module, with_wasm: WebAssembly.WebAssemblyInstantiatedSource) {
         this.exports_with = with_wasm.instance.exports;
         this.using_wasm_module = using_wasm_module;
-    }
-
-    init() {
-        var wasmTable = new WebAssembly.Table({
+        this.wasmTable = new WebAssembly.Table({
             'initial': 5442,
             'element': 'anyfunc'
         });
+    }
 
+    init() {
         var INITIAL_MEMORY = 16777216;
         var wasmMemory = new WebAssembly.Memory({
             'initial': INITIAL_MEMORY / 65536,
@@ -49,7 +51,7 @@ class Common {
             'HEAPU32': new Uint32Array(wasmMemory.buffer),
             'HEAPF32': new Float32Array(wasmMemory.buffer),
             'HEAPF64': new Float64Array(wasmMemory.buffer),
-            'wasmTable': wasmTable
+            'wasmTable': this.wasmTable
         }
 
 
@@ -74,7 +76,7 @@ class Common {
         info.env["njGetWidth"] = this.exports_with.njGetWidth;
         info.env["njGetHeight"] = this.exports_with.njGetHeight;
 
-        info.env["__indirect_function_table"] = wasmTable;
+        info.env["__indirect_function_table"] = this.wasmTable;
         info.env["memory"] = wasmMemory;
 
         return new Promise((resolve, reject) => {
@@ -97,6 +99,15 @@ class Common {
     UTF8ToString(pointer: number) : string {
         return this._UTF8ToString(pointer);
     }
+
+    addToTable(jsFunction:any, signature:string) : number {
+        const index = this.wasmTable.length;
+        this.wasmTable.grow(1);
+        this.wasmTable.set(index,
+        convertJsFunctionToWasm(jsFunction, signature));
+        return index;
+    }
+
 }
 
 export { Common }
