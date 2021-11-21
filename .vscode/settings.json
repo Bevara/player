@@ -28,7 +28,15 @@
         "options.h": "c",
         "main.h": "c",
         "setup.h": "c",
-        "player.h": "c"
+        "player.h": "c",
+        "__locale": "cpp",
+        "__nullptr": "cpp",
+        "ios": "cpp",
+        "istream": "cpp",
+        "ostream": "cpp",
+        "array": "cpp",
+        "string": "cpp",
+        "string_view": "cpp"
     },
     "C_Cpp.errorSquiggles": "Enabled"
 }

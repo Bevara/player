@@ -3,23 +3,26 @@
 #include <stdlib.h> 
 
 #include "common.h"
-
-
 #include <emscripten/emscripten.h>
 
-extern void njInit(void);
-extern int njDecode(const void* jpeg, const int size);
-extern unsigned char* njGetImage(void);
-extern int njGetImageSize(void);
-extern int njGetWidth(void);
-extern int njGetHeight(void);
-
-Entry* EMSCRIPTEN_KEEPALIVE constructor(const void* jpeg, const int size)
+Entry* EMSCRIPTEN_KEEPALIVE constructor()
 {
   Entry* entry;
   entry = malloc(sizeof(Entry));
+
+/*
   njInit();
   njDecode(jpeg, size);
+  entry->image = njGetImage();
+  entry->size = njGetImageSize();
+  entry->width = njGetWidth();
+  entry->height = njGetHeight();*/
+
+  entry->image = 0;
+  entry->size = 0;
+  entry->width = 0;
+  entry->height = 0;
+
 
   return entry;
 }
@@ -34,24 +37,6 @@ const char* EMSCRIPTEN_KEEPALIVE get(Entry* entry, const char* attrs)
 {
     return parse_get(entry, attrs);
 }
-
-unsigned char* EMSCRIPTEN_KEEPALIVE getImage(){
-    return njGetImage();
-}
-
-int EMSCRIPTEN_KEEPALIVE getSize(){
-    return njGetImageSize();
-}
-
-int EMSCRIPTEN_KEEPALIVE getHeight(){
-    return njGetHeight();
-}
-
-int EMSCRIPTEN_KEEPALIVE getWidth(){
-    return njGetWidth();
-}
-
-
 
 EMSCRIPTEN_KEEPALIVE void destructor(Entry* entry)
 {

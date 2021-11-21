@@ -1,5 +1,5 @@
 import { removeRunDependency } from "./dependencies"
-import {assert} from "../utils/errors"
+import { assert } from "../utils/errors"
 
 function fetchLoadCachedData(db: any, fetch: any, onsuccess: any, onerror: any) {
     let that = this;
@@ -53,16 +53,50 @@ function fetchLoadCachedData(db: any, fetch: any, onsuccess: any, onerror: any) 
 }
 
 class Fetch {
-    that:any;
-    xhrs : Array<XMLHttpRequest>= [];
-    
-    constructor(mem:any) {
-        this.that = mem;
+    mem: any;
+    xhrs: Array<XMLHttpRequest> = [];
+    dbInstance: IDBDatabase;
+
+    constructor(mem: any) {
+        this.mem = mem;
     }
 
-    setu64(addr:number, val:number) {
-        this.that.HEAPU32[addr >> 2] = val;
-        this.that.HEAPU32[addr + 4 >> 2] = (val / 4294967296)|0;
+    setu64(addr: number, val: number) {
+        this.mem.HEAPU32[addr >> 2] = val;
+        this.mem.HEAPU32[addr + 4 >> 2] = (val / 4294967296) | 0;
+    }
+
+    init(){
+        let that = this;
+
+        return new Promise((resolve, reject) => {
+            var onsuccess = function (db: IDBDatabase) {
+                that.dbInstance = db;
+                resolve(that)
+            };
+            var onerror = function () {
+                that.dbInstance = null;
+                reject(that);
+            };
+    
+            let openRequest: IDBOpenDBRequest = null;
+
+            try {
+                openRequest = indexedDB.open('emscripten_filesystem', 1);
+            } catch (e) {
+                return onerror();
+            }
+    
+            openRequest.onupgradeneeded = function (event: any) {
+                var db = event.target.result;
+                if (db.objectStoreNames.contains('FILES')) {
+                    db.deleteObjectStore('FILES');
+                }
+                db.createObjectStore('FILES');
+            };
+            openRequest.onsuccess = function (event: any) { onsuccess(event.target.result); };
+            openRequest.onerror = function (error: any) { onerror(); };
+        });        
     }
 };
 
@@ -145,14 +179,19 @@ function fetchXHR(fetch: any, onsuccess: any, onerror: any, onprogress: any, onr
             // The data pointer malloc()ed here has the same lifetime as the emscripten_fetch_t structure itself has, and is
             // freed when emscripten_fetch_close() is called.
             ptr = that._malloc(ptrLen);
+
             that.HEAPU8.set(new Uint8Array(xhr.response), ptr);
+
+            //const memory = new Uint8Array(that.common.exports_with.memory.buffer);
+            //that.HEAPU8_submodule.set(new Uint8Array(xhr.response), ptr);
+
         }
         that.HEAPU32[fetch + 12 >> 2] = ptr;
         that.Fetch.setu64(fetch + 16, ptrLen);
     }
 
     xhr.onload = function (e) {
-       saveResponse(fetchAttrLoadToMemory && !fetchAttrStreamData);
+        saveResponse(fetchAttrLoadToMemory && !fetchAttrStreamData);
         var len = xhr.response ? xhr.response.byteLength : 0;
         that.Fetch.setu64(fetch + 24, 0);
         if (len) {

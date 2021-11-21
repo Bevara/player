@@ -514,7 +514,6 @@ import { __emscripten_fetch_free } from './imports/__emscripten_fetch_free'
 import { __emscripten_fetch_get_response_headers } from './imports/__emscripten_fetch_get_response_headers'
 import { __emscripten_fetch_get_response_headers_length } from './imports/__emscripten_fetch_get_response_headers_length'
 
-
 const asmLibraryArg: WebAssembly.ModuleImports = {
     "__asctime": ___asctime,
     "__assert_fail": ___assert_fail,
@@ -1017,7 +1016,7 @@ const asmLibraryArg: WebAssembly.ModuleImports = {
     "emscripten_start_fetch": _emscripten_start_fetch,
     "_emscripten_fetch_free": __emscripten_fetch_free,
     "_emscripten_fetch_get_response_headers": __emscripten_fetch_get_response_headers,
-    "_emscripten_fetch_get_response_headers_length": __emscripten_fetch_get_response_headers_length,
+    "_emscripten_fetch_get_response_headers_length": __emscripten_fetch_get_response_headers_length
 };
 
 const GOT: Record<string, WebAssembly.Global> = {};

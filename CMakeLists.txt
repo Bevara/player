@@ -52,8 +52,10 @@ add_executable(simple-img ${SIMPLE_IMG_CORE})
 
 set_target_properties( simple-img 
                         PROPERTIES 
-                            LINK_FLAGS "-g -s ERROR_ON_UNDEFINED_SYMBOLS=0 -s MAIN_MODULE=1 -s FETCH=1"
+                            LINK_FLAGS "-g -s ERROR_ON_UNDEFINED_SYMBOLS=0"
                             )
+
+add_subdirectory(filters)
 
 add_custom_target (serve
   COMMAND npm run serve
