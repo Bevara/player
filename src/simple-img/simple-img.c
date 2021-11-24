@@ -7,24 +7,9 @@
 
 Entry* EMSCRIPTEN_KEEPALIVE constructor()
 {
-  Entry* entry;
-  entry = malloc(sizeof(Entry));
+ Entry* entry = malloc(sizeof(Entry));
 
-/*
-  njInit();
-  njDecode(jpeg, size);
-  entry->image = njGetImage();
-  entry->size = njGetImageSize();
-  entry->width = njGetWidth();
-  entry->height = njGetHeight();*/
-
-  entry->image = 0;
-  entry->size = 0;
-  entry->width = 0;
-  entry->height = 0;
-
-
-  return entry;
+   return entry;
 }
 
 int EMSCRIPTEN_KEEPALIVE set(Entry* entry, const char* attrs)
@@ -41,4 +26,24 @@ const char* EMSCRIPTEN_KEEPALIVE get(Entry* entry, const char* attrs)
 EMSCRIPTEN_KEEPALIVE void destructor(Entry* entry)
 {
 
+}
+
+u8* EMSCRIPTEN_KEEPALIVE allocateData(size_t size)
+{
+  return malloc(size);
+}
+
+void EMSCRIPTEN_KEEPALIVE setWidth(Entry* entry, GF_PropertyValue *value)
+{
+    entry->width = value->value.uint;
+}
+
+void EMSCRIPTEN_KEEPALIVE setHeight(Entry* entry, GF_PropertyValue *value)
+{
+  entry->height = value->value.uint;
+}
+
+void EMSCRIPTEN_KEEPALIVE setImage(Entry* entry, u8 *pck)
+{
+  entry->image =pck;
 }

@@ -36,7 +36,10 @@
         "ostream": "cpp",
         "array": "cpp",
         "string": "cpp",
-        "string_view": "cpp"
+        "string_view": "cpp",
+        "filters.h": "c",
+        "any": "c",
+        "*.inc": "c"
     },
     "C_Cpp.errorSquiggles": "Enabled"
 }

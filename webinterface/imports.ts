@@ -513,6 +513,9 @@ import { _emscripten_start_fetch } from './imports/_emscripten_start_fetch'
 import { __emscripten_fetch_free } from './imports/__emscripten_fetch_free'
 import { __emscripten_fetch_get_response_headers } from './imports/__emscripten_fetch_get_response_headers'
 import { __emscripten_fetch_get_response_headers_length } from './imports/__emscripten_fetch_get_response_headers_length'
+import {args_sizes_get} from "./imports/args_sizes_get"
+import {args_get} from "./imports/args_get"
+
 
 const asmLibraryArg: WebAssembly.ModuleImports = {
     "__asctime": ___asctime,
@@ -1016,7 +1019,10 @@ const asmLibraryArg: WebAssembly.ModuleImports = {
     "emscripten_start_fetch": _emscripten_start_fetch,
     "_emscripten_fetch_free": __emscripten_fetch_free,
     "_emscripten_fetch_get_response_headers": __emscripten_fetch_get_response_headers,
-    "_emscripten_fetch_get_response_headers_length": __emscripten_fetch_get_response_headers_length
+    "_emscripten_fetch_get_response_headers_length": __emscripten_fetch_get_response_headers_length,
+    "args_sizes_get": args_sizes_get,
+    "args_get":args_get
+
 };
 
 const GOT: Record<string, WebAssembly.Global> = {};

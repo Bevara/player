@@ -1,5 +1,5 @@
 import { asmLibraryArg, GOTHandler } from "./imports";
-import { UTF8ToString, stringToUTF8 } from "./utils/text"
+import { stringToUTF8Array, UTF8ArrayToString } from "./utils/text"
 import { Fetch, fetchLoadCachedData, fetchXHR } from "./utils/fetch"
 import { callUserCallback } from "./utils/functions"
 
@@ -10,21 +10,34 @@ import {convertJsFunctionToWasm} from "./utils/functions";
 
 import {memcpy,malloc,memset,free} from "./utils/memory"
 import {Filters} from "./filters"
+import {MainModule} from "./main"
 
 type Common_mem = Record<string, Function | RelativeIndexable<number> | WebAssembly.Table | Fetch>
 
 class Common {
     exports_using: any;
-    _stringToUTF8: any;
     _UTF8ToString: any;
     wasmTable :WebAssembly.Table;
     wasmMemory:WebAssembly.Memory;
+    img : Uint8Array;
+
+    HEAPU8 : Uint8Array;
+    HEAPU32 : Uint32Array;
+    HEAP32 : Int32Array;
 
     using_wasm_module: WebAssembly.Module;
 
     mem : Common_mem;
     info : WebAssembly.Imports;
+
+
     filters: Filters;
+    mainModule: MainModule;
+
+    stackPointer: WebAssembly.Global;
+    memory_base: number;
+    table_base: number;
+    
 
     constructor() {
         this.wasmTable = new WebAssembly.Table({
@@ -44,6 +57,17 @@ class Common {
             'GOT.mem': new Proxy(asmLibraryArg, GOTHandler),
             'GOT.func': new Proxy(asmLibraryArg, GOTHandler)
         };
+        this.stackPointer = new WebAssembly.Global({value:'i32', mutable:true}, 5515136);
+        this.table_base = 1;
+        this.memory_base = 1024;
+        this.wasmTable = new WebAssembly.Table({
+            'initial': 5442,
+            'element': 'anyfunc'
+        });
+
+        this.HEAPU8 = new Uint8Array(this.wasmMemory.buffer);
+        this.HEAPU32 = new Uint32Array(this.wasmMemory.buffer);
+        this.HEAP32 = new Int32Array(this.wasmMemory.buffer);
 
         this.mem = {
             'HEAP8': new Int8Array(this.wasmMemory.buffer),
@@ -56,13 +80,6 @@ class Common {
             'HEAPF64': new Float64Array(this.wasmMemory.buffer),
             'wasmTable': this.wasmTable
         }
-
-                
-        this._stringToUTF8 = stringToUTF8.bind(this.mem);
-        this._UTF8ToString = UTF8ToString.bind(this.mem);
-        
-        this.mem["stringToUTF8"] = this._stringToUTF8;
-        this.mem["UTF8ToString"] = this._UTF8ToString;
 
         this.mem["fetchLoadCachedData"] = fetchLoadCachedData.bind(this.mem);
         this.mem["fetchXHR"] = fetchXHR.bind(this.mem);
@@ -80,21 +97,26 @@ class Common {
         this.info.env["memory"] = this.wasmMemory;
     }
 
-    init(using_wasm_module: WebAssembly.Module, with_wasm: WebAssembly.Module) {
+    init(using_wasm_module: WebAssembly.Module, with_wasm: WebAssembly.Module, img : ArrayBuffer) {
         let that = this;
         
-        this.filters = new Filters(with_wasm);
+        this.filters = new Filters(with_wasm, this);
+        this.mainModule = new MainModule(using_wasm_module, this);
+        this.img = new Uint8Array(img);
+
         this.using_wasm_module = using_wasm_module;
    
 
-        let compile_promise = this.compileModule(this.using_wasm_module, this.info, this.mem);
-        let filters_promise = this.filters.init();
+        //let compile_promise = this.compileModule(this.using_wasm_module, this.info, this.mem);
+        
+        let main_promise = this.mainModule.init();
+        let filters_promise = this.filters.init(main_promise);
+        
 
         let fetch_promise = new Fetch(this.mem).init();
 
         return new Promise((resolve, reject) => {
-            Promise.all([fetch_promise, compile_promise, filters_promise]).then((values) => {
-                that.mem["Fetch"] = values[0] as Fetch;
+            Promise.all([filters_promise]).then((values) => {
                 resolve(this);
               });
         });
@@ -114,15 +136,18 @@ class Common {
     }
 
     stringToUTF8(str: string) : number {
-        const len = (str.length << 2) + 1;
-        const mem = this.exports_using.stackAlloc(len);
-        this._stringToUTF8(str, mem, len);
 
-        return mem;
+        const malloc = this.mainModule.instance.exports.malloc as Function;
+
+        const len = (str.length << 2) + 1;
+        const ptr = malloc(len);
+        stringToUTF8Array(str, this.HEAPU8, ptr, len);;
+
+        return ptr;
     }
     
-    UTF8ToString(pointer: number) : string {
-        return this._UTF8ToString(pointer);
+    UTF8ToString(ptr: number) : string {
+        return ptr ? UTF8ArrayToString(this.HEAPU8, ptr) : '';
     }
 
     addToTable(jsFunction:any, signature:string) : number {

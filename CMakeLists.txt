@@ -43,6 +43,8 @@ link_directories(${CMAKE_BINARY_DIR}/third_parties/gpac/bin/gcc)
 # libgpac_static.a
 # )
 
+set(CMAKE_EXECUTABLE_SUFFIX ".wasm")
+
 SET(SIMPLE_IMG_CORE
 ${CMAKE_SOURCE_DIR}/src/simple-img/simple-img.c
 ${CMAKE_SOURCE_DIR}/src/common/common.cpp
@@ -52,7 +54,7 @@ add_executable(simple-img ${SIMPLE_IMG_CORE})
 
 set_target_properties( simple-img 
                         PROPERTIES 
-                            LINK_FLAGS "-g -s ERROR_ON_UNDEFINED_SYMBOLS=0"
+                            LINK_FLAGS "-g -s ERROR_ON_UNDEFINED_SYMBOLS=0 --no-entry -s MAIN_MODULE=2 -s EXPORTED_FUNCTIONS=['_memcpy','_memset','_free','_malloc']"
                             )
 
 add_subdirectory(filters)

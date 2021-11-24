@@ -128,4 +128,4 @@ function stringToUTF8(str:any, outPtr:any, maxBytesToWrite:any) {
   return stringToUTF8Array(str, this.HEAPU8,outPtr, maxBytesToWrite);
 }
 
-export {UTF8ToString, stringToUTF8}
+export {UTF8ToString, stringToUTF8, stringToUTF8Array, UTF8ArrayToString}
