@@ -12,7 +12,7 @@ using namespace rapidjson;
 void downloadSucceeded(emscripten_fetch_t *fetch)
 {
   Entry *entry = (Entry *)fetch->userData;
-  /*
+/*
   njInit();
   njDecode(fetch->data, fetch->numBytes);
   entry->image = njGetImage();
@@ -23,7 +23,7 @@ void downloadSucceeded(emscripten_fetch_t *fetch)
   entry->event_callback(entry);
   //printf("Finished downloading %llu bytes from URL %s.\n", fetch->numBytes, fetch->url);
   // The data is now available at fetch->data[0] through fetch->data[fetch->numBytes-1];
-  //emscripten_fetch_close(fetch); // Free data associated with the fetch.
+  emscripten_fetch_close(fetch); // Free data associated with the fetch.
 }
 
 void downloadFailed(emscripten_fetch_t *fetch)
@@ -33,7 +33,7 @@ void downloadFailed(emscripten_fetch_t *fetch)
   entry->event_callback(entry);
 
   //printf("Downloading %s failed, HTTP failure status code: %d.\n", fetch->url, fetch->status);
-  //emscripten_fetch_close(fetch); // Also free data on failure.
+  emscripten_fetch_close(fetch); // Also free data on failure.
 }
 
 StringBuffer sb;
@@ -48,7 +48,7 @@ extern "C" void parse_set(Entry *entry, const char *json)
   {
     assert(document["src"].IsString());
     entry->src = document["src"].GetString();
-/*
+
     emscripten_fetch_attr_t attr;
     emscripten_fetch_attr_init(&attr);
     strcpy(attr.requestMethod, "GET");
@@ -56,7 +56,7 @@ extern "C" void parse_set(Entry *entry, const char *json)
     attr.onsuccess = downloadSucceeded;
     attr.onerror = downloadFailed;
     attr.userData = entry;
-    emscripten_fetch(&attr, entry->src);*/
+    emscripten_fetch(&attr, entry->src);
   }
 
   if (document.HasMember("downloadCallback"))

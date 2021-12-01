@@ -9,5 +9,5 @@ ${CMAKE_BINARY_DIR}/third_parties/nanojpeg/nanojpeg.o
 
 set_target_properties( nanojpeg 
                         PROPERTIES 
-                            LINK_FLAGS "-g -s ERROR_ON_UNDEFINED_SYMBOLS=0 --no-entry -s SIDE_MODULE=2"
+                            LINK_FLAGS "-g -s SIDE_MODULE=2"
                             )
