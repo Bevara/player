@@ -39,7 +39,8 @@
         "string_view": "cpp",
         "filters.h": "c",
         "any": "c",
-        "*.inc": "c"
+        "*.inc": "c",
+        "common.h": "c"
     },
     "C_Cpp.errorSquiggles": "Enabled"
 }

@@ -63,28 +63,59 @@ class UniversalImage extends HTMLImageElement {
     
 
     connectedCallback() {
-        this.module = new Module({dynamicLibraries: [this.with]}).then((instance:any) => {
-            this.instance = instance;
-            this.entry = instance.constructor();
+        const self = this;
+        const downloads: { [key: string]: Promise<Response> } = {};
+        const with_attribute = self.getAttribute("with");
 
-            const args: Record<string, string | number> = {};
-            for (var i = 0, atts = this.attributes, n = atts.length, arr = []; i < n; i++) {
-                args[atts[i].nodeName] = atts[i].nodeValue;
+        function decode(responses: Response[]): void{
+            const img_response = responses[promises.indexOf(downloads["src"])];
+            const module = responses[promises.indexOf(downloads["module"])];
+            
+            let blobs: [Promise<ArrayBuffer>] = [img_response.arrayBuffer()];
+
+            Promise.all(blobs).then( (result) => {
+                const img_array = result[0];
+                self.entry = self.module._constructor();
+
+                const ptr = self.module.stackAlloc(img_array.byteLength);
+                self.module.HEAPU8.set(new Uint8Array(img_array), ptr);
+
+                const json_args = JSON.stringify({buffer : {pointer : ptr, size : img_array.byteLength}});
+
+                const len_args = (json_args.length << 2) + 1;
+                const ptr_args = self.module.stackAlloc(len_args);
+                self.module.stringToUTF8(json_args, ptr_args, len_args);
+
+                self.module._set(self.entry, ptr_args);
+
+                console.log(self.module);
+
+            });
+
+            self.module = module;
+
+
+        }
+
+
+        
+
+        for (var i = 0, atts = this.attributes, n = atts.length, arr = []; i < n; i++) {
+            const nodeName = atts[i].nodeName;
+            switch (nodeName) {
+                case 'src':
+                    downloads[nodeName] = fetch(atts[i].nodeValue);
+                    break;
             }
+        }
 
-            const C_pointer = instance.addFunction(UniversalImage.flush_image.bind(this), 'vi');
+        downloads["module"] = new Module({
+            dynamicLibraries: [with_attribute]
+            });
 
-            args["downloadCallback"] = C_pointer;           
+        let promises: Promise<Response>[] = Object.values(downloads);
 
-            const string_args = JSON.stringify(args)
-            var len = (string_args.length << 2) + 1;
-            const ptr_args = instance.stackAlloc(len);
-            instance.stringToUTF8(string_args, ptr_args, len);
-
-            instance._set(this.entry, ptr_args);            
-        })
-
-
+        Promise.all(promises).then(decode);
     }
 
     disconnectedCallback() {
@@ -99,7 +130,6 @@ class UniversalImage extends HTMLImageElement {
             case 'using':
                 break;
             case 'with':
-                this.with = newValue;
                 break;
         }
     }

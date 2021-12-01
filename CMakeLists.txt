@@ -48,14 +48,19 @@ link_directories(${CMAKE_BINARY_DIR}/third_parties/gpac/bin/gcc)
 SET(SIMPLE_IMG_CORE
 ${CMAKE_SOURCE_DIR}/src/simple-img/simple-img.c
 ${CMAKE_SOURCE_DIR}/src/common/common.cpp
+${CMAKE_SOURCE_DIR}/src/common/memio.c
 )
 
 add_executable(simple-img ${SIMPLE_IMG_CORE})
 
 set_target_properties( simple-img 
                         PROPERTIES 
-                            LINK_FLAGS "-g --no-entry -s MAIN_MODULE=2  -s MODULARIZE=1 -s FETCH=1 -s EXPORTED_RUNTIME_METHODS=['stringToUTF8','UTF8ToString','addFunction','removeFunction'] -s RESERVED_FUNCTION_POINTERS=4"
+                            LINK_FLAGS "-g --no-entry -s MAIN_MODULE=2  -s MODULARIZE=1 -s EXPORTED_RUNTIME_METHODS=['stringToUTF8','UTF8ToString'] -s EXPORTED_FUNCTIONS=['_memset','_memcpy'] -s ERROR_ON_UNDEFINED_SYMBOLS=0"
                             )
+
+target_link_libraries(simple-img 
+  libgpac_static.a
+)
 
 add_subdirectory(filters)
 

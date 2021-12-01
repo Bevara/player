@@ -5,7 +5,18 @@
 extern "C" {  
 #endif
 
+#include <emscripten/emscripten.h>
 #include "filter_session.h"
+
+
+typedef struct
+{
+  struct _Entry* entry;
+  char *_p;
+  char *path;
+  Bool write;
+  u32 nb_refs;
+} MemIOCtx;
 
 typedef struct _Entry
 {
@@ -14,15 +25,18 @@ typedef struct _Entry
   int size;
   int width;
   int height;
-  void (*event_callback)(struct _Entry* entry);
-  GF_Filter * filter;
+  GF_FilterSession *session;
+  GF_Filter *filter;
+  GF_FileIO *fio;
+  char* data;
+  size_t numBytes;
+  const char* fio_url;
+  MemIOCtx *IOCtx;
 } Entry;
-
-typedef void (*event_callback)(struct _Entry*);
 
 void parse_set(Entry* entry, const char *json);
 const char * parse_get(Entry *entry, const char *json);
-
+const char *make_fileio(Entry *entry, const char *inargs, Bool is_input, GF_Err *e);
 
 #ifdef __cplusplus
 }

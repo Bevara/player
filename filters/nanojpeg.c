@@ -48,7 +48,7 @@ GF_Err EMSCRIPTEN_KEEPALIVE nanojpeg_process(GF_Filter *filter)
     pck = gf_filter_pid_get_packet(ctx->ipid);
     data = (unsigned char *) gf_filter_pck_get_data(pck, &size);
 
-  	/*njInit();
+  	njInit();
   	njDecode(data, size);
 
 	gf_filter_pid_set_property(ctx->opid, GF_PROP_PID_WIDTH, &PROP_UINT(njGetWidth()) );
@@ -57,7 +57,7 @@ GF_Err EMSCRIPTEN_KEEPALIVE nanojpeg_process(GF_Filter *filter)
     pck_dst = gf_filter_pck_new_alloc(ctx->opid, njGetImageSize(), &buffer);
 	memcpy(buffer, njGetImage(), njGetImageSize());
 
-    gf_filter_pck_send(pck_dst);*/
+    gf_filter_pck_send(pck_dst);
     return GF_OK;
 }
 

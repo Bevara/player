@@ -1,29 +1,50 @@
 #include <string.h>
 #include <stdio.h>
-#include <stdlib.h> 
+#include <stdlib.h>
 
 #include "common.h"
-#include <emscripten/emscripten.h>
 
-Entry* EMSCRIPTEN_KEEPALIVE constructor()
+extern const GF_FilterRegister* nanojpeg_register(GF_FilterSession *session);
+
+Entry *EMSCRIPTEN_KEEPALIVE constructor()
 {
- Entry* entry = malloc(sizeof(Entry));
+    GF_Err e;
+    u32 sflags=0;
 
-   return entry;
+    Entry *entry = malloc(sizeof(Entry));
+    entry->session = gf_fs_new_defaults(sflags);
+    gf_fs_add_filter_register(entry->session, nanojpeg_register(NULL) );
+    entry->filter = gf_fs_load_filter(entry->session, "nanojpeg", &e);
+
+    return entry;
 }
 
-int EMSCRIPTEN_KEEPALIVE set(Entry* entry, const char* attrs)
+int EMSCRIPTEN_KEEPALIVE set(Entry *entry, const char *attrs)
 {
+    GF_Err e;
+
     parse_set(entry, attrs);
+
+    GF_Filter *source = NULL;
+    const char *fargs_src = NULL;
+
+    source = gf_fs_load_source(entry->session, entry->fio_url, fargs_src, NULL, &e);
+    if (e) {
+		fprintf(stderr, "session error %s\n", gf_error_to_string(e) );
+    }
+
+    e= gf_fs_run(entry->session);
+    if (e) {
+		fprintf(stderr, "session error %s\n", gf_error_to_string(e) );
+    }
     return 0;
 }
 
-const char* EMSCRIPTEN_KEEPALIVE get(Entry* entry, const char* attrs)
+const char *EMSCRIPTEN_KEEPALIVE get(Entry *entry, const char *attrs)
 {
     return parse_get(entry, attrs);
 }
 
-EMSCRIPTEN_KEEPALIVE void destructor(Entry* entry)
+EMSCRIPTEN_KEEPALIVE void destructor(Entry *entry)
 {
-
 }
