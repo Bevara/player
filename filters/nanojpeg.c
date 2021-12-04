@@ -15,26 +15,52 @@ extern int njGetHeight(void);
 
 typedef struct
 {
+	u32 codecid;
 	GF_FilterPid *ipid, *opid;
-	u32 cfg_crc;
-	/*no support for scalability with JPEG (progressive JPEG to test)*/
-	u32 bpp, nb_comp, width, height, out_size, pixel_format, dsi_size;
-	char *dsi;
+	u32 width, height, pixel_format, BPP;
 } GF_NanojpegCtx;
 
 static GF_Err nanojpeg_configure_pid(GF_Filter *filter, GF_FilterPid *pid, Bool is_remove)
 {
+	const GF_PropertyValue *prop;
+	GF_NanojpegCtx *ctx = (GF_NanojpegCtx *) gf_filter_get_udta(filter);
 
-    return GF_OK;
+	//disconnect of src pid (not yet supported)
+	if (is_remove) {
+		if (ctx->opid) {
+			gf_filter_pid_remove(ctx->opid);
+			ctx->opid = NULL;
+		}
+		ctx->ipid = NULL;
+		return GF_OK;
+	}
+	if (! gf_filter_pid_check_caps(pid))
+		return GF_NOT_SUPPORTED;
+
+	ctx->codecid = prop->value.uint;
+	ctx->ipid = pid;
+
+	if (!ctx->opid) {
+		ctx->opid = gf_filter_pid_new(filter);
+	}
+	//copy properties at init or reconfig
+	gf_filter_pid_copy_properties(ctx->opid, ctx->ipid);
+	gf_filter_pid_set_property(ctx->opid, GF_PROP_PID_CODECID, & PROP_UINT( GF_CODECID_RAW ));
+
+	if (ctx->codecid==GF_CODECID_JPEG) {
+		gf_filter_set_name(filter, "imgdec:libjpeg");
+	} else if (ctx->codecid==GF_CODECID_PNG) {
+		gf_filter_set_name(filter, "imgdec:libpng");
+	}
+	return GF_OK;
 }
 
 static const GF_FilterCapability NanojpegCaps[] =
 {
-	CAP_UINT(GF_CAPS_INPUT,GF_PROP_PID_STREAM_TYPE, GF_STREAM_VISUAL),
-	CAP_UINT(GF_CAPS_INPUT,GF_PROP_PID_CODECID, GF_CODECID_JPEG),
-	CAP_BOOL(GF_CAPS_INPUT_EXCLUDED, GF_PROP_PID_UNFRAMED, GF_TRUE),
-	CAP_UINT(GF_CAPS_OUTPUT, GF_PROP_PID_STREAM_TYPE, GF_STREAM_VISUAL),
-	CAP_UINT(GF_CAPS_OUTPUT, GF_PROP_PID_CODECID, GF_CODECID_RAW),
+	CAP_UINT(GF_CAPS_INPUT, GF_PROP_PID_STREAM_TYPE, GF_STREAM_FILE),
+	CAP_STRING(GF_CAPS_INPUT, GF_PROP_PID_FILE_EXT, "jpg"),
+	CAP_STRING(GF_CAPS_INPUT, GF_PROP_PID_MIME, "image/jpg"),
+	CAP_UINT(GF_CAPS_OUTPUT, GF_PROP_PID_CODECID, GF_CODECID_PNG)
 };
 
 GF_Err EMSCRIPTEN_KEEPALIVE nanojpeg_process(GF_Filter *filter)

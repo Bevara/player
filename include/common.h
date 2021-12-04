@@ -11,9 +11,10 @@ extern "C" {
 
 typedef struct
 {
-  struct _Entry* entry;
+  char* path;
+  char **data;
+  size_t *numBytes;
   char *_p;
-  char *path;
   Bool write;
   u32 nb_refs;
 } MemIOCtx;
@@ -26,17 +27,16 @@ typedef struct _Entry
   int width;
   int height;
   GF_FilterSession *session;
-  GF_Filter *filter;
-  GF_FileIO *fio;
-  char* data;
-  size_t numBytes;
-  const char* fio_url;
-  MemIOCtx *IOCtx;
+  char* in_data;
+  size_t in_numBytes;
+  char* out_data;
+  size_t out_numBytes;
+  GF_List *all_gfio_defined;
 } Entry;
 
 void parse_set(Entry* entry, const char *json);
 const char * parse_get(Entry *entry, const char *json);
-const char *make_fileio(Entry *entry, const char *inargs, Bool is_input, GF_Err *e);
+const char *make_fileio(Entry *entry, const char *inargs, char **data, size_t *numBytes, Bool is_input, GF_Err *e);
 
 #ifdef __cplusplus
 }

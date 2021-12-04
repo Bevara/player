@@ -10,11 +10,11 @@ static GF_Err fio_mem_seek(GF_FileIO *fileio, u64 offset, s32 whence)
   switch (whence)
   {
   case SEEK_SET:
-    ioctx->_p = ioctx->entry->data + offset;
+    ioctx->_p = *ioctx->data + offset;
     break;
 
   case SEEK_END:
-    ioctx->_p = ioctx->entry->data + ioctx->entry->numBytes + offset;
+    ioctx->_p = *ioctx->data + *ioctx->numBytes + offset;
     break;
   case SEEK_CUR:
     ioctx->_p += offset;
@@ -29,7 +29,7 @@ static u32 fio_mem_read(GF_FileIO *fileio, u8 *buffer, u32 bytes)
 
   MemIOCtx *ioctx = gf_fileio_get_udta(fileio);
   p = buffer;
-  int remaining = ioctx->entry->numBytes - fio_mem_tell(fileio);
+  int remaining = *ioctx->numBytes - fio_mem_tell(fileio);
 
   if (bytes > remaining)
   {
@@ -46,17 +46,17 @@ static u32 fio_mem_read(GF_FileIO *fileio, u8 *buffer, u32 bytes)
 
 static u32 fio_mem_write(GF_FileIO *fileio, u8 *buffer, u32 bytes)
 {
-  /* char *p;
+   char *p;
     
     MemIOCtx *ioctx = gf_fileio_get_udta(fileio);
     p = buffer;
-    int remaining = *ioctx->length - fio_mem_tell(fileio);
+    int remaining = *ioctx->numBytes - fio_mem_tell(fileio);
     
     if (bytes > remaining)
     {
         int pos = fio_mem_tell(fileio);
-        *ioctx->length = bytes + *ioctx->length - remaining;
-        *ioctx->data = realloc (*ioctx->data, *ioctx->length);
+        *ioctx->numBytes = bytes + *ioctx->numBytes - remaining;
+        *ioctx->data = realloc (*ioctx->data, *ioctx->numBytes);
         ioctx->_p = *ioctx->data + pos;
         
         if (!*ioctx->data)
@@ -65,15 +65,14 @@ static u32 fio_mem_write(GF_FileIO *fileio, u8 *buffer, u32 bytes)
     
     (void)memcpy((void *)ioctx->_p, (void *)p, bytes);
     ioctx->_p += bytes;
-    return bytes;*/
-  return 0;
+    return bytes;
 }
 
 static s64 fio_mem_tell(GF_FileIO *fileio)
 {
   s64 tell = 0;
   MemIOCtx *ioctx = gf_fileio_get_udta(fileio);
-  tell = ioctx->_p - ioctx->entry->data;
+  tell = ioctx->_p - *ioctx->data;
   return tell;
 }
 
@@ -81,7 +80,7 @@ static Bool fio_mem_eof(GF_FileIO *fileio)
 {
   Bool eof = GF_FALSE;
   MemIOCtx *ioctx = gf_fileio_get_udta(fileio);
-  eof = ioctx->_p == (ioctx->entry->data + ioctx->entry->numBytes);
+  eof = ioctx->_p == (*ioctx->data + *ioctx->numBytes);
   return eof;
 }
 
@@ -150,9 +149,9 @@ static GF_FileIO *fio_mem_open(GF_FileIO *fileio_ref, const char *url, const cha
 
 	//file handle not opened, we can use the current gfio
 	if (!ioctx_ref->_p && (!strnicmp(url, "gfio://", 7) || !strcmp(url, ioctx_ref->path)) ) {
-		ioctx_ref->_p = ioctx_ref->entry->data;
+		ioctx_ref->_p = *ioctx_ref->data;
 
-		file_size = ioctx_ref->entry->numBytes;
+		file_size = *ioctx_ref->numBytes;
 		if (strchr(mode, 'r'))
 			gf_fileio_set_stats(fileio_ref, file_size,file_size, GF_TRUE, 0);
 		return fileio_ref;
@@ -166,8 +165,6 @@ static GF_FileIO *fio_mem_open(GF_FileIO *fileio_ref, const char *url, const cha
 	} else {
 		ioctx->path = gf_strdup(ioctx_ref->path);
 	}
-  ioctx->entry = ioctx_ref->entry;
-	ioctx->_p = ioctx_ref->entry->data;
 
 	if (!ioctx->_p) {
 		*out_err = GF_IO_ERR;
@@ -180,19 +177,21 @@ static GF_FileIO *fio_mem_open(GF_FileIO *fileio_ref, const char *url, const cha
 		*out_err = GF_OUT_OF_MEM;
 	}
 
-	file_size = ioctx_ref->entry->numBytes;
+	file_size = *ioctx_ref->numBytes;
 	if (strchr(mode, 'r'))
 		gf_fileio_set_stats(gfio, file_size,file_size, GF_TRUE, 0);
 	return gfio;
 }
 
-const char *make_fileio(Entry *entry, const char *inargs, Bool is_input, GF_Err *e)
+const char *make_fileio(Entry *entry, const char *inargs,   char **data, size_t *numBytes, Bool is_input, GF_Err *e)
 {
   MemIOCtx *ioctx;
   GF_FileIO *fio;
 
   GF_SAFEALLOC(ioctx, MemIOCtx);
   ioctx->path = gf_strdup(inargs);
+  ioctx->data = data;
+  ioctx->numBytes = numBytes;
 
   fio = gf_fileio_new(ioctx->path, ioctx, fio_mem_open, fio_mem_seek, fio_mem_read, fio_mem_write, fio_mem_tell, fio_mem_eof, fio_mem_printf);
   if (!fio)
@@ -201,14 +200,15 @@ const char *make_fileio(Entry *entry, const char *inargs, Bool is_input, GF_Err 
     return NULL;
   }
   
+  if (!entry->all_gfio_defined) {
+		entry->all_gfio_defined = gf_list_new();
+		if (!entry->all_gfio_defined) return NULL;
+	}
+
   //keep alive until end
   ioctx->nb_refs = 1;
 
-  entry->fio_url = gf_fileio_url(fio);
-  entry->fio = fio;
-  entry->IOCtx = ioctx;
-
-  return entry->fio_url;
+  return gf_fileio_url(fio);
 }
 
 void del_mem_fileio(GF_FileIO *fileio)

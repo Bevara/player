@@ -13,8 +13,8 @@ Entry *EMSCRIPTEN_KEEPALIVE constructor()
 
     Entry *entry = malloc(sizeof(Entry));
     entry->session = gf_fs_new_defaults(sflags);
-    gf_fs_add_filter_register(entry->session, nanojpeg_register(NULL) );
-    entry->filter = gf_fs_load_filter(entry->session, "nanojpeg", &e);
+    //gf_fs_add_filter_register(entry->session, nanojpeg_register(NULL) );
+    //entry->filter = gf_fs_load_filter(entry->session, "nanojpeg", &e);
 
     return entry;
 }
@@ -26,17 +26,13 @@ int EMSCRIPTEN_KEEPALIVE set(Entry *entry, const char *attrs)
     parse_set(entry, attrs);
 
     GF_Filter *source = NULL;
+    GF_Filter *dst = NULL;
     const char *fargs_src = NULL;
-
-    source = gf_fs_load_source(entry->session, entry->fio_url, fargs_src, NULL, &e);
-    if (e) {
-		fprintf(stderr, "session error %s\n", gf_error_to_string(e) );
-    }
+    
 
     e= gf_fs_run(entry->session);
-    if (e) {
-		fprintf(stderr, "session error %s\n", gf_error_to_string(e) );
-    }
+    gf_fs_print_connections(entry->session);
+
     return 0;
 }
 

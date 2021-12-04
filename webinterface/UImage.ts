@@ -66,6 +66,7 @@ class UniversalImage extends HTMLImageElement {
         const self = this;
         const downloads: { [key: string]: Promise<Response> } = {};
         const with_attribute = self.getAttribute("with");
+        let args : any = {};
 
         function decode(responses: Response[]): void{
             const img_response = responses[promises.indexOf(downloads["src"])];
@@ -79,16 +80,14 @@ class UniversalImage extends HTMLImageElement {
 
                 const ptr = self.module.stackAlloc(img_array.byteLength);
                 self.module.HEAPU8.set(new Uint8Array(img_array), ptr);
-
-                const json_args = JSON.stringify({buffer : {pointer : ptr, size : img_array.byteLength}});
+                args["buffer"] = {pointer : ptr, size : img_array.byteLength};
+                const json_args = JSON.stringify(args);
 
                 const len_args = (json_args.length << 2) + 1;
                 const ptr_args = self.module.stackAlloc(len_args);
                 self.module.stringToUTF8(json_args, ptr_args, len_args);
 
                 self.module._set(self.entry, ptr_args);
-
-                console.log(self.module);
 
             });
 
@@ -105,7 +104,9 @@ class UniversalImage extends HTMLImageElement {
             switch (nodeName) {
                 case 'src':
                     downloads[nodeName] = fetch(atts[i].nodeValue);
-                    break;
+
+                default:
+                args[nodeName] = atts[i].nodeValue;
             }
         }
 
