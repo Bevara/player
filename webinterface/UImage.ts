@@ -89,6 +89,23 @@ class UniversalImage extends HTMLImageElement {
 
                 self.module._set(self.entry, ptr_args);
 
+                const get_args = JSON.stringify([
+                    "getImage", "getSize", "getWidth", "getHeight"
+                ]);
+
+                const get_args_len = (get_args.length << 2) + 1;
+                const ptr_get_args = self.module.stackAlloc(get_args_len);
+
+                self.module.stringToUTF8(get_args, ptr_get_args, get_args_len);
+
+                const ptr_data = self.module._get(self.entry, ptr_get_args);
+                const json_res = self.module.UTF8ToString(ptr_data);
+                const json_res_parsed = JSON.parse(json_res);
+
+                const image = self.module.HEAPU8.slice(json_res_parsed.getImage, json_res_parsed.getImage + json_res_parsed.getSize);
+                const blob = new Blob([image]);
+                self.srcset = URL.createObjectURL(blob);
+
             });
 
             self.module = module;

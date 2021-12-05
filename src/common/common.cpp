@@ -70,11 +70,11 @@ extern "C" const char *parse_get(Entry *entry, const char *json)
 
     if (strcmp(property, "getImage") == 0)
     {
-      out.AddMember(Value("getImage"), Value((unsigned int)entry->image), document.GetAllocator());
+      out.AddMember(Value("getImage"), Value((unsigned int)entry->out_data), document.GetAllocator());
     }
     else if (strcmp(property, "getSize") == 0)
     {
-      out.AddMember(Value("getSize"), Value(entry->size), out.GetAllocator());
+      out.AddMember(Value("getSize"), Value((u32)entry->out_numBytes), out.GetAllocator());
     }
     else if (strcmp(property, "getWidth") == 0)
     {

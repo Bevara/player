@@ -22,8 +22,6 @@ typedef struct
 typedef struct _Entry
 {
   const char* src;
-  unsigned char* image;
-  int size;
   int width;
   int height;
   GF_FilterSession *session;
