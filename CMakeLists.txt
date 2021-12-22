@@ -67,3 +67,7 @@ add_subdirectory(filters)
 add_custom_target (serve
   COMMAND npm run serve
 )
+
+add_custom_target (release
+  COMMAND npm run build:prod && ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/simple-img.wasm ${CMAKE_CURRENT_BINARY_DIR}/nanojpeg.wasm ${CMAKE_CURRENT_BINARY_DIR}/dist/
+)
