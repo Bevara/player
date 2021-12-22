@@ -1,4 +1,4 @@
-import {FS} from './FS'
+import {FS} from './fs'
 
 
 var PATH = {
