@@ -125,10 +125,13 @@ class UniversalImage extends HTMLImageElement {
             }
         }
 
+        const _scriptDir = (document.currentScript as any).src;
+        const scriptDirectory = _scriptDir.substr(0, _scriptDir.lastIndexOf('/')+1)
+
         using_file.location = using_attribute;
 
         downloads["module"] = new (Module as any)({
-            dynamicLibraries: [with_attribute]
+            dynamicLibraries: [scriptDirectory+with_attribute]
             });
 
         let promises: Promise<Response>[] = Object.values(downloads);
