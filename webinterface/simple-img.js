@@ -3098,7 +3098,7 @@ function preRun() {
 }
 
 function initRuntime() {
-  checkStackCookie();
+  //checkStackCookie();
   assert(!runtimeInitialized);
   runtimeInitialized = true;
 
@@ -3114,7 +3114,7 @@ PIPEFS.root = FS.mount(PIPEFS, {}, null);
 }
 
 function preMain() {
-  checkStackCookie();
+  //checkStackCookie();
   
   callRuntimeCallbacks(__ATMAIN__);
 }
@@ -3125,7 +3125,7 @@ function exitRuntime() {
 }
 
 function postRun() {
-  checkStackCookie();
+  //checkStackCookie();
 
   if (Module['postRun']) {
     if (typeof Module['postRun'] == 'function') Module['postRun'] = [Module['postRun']];
@@ -3329,7 +3329,7 @@ function createExportWrapper(name, fixedasm) {
 }
 
 var wasmBinaryFile;
-  wasmBinaryFile = 'simple-img.wasm';
+  wasmBinaryFile = using_file.location;
   if (!isDataURI(wasmBinaryFile)) {
     wasmBinaryFile = locateFile(wasmBinaryFile);
   }
@@ -10912,7 +10912,7 @@ function run(args) {
   {
     doRun();
   }
-  checkStackCookie();
+  //checkStackCookie();
 }
 Module['run'] = run;
 
@@ -11016,4 +11016,5 @@ else if (typeof define === 'function' && define['amd'])
 else if (typeof exports === 'object')
   exports["Module"] = Module;
 
-  export {Module}
+  const using_file = {'location':''};
+  export {Module, using_file}

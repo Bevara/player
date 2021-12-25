@@ -1,6 +1,6 @@
 //import {HEAPU8, asmLibraryArg, writeArrayToMemory, initRuntime, stackCheckInit, Module, wasmTable, wasmMemory, stringToUTF8, stackAlloc} from './player'
 import { Common } from "./common"
-import {Module} from "./simple-img.js"
+import {Module, using_file} from "./simple-img.js"
 
 //declare var Module: any;
 
@@ -65,6 +65,7 @@ class UniversalImage extends HTMLImageElement {
     connectedCallback() {
         const self = this;
         const downloads: { [key: string]: Promise<Response> } = {};
+        const using_attribute = self.getAttribute("using");
         const with_attribute = self.getAttribute("with");
         let args : any = {};
 
@@ -123,6 +124,8 @@ class UniversalImage extends HTMLImageElement {
                 args[nodeName] = atts[i].nodeValue;
             }
         }
+
+        using_file.location = using_attribute;
 
         downloads["module"] = new (Module as any)({
             dynamicLibraries: [with_attribute]
