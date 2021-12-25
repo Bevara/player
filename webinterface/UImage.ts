@@ -1,8 +1,8 @@
 //import {HEAPU8, asmLibraryArg, writeArrayToMemory, initRuntime, stackCheckInit, Module, wasmTable, wasmMemory, stringToUTF8, stackAlloc} from './player'
 import { Common } from "./common"
+import {Module} from "./simple-img.js"
 
-
-declare var Module: any;
+//declare var Module: any;
 
 class UniversalImage extends HTMLImageElement {
     using: string;
@@ -71,7 +71,8 @@ class UniversalImage extends HTMLImageElement {
         function decode(responses: Response[]): void{
             const img_response = responses[promises.indexOf(downloads["src"])];
             const module = responses[promises.indexOf(downloads["module"])];
-            
+            self.module = module;
+
             let blobs: [Promise<ArrayBuffer>] = [img_response.arrayBuffer()];
 
             Promise.all(blobs).then( (result) => {
@@ -107,10 +108,6 @@ class UniversalImage extends HTMLImageElement {
                 self.srcset = URL.createObjectURL(blob);
 
             });
-
-            self.module = module;
-
-
         }
 
 
@@ -127,7 +124,7 @@ class UniversalImage extends HTMLImageElement {
             }
         }
 
-        downloads["module"] = new Module({
+        downloads["module"] = new (Module as any)({
             dynamicLibraries: [with_attribute]
             });
 
