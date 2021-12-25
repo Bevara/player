@@ -29,7 +29,7 @@ const config = {
         extensions: ['.tsx', '.ts', '.js'],
     },
     output: {
-        filename: 'img.js',
+        filename: 'universal-img.js',
         path: path.resolve("/Users/gorinje/project/player/build", 'dist'),
     },
     plugins: [
