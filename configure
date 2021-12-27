@@ -1,6 +1,8 @@
 #!/bin/bash
 echo "Setting environnement"
 BUILD_DIR=$PWD
+debuginfo="no"
+no_gcc_opt="no"
 
 # Find source path
 source_path="`echo $0 | sed -e 's#/configure##'`"
@@ -14,9 +16,20 @@ else
     build_path="`pwd`"
 fi
 
+for opt do
+    case "$opt" in
+        --enable-debug) debuginfo="yes"; no_gcc_opt="yes"
+            ;;
+    esac
+done
+
 echo "Downloading and building dependencies"
 git submodule update --init
-$source_path/third_parties/build_thirdparties.sh
+if test "$debuginfo" = "no"; then
+    $source_path/third_parties/build_thirdparties.sh
+else
+    $source_path/third_parties/build_thirdparties.sh --enable-debug
+fi
 
 echo "Configuring emsdk"
 source $source_path/third_parties/emsdk_vers.txt
@@ -26,4 +39,8 @@ $source_path/third_parties/emsdk/emsdk activate $EMSDK_VERS
 
 echo "Configuring player"
 cd $BUILD_DIR
-emcmake cmake $source_path
+if test "$debuginfo" = "no"; then
+    emcmake cmake $source_path -DDEBUG_MODE=ON
+else
+    emcmake cmake $source_path
+fi

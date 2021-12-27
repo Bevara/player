@@ -3,7 +3,7 @@ project(Player)
 
 set(CMAKE_CXX_STANDARD 20)
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-option(DEBUG_MODE "Compile in player in debug mode" ON)
+option(DEBUG_MODE "Compile in player in debug mode" OFF)
 
 add_definitions(-fpic)
 
@@ -12,7 +12,13 @@ configure_file(templates/template.karma.conf.js ${CMAKE_SOURCE_DIR}/karma.conf.j
 configure_file(webinterface/Bevara.ico ${CMAKE_BINARY_DIR}/favicon.ico)
 
 set(USE_DEBUG "-g")
-set(USE_FLAGS "${USE_DEBUG}")
+set(USE_OPT "-O3")
+
+if(DEBUG_MODE)
+  set(USE_FLAGS "${USE_DEBUG}")
+else()
+  set(USE_FLAGS "${USE_OPT}")
+endif()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${USE_FLAGS}")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${USE_FLAGS}")

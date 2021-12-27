@@ -83,6 +83,9 @@ extern "C" const char *parse_get(Entry *entry, const char *json)
     else if (strcmp(property, "getHeight") == 0)
     {
       out.AddMember(Value("getHeight"), Value(entry->height), out.GetAllocator());
+    }else if (strcmp(property, "connections") == 0)
+    {
+      gf_fs_print_connections(entry->session);
     }
   }
 

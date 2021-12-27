@@ -124,9 +124,19 @@ class UniversalImage extends HTMLImageElement {
     
                     self.module._set(self.entry, ptr_args);
     
-                    const get_args = JSON.stringify([
-                        "getImage", "getSize", "getWidth", "getHeight"
-                    ]);
+                    const props = [
+                        "getImage", "getSize", "getWidth", "getHeight", "connections"
+                    ]
+                    if (self.hasAttribute("connections")){
+                        props.push("connections");
+                    }
+
+                    const get_args = JSON.stringify(props);
+
+                    if ("_nanojpeg_register"in self.module){
+                        const test_function = self.module["_nanojpeg_register"];
+                        console.log(test_function);
+                    }
     
                     const get_args_len = (get_args.length << 2) + 1;
                     const ptr_get_args = self.module.stackAlloc(get_args_len);
