@@ -4,8 +4,8 @@ module.exports = function (config) {
   config.set({
     singleRun: true,
     frameworks: ['mocha', 'chai'],
-    files: [{ pattern: 'build/dist/universal-img.js', watched: false, included: true },
-    { pattern: 'build/dist/*.wasm', watched: false, included: false, served: true, nocache: false },
+    files: [{ pattern: '@CMAKE_BINARY_DIR@/dist/universal-img.js', watched: false, included: true },
+    { pattern: '@CMAKE_BINARY_DIR@/dist/*.wasm', watched: false, included: false, served: true, nocache: false },
       'test/**/*.js'],
     reporters: ['dots', 'junit'],
     port: 9876,  // karma web server port

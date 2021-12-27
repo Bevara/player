@@ -8,6 +8,7 @@ option(DEBUG_MODE "Compile in player in debug mode" ON)
 add_definitions(-fpic)
 
 configure_file(templates/template.webpack.config.js ${CMAKE_SOURCE_DIR}/webpack.config.js)
+configure_file(templates/template.karma.conf.js ${CMAKE_SOURCE_DIR}/karma.conf.js)
 configure_file(webinterface/Bevara.ico ${CMAKE_BINARY_DIR}/favicon.ico)
 
 set(USE_DEBUG "-g")
