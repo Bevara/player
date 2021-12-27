@@ -71,3 +71,9 @@ add_custom_target (serve
 add_custom_target (release
   COMMAND npm run build:prod && ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/simple-img.wasm ${CMAKE_CURRENT_BINARY_DIR}/nanojpeg.wasm ${CMAKE_CURRENT_BINARY_DIR}/dist/
 )
+
+add_custom_target (test
+  COMMAND npm run test
+)
+
+add_dependencies(test release simple-img)
