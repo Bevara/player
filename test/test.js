@@ -21,7 +21,7 @@ describe('Simple-img', () => {
             .then(buffers => {
               const result = new Uint8Array(buffers[0]);
               const ref = new Uint8Array(buffers[1]);
-              assert.deepEqual(result, ref);
+              expect(result).to.eql(ref);
               resolve();
             });
         });
