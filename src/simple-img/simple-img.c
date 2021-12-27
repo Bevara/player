@@ -31,7 +31,7 @@ int EMSCRIPTEN_KEEPALIVE set(Entry *entry, const char *attrs)
     
 
     e= gf_fs_run(entry->session);
-    gf_fs_print_connections(entry->session);
+    //gf_fs_print_connections(entry->session);
 
     return 0;
 }
