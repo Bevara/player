@@ -125,7 +125,7 @@ class UniversalImage extends HTMLImageElement {
                     self.module._set(self.entry, ptr_args);
     
                     const props = [
-                        "getImage", "getSize", "getWidth", "getHeight", "connections"
+                        "getImage", "getSize", "getWidth", "getHeight"
                     ]
                     if (self.hasAttribute("connections")){
                         props.push("connections");
