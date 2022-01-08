@@ -4129,7 +4129,7 @@ var ASM_CONSTS = {
       addRunDependency('preloadDylibs');
       dynamicLibraries.reduce(function(chain, lib) {
         return chain.then(function() {
-          return loadDynamicLibrary(lib, {loadAsync: true, global: true, nodelete: true, allowUndefined: true});
+          return loadDynamicLibrary(scriptDirectory + lib, {loadAsync: true, global: true, nodelete: true, allowUndefined: true});
         });
       }, Promise.resolve()).then(function() {
         // we got them all, wonderful

@@ -86,9 +86,9 @@ class UniversalImage extends HTMLImageElement {
             }
         }
 
-        var _scriptDir = typeof document !== 'undefined' && document.currentScript ? (document.currentScript as any).src : undefined;
-        if (typeof __filename !== 'undefined') _scriptDir = _scriptDir || __filename;
-
+        //var _scriptDir = typeof document !== 'undefined' && document.currentScript ? (document.currentScript as any).src : undefined;
+        //if (typeof __filename !== 'undefined') _scriptDir = _scriptDir || __filename;
+/*
         if (!_scriptDir) {
             if (document.currentScript) {
                 _scriptDir = (document.currentScript as any).src;
@@ -98,10 +98,10 @@ class UniversalImage extends HTMLImageElement {
         }
 
         const scriptDirectory = _scriptDir.substr(0, _scriptDir.lastIndexOf('/') + 1)
-
+*/
         using_file.location = using_attribute;
         downloads["module"] = new (Module as any)({
-            dynamicLibraries: [scriptDirectory + with_attribute]
+            dynamicLibraries: [with_attribute]
         });
 
         this._decodingPromise = new Promise((main_resolve, main_reject) => {
