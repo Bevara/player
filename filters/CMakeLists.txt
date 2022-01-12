@@ -10,6 +10,8 @@ add_compile_definitions(GPAC_HAVE_CONFIG_H)
 
 macro(add_filter FILTERNAME ENTRYFILES LINKFILES ENTRY_FN DEFINITIONS INCLUDES LINK_FLAGS)
 
+list(APPEND WASM_FILES ${CMAKE_BINARY_DIR}/${FILTERNAME}.wasm)
+
 add_executable(${FILTERNAME} ${ENTRYFILES})
 
 target_link_libraries(${FILTERNAME} ${LINKFILES})
@@ -96,3 +98,5 @@ add_filter(j2kdec
                 GPAC_HAS_JP2
                 "${J2KDEC_LIB}"
                 "")
+
+set(WASM_FILES ${WASM_FILES} PARENT_SCOPE)

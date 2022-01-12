@@ -76,7 +76,7 @@ add_custom_target (serve
 )
 
 add_custom_target (release
-  COMMAND npm run build:prod && ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/simple-img.wasm ${CMAKE_CURRENT_BINARY_DIR}/nanojpeg.wasm  ${CMAKE_CURRENT_BINARY_DIR}/imgdec.wasm  ${CMAKE_CURRENT_BINARY_DIR}/pngenc.wasm ${CMAKE_CURRENT_BINARY_DIR}/rfimg.wasm ${CMAKE_CURRENT_BINARY_DIR}/writegen.wasm ${CMAKE_CURRENT_BINARY_DIR}/j2kdec.wasm ${CMAKE_CURRENT_BINARY_DIR}/dist/
+  COMMAND npm run build:prod && ${CMAKE_COMMAND} -E copy ${WASM_FILES} ${CMAKE_CURRENT_BINARY_DIR}/dist/
 )
 
 add_custom_target (test
