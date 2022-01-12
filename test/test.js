@@ -7,7 +7,7 @@ describe('Simple-img', () => {
         const img = document.createElement('img', { "is": "universal-img" });
         img.setAttribute("src", "http://bevaraserver.ddns.net/test-signals/Freedom.jpg");
         img.setAttribute("using", "simple-img.wasm");
-        img.setAttribute("with", "nanojpeg.wasm");
+        img.setAttribute("with", "imgdec.wasm");
         document.body.appendChild(img);
         const fetchs = img.decodingPromise.then(src =>
           Promise.all([
