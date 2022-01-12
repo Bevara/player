@@ -1,7 +1,7 @@
 
 
 describe('Simple-img', () => {
-  describe('#nanojpeg', () => {
+  describe('#imgdec', () => {
     it('should decode Freedom.jpeg', (done) => {
       new Promise(function (resolve) {
         const img = document.createElement('img', { "is": "universal-img" });
