@@ -52,6 +52,8 @@ link_directories(${CMAKE_BINARY_DIR}/third_parties/gpac/bin/gcc)
 
 #set(CMAKE_EXECUTABLE_SUFFIX ".wasm")
 
+add_subdirectory(filters)
+
 SET(SIMPLE_IMG_CORE
 ${CMAKE_SOURCE_DIR}/src/simple-img/simple-img.c
 ${CMAKE_SOURCE_DIR}/src/common/common.cpp
@@ -68,8 +70,8 @@ set_target_properties( simple-img
 target_link_libraries(simple-img 
   libgpac_static.a
 )
+list(APPEND WASM_FILES ${CMAKE_BINARY_DIR}/simple-img.wasm)
 
-add_subdirectory(filters)
 
 add_custom_target (serve
   COMMAND npm run serve
