@@ -91,7 +91,7 @@ class UniversalImage extends HTMLImageElement {
             dynamicLibraries: [with_attribute, 
                 "rfimg.wasm",
                 "writegen.wasm",
-                //"pngenc.wasm",
+                "pngenc.wasm"
             ]
         });
 

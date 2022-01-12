@@ -5,7 +5,6 @@ set (THIRD_PARTIES ${CMAKE_SOURCE_DIR}/third_parties)
 set (GPAC_LOCATION ${THIRD_PARTIES}/gpac)
 
 add_compile_definitions(GPAC_HAVE_CONFIG_H)
-add_compile_definitions(GPAC_HAS_JPEG)
 
 
 macro(add_filter FILTERNAME ENTRYFILES LINKFILES ENTRY_FN DEFINITIONS INCLUDES LINK_FLAGS)
@@ -43,7 +42,7 @@ add_filter(imgdec
                 _imgdec_register
                 GPAC_HAS_JPEG
                 ${GPAC_LOCATION}/include
-                "")
+                "-s USE_LIBJPEG=1")
 SET(RFIMG_SRC 
         ${GPAC_LOCATION}/src/filters/reframe_img.c
         ${GPAC_LOCATION}/src/media_tools/img.c
@@ -53,9 +52,9 @@ add_filter(rfimg
                 "${RFIMG_SRC}"
                 ""
                 _img_reframe_register
+                GPAC_HAS_JPEG
                 ""
-                ""
-                "")
+                "-s USE_LIBJPEG=1")
 
 SET(WRITEGEN_SRC
     ${GPAC_LOCATION}/src/filters/write_generic.c
@@ -73,7 +72,7 @@ add_filter(writegen
 
 add_filter(pngenc
                 ${GPAC_LOCATION}/src/filters/enc_png.c
-                ""
+                ${CMAKE_BINARY_DIR}/third_parties/libpng/libpng16.a
                 _pngenc_register
                 GPAC_HAS_PNG
                 ""

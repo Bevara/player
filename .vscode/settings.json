@@ -43,7 +43,8 @@
         "common.h": "c",
         "map": "cpp",
         "unordered_map": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "png.h": "c"
     },
     "C_Cpp.errorSquiggles": "Enabled"
 }
