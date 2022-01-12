@@ -27,6 +27,14 @@ extern "C" void parse_set(Entry *entry, const char *json)
     in_src = document["src"].GetString();
   }
 
+  if (document.HasMember("filters"))
+  {
+    assert(document["filters"].IsArray());
+    const Value& filters = document["filters"];
+    for (SizeType i = 0; i < filters.Size(); i++)
+      gf_fs_add_filter_register(entry->session, (const GF_FilterRegister *)filters[i].GetInt() );
+  }
+
   if (document.HasMember("buffer"))
   {
     GF_Err err;

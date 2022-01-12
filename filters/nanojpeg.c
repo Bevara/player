@@ -1,5 +1,3 @@
-#define GPAC_HAVE_CONFIG_H
-
 #include <gpac/filters.h>
 #include <emscripten/emscripten.h>
 
@@ -48,9 +46,7 @@ static GF_Err nanojpeg_configure_pid(GF_Filter *filter, GF_FilterPid *pid, Bool 
 	gf_filter_pid_set_property(ctx->opid, GF_PROP_PID_CODECID, & PROP_UINT( GF_CODECID_RAW ));
 
 	if (ctx->codecid==GF_CODECID_JPEG) {
-		gf_filter_set_name(filter, "imgdec:libjpeg");
-	} else if (ctx->codecid==GF_CODECID_PNG) {
-		gf_filter_set_name(filter, "imgdec:libpng");
+		gf_filter_set_name(filter, "imgdec:libnanojpeg");
 	}
 	return GF_OK;
 }

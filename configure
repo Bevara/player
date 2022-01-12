@@ -40,7 +40,7 @@ $source_path/third_parties/emsdk/emsdk activate $EMSDK_VERS
 echo "Configuring player"
 cd $BUILD_DIR
 if test "$debuginfo" = "no"; then
-    emcmake cmake $source_path
+    emcmake cmake $source_path -DDEBUG_MODE=OFF
 else
     emcmake cmake $source_path -DDEBUG_MODE=ON
 fi

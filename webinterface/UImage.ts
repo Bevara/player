@@ -1,6 +1,6 @@
 //import {HEAPU8, asmLibraryArg, writeArrayToMemory, initRuntime, stackCheckInit, Module, wasmTable, wasmMemory, stringToUTF8, stackAlloc} from './player'
 import { Common } from "./common"
-import { Module, using_file } from "./simple-img.js"
+import { Module, using_file, filter_entries} from "./simple-img.js"
 
 //declare var Module: any;
 
@@ -21,7 +21,7 @@ class UniversalImage extends HTMLImageElement {
         return this._decodingPromise;
     }
 
-    static flush_image(entry: number): void {
+    static flush_image(_entry: number): void {
         let self = this as any;
 
         const get_args = JSON.stringify([
@@ -85,26 +85,13 @@ class UniversalImage extends HTMLImageElement {
                     args[nodeName] = atts[i].nodeValue;
             }
         }
-
-        //var _scriptDir = typeof document !== 'undefined' && document.currentScript ? (document.currentScript as any).src : undefined;
-        //if (typeof __filename !== 'undefined') _scriptDir = _scriptDir || __filename;
-/*
-        if (!_scriptDir) {
-            if (document.currentScript) {
-                _scriptDir = (document.currentScript as any).src;
-            } else {
-                _scriptDir = "/base/build/dist/"; //FIXME : for testing purpose
-            }
-        }
-
-        const scriptDirectory = _scriptDir.substr(0, _scriptDir.lastIndexOf('/') + 1)
-*/
+        
         using_file.location = using_attribute;
         downloads["module"] = new (Module as any)({
             dynamicLibraries: [with_attribute]
         });
 
-        this._decodingPromise = new Promise((main_resolve, main_reject) => {
+        this._decodingPromise = new Promise((main_resolve, _main_reject) => {
             function decode(responses: Response[]): void {
                 const img_response = responses[promises.indexOf(downloads["src"])];
                 const module = responses[promises.indexOf(downloads["module"])];
@@ -116,17 +103,24 @@ class UniversalImage extends HTMLImageElement {
                     const img_array = result[0];
                     self.entry = self.module._constructor();
 
+                    // Set input buffer
                     const ptr = self.module.stackAlloc(img_array.byteLength);
                     self.module.HEAPU8.set(new Uint8Array(img_array), ptr);
                     args["buffer"] = { pointer: ptr, size: img_array.byteLength };
-                    const json_args = JSON.stringify(args);
 
+                    // Set input filters
+                    args["filters"] = filter_entries.map(entry => self.module["_"+entry]());
+                    
+                    // Convert json to string buffer
+                    const json_args = JSON.stringify(args);
                     const len_args = (json_args.length << 2) + 1;
                     const ptr_args = self.module.stackAlloc(len_args);
                     self.module.stringToUTF8(json_args, ptr_args, len_args);
 
+                    // Call set function and decode
                     self.module._set(self.entry, ptr_args);
 
+                    // Retrieve result
                     const props = [
                         "getImage", "getSize", "getWidth", "getHeight"
                     ]
@@ -135,11 +129,6 @@ class UniversalImage extends HTMLImageElement {
                     }
 
                     const get_args = JSON.stringify(props);
-
-                    if ("_nanojpeg_register" in self.module) {
-                        const test_function = self.module["_nanojpeg_register"];
-                        console.log(test_function);
-                    }
 
                     const get_args_len = (get_args.length << 2) + 1;
                     const ptr_get_args = self.module.stackAlloc(get_args_len);

@@ -62,7 +62,7 @@ add_executable(simple-img ${SIMPLE_IMG_CORE})
 
 set_target_properties( simple-img 
                         PROPERTIES 
-                            LINK_FLAGS "-s USE_LIBJPEG=1 -s USE_LIBPNG=1 -g --no-entry -s MAIN_MODULE=2  -s MODULARIZE=1 -s EXPORTED_RUNTIME_METHODS=['stringToUTF8','UTF8ToString'] -s EXPORTED_FUNCTIONS=['_memset','_memcpy','_gf_filter_get_udta','_gf_filter_pid_get_packet','_gf_filter_pck_get_data','_gf_filter_pid_set_property','_gf_filter_pck_new_alloc','_gf_filter_pck_send','_gf_filter_pid_check_caps','_gf_filter_pid_get_property','_gf_filter_pid_new','_gf_filter_pid_copy_properties','_gf_filter_pid_set_property','_gf_filter_set_name'] -s ERROR_ON_UNDEFINED_SYMBOLS=0"
+                            LINK_FLAGS "${USE_FLAGS} -s USE_LIBJPEG=1 -s USE_LIBPNG=1 --no-entry -s MAIN_MODULE=2  -s MODULARIZE=1 -s EXPORTED_RUNTIME_METHODS=['stringToUTF8','UTF8ToString'] -s EXPORTED_FUNCTIONS=['_memset','_memcpy','_gf_filter_get_udta','_gf_filter_pid_get_packet','_gf_filter_pck_get_data','_gf_filter_pid_set_property','_gf_filter_pck_new_alloc','_gf_filter_pck_send','_gf_filter_pid_check_caps','_gf_filter_pid_get_property','_gf_filter_pid_new','_gf_filter_pid_copy_properties','_gf_filter_pid_set_property','_gf_filter_set_name','_gf_filter_pck_set_dependency_flags'] -s ERROR_ON_UNDEFINED_SYMBOLS=0"
                             )
 
 target_link_libraries(simple-img 

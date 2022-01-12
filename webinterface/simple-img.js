@@ -1,4 +1,6 @@
 
+var filter_entries = [];
+
 var Module = (function() {
   var _scriptDir = typeof document !== 'undefined' && document.currentScript ? document.currentScript.src : undefined;
   if (typeof __filename !== 'undefined') _scriptDir = _scriptDir || __filename;
@@ -3933,6 +3935,10 @@ var ASM_CONSTS = {
         };
   
         function postInstantiation(instance) {
+          //FIXME : Set this information in custom section
+          const entry_fn = Object.keys(instance.exports).filter(fn => fn.endsWith("_register"));
+          filter_entries = filter_entries.concat(entry_fn);
+
           // the table should be unchanged
           assert(wasmTable === originalTable);
           // add new entries to functionsInTableMap
@@ -11017,4 +11023,4 @@ else if (typeof exports === 'object')
   exports["Module"] = Module;
 
   const using_file = {'location':''};
-  export {Module, using_file}
+  export {Module, using_file, filter_entries};

@@ -19,9 +19,13 @@ Entry *EMSCRIPTEN_KEEPALIVE constructor()
     return entry;
 }
 
+//const GF_FilterRegister *imgdec_register(GF_FilterSession *session);
+
 int EMSCRIPTEN_KEEPALIVE set(Entry *entry, const char *attrs)
 {
     GF_Err e;
+
+    //gf_fs_add_filter_register(entry->session, imgdec_register(NULL) );
 
     parse_set(entry, attrs);
 
