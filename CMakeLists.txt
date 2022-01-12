@@ -62,7 +62,7 @@ add_executable(simple-img ${SIMPLE_IMG_CORE})
 
 set_target_properties( simple-img 
                         PROPERTIES 
-                            LINK_FLAGS "${USE_FLAGS} -s USE_LIBJPEG=1 -s USE_LIBPNG=1 --no-entry -s MAIN_MODULE=2  -s MODULARIZE=1 -s EXPORTED_RUNTIME_METHODS=['stringToUTF8','UTF8ToString'] -s EXPORTED_FUNCTIONS=['_strcmp','_strlen','_strcpy','_strcat','_strncpy','_strchr','_memset','_memcpy','_gf_filter_get_udta','_gf_filter_pid_get_packet','_gf_filter_pck_get_data','_gf_filter_pid_set_property','_gf_filter_pck_new_alloc','_gf_filter_pck_send','_gf_filter_pid_check_caps','_gf_filter_pid_get_property','_gf_filter_pid_new','_gf_filter_pid_copy_properties','_gf_filter_pid_set_property','_gf_filter_set_name','_gf_filter_pck_set_dependency_flags','_gf_filter_pid_set_framing_mode','_gf_filter_pck_new_ref','_gf_filter_pck_set_cts','_gf_filter_pck_set_sap','_gf_filter_pck_set_duration','_gf_filter_pck_get_property','_gf_filter_pck_set_byte_offset','_gf_filter_pck_set_framing','_gf_filter_pck_set_seek_flag'] -s ERROR_ON_UNDEFINED_SYMBOLS=0"
+                            LINK_FLAGS "${USE_FLAGS} -s USE_LIBJPEG=1 -s USE_LIBPNG=1 --no-entry -s MAIN_MODULE=2  -s MODULARIZE=1 -s EXPORTED_RUNTIME_METHODS=['stringToUTF8','UTF8ToString'] -s EXPORTED_FUNCTIONS=['_pthread_mutex_destroy','_pthread_mutex_init','_posix_memalign','_pow','_vsnprintf','_getenv','_strcmp','_strlen','_strcpy','_strcat','_strncpy','_strchr','_memset','_memcpy','_calloc','_realloc','_gf_filter_get_udta','_gf_filter_pid_get_packet','_gf_filter_pck_get_data','_gf_filter_pid_set_property','_gf_filter_pck_new_alloc','_gf_filter_pck_send','_gf_filter_pid_check_caps','_gf_filter_pid_get_property','_gf_filter_pid_new','_gf_filter_pid_copy_properties','_gf_filter_pid_set_property','_gf_filter_set_name','_gf_filter_pck_set_dependency_flags','_gf_filter_pid_set_framing_mode','_gf_filter_pck_new_ref','_gf_filter_pck_set_cts','_gf_filter_pck_set_sap','_gf_filter_pck_set_duration','_gf_filter_pck_get_property','_gf_filter_pck_set_byte_offset','_gf_filter_pck_set_framing','_gf_filter_pck_set_seek_flag','_gf_filter_pck_get_seek_flag'] -s ERROR_ON_UNDEFINED_SYMBOLS=0"
                             )
 
 target_link_libraries(simple-img 
@@ -76,7 +76,7 @@ add_custom_target (serve
 )
 
 add_custom_target (release
-  COMMAND npm run build:prod && ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/simple-img.wasm ${CMAKE_CURRENT_BINARY_DIR}/nanojpeg.wasm  ${CMAKE_CURRENT_BINARY_DIR}/imgdec.wasm  ${CMAKE_CURRENT_BINARY_DIR}/pngenc.wasm ${CMAKE_CURRENT_BINARY_DIR}/rfimg.wasm ${CMAKE_CURRENT_BINARY_DIR}/writegen.wasm  ${CMAKE_CURRENT_BINARY_DIR}/dist/
+  COMMAND npm run build:prod && ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/simple-img.wasm ${CMAKE_CURRENT_BINARY_DIR}/nanojpeg.wasm  ${CMAKE_CURRENT_BINARY_DIR}/imgdec.wasm  ${CMAKE_CURRENT_BINARY_DIR}/pngenc.wasm ${CMAKE_CURRENT_BINARY_DIR}/rfimg.wasm ${CMAKE_CURRENT_BINARY_DIR}/writegen.wasm ${CMAKE_CURRENT_BINARY_DIR}/j2kdec.wasm ${CMAKE_CURRENT_BINARY_DIR}/dist/
 )
 
 add_custom_target (test

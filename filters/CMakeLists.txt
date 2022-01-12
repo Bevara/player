@@ -83,8 +83,14 @@ ${THIRD_PARTIES}/openjpeg/src/lib/openjp2
 ${THIRD_PARTIES_BINARIES}/openjpeg/src/lib/openjp2
 )
 
+SET(J2KDEC_SRC
+${GPAC_LOCATION}/src/filters/dec_j2k.c
+${GPAC_LOCATION}/src/utils/error.c
+${GPAC_LOCATION}/src/utils/bitstream.c
+)
+
 add_filter(j2kdec
-                ${GPAC_LOCATION}/src/filters/dec_j2k.c
+                "${J2KDEC_SRC}"
                 ${THIRD_PARTIES_BINARIES}/openjpeg/bin/libopenjp2.a
                 _j2kdec_register
                 GPAC_HAS_JP2
