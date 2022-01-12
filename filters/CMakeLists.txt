@@ -7,21 +7,69 @@ set (GPAC_LOCATION ${THIRD_PARTIES}/gpac)
 add_compile_definitions(GPAC_HAVE_CONFIG_H)
 add_compile_definitions(GPAC_HAS_JPEG)
 
-add_executable(nanojpeg ${CMAKE_SOURCE_DIR}/filters/nanojpeg.c)
 
-target_link_libraries(nanojpeg
-${CMAKE_BINARY_DIR}/third_parties/nanojpeg/nanojpeg.o
+macro(add_filter FILTERNAME ENTRYFILES LINKFILES ENTRY_FN DEFINITIONS INCLUDES)
+
+add_executable(${FILTERNAME} ${ENTRYFILES})
+
+target_link_libraries(${FILTERNAME} ${LINKFILES})
+
+set_target_properties(${FILTERNAME}
+                        PROPERTIES 
+                            LINK_FLAGS "-s SIDE_MODULE=2 -s EXPORTED_FUNCTIONS=${ENTRY_FN}"
+                            )
+
+target_compile_definitions(${FILTERNAME} PRIVATE ${DEFINITIONS})
+target_include_directories(${FILTERNAME} PRIVATE ${INCLUDES})
+
+endmacro()
+
+add_filter(nanojpeg
+                ${CMAKE_SOURCE_DIR}/filters/nanojpeg.c
+                ${CMAKE_BINARY_DIR}/third_parties/nanojpeg/nanojpeg.o
+                _nanojpeg_register
+                ""
+                "")
+
+SET(IMG_DEC_SRC 
+    ${GPAC_LOCATION}/src/filters/dec_img.c
+    ${GPAC_LOCATION}/src/media_tools/img.c)
+
+
+add_filter(imgdec
+                "${IMG_DEC_SRC}"
+                ""
+                _imgdec_register
+                GPAC_HAS_JPEG
+                ${GPAC_LOCATION}/include)
+SET(RFIMG_SRC 
+        ${GPAC_LOCATION}/src/filters/reframe_img.c
+        ${GPAC_LOCATION}/src/media_tools/img.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c)
+
+add_filter(rfimg
+                "${RFIMG_SRC}"
+                ""
+                _img_reframe_register
+                ""
+                "")
+
+SET(WRITEGEN_SRC
+    ${GPAC_LOCATION}/src/filters/write_generic.c
+    ${GPAC_LOCATION}/src/utils/constants.c
+    ${GPAC_LOCATION}/src/utils/os_config_init.c
 )
 
-set_target_properties( nanojpeg 
-                        PROPERTIES 
-                            LINK_FLAGS "${USE_FLAGS} -s SIDE_MODULE=2"
-                            )
-     
-add_executable(imgdec ${GPAC_LOCATION}/src/filters/dec_img.c
-                        ${GPAC_LOCATION}/src/media_tools/img.c)
+add_filter(writegen
+                "${WRITEGEN_SRC}"
+                ""
+                _writegen_register
+                ""
+                "")
 
-set_target_properties( imgdec 
-                        PROPERTIES 
-                            LINK_FLAGS "${USE_FLAGS} -s SIDE_MODULE=2 -s EXPORTED_FUNCTIONS=_imgdec_register"
-                            )
+add_filter(pngenc
+                ${GPAC_LOCATION}/src/filters/enc_png.c
+                ""
+                _pngenc_register
+                GPAC_HAS_PNG
+                "")

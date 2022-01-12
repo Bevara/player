@@ -96,7 +96,7 @@ GF_FilterRegister NanojpegRegister = {
 	.process = nanojpeg_process,
 };
 
-const GF_FilterRegister* EMSCRIPTEN_KEEPALIVE nanojpeg_register(GF_FilterSession *session)
+const GF_FilterRegister* nanojpeg_register(GF_FilterSession *session)
 {
 	return &NanojpegRegister;
 }

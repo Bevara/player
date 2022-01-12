@@ -88,7 +88,10 @@ class UniversalImage extends HTMLImageElement {
         
         using_file.location = using_attribute;
         downloads["module"] = new (Module as any)({
-            dynamicLibraries: [with_attribute]
+            dynamicLibraries: [with_attribute, 
+                "rfimg.wasm",
+                "writegen.wasm"
+            ]
         });
 
         this._decodingPromise = new Promise((main_resolve, _main_reject) => {
