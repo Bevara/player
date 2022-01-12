@@ -1,6 +1,4 @@
 
-var filter_entries = [];
-
 var Module = (function() {
   var _scriptDir = typeof document !== 'undefined' && document.currentScript ? document.currentScript.src : undefined;
   if (typeof __filename !== 'undefined') _scriptDir = _scriptDir || __filename;
@@ -25,12 +23,16 @@ function(Module) {
 // can continue to use Module afterwards as well.
 var Module = typeof Module !== 'undefined' ? Module : {};
 
+var filter_entries = Module['filter_entries'] || [];
+
+
 // Set up the promise that indicates the Module is initialized
 var readyPromiseResolve, readyPromiseReject;
 Module['ready'] = new Promise(function(resolve, reject) {
   readyPromiseResolve = resolve;
   readyPromiseReject = reject;
 });
+Object.defineProperty(Module, "filter_entries", { configurable: true, get: function() { return filter_entries } });
 
       if (!Object.getOwnPropertyDescriptor(Module['ready'], '_memset')) {
         Object.defineProperty(Module['ready'], '_memset', { configurable: true, get: function() { abort('You are getting _memset on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
@@ -3331,7 +3333,7 @@ function createExportWrapper(name, fixedasm) {
 }
 
 var wasmBinaryFile;
-  wasmBinaryFile = using_file.location;
+  wasmBinaryFile = location.using;
   if (!isDataURI(wasmBinaryFile)) {
     wasmBinaryFile = locateFile(wasmBinaryFile);
   }
@@ -11022,5 +11024,5 @@ else if (typeof define === 'function' && define['amd'])
 else if (typeof exports === 'object')
   exports["Module"] = Module;
 
-  const using_file = {'location':''};
-  export {Module, using_file, filter_entries};
+  const location = {};
+  export {Module, location};

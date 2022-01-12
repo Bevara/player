@@ -1,6 +1,6 @@
 //import {HEAPU8, asmLibraryArg, writeArrayToMemory, initRuntime, stackCheckInit, Module, wasmTable, wasmMemory, stringToUTF8, stackAlloc} from './player'
 import { Common } from "./common"
-import { Module, using_file, filter_entries} from "./simple-img.js"
+import { Module, location} from "./simple-img.js"
 
 //declare var Module: any;
 
@@ -86,7 +86,8 @@ class UniversalImage extends HTMLImageElement {
             }
         }
         
-        using_file.location = using_attribute;
+        location.using = using_attribute;
+        location.with = with_attribute;
         downloads["module"] = new (Module as any)({
             dynamicLibraries: [with_attribute, 
                 "rfimg.wasm",
@@ -111,10 +112,10 @@ class UniversalImage extends HTMLImageElement {
                     const ptr = self.module.stackAlloc(img_array.byteLength);
                     self.module.HEAPU8.set(new Uint8Array(img_array), ptr);
                     args["buffer"] = { pointer: ptr, size: img_array.byteLength };
-
-                    // Set input filters
-                    args["filters"] = filter_entries.map(entry => self.module["_"+entry]());
                     
+                    // Set input filters
+                    args["filters"] = self.module.filter_entries.map(entry => self.module["_"+entry]());
+
                     // Convert json to string buffer
                     const json_args = JSON.stringify(args);
                     const len_args = (json_args.length << 2) + 1;
