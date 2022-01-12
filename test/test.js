@@ -29,8 +29,8 @@ describe('Simple-img', () => {
         .then(done);
     });
   });
-  describe('#imgdec', () => {
-    it('should decode Freedom.jpeg', (done) => {
+  describe('#j2kdec', () => {
+    it('should decode Cevennes2.jp2', (done) => {
       new Promise(function (resolve) {
         const img = document.createElement('img', { "is": "universal-img" });
         img.setAttribute("src", "http://bevaraserver.ddns.net/test-signals/j2k/Cevennes2.jp2");
