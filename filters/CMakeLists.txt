@@ -2,6 +2,7 @@
 set(CMAKE_EXECUTABLE_SUFFIX ".wasm")
 
 set (THIRD_PARTIES ${CMAKE_SOURCE_DIR}/third_parties)
+set (THIRD_PARTIES_BINARIES ${CMAKE_BINARY_DIR}/third_parties)
 set (GPAC_LOCATION ${THIRD_PARTIES}/gpac)
 
 add_compile_definitions(GPAC_HAVE_CONFIG_H)
@@ -25,7 +26,7 @@ endmacro()
 
 add_filter(nanojpeg
                 ${CMAKE_SOURCE_DIR}/filters/nanojpeg.c
-                ${CMAKE_BINARY_DIR}/third_parties/nanojpeg/nanojpeg.o
+                ${THIRD_PARTIES_BINARIES}/nanojpeg/nanojpeg.o
                 _nanojpeg_register
                 ""
                 ""
@@ -72,8 +73,20 @@ add_filter(writegen
 
 add_filter(pngenc
                 ${GPAC_LOCATION}/src/filters/enc_png.c
-                ${CMAKE_BINARY_DIR}/third_parties/libpng/libpng16.a
+                ${THIRD_PARTIES_BINARIES}/libpng/libpng16.a
                 _pngenc_register
                 GPAC_HAS_PNG
                 ""
+                "")
+SET(J2KDEC_LIB
+${THIRD_PARTIES}/openjpeg/src/lib/openjp2
+${THIRD_PARTIES_BINARIES}/openjpeg/src/lib/openjp2
+)
+
+add_filter(j2kdec
+                ${GPAC_LOCATION}/src/filters/dec_j2k.c
+                ${THIRD_PARTIES_BINARIES}/openjpeg/bin/libopenjp2.a
+                _j2kdec_register
+                GPAC_HAS_JP2
+                "${J2KDEC_LIB}"
                 "")
