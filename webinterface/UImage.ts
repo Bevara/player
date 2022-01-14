@@ -130,7 +130,7 @@ class UniversalImage extends HTMLImageElement {
 
                     // Retrieve result
                     const props = [
-                        "getImage", "getSize", "getWidth", "getHeight"
+                        "output", "size"
                     ]
                     if (self.hasAttribute("connections")) {
                         props.push("connections");
@@ -147,7 +147,7 @@ class UniversalImage extends HTMLImageElement {
                     const json_res = self.module.UTF8ToString(ptr_data);
                     const json_res_parsed = JSON.parse(json_res);
 
-                    const image = self.module.HEAPU8.slice(json_res_parsed.getImage, json_res_parsed.getImage + json_res_parsed.getSize);
+                    const image = self.module.HEAPU8.slice(json_res_parsed.output, json_res_parsed.output + json_res_parsed.size);
                     const blob = new Blob([image]);
                     self.srcset = URL.createObjectURL(blob);
                     main_resolve(self.srcset);

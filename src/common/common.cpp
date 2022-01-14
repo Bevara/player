@@ -81,21 +81,13 @@ extern "C" const char *parse_get(Entry *entry, const char *json)
   {
     const char *property = itr->GetString();
 
-    if (strcmp(property, "getImage") == 0)
+    if (strcmp(property, "output") == 0)
     {
-      out.AddMember(Value("getImage"), Value((unsigned int)entry->out_data), document.GetAllocator());
+      out.AddMember(Value("output"), Value((unsigned int)entry->out_data), document.GetAllocator());
     }
-    else if (strcmp(property, "getSize") == 0)
+    else if (strcmp(property, "size") == 0)
     {
-      out.AddMember(Value("getSize"), Value((u32)entry->out_numBytes), out.GetAllocator());
-    }
-    else if (strcmp(property, "getWidth") == 0)
-    {
-      out.AddMember(Value("getWidth"), Value(entry->width), out.GetAllocator());
-    }
-    else if (strcmp(property, "getHeight") == 0)
-    {
-      out.AddMember(Value("getHeight"), Value(entry->height), out.GetAllocator());
+      out.AddMember(Value("size"), Value((u32)entry->out_numBytes), out.GetAllocator());
     }else if (strcmp(property, "connections") == 0)
     {
       gf_fs_print_connections(entry->session);
