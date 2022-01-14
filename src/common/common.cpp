@@ -11,20 +11,25 @@ using namespace rapidjson;
 
 StringBuffer sb;
 
-const char* out_src = "Freedom.png";
-
 extern "C" void parse_set(Entry *entry, const char *json)
 {
   Document document;
   document.Parse(json);
   assert(document.IsObject());
 
-  const char* in_src = NULL;
+  const char* src = NULL;
+  const char* dst = NULL;
 
   if (document.HasMember("src"))
   {
     assert(document["src"].IsString());
-    in_src = document["src"].GetString();
+    src = document["src"].GetString();
+  }
+
+  if (document.HasMember("dst"))
+  {
+    assert(document["dst"].IsString());
+    dst = document["dst"].GetString();
   }
 
   if (document.HasMember("filters"))
@@ -45,14 +50,14 @@ extern "C" void parse_set(Entry *entry, const char *json)
     entry->in_data = (char*) document["buffer"]["pointer"].GetUint();
     entry->in_numBytes = document["buffer"]["size"].GetUint();
 
-    const char* io_in = make_fileio(entry,in_src, &entry->in_data, &entry->in_numBytes, GF_TRUE, &err);
+    const char* io_in = make_fileio(entry,src, &entry->in_data, &entry->in_numBytes, GF_TRUE, &err);
 
     gf_fs_load_source(entry->session, io_in, NULL, NULL, &err);
     if (err) {
 		  fprintf(stderr, "session error %s\n", gf_error_to_string(err) );
     }
 
-    const char* io_out = make_fileio(entry,out_src, &entry->out_data, &entry->out_numBytes, GF_FALSE, &err);
+    const char* io_out = make_fileio(entry,dst, &entry->out_data, &entry->out_numBytes, GF_FALSE, &err);
 
     gf_fs_load_destination(entry->session, io_out , NULL, NULL, &err);
    if (err) {

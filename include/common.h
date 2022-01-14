@@ -22,6 +22,7 @@ typedef struct
 typedef struct _Entry
 {
   const char* src;
+  const char* out_src;
   int width;
   int height;
   GF_FilterSession *session;

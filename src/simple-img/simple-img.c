@@ -13,20 +13,13 @@ Entry *EMSCRIPTEN_KEEPALIVE constructor()
 
     Entry *entry = malloc(sizeof(Entry));
     entry->session = gf_fs_new_defaults(sflags);
-    //gf_fs_add_filter_register(entry->session, nanojpeg_register(NULL) );
-    //entry->filter = gf_fs_load_filter(entry->session, "nanojpeg", &e);
 
     return entry;
 }
 
-//const GF_FilterRegister *imgdec_register(GF_FilterSession *session);
-
 int EMSCRIPTEN_KEEPALIVE set(Entry *entry, const char *attrs)
 {
     GF_Err e;
-
-    //gf_fs_add_filter_register(entry->session, imgdec_register(NULL) );
-
     parse_set(entry, attrs);
 
     GF_Filter *source = NULL;

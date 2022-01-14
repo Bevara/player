@@ -4,7 +4,7 @@ import { Module, location} from "./simple-img.js"
 
 //declare var Module: any;
 
-class UniversalImage extends HTMLImageElement {
+class UniversalAudio extends HTMLAudioElement {
     using: string;
     common: Common;
     memory: Uint8Array;
@@ -20,53 +20,6 @@ class UniversalImage extends HTMLImageElement {
     get decodingPromise() {
         return this._decodingPromise;
     }
-
-    static flush_image(_entry: number): void {
-        let self = this as any;
-
-        const get_args = JSON.stringify([
-            "getImage", "getSize", "getWidth", "getHeight"
-        ]);
-        const get_args_len = (get_args.length << 2) + 1;
-        const ptr_get_args = self.instance.stackAlloc(get_args_len);
-
-        self.instance.stringToUTF8(get_args, ptr_get_args, get_args_len);
-
-        const ptr_data = self.instance._get(self.entry, ptr_get_args);
-
-        const json = self.instance.UTF8ToString(ptr_data);
-        const json_parsed = JSON.parse(json);
-
-        if (json_parsed.getImage == 0) return;
-
-        const image = self.instance.HEAPU8.slice(json_parsed.getImage, json_parsed.getImage + json_parsed.getSize);
-
-        let canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        var imageData = ctx.createImageData(json_parsed.getWidth, json_parsed.getHeight);
-        canvas.setAttribute('width', json_parsed.getWidth);
-        canvas.setAttribute('height', json_parsed.getHeight);
-        const data = imageData.data;
-        const len = data.length;
-        var i = 0;
-        var t = 0;
-
-        for (; i < len; i += 4) {
-            data[i] = image[t];
-            data[i + 1] = image[t + 1];
-            data[i + 2] = image[t + 2];
-            data[i + 3] = 255;
-
-            t += 3;
-        }
-
-        ctx.putImageData(imageData, 0, 0);
-
-        canvas.toBlob(function (blob) {
-            self.srcset = URL.createObjectURL(blob);
-        })
-    }
-
 
     connectedCallback() {
         const self = this;
@@ -89,11 +42,7 @@ class UniversalImage extends HTMLImageElement {
         location.using = using_attribute;
         location.with = with_attribute;
         downloads["module"] = new (Module as any)({
-            dynamicLibraries: [with_attribute, 
-                "rfimg.wasm",
-                "writegen.wasm",
-                "pngenc.wasm"
-            ]
+            dynamicLibraries: [with_attribute]
         });
 
         this._decodingPromise = new Promise((main_resolve, _main_reject) => {
@@ -109,12 +58,9 @@ class UniversalImage extends HTMLImageElement {
                     self.entry = self.module._constructor();
 
                     // Set input buffer
-                    const ptr_buffer_in = self.module.stackAlloc(img_array.byteLength);
-                    self.module.HEAPU8.set(new Uint8Array(img_array), ptr_buffer_in);
-                    args["buffer"] = { pointer: ptr_buffer_in, size: img_array.byteLength };
-
-                    // Set output format
-                    args["dst"] = "out.png";
+                    const ptr = self.module.stackAlloc(img_array.byteLength);
+                    self.module.HEAPU8.set(new Uint8Array(img_array), ptr);
+                    args["buffer"] = { pointer: ptr, size: img_array.byteLength };
                     
                     // Set input filters
                     args["filters"] = self.module.filter_entries.map(entry => self.module["_"+entry]());
@@ -179,4 +125,4 @@ class UniversalImage extends HTMLImageElement {
     static get observedAttributes() { return ['src', 'using', 'with']; }
 }
 
-export { UniversalImage }
+export { UniversalAudio }
