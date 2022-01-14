@@ -1,6 +1,6 @@
 //import {HEAPU8, asmLibraryArg, writeArrayToMemory, initRuntime, stackCheckInit, Module, wasmTable, wasmMemory, stringToUTF8, stackAlloc} from './player'
 import { Common } from "./common"
-import { Module, location} from "./simple-img.js"
+import { Module, location } from "./simple-img.js"
 
 //declare var Module: any;
 
@@ -38,7 +38,7 @@ class UniversalAudio extends HTMLAudioElement {
                     args[nodeName] = atts[i].nodeValue;
             }
         }
-        
+
         location.using = using_attribute;
         location.with = with_attribute;
         downloads["module"] = new (Module as any)({
@@ -61,9 +61,12 @@ class UniversalAudio extends HTMLAudioElement {
                     const ptr = self.module.stackAlloc(img_array.byteLength);
                     self.module.HEAPU8.set(new Uint8Array(img_array), ptr);
                     args["buffer"] = { pointer: ptr, size: img_array.byteLength };
-                    
+
                     // Set input filters
-                    args["filters"] = self.module.filter_entries.map(entry => self.module["_"+entry]());
+                    args["filters"] = self.module.filter_entries.map(entry => self.module["_" + entry]());
+
+                    // Set output format
+                    args["dst"] = "out.wav";
 
                     // Convert json to string buffer
                     const json_args = JSON.stringify(args);
@@ -95,8 +98,11 @@ class UniversalAudio extends HTMLAudioElement {
 
                     const image = self.module.HEAPU8.slice(json_res_parsed.output, json_res_parsed.output + json_res_parsed.size);
                     const blob = new Blob([image]);
-                    self.srcset = URL.createObjectURL(blob);
-                    main_resolve(self.srcset);
+                    var source = document.createElement('source');
+                    source.src = URL.createObjectURL(blob);
+                    source.type = "audio/wave";
+                    self.appendChild(source);
+                    main_resolve(source.src);
                 });
             }
 
