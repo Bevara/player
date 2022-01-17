@@ -99,4 +99,21 @@ add_filter(j2kdec
                 "${J2KDEC_LIB}"
                 "")
 
+add_filter(rfmp3
+                ${GPAC_LOCATION}/src/filters/reframe_mp3.c
+                ""
+                _mp3_dmx_register
+                ""
+                ""
+                "")
+
+add_filter(maddec
+                ${GPAC_LOCATION}/src/filters/dec_mad.c
+                ""
+                _maddec_register
+                GPAC_HAS_MAD
+                ""
+                "")
+
+## Should always be at the end of this file
 set(WASM_FILES ${WASM_FILES} PARENT_SCOPE)

@@ -42,7 +42,9 @@ class UniversalAudio extends HTMLAudioElement {
         location.using = using_attribute;
         location.with = with_attribute;
         downloads["module"] = new (Module as any)({
-            dynamicLibraries: [with_attribute]
+            dynamicLibraries: [with_attribute, 
+                "rfmp3.wasm",
+                "writegen.wasm"]
         });
 
         this._decodingPromise = new Promise((main_resolve, _main_reject) => {
