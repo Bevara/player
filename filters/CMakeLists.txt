@@ -112,7 +112,7 @@ add_filter(maddec
                 ""
                 _maddec_register
                 GPAC_HAS_MAD
-                ""
+                ${THIRD_PARTIES_BINARIES}/libmad
                 "")
 
 ## Should always be at the end of this file
