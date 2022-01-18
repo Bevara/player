@@ -9335,8 +9335,13 @@ function intArrayToString(array) {
   return ret.join('');
 }
 
-
 var asmLibraryArg = {
+  "read_callback":memio.read,
+  "seek_callback":memio.seek,
+  "tell_callback":memio.tell,
+  "eof_callback":memio.eof,
+  "printf_callback":memio.printf,
+  "open_callback":memio.open,
   "__asctime": ___asctime,
   "__assert_fail": ___assert_fail,
   "__call_sighandler": ___call_sighandler,
@@ -11025,4 +11030,5 @@ else if (typeof exports === 'object')
   exports["Module"] = Module;
 
   const location = {};
-  export {Module, location};
+  const memio = {};
+  export {Module, location, memio};

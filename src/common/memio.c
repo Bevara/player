@@ -4,6 +4,14 @@
 
 static s64 fio_mem_tell(GF_FileIO *fileio);
 
+static GF_Err read_callback(u8* buffer, u32 bytes);
+static GF_Err seek_callback(GF_FileIO *fileio, u8* buffer, u32 bytes);
+static s64 tell_callback(GF_FileIO *fileio);
+static Bool eof_callback(GF_FileIO *fileio);
+static int printf_callback(GF_FileIO *fileio, const char *format, va_list args);
+
+static GF_FileIO *open_callback(GF_FileIO *fileio_ref, const char *url, const char *mode, GF_Err *out_err);
+
 static GF_Err fio_mem_seek(GF_FileIO *fileio, u64 offset, s32 whence)
 {
   MemIOCtx *ioctx = gf_fileio_get_udta(fileio);
@@ -30,7 +38,7 @@ static u32 fio_mem_read(GF_FileIO *fileio, u8 *buffer, u32 bytes)
   MemIOCtx *ioctx = gf_fileio_get_udta(fileio);
   p = buffer;
   int remaining = *ioctx->numBytes - fio_mem_tell(fileio);
-
+  
   if (bytes > remaining)
   {
     (void)memcpy((void *)p, (void *)ioctx->_p, remaining);
@@ -41,6 +49,7 @@ static u32 fio_mem_read(GF_FileIO *fileio, u8 *buffer, u32 bytes)
 
   (void)memcpy((void *)p, (void *)ioctx->_p, bytes);
   ioctx->_p += bytes;
+
   return bytes;
 }
 
@@ -183,6 +192,12 @@ static GF_FileIO *fio_mem_open(GF_FileIO *fileio_ref, const char *url, const cha
 	return gfio;
 }
 
+GF_EXPORT
+void gf_fileio_set_stats_u32(GF_FileIO *gfio, u32 bytes_done, u32 file_size, Bool cache_complete, u32 bytes_per_sec)
+{
+  gf_fileio_set_stats(gfio, bytes_done, file_size, cache_complete, bytes_per_sec);
+}
+
 const char *make_fileio(Entry *entry, const char *inargs,   char **data, size_t *numBytes, Bool is_input, GF_Err *e)
 {
   MemIOCtx *ioctx;
@@ -193,7 +208,14 @@ const char *make_fileio(Entry *entry, const char *inargs,   char **data, size_t 
   ioctx->data = data;
   ioctx->numBytes = numBytes;
 
-  fio = gf_fileio_new(ioctx->path, ioctx, fio_mem_open, fio_mem_seek, fio_mem_read, fio_mem_write, fio_mem_tell, fio_mem_eof, fio_mem_printf);
+  if (is_input == GF_TRUE){
+    fio = gf_fileio_new(ioctx->path, ioctx, open_callback, seek_callback, read_callback, fio_mem_write, tell_callback, eof_callback, printf_callback);
+  }else{
+    fio = gf_fileio_new(ioctx->path, ioctx, fio_mem_open, fio_mem_seek, fio_mem_read, fio_mem_write, fio_mem_tell, fio_mem_eof, fio_mem_printf);
+  }
+  
+  
+  
   if (!fio)
   {
     *e = GF_OUT_OF_MEM;
