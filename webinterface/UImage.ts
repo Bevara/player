@@ -86,65 +86,95 @@ class UniversalImage extends HTMLImageElement {
             }
         }
 
-        let numBytes = 0;
-        let p = 0;
-        let remaining = 0;
-        let buffer_in = null;
-        memio["read"] = (fileio, buffer, bytes) => {
-            remaining = numBytes - p;
+        let buf_in = {
+            numBytes : 0,
+            p : 0,
+            remaining : 0,
+            buffer_in : null,
+            module:null
+        } 
+        
+        memio["read"] = function (fileio, buffer, bytes) {
+            this.remaining = this.numBytes - this.p;
 
-            if (bytes > remaining) {
-                self.module.HEAPU8.set(buffer_in.slice(p, p + remaining), buffer);
-                p += remaining;
-                return remaining;
+            if (bytes > this.remaining) {
+                buf_in.module.HEAPU8.set(this.buffer_in.slice(this.p, this.p + this.remaining), buffer);
+                this.p += this.remaining;
+                return this.remaining;
             }
 
-            self.module.HEAPU8.set(buffer_in.slice(p, p + bytes), buffer);
-            p += bytes;
-            console.log("numBytes: " + numBytes + ", bytes: " + bytes + ", remaining =" + remaining);
+            buf_in.module.HEAPU8.set(this.buffer_in.slice(this.p, this.p + bytes), buffer);
+            this.p += bytes;
+            console.log("numBytes: " + this.numBytes + ", bytes: " + bytes + ", remaining =" + this.remaining);
             return bytes;
-        }
+        }.bind(buf_in);
+
         memio["read"].sig = ['i', 'i', 'i','i'];
+
+        memio["write"] = function (fileio, buffer, bytes) {
+            
+        }
+        memio["write"].sig = ['i', 'i', 'i','i'];
 
         const SEEK_SET = 0;
         const SEEK_CUR = 1;
         const SEEK_END = 2;
-        memio["seek"] = (fileio, offset, whence) => {
+        memio["seek"] = function (fileio, offset, whence) {
             switch (whence) {
                 case SEEK_SET:
                 case SEEK_CUR:
-                    p += Number(offset);
+                    this.p += Number(offset);
                     break;
                 case SEEK_END:
-                    p = numBytes + Number(offset);
+                    this.p = this.numBytes + Number(offset);
                     break;
             }
             return 0;
-        }
+        }.bind(buf_in);
         memio["seek"].sig = ['i', 'i', 'j','i'];
 
-        memio["tell"] = (fileio) => {
-            return p;
-        }
-        memio["tell"].sig = ['i', 'i'];
+        memio["tell"] = function (fileio) {
+            return BigInt(this.p);
+        }.bind(buf_in);
+        memio["tell"].sig = ['j', 'i'];
 
-        memio["eof"] = (fileio) => {
-            return p == numBytes;
-        }
+        memio["eof"] = function (fileio) {
+            return this.p == this.numBytes;
+        }.bind(buf_in);
         memio["eof"].sig = ['i', 'i'];
 
-        memio["printf"] = (fileio, format, args) => {
+        memio["printf"] = function (fileio, format, args) {
             console.log("memio printf has to be implemented");
             return 0;
         }
         memio["printf"].sig = ['i','i','i', 'i'];
 
-        memio["open"] = (fileio_ref, url, mode, out_err) => {
-            self.module._gf_fileio_set_stats_u32(fileio_ref, numBytes,numBytes, 1, 0);
-            self.module.HEAP32[((out_err)>>2)] = 0; //GF_OK
+        memio["open"] = function (fileio_ref, url, mode, out_err) {
+            buf_in.module._gf_fileio_set_stats_u32(fileio_ref, this.numBytes,this.numBytes, 1, 0);
+            buf_in.module.HEAP32[((out_err)>>2)] = 0; //GF_OK
             return fileio_ref;
-        }
+        }.bind(buf_in);
         memio["open"].sig = ['i','i','i','i', 'i'];
+
+        function make_fileio(){
+            const source = self.getAttribute("src");
+            const len_source_str = (source.length << 2) + 1;
+            const ptr_source_str = self.module.stackAlloc(len_source_str);
+            self.module.stringToUTF8(source, ptr_source_str, len_source_str);
+            
+
+            const fio = self.module._gf_fileio_new(ptr_source_str, 0, 
+                memio["open"].value, 
+                memio["seek"].value, 
+                memio["read"].value, 
+                memio["write"].value, 
+                memio["tell"].value,
+                memio["eof"].value,
+                memio["printf"].value);
+            
+
+            return self.module._gf_fileio_url(fio);
+        }
 
         location.using = using_attribute;
         location.with = with_attribute;
@@ -166,15 +196,22 @@ class UniversalImage extends HTMLImageElement {
 
                 Promise.all(blobs).then((result) => {
                     const img_array = result[0];
-                    buffer_in = new Uint8Array(img_array);
+                    buf_in.buffer_in = new Uint8Array(img_array);
                     self.entry = self.module._constructor();
+                    
+                    buf_in.numBytes = img_array.byteLength;
+                    buf_in.remaining = buf_in.numBytes;
+                    buf_in.module = self.module;
+
+                    const fio_url_ptr = make_fileio();
+                    const fio_url = self.module.UTF8ToString(fio_url_ptr);
 
                     // Set input buffer
-                    numBytes = img_array.byteLength;
-                    remaining = numBytes;
+                    /*
                     const ptr_buffer_in = self.module.stackAlloc(img_array.byteLength);
                     self.module.HEAPU8.set(buffer_in, ptr_buffer_in);
-                    args["buffer"] = { pointer: ptr_buffer_in, size: img_array.byteLength };
+                    args["buffer"] = { pointer: ptr_buffer_in, size: img_array.byteLength };*/
+                    args["buffer"] = fio_url;
 
                     // Set output format
                     args["dst"] = "out.png";

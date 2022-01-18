@@ -4127,6 +4127,14 @@ var ASM_CONSTS = {
         }
       }
     }
+
+  function add_file_io(){
+    Object.keys(memio).forEach(x => {
+      memio[x].value = addFunctionWasm(memio[x], memio[x].sig);
+    })
+    
+  }
+
   function preloadDylibs() {
       if (!dynamicLibraries.length) {
         reportUndefinedSymbols();
@@ -4142,6 +4150,7 @@ var ASM_CONSTS = {
       }, Promise.resolve()).then(function() {
         // we got them all, wonderful
         reportUndefinedSymbols();
+        add_file_io();
         removeRunDependency('preloadDylibs');
       });
     }
@@ -9342,6 +9351,7 @@ var asmLibraryArg = {
   "eof_callback":memio.eof,
   "printf_callback":memio.printf,
   "open_callback":memio.open,
+  "write_callback":memio.write,
   "__asctime": ___asctime,
   "__assert_fail": ___assert_fail,
   "__call_sighandler": ___call_sighandler,
