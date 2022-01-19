@@ -1,6 +1,7 @@
 //import {HEAPU8, asmLibraryArg, writeArrayToMemory, initRuntime, stackCheckInit, Module, wasmTable, wasmMemory, stringToUTF8, stackAlloc} from './player'
 import { Common } from "./common"
 import { Module, location, memio } from "./simple-img.js"
+import {fileio} from "./memio"
 
 //declare var Module: any;
 
@@ -14,6 +15,7 @@ class UniversalImage extends HTMLImageElement {
     instance: any;
     entry: any;
     module: any;
+    input : fileio;
 
     private _decodingPromise: Promise<String>;
 
@@ -80,100 +82,10 @@ class UniversalImage extends HTMLImageElement {
             switch (nodeName) {
                 case 'src':
                     downloads[nodeName] = fetch(atts[i].nodeValue);
-
+                    this.input = new fileio(atts[i].nodeValue);
                 default:
                     args[nodeName] = atts[i].nodeValue;
             }
-        }
-
-        let buf_in = {
-            numBytes : 0,
-            p : 0,
-            remaining : 0,
-            buffer_in : null,
-            module:null
-        } 
-        
-        memio["read"] = function (fileio, buffer, bytes) {
-            this.remaining = this.numBytes - this.p;
-
-            if (bytes > this.remaining) {
-                buf_in.module.HEAPU8.set(this.buffer_in.slice(this.p, this.p + this.remaining), buffer);
-                this.p += this.remaining;
-                return this.remaining;
-            }
-
-            buf_in.module.HEAPU8.set(this.buffer_in.slice(this.p, this.p + bytes), buffer);
-            this.p += bytes;
-            console.log("numBytes: " + this.numBytes + ", bytes: " + bytes + ", remaining =" + this.remaining);
-            return bytes;
-        }.bind(buf_in);
-
-        memio["read"].sig = ['i', 'i', 'i','i'];
-
-        memio["write"] = function (fileio, buffer, bytes) {
-            
-        }
-        memio["write"].sig = ['i', 'i', 'i','i'];
-
-        const SEEK_SET = 0;
-        const SEEK_CUR = 1;
-        const SEEK_END = 2;
-        memio["seek"] = function (fileio, offset, whence) {
-            switch (whence) {
-                case SEEK_SET:
-                case SEEK_CUR:
-                    this.p += Number(offset);
-                    break;
-                case SEEK_END:
-                    this.p = this.numBytes + Number(offset);
-                    break;
-            }
-            return 0;
-        }.bind(buf_in);
-        memio["seek"].sig = ['i', 'i', 'j','i'];
-
-        memio["tell"] = function (fileio) {
-            return BigInt(this.p);
-        }.bind(buf_in);
-        memio["tell"].sig = ['j', 'i'];
-
-        memio["eof"] = function (fileio) {
-            return this.p == this.numBytes;
-        }.bind(buf_in);
-        memio["eof"].sig = ['i', 'i'];
-
-        memio["printf"] = function (fileio, format, args) {
-            console.log("memio printf has to be implemented");
-            return 0;
-        }
-        memio["printf"].sig = ['i','i','i', 'i'];
-
-        memio["open"] = function (fileio_ref, url, mode, out_err) {
-            buf_in.module._gf_fileio_set_stats_u32(fileio_ref, this.numBytes,this.numBytes, 1, 0);
-            buf_in.module.HEAP32[((out_err)>>2)] = 0; //GF_OK
-            return fileio_ref;
-        }.bind(buf_in);
-        memio["open"].sig = ['i','i','i','i', 'i'];
-
-        function make_fileio(){
-            const source = self.getAttribute("src");
-            const len_source_str = (source.length << 2) + 1;
-            const ptr_source_str = self.module.stackAlloc(len_source_str);
-            self.module.stringToUTF8(source, ptr_source_str, len_source_str);
-            
-
-            const fio = self.module._gf_fileio_new(ptr_source_str, 0, 
-                memio["open"].value, 
-                memio["seek"].value, 
-                memio["read"].value, 
-                memio["write"].value, 
-                memio["tell"].value,
-                memio["eof"].value,
-                memio["printf"].value);
-            
-
-            return self.module._gf_fileio_url(fio);
         }
 
         location.using = using_attribute;
@@ -196,22 +108,12 @@ class UniversalImage extends HTMLImageElement {
 
                 Promise.all(blobs).then((result) => {
                     const img_array = result[0];
-                    buf_in.buffer_in = new Uint8Array(img_array);
+                   
                     self.entry = self.module._constructor();
-                    
-                    buf_in.numBytes = img_array.byteLength;
-                    buf_in.remaining = buf_in.numBytes;
-                    buf_in.module = self.module;
-
-                    const fio_url_ptr = make_fileio();
-                    const fio_url = self.module.UTF8ToString(fio_url_ptr);
-
-                    // Set input buffer
-                    /*
-                    const ptr_buffer_in = self.module.stackAlloc(img_array.byteLength);
-                    self.module.HEAPU8.set(buffer_in, ptr_buffer_in);
-                    args["buffer"] = { pointer: ptr_buffer_in, size: img_array.byteLength };*/
-                    args["buffer"] = fio_url;
+                    self.input.buffer = new Uint8Array(img_array);
+                    self.input.module = self.module;
+                    const fio_url = self.input.make_fileio();
+                    args["io_in"] = fio_url;
 
                     // Set output format
                     args["dst"] = "out.png";

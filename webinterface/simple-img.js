@@ -4129,10 +4129,9 @@ var ASM_CONSTS = {
     }
 
   function add_file_io(){
-    Object.keys(memio).forEach(x => {
-      memio[x].value = addFunctionWasm(memio[x], memio[x].sig);
+    memio.forEach(x => {
+      x.value = addFunctionWasm(x, x.sig);
     })
-    
   }
 
   function preloadDylibs() {
@@ -9345,13 +9344,6 @@ function intArrayToString(array) {
 }
 
 var asmLibraryArg = {
-  "read_callback":memio.read,
-  "seek_callback":memio.seek,
-  "tell_callback":memio.tell,
-  "eof_callback":memio.eof,
-  "printf_callback":memio.printf,
-  "open_callback":memio.open,
-  "write_callback":memio.write,
   "__asctime": ___asctime,
   "__assert_fail": ___assert_fail,
   "__call_sighandler": ___call_sighandler,
@@ -11040,5 +11032,5 @@ else if (typeof exports === 'object')
   exports["Module"] = Module;
 
   const location = {};
-  const memio = {};
+  const memio = [];
   export {Module, location, memio};

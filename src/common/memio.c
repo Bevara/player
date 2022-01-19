@@ -210,7 +210,7 @@ const char *make_fileio(Entry *entry, const char *inargs,   char **data, size_t 
   ioctx->numBytes = numBytes;
 
   if (is_input == GF_TRUE){
-    fio = gf_fileio_new(ioctx->path, ioctx, open_callback, seek_callback, read_callback, write_callback, tell_callback, eof_callback, printf_callback);
+   /* fio = gf_fileio_new(ioctx->path, ioctx, open_callback, seek_callback, read_callback, write_callback, tell_callback, eof_callback, printf_callback);*/
   }else{
     fio = gf_fileio_new(ioctx->path, ioctx, fio_mem_open, fio_mem_seek, fio_mem_read, fio_mem_write, fio_mem_tell, fio_mem_eof, fio_mem_printf);
   }

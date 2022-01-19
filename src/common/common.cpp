@@ -40,21 +40,11 @@ extern "C" void parse_set(Entry *entry, const char *json)
       gf_fs_add_filter_register(entry->session, (const GF_FilterRegister *)filters[i].GetInt() );
   }
 
-  if (document.HasMember("buffer"))
+  if (document.HasMember("io_in"))
   {
     GF_Err err;
-    /*assert(document["buffer"].IsObject());
-    assert(document["buffer"].HasMember("pointer"));
-    assert(document["buffer"].HasMember("size"));
-
-    entry->in_data = (char*) document["buffer"]["pointer"].GetUint();
-    entry->in_numBytes = document["buffer"]["size"].GetUint();
-
-    const char* io_in = make_fileio(entry,src, &entry->in_data, &entry->in_numBytes, GF_TRUE, &err);*/
-    
-    
-    assert(document["buffer"].IsString());
-    const char* io_in = document["buffer"].GetString();
+    assert(document["io_in"].IsString());
+    const char* io_in = document["io_in"].GetString();
 
     gf_fs_load_source(entry->session, io_in, NULL, NULL, &err);
     if (err) {
