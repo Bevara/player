@@ -22,11 +22,6 @@ int EMSCRIPTEN_KEEPALIVE set(Entry *entry, const char *attrs)
     GF_Err e;
     parse_set(entry, attrs);
 
-    GF_Filter *source = NULL;
-    GF_Filter *dst = NULL;
-    const char *fargs_src = NULL;
-    
-
     e= gf_fs_run(entry->session);
 
     return 0;

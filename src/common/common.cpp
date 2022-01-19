@@ -17,21 +17,6 @@ extern "C" void parse_set(Entry *entry, const char *json)
   document.Parse(json);
   assert(document.IsObject());
 
-  const char *src = NULL;
-  const char *dst = NULL;
-
-  if (document.HasMember("src"))
-  {
-    assert(document["src"].IsString());
-    src = document["src"].GetString();
-  }
-
-  if (document.HasMember("dst"))
-  {
-    assert(document["dst"].IsString());
-    dst = document["dst"].GetString();
-  }
-
   if (document.HasMember("filters"))
   {
     assert(document["filters"].IsArray());
@@ -80,15 +65,7 @@ extern "C" const char *parse_get(Entry *entry, const char *json)
   {
     const char *property = itr->GetString();
 
-    if (strcmp(property, "output") == 0)
-    {
-      out.AddMember(Value("output"), Value((unsigned int)entry->out_data), document.GetAllocator());
-    }
-    else if (strcmp(property, "size") == 0)
-    {
-      out.AddMember(Value("size"), Value((u32)entry->out_numBytes), out.GetAllocator());
-    }
-    else if (strcmp(property, "connections") == 0)
+    if (strcmp(property, "connections") == 0)
     {
       gf_fs_print_connections(entry->session);
     }
@@ -98,4 +75,10 @@ extern "C" const char *parse_get(Entry *entry, const char *json)
   Writer<StringBuffer> writer(sb);
   out.Accept(writer);
   return sb.GetString();
+}
+
+GF_EXPORT
+extern "C" void gf_fileio_set_stats_u32(GF_FileIO *gfio, u32 bytes_done, u32 file_size, Bool cache_complete, u32 bytes_per_sec)
+{
+  gf_fileio_set_stats(gfio, bytes_done, file_size, cache_complete, bytes_per_sec);
 }

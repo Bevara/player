@@ -57,7 +57,6 @@ add_subdirectory(filters)
 SET(SIMPLE_IMG_CORE
 ${CMAKE_SOURCE_DIR}/src/simple-img/simple-img.c
 ${CMAKE_SOURCE_DIR}/src/common/common.cpp
-${CMAKE_SOURCE_DIR}/src/common/memio.c
 )
 
 add_executable(simple-img ${SIMPLE_IMG_CORE})
