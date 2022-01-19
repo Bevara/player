@@ -120,9 +120,6 @@ class UniversalImage extends HTMLImageElement {
                     args["io_in"] = self.input.make_fileio();
                     args["io_out"] = self.output.make_fileio();
 
-                    // Set output format
-                    args["dst"] = "out.png";
-
                     // Set input filters
                     args["filters"] = self.module.filter_entries.map(entry => self.module["_" + entry]());
 
