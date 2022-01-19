@@ -17,8 +17,8 @@ extern "C" void parse_set(Entry *entry, const char *json)
   document.Parse(json);
   assert(document.IsObject());
 
-  const char* src = NULL;
-  const char* dst = NULL;
+  const char *src = NULL;
+  const char *dst = NULL;
 
   if (document.HasMember("src"))
   {
@@ -35,30 +35,35 @@ extern "C" void parse_set(Entry *entry, const char *json)
   if (document.HasMember("filters"))
   {
     assert(document["filters"].IsArray());
-    const Value& filters = document["filters"];
+    const Value &filters = document["filters"];
     for (SizeType i = 0; i < filters.Size(); i++)
-      gf_fs_add_filter_register(entry->session, (const GF_FilterRegister *)filters[i].GetInt() );
+      gf_fs_add_filter_register(entry->session, (const GF_FilterRegister *)filters[i].GetInt());
   }
 
   if (document.HasMember("io_in"))
   {
     GF_Err err;
     assert(document["io_in"].IsString());
-    const char* io_in = document["io_in"].GetString();
+    const char *io_in = document["io_in"].GetString();
 
     gf_fs_load_source(entry->session, io_in, NULL, NULL, &err);
-    if (err) {
-		  fprintf(stderr, "session error %s\n", gf_error_to_string(err) );
+    if (err)
+    {
+      fprintf(stderr, "session error %s\n", gf_error_to_string(err));
     }
+  }
 
-    const char* io_out = make_fileio(entry,dst, &entry->out_data, &entry->out_numBytes, GF_FALSE, &err);
+  if (document.HasMember("io_out"))
+  {
+    GF_Err err;
+    assert(document["io_out"].IsString());
+    const char *io_out = document["io_out"].GetString();
 
-    gf_fs_load_destination(entry->session, io_out , NULL, NULL, &err);
-   if (err) {
-		fprintf(stderr, "session error %s\n", gf_error_to_string(err) );
+    gf_fs_load_destination(entry->session, io_out, NULL, NULL, &err);
+    if (err)
+    {
+      fprintf(stderr, "session error %s\n", gf_error_to_string(err));
     }
-
-
   }
 }
 
@@ -82,7 +87,8 @@ extern "C" const char *parse_get(Entry *entry, const char *json)
     else if (strcmp(property, "size") == 0)
     {
       out.AddMember(Value("size"), Value((u32)entry->out_numBytes), out.GetAllocator());
-    }else if (strcmp(property, "connections") == 0)
+    }
+    else if (strcmp(property, "connections") == 0)
     {
       gf_fs_print_connections(entry->session);
     }

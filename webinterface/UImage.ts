@@ -16,6 +16,7 @@ class UniversalImage extends HTMLImageElement {
     entry: any;
     module: any;
     input : fileio;
+    output : fileio;
 
     private _decodingPromise: Promise<String>;
 
@@ -88,6 +89,7 @@ class UniversalImage extends HTMLImageElement {
             }
         }
 
+        this.output = new fileio("out.png");
         location.using = using_attribute;
         location.with = with_attribute;
         downloads["module"] = new (Module as any)({
@@ -112,8 +114,11 @@ class UniversalImage extends HTMLImageElement {
                     self.entry = self.module._constructor();
                     self.input.buffer = new Uint8Array(img_array);
                     self.input.module = self.module;
-                    const fio_url = self.input.make_fileio();
-                    args["io_in"] = fio_url;
+                    self.output.buffer = new Uint8Array(0);
+                    self.output.module = self.module;
+
+                    args["io_in"] = self.input.make_fileio();
+                    args["io_out"] = self.output.make_fileio();
 
                     // Set output format
                     args["dst"] = "out.png";
@@ -138,7 +143,7 @@ class UniversalImage extends HTMLImageElement {
                         props.push("connections");
                     }
 
-                    const get_args = JSON.stringify(props);
+                    /*const get_args = JSON.stringify(props);
 
                     const get_args_len = (get_args.length << 2) + 1;
                     const ptr_get_args = self.module.stackAlloc(get_args_len);
@@ -150,7 +155,8 @@ class UniversalImage extends HTMLImageElement {
                     const json_res_parsed = JSON.parse(json_res);
 
                     const image = self.module.HEAPU8.slice(json_res_parsed.output, json_res_parsed.output + json_res_parsed.size);
-                    const blob = new Blob([image]);
+                    const blob = new Blob([image]);*/
+                    const blob = new Blob([self.output.buffer]);
                     self.srcset = URL.createObjectURL(blob);
                     main_resolve(self.srcset);
                 });

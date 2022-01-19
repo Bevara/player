@@ -33,15 +33,25 @@ class fileio{
         
             this.module.HEAPU8.set(this.buffer.slice(this.p, this.p + bytes), buffer);
             this.p += bytes;
-            console.log("numBytes: " + this.buffer.length + ", bytes: " + bytes + ", remaining =" + remaining);
             return bytes;
         }.bind(this);
 
         this.read.sig = ['i', 'i', 'i','i'];
 
         this.write = function (fileio, buffer, bytes) {
-    
-        }
+            let remaining = this.buffer.length - this.p;
+
+            if (bytes > remaining) {
+                let new_size = bytes + this.buffer.length - remaining;
+                let old_buffer = this.buffer;
+                this.buffer = new Uint8Array(new_size);
+                this.buffer.set(old_buffer);
+            }
+            
+            this.buffer.set(this.module.HEAPU8.slice(buffer, buffer +bytes), this.p);
+            this.p += bytes;
+            return bytes;
+        }.bind(this);
         this.write.sig = ['i', 'i', 'i','i'];
 
         this.seek = function (fileio, offset, whence) {
