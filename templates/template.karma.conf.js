@@ -29,5 +29,6 @@ module.exports = function (config) {
     junitReporter: {
       outputFile: 'test-results.xml'
     },
+    browserNoActivityTimeout: 10000,
   })
 }
