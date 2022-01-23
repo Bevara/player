@@ -98,18 +98,22 @@ add_filter(j2kdec
                 GPAC_HAS_JP2
                 "${J2KDEC_LIB}"
                 "")
+SET(RFMP3_SRC
+            ${GPAC_LOCATION}/src/filters/reframe_mp3.c
+            ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+)
 
 add_filter(rfmp3
-                ${GPAC_LOCATION}/src/filters/reframe_mp3.c
+                "${RFMP3_SRC}"
                 ""
                 _mp3_dmx_register
                 ""
-                ""
+                ${GPAC_LOCATION}/include
                 "")
 
 add_filter(maddec
                 ${GPAC_LOCATION}/src/filters/dec_mad.c
-                ""
+                ${THIRD_PARTIES_BINARIES}/libmad/.libs/libmad.a
                 _maddec_register
                 GPAC_HAS_MAD
                 ${THIRD_PARTIES_BINARIES}/libmad

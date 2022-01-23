@@ -1,6 +1,7 @@
 //import {HEAPU8, asmLibraryArg, writeArrayToMemory, initRuntime, stackCheckInit, Module, wasmTable, wasmMemory, stringToUTF8, stackAlloc} from './player'
 import { Common } from "./common"
 import { Module, location } from "./simple-img.js"
+import {fileio} from "./memio"
 
 //declare var Module: any;
 
@@ -14,6 +15,8 @@ class UniversalAudio extends HTMLAudioElement {
     instance: any;
     entry: any;
     module: any;
+    input : fileio;
+    output : fileio;
 
     private _decodingPromise: Promise<String>;
 
@@ -33,18 +36,20 @@ class UniversalAudio extends HTMLAudioElement {
             switch (nodeName) {
                 case 'src':
                     downloads[nodeName] = fetch(atts[i].nodeValue);
-
+                    this.input = new fileio(atts[i].nodeValue);
                 default:
                     args[nodeName] = atts[i].nodeValue;
             }
         }
 
+        this.output = new fileio("out.wav");
         location.using = using_attribute;
         location.with = with_attribute;
         downloads["module"] = new (Module as any)({
-            dynamicLibraries: [with_attribute, 
+            dynamicLibraries: [with_attribute,
                 "rfmp3.wasm",
-                "writegen.wasm"]
+                "writegen.wasm"
+            ]
         });
 
         this._decodingPromise = new Promise((main_resolve, _main_reject) => {
@@ -57,18 +62,18 @@ class UniversalAudio extends HTMLAudioElement {
 
                 Promise.all(blobs).then((result) => {
                     const img_array = result[0];
+                   
                     self.entry = self.module._constructor();
+                    self.input.buffer = new Uint8Array(img_array);
+                    self.input.module = self.module;
+                    self.output.buffer = new Uint8Array(0);
+                    self.output.module = self.module;
 
-                    // Set input buffer
-                    const ptr = self.module.stackAlloc(img_array.byteLength);
-                    self.module.HEAPU8.set(new Uint8Array(img_array), ptr);
-                    args["buffer"] = { pointer: ptr, size: img_array.byteLength };
+                    args["io_in"] = self.input.make_fileio();
+                    args["io_out"] = self.output.make_fileio();
 
                     // Set input filters
                     args["filters"] = self.module.filter_entries.map(entry => self.module["_" + entry]());
-
-                    // Set output format
-                    args["dst"] = "out.wav";
 
                     // Convert json to string buffer
                     const json_args = JSON.stringify(args);
@@ -81,7 +86,6 @@ class UniversalAudio extends HTMLAudioElement {
 
                     // Retrieve result
                     const props = [
-                        "output", "size"
                     ]
                     if (self.hasAttribute("connections")) {
                         props.push("connections");
@@ -98,8 +102,7 @@ class UniversalAudio extends HTMLAudioElement {
                     const json_res = self.module.UTF8ToString(ptr_data);
                     const json_res_parsed = JSON.parse(json_res);
 
-                    const image = self.module.HEAPU8.slice(json_res_parsed.output, json_res_parsed.output + json_res_parsed.size);
-                    const blob = new Blob([image]);
+                    const blob = new Blob([self.output.buffer]);
                     var source = document.createElement('source');
                     source.src = URL.createObjectURL(blob);
                     source.type = "audio/wave";
@@ -113,6 +116,7 @@ class UniversalAudio extends HTMLAudioElement {
             Promise.all(promises).then(decode);
         });
     }
+
 
     disconnectedCallback() {
 
