@@ -102,10 +102,11 @@ class UniversalAudio extends HTMLAudioElement {
                     const json_res = self.module.UTF8ToString(ptr_data);
                     const json_res_parsed = JSON.parse(json_res);
 
-                    const blob = new Blob([self.output.buffer]);
+                    const blob = new Blob([self.output.buffer], {type : "audio/wave"});
                     var source = document.createElement('source');
                     source.src = URL.createObjectURL(blob);
                     source.type = "audio/wave";
+                    self.load();
                     self.appendChild(source);
                     main_resolve(source.src);
                 });
