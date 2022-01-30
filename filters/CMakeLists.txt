@@ -119,5 +119,36 @@ add_filter(maddec
                 ${THIRD_PARTIES_BINARIES}/libmad
                 "")
 
+
+SET(RFAC3_SRC
+            ${GPAC_LOCATION}/src/filters/reframe_ac3.c
+            ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+            ${GPAC_LOCATION}/src/utils/bitstream.c
+)
+
+add_filter(rfac3
+            "${RFAC3_SRC}"
+            ""
+            _ac3dmx_register
+            ""
+            ${GPAC_LOCATION}/include
+            "")
+
+SET(A52DEC_SRC
+            ${GPAC_LOCATION}/src/filters/dec_ac52.c
+)
+
+SET(A52DEC_INCLUDE
+    ${THIRD_PARTIES}/a52dec-0.7.4/include
+)
+
+add_filter(a52dec
+        "${A52DEC_SRC}"
+        ${THIRD_PARTIES_BINARIES}/liba52/liba52/.libs/liba52.a
+        _a52dec_register
+        GPAC_HAS_LIBA52
+        "${A52DEC_INCLUDE}"
+        "")
+
 ## Should always be at the end of this file
 set(WASM_FILES ${WASM_FILES} PARENT_SCOPE)
