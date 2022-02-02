@@ -47,7 +47,7 @@ class UniversalAudio extends HTMLAudioElement {
         location.with = with_attribute;
         downloads["module"] = new (Module as any)({
             dynamicLibraries: [with_attribute,
-                "rfac3.wasm",
+                "rfmp3.wasm",
                 "writegen.wasm"
             ]
         });

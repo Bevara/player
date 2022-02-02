@@ -23,6 +23,7 @@ class fileio{
 
     createIO(){
         this.read = function (fileio, buffer, bytes) {
+            console.log("reading from "+this.p+" to "+ (this.p+bytes));
             let remaining = this.buffer.length - this.p;
         
             if (bytes > remaining) {
@@ -39,6 +40,7 @@ class fileio{
         this.read.sig = ['i', 'i', 'i','i'];
 
         this.write = function (fileio, buffer, bytes) {
+            console.log("write from "+this.p+" to "+ (this.p+bytes));
             let remaining = this.buffer.length - this.p;
 
             if (bytes > remaining) {
@@ -55,8 +57,11 @@ class fileio{
         this.write.sig = ['i', 'i', 'i','i'];
 
         this.seek = function (fileio, offset, whence) {
+            console.log("seek from "+offset+" with "+ whence);
             switch (whence) {
                 case this.SEEK_SET:
+                    this.p = Number(offset);
+                    break;
                 case this.SEEK_CUR:
                     this.p += Number(offset);
                     break;
@@ -69,22 +74,31 @@ class fileio{
         this.seek.sig = ['i', 'i', 'j','i'];
 
         this.tell = function (fileio) {
+            console.log("tell  ");
             return BigInt(this.p);
         }.bind(this);
         this.tell.sig = ['j', 'i'];
 
         this.eof = function (fileio) {
+            if(this.p == this.buffer.length){
+                console.log("eof  : true");
+            }else{
+                console.log("eof  : false");
+            }
+            
             return this.p == this.buffer.length;
         }.bind(this);
         this.eof.sig = ['i', 'i'];
 
         this.printf = function (fileio, format, args) {
+            console.log("printf  ");
             console.log("memio printf has to be implemented");
             return 0;
         }
         this.printf.sig = ['i','i','i', 'i'];
         
         this.open = function (fileio_ref, url, mode, out_err) {
+            console.log("open  ");
             this.module._gf_fileio_set_stats_u32(fileio_ref, this.buffer.length,this.buffer.length, 1, 0);
             this.module.HEAP32[((out_err)>>2)] = 0; //GF_OK
             return fileio_ref;
