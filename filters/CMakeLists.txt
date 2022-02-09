@@ -154,7 +154,7 @@ SET(FFDEC_SRC
     ${GPAC_LOCATION}/src/filters/ff_dec.c
 )
 
-SET(FFDEC_INCLUDE
+SET(FF_INCLUDE
     ${THIRD_PARTIES}/ffmpeg
     ${THIRD_PARTIES_BINARIES}/ffmpeg
 )
@@ -164,9 +164,19 @@ add_filter(ffdec
         ${THIRD_PARTIES_BINARIES}/ffmpeg/libavcodec/libavcodec.a
         _ffdec_register
         GPAC_HAS_FFMPEG
-        "${FFDEC_INCLUDE}"
+        "${FF_INCLUDE}"
         "")
 
+SET(FFDMX_SRC
+    ${GPAC_LOCATION}/src/filters/ff_dmx.c
+)
+add_filter(ffdmx
+        "${FFDMX_SRC}"
+        ${THIRD_PARTIES_BINARIES}/ffmpeg/libavformat/libavformat.a
+        _ffdmx_register
+        GPAC_HAS_FFMPEG
+        "${FF_INCLUDE}"
+        "")
 
 ## Should always be at the end of this file
 set(WASM_FILES ${WASM_FILES} PARENT_SCOPE)
