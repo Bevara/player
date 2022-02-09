@@ -75,7 +75,7 @@ add_filter(writegen
 
 add_filter(pngenc
                 ${GPAC_LOCATION}/src/filters/enc_png.c
-                ${THIRD_PARTIES_BINARIES}/libpng/libpng16.a
+                ${THIRD_PARTIES_BINARIES}/libpng/libpng.a
                 _pngenc_register
                 GPAC_HAS_PNG
                 ""
@@ -149,6 +149,24 @@ add_filter(a52dec
         GPAC_HAS_LIBA52
         "${A52DEC_INCLUDE}"
         "")
+
+SET(FFDEC_SRC
+    ${GPAC_LOCATION}/src/filters/ff_dec.c
+)
+
+SET(FFDEC_INCLUDE
+    ${THIRD_PARTIES}/ffmpeg
+    ${THIRD_PARTIES_BINARIES}/ffmpeg
+)
+
+add_filter(ffdec
+        "${FFDEC_SRC}"
+        ${THIRD_PARTIES_BINARIES}/ffmpeg/libavcodec/libavcodec.a
+        _ffdec_register
+        GPAC_HAS_FFMPEG
+        "${FFDEC_INCLUDE}"
+        "")
+
 
 ## Should always be at the end of this file
 set(WASM_FILES ${WASM_FILES} PARENT_SCOPE)
