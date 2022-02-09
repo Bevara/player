@@ -152,6 +152,7 @@ add_filter(a52dec
 
 SET(FFDEC_SRC
     ${GPAC_LOCATION}/src/filters/ff_dec.c
+    ${GPAC_LOCATION}/src/filters/ff_common.c
 )
 
 SET(FF_INCLUDE
@@ -159,9 +160,16 @@ SET(FF_INCLUDE
     ${THIRD_PARTIES_BINARIES}/ffmpeg
 )
 
+SET(FFDEC_LIB
+    ${THIRD_PARTIES_BINARIES}/ffmpeg/libavcodec/libavcodec.a
+    ${THIRD_PARTIES_BINARIES}/ffmpeg/libavutil/libavutil.a
+    ${THIRD_PARTIES_BINARIES}/ffmpeg/libavformat/libavformat.a
+    ${THIRD_PARTIES_BINARIES}/ffmpeg/libavfilter/libavfilter.a
+)
+
 add_filter(ffdec
         "${FFDEC_SRC}"
-        ${THIRD_PARTIES_BINARIES}/ffmpeg/libavcodec/libavcodec.a
+        "${FFDEC_LIB}"
         _ffdec_register
         GPAC_HAS_FFMPEG
         "${FF_INCLUDE}"
@@ -176,6 +184,14 @@ add_filter(ffdmx
         _ffdmx_register
         GPAC_HAS_FFMPEG
         "${FF_INCLUDE}"
+        "")
+
+add_filter(rfflac
+        ${GPAC_LOCATION}/src/filters/reframe_flac.c
+        ""
+        _flac_dmx_register
+        ""
+        ""
         "")
 
 ## Should always be at the end of this file
