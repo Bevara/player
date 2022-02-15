@@ -47,7 +47,7 @@ class UniversalAudio extends HTMLAudioElement {
         location.with = with_attribute;
         downloads["module"] = new (Module as any)({
             dynamicLibraries: [with_attribute,
-                "rfmp3.wasm",
+                "rfflac.wasm",
                 "writegen.wasm"
             ]
         });
@@ -106,6 +106,7 @@ class UniversalAudio extends HTMLAudioElement {
                     var source = document.createElement('source');
                     source.src = URL.createObjectURL(blob);
                     source.type = "audio/wave";
+                    self.src = "";
                     self.load();
                     self.appendChild(source);
                     main_resolve(source.src);

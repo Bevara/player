@@ -153,6 +153,19 @@ add_filter(a52dec
 SET(FFDEC_SRC
     ${GPAC_LOCATION}/src/filters/ff_dec.c
     ${GPAC_LOCATION}/src/filters/ff_common.c
+    ${GPAC_LOCATION}/src/utils/alloc.c
+    ${GPAC_LOCATION}/src/utils/constants.c
+    ${GPAC_LOCATION}/src/utils/list.c
+    ${GPAC_LOCATION}/src/utils/error.c
+    ${GPAC_LOCATION}/src/utils/os_divers.c
+    ${GPAC_LOCATION}/src/utils/os_thread.c
+    ${GPAC_LOCATION}/src/utils/os_file.c
+    ${GPAC_LOCATION}/src/filter_core/filter.c
+    ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+    ${GPAC_LOCATION}/src/filter_core/filter_props.c
+    ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+    ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+    ${GPAC_LOCATION}/src/filter_core/filter_session.c
 )
 
 SET(FF_INCLUDE
