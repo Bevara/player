@@ -73,7 +73,7 @@ class UniversalImage extends HTMLImageElement {
     connectedCallback() {
         const self = this;
         const using_attribute = self.getAttribute("using");
-        const with_attribute = self.getAttribute("with");
+        const with_attribute = self.getAttribute("with").split(';');
         let args: any = {};
 
         for (var i = 0, atts = this.attributes, n = atts.length, arr = []; i < n; i++) {
@@ -86,12 +86,11 @@ class UniversalImage extends HTMLImageElement {
         this.io = new fileio();
 
         this._decodingPromise = new Promise((main_resolve, _main_reject) => {
+            with_attribute.push("writegen.wasm");
+            with_attribute.push("rfimg.wasm");
+            with_attribute.push("pngenc.wasm");
             new (Module as any)({
-                dynamicLibraries: [with_attribute,
-                    "rfimg.wasm",
-                    "writegen.wasm",
-                    "pngenc.wasm"
-                ]
+                dynamicLibraries: with_attribute
             }).then(module => {
                 self.module = module;
                 self.io.module = module;

@@ -59,32 +59,32 @@ describe('Simple-img', () => {
     });
   });
 
-  // describe('#maddec', () => {
-  //   it('should decode ImagineDragons.mp3"', (done) => {
-  //     new Promise(function (resolve) {
-  //       const img = document.createElement('audio', { "is": "universal-audio" });
-  //       img.setAttribute("src", "http://bevaraserver.ddns.net/test-signals/ImagineDragons.mp3");
-  //       img.setAttribute("using", "simple-img.wasm");
-  //       img.setAttribute("with", "maddec.wasm");
-  //       document.body.appendChild(img);
-  //       const fetchs = img.decodingPromise.then(src =>
-  //         Promise.all([
-  //           fetch(src),
-  //           fetch("http://bevaraserver.ddns.net/test-signals/out/maddec/ImagineDragons.wav")
-  //         ]));
+  describe('#maddec', () => {
+    it('should decode ImagineDragons.mp3"', (done) => {
+      new Promise(function (resolve) {
+        const img = document.createElement('audio', { "is": "universal-audio" });
+        img.setAttribute("src", "http://bevaraserver.ddns.net/test-signals/ImagineDragons.mp3");
+        img.setAttribute("using", "simple-img.wasm");
+        img.setAttribute("with", "rfmp3.wasm;maddec.wasm");
+        document.body.appendChild(img);
+        const fetchs = img.decodingPromise.then(src =>
+          Promise.all([
+            fetch(src),
+            fetch("http://bevaraserver.ddns.net/test-signals/out/maddec/ImagineDragons.wav")
+          ]));
 
-  //       fetchs.then((responses) => {
-  //         arrayBuffers = responses.map(response => response.arrayBuffer());
-  //         Promise.all(arrayBuffers)
-  //           .then(buffers => {
-  //             const result = new Uint8Array(buffers[0]);
-  //             const ref = new Uint8Array(buffers[1]);
-  //             expect(result).to.eql(ref);
-  //             resolve();
-  //           });
-  //       });
-  //     })
-  //       .then(done);
-  //   });
-  // });
+        fetchs.then((responses) => {
+          arrayBuffers = responses.map(response => response.arrayBuffer());
+          Promise.all(arrayBuffers)
+            .then(buffers => {
+              const result = new Uint8Array(buffers[0]);
+              const ref = new Uint8Array(buffers[1]);
+              expect(result).to.eql(ref);
+              resolve();
+            });
+        });
+      })
+        .then(done);
+    });
+  });
 });
