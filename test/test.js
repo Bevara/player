@@ -59,18 +59,18 @@ describe('Simple-img', () => {
     }).timeout(5000);
   });
 
-  describe('#maddec', () => {
-    it('should decode ImagineDragons.mp3"', (done) => {
-      create_test('audio', 
-      "universal-audio", 
-      "simple-img.wasm",
-      "rfmp3.wasm;maddec.wasm",
-      "http://bevaraserver.ddns.net/test-signals/ImagineDragons.mp3",
-      "http://bevaraserver.ddns.net/test-signals/out/maddec/ImagineDragons.wav",
-      done
-      );
-    }).timeout(600000);
-  });
+  // describe('#maddec', () => {
+  //   it('should decode ImagineDragons.mp3"', (done) => {
+  //     create_test('audio', 
+  //     "universal-audio", 
+  //     "simple-img.wasm",
+  //     "rfmp3.wasm;maddec.wasm",
+  //     "http://bevaraserver.ddns.net/test-signals/ImagineDragons.mp3",
+  //     "http://bevaraserver.ddns.net/test-signals/out/maddec/ImagineDragons.wav",
+  //     done
+  //     );
+  //   }).timeout(600000);
+  // });
 
   describe('#a52dec', () => {
     it('should decode sound.ac3"', (done) => {
