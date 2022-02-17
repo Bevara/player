@@ -1,119 +1,87 @@
+function create_test(tag, extension, using_attribute, with_atribute, test_file, reference_file, done){
+  new Promise(function (resolve) {
+    const img = document.createElement(tag, { "is": extension });
+    img.setAttribute("src", test_file);
+    img.setAttribute("using", using_attribute);
+    img.setAttribute("with", with_atribute);
+    document.body.appendChild(img);
+    console.log(using_attribute +";"+ with_atribute + " : Tag " + tag + " extended by " + extension +" has been added to the DOM");
+    const fetchs = img.decodingPromise.then(src =>
+      Promise.all([
+        fetch(src),
+        fetch(reference_file)
+      ]));
+
+    fetchs.then((responses) => {
+      console.log(using_attribute +";"+ with_atribute + " : Both test and reference signal has been processed");
+      arrayBuffers = responses.map(response => response.arrayBuffer());
+      Promise.all(arrayBuffers)
+        .then(buffers => {
+          console.log(using_attribute +";"+ with_atribute + " : Comparing array buffers");
+          const result = new Uint8Array(buffers[0]);
+          const ref = new Uint8Array(buffers[1]);
+          expect(result.length).to.equal(ref.length);
+          expect(result).to.deep.equal(ref);
+          console.log(using_attribute +";"+ with_atribute + " : Test OK");
+          resolve();
+        });
+    });
+  })
+    .then(done);
+}
+
 
 
 describe('Simple-img', () => {
   describe('#imgdec', () => {
     it('should decode Freedom.jpeg', (done) => {
-      new Promise(function (resolve) {
-        const img = document.createElement('img', { "is": "universal-img" });
-        img.setAttribute("src", "http://bevaraserver.ddns.net/test-signals/Freedom.jpg");
-        img.setAttribute("using", "simple-img.wasm");
-        img.setAttribute("with", "imgdec.wasm");
-        document.body.appendChild(img);
-        const fetchs = img.decodingPromise.then(src =>
-          Promise.all([
-            fetch(src),
-            fetch("http://bevaraserver.ddns.net/test-signals/Freedom.png")
-          ]));
-
-        fetchs.then((responses) => {
-          arrayBuffers = responses.map(response => response.arrayBuffer());
-          Promise.all(arrayBuffers)
-            .then(buffers => {
-              const result = new Uint8Array(buffers[0]);
-              const ref = new Uint8Array(buffers[1]);
-              expect(result).to.eql(ref);
-              resolve();
-            });
-        });
-      })
-        .then(done);
-    });
+      create_test('img', 
+                  'universal-img', 
+                  "simple-img.wasm",
+                  "imgdec.wasm",
+                  "http://bevaraserver.ddns.net/test-signals/Freedom.jpg",
+                  "http://bevaraserver.ddns.net/test-signals/Freedom.png",
+                  done
+                  );
+    }).timeout(5000);
   });
 
   describe('#j2kdec', () => {
     it('should decode Cevennes2.jp2', (done) => {
-      new Promise(function (resolve) {
-        const img = document.createElement('img', { "is": "universal-img" });
-        img.setAttribute("src", "http://bevaraserver.ddns.net/test-signals/j2k/Cevennes2.jp2");
-        img.setAttribute("using", "simple-img.wasm");
-        img.setAttribute("with", "j2kdec.wasm");
-        document.body.appendChild(img);
-        const fetchs = img.decodingPromise.then(src =>
-          Promise.all([
-            fetch(src),
-            fetch("http://bevaraserver.ddns.net/test-signals/out/j2k/Cevennes2.png")
-          ]));
-
-        fetchs.then((responses) => {
-          arrayBuffers = responses.map(response => response.arrayBuffer());
-          Promise.all(arrayBuffers)
-            .then(buffers => {
-              const result = new Uint8Array(buffers[0]);
-              const ref = new Uint8Array(buffers[1]);
-              expect(result).to.eql(ref);
-              resolve();
-            });
-        });
-      })
-        .then(done);
-    });
+      create_test('img', 
+      'universal-img', 
+      "simple-img.wasm",
+      "j2kdec.wasm",
+      "http://bevaraserver.ddns.net/test-signals/j2k/Cevennes2.jp2",
+      "http://bevaraserver.ddns.net/test-signals/out/j2k/Cevennes2.png",
+      done
+      );
+    }).timeout(5000);
   });
 
   describe('#maddec', () => {
     it('should decode ImagineDragons.mp3"', (done) => {
-      new Promise(function (resolve) {
-        const audio = document.createElement('audio', { "is": "universal-audio" });
-        audio.setAttribute("src", "http://bevaraserver.ddns.net/test-signals/ImagineDragons.mp3");
-        audio.setAttribute("using", "simple-img.wasm");
-        audio.setAttribute("with", "rfmp3.wasm;maddec.wasm");
-        document.body.appendChild(audio);
-        const fetchs = audio.decodingPromise.then(src =>
-          Promise.all([
-            fetch(src),
-            fetch("http://bevaraserver.ddns.net/test-signals/out/maddec/ImagineDragons.wav")
-          ]));
-
-        fetchs.then((responses) => {
-          arrayBuffers = responses.map(response => response.arrayBuffer());
-          Promise.all(arrayBuffers)
-            .then(buffers => {
-              const result = new Uint8Array(buffers[0]);
-              const ref = new Uint8Array(buffers[1]);
-              expect(result).to.eql(ref);
-              resolve();
-            });
-        });
-      })
-        .then(done);
-    });
+      create_test('audio', 
+      "universal-audio", 
+      "simple-img.wasm",
+      "rfmp3.wasm;maddec.wasm",
+      "http://bevaraserver.ddns.net/test-signals/ImagineDragons.mp3",
+      "http://bevaraserver.ddns.net/test-signals/out/maddec/ImagineDragons.wav",
+      done
+      );
+    }).timeout(600000);
   });
 
   describe('#a52dec', () => {
     it('should decode sound.ac3"', (done) => {
-      new Promise(function (resolve) {
-        const audio = document.createElement('audio', { "is": "universal-audio" });
-        audio.setAttribute("src", "http://bevaraserver.ddns.net/test-signals/sound.ac3");
-        audio.setAttribute("using", "simple-img.wasm");
-        audio.setAttribute("with", "rfac3.wasm;a52dec.wasm");
-        document.body.appendChild(img);
-        const fetchs = audio.decodingPromise.then(src =>
-          Promise.all([
-            fetch(src),
-            fetch("http://bevaraserver.ddns.net/test-signals/out/ac3/sound.wav")
-          ]));
-
-        fetchs.then((responses) => {
-          arrayBuffers = responses.map(response => response.arrayBuffer());
-          Promise.all(arrayBuffers)
-            .then(buffers => {
-              const result = new Uint8Array(buffers[0]);
-              const ref = new Uint8Array(buffers[1]);
-              expect(result).to.eql(ref);
-              resolve();
-            });
-        });
-      })
-        .then(done);
+      create_test('audio', 
+      "universal-audio", 
+      "simple-img.wasm",
+      "rfac3.wasm;a52dec.wasm",
+      "http://bevaraserver.ddns.net/test-signals/sound.ac3",
+      "http://bevaraserver.ddns.net/test-signals/out/ac3/sound.wav",
+      done
+      );
     });
-  });
+  }).timeout(30000);
 });
