@@ -32,12 +32,12 @@ function create_test(tag, extension, using_attribute, with_atribute, test_file, 
 
 
 
-describe('Simple-img', () => {
+describe('core-player', () => {
   describe('#imgdec', () => {
     it('should decode Freedom.jpeg', (done) => {
       create_test('img', 
                   'universal-img', 
-                  "simple-img.wasm",
+                  "core-player.wasm",
                   "imgdec.wasm",
                   "http://bevaraserver.ddns.net/test-signals/Freedom.jpg",
                   "http://bevaraserver.ddns.net/test-signals/Freedom.png",
@@ -50,7 +50,7 @@ describe('Simple-img', () => {
     it('should decode Cevennes2.jp2', (done) => {
       create_test('img', 
       'universal-img', 
-      "simple-img.wasm",
+      "core-player.wasm",
       "j2kdec.wasm",
       "http://bevaraserver.ddns.net/test-signals/j2k/Cevennes2.jp2",
       "http://bevaraserver.ddns.net/test-signals/out/j2k/Cevennes2.png",
@@ -63,7 +63,7 @@ describe('Simple-img', () => {
   //   it('should decode ImagineDragons.mp3"', (done) => {
   //     create_test('audio', 
   //     "universal-audio", 
-  //     "simple-img.wasm",
+  //     "core-player.wasm",
   //     "rfmp3.wasm;maddec.wasm",
   //     "http://bevaraserver.ddns.net/test-signals/ImagineDragons.mp3",
   //     "http://bevaraserver.ddns.net/test-signals/out/maddec/ImagineDragons.wav",
@@ -76,7 +76,7 @@ describe('Simple-img', () => {
   //   it('should decode sound.ac3"', (done) => {
   //     create_test('audio', 
   //     "universal-audio", 
-  //     "simple-img.wasm",
+  //     "core-player.wasm",
   //     "rfac3.wasm;a52dec.wasm",
   //     "http://bevaraserver.ddns.net/test-signals/sound.ac3",
   //     "http://bevaraserver.ddns.net/test-signals/out/ac3/sound.wav",

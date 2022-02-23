@@ -1,6 +1,6 @@
 //import {HEAPU8, asmLibraryArg, writeArrayToMemory, initRuntime, stackCheckInit, Module, wasmTable, wasmMemory, stringToUTF8, stackAlloc} from './player'
 import { Common } from "./common"
-import { Module, location, memio } from "./simple-img.js"
+import { Module, location, memio } from "./core-player.js"
 import {fileio} from "./memio"
 
 //declare var Module: any;

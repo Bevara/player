@@ -1,4 +1,4 @@
-import { memio } from "./simple-img.js"
+import { memio } from "./core-player.js"
 import { Fetch } from "./utils/fetch.js";
 
 
