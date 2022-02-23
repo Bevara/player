@@ -1,6 +1,4 @@
 import { memio } from "./core-player.js"
-import { Fetch } from "./utils/fetch.js";
-
 
 class buffer {
     buffer:ArrayBuffer;

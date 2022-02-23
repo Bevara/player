@@ -199,10 +199,54 @@ add_filter(ffdmx
         "${FF_INCLUDE}"
         "")
 
+SET(FFENC_SRC
+    ${GPAC_LOCATION}/src/filters/ff_enc.c
+    ${GPAC_LOCATION}/src/filters/ff_common.c
+)
+add_filter(ffenc
+        "${FFENC_SRC}"
+        "${FFDEC_LIB}"
+        _ffenc_register
+        GPAC_HAS_FFMPEG
+        "${FF_INCLUDE}"
+        "")
+
 add_filter(rfflac
         ${GPAC_LOCATION}/src/filters/reframe_flac.c
         ""
         _flac_dmx_register
+        ""
+        ""
+        "")
+
+add_filter(m2psdmx
+        ${GPAC_LOCATION}/src/filters/dmx_mpegps.c
+        ""
+        _m2psdmx_register
+        ""
+        ""
+        "")
+
+add_filter(rfmpgvid
+        ${GPAC_LOCATION}/src/filters/reframe_mpgvid.c
+        ""
+        _mpgviddmx_register
+        ""
+        ""
+        "")
+
+add_filter(mp4mx
+        ${GPAC_LOCATION}/src/filters/mux_isom.c
+        ""
+        _mp4_mux_register
+        ""
+        ""
+        "")
+
+add_filter(rfnalu
+        ${GPAC_LOCATION}/src/filters/reframe_nalu.c
+        ""
+        _naludmx_register
         ""
         ""
         "")
