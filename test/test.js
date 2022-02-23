@@ -84,4 +84,17 @@ describe('core-player', () => {
   //     );
   //   });
   // }).timeout(30000);
+
+  //   describe('#rfflac', () => {
+  //   it('should decode ff-16b-1c-44100hz.flac"', (done) => {
+  //     create_test('audio', 
+  //     "universal-audio", 
+  //     "core-player.wasm",
+  //     "rfflac.wasm;ffdec.wasm",
+  //     "http://bevaraserver.ddns.net/test-signals/ff-16b-1c-44100hz.flac",
+  //     "http://bevaraserver.ddns.net/test-signals/out/flac/ff-16b-1c-44100hz.wav",
+  //     done
+  //     );
+  //   });
+  // }).timeout(60000);
 });
