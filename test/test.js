@@ -90,7 +90,7 @@ describe('core-player', () => {
       "http://bevara.ddns.net/test-signals/out/ac3/sound.wav",
       done
       );
-    }).timeout(5000);
+    }).timeout(10000);
   });
 
   //   describe('#rfflac', () => {
