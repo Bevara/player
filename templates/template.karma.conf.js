@@ -26,9 +26,11 @@ module.exports = function (config) {
     autoWatch: false,
     // singleRun: false, // Karma captures browsers, runs the tests and exits
     concurrency: Infinity,
-    junitReporter: {
-      outputFile: 'test-results.xml'
+    reporters: ['progress', 'nunit'],
+    nunitReporter: {
+      outputFile: 'test-results.xml',
+      suite: ''
     },
-    browserNoActivityTimeout: 6000000
+    browserNoActivityTimeout: 600000
   })
 }
