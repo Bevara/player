@@ -37,6 +37,10 @@ $source_path/third_parties/emsdk/emsdk install $EMSDK_VERS
 $source_path/third_parties/emsdk/emsdk activate $EMSDK_VERS
 . $source_path/third_parties/emsdk/emsdk_env.sh
 
+echo "Configuring nodejs dependencies"
+cd $source_path
+npm install
+
 echo "Configuring player"
 cd $BUILD_DIR
 if test "$debuginfo" = "no"; then

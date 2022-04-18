@@ -4,25 +4,25 @@
     "description": "Main player interface",
     "main": "index.js",
     "directories": {
-      "test": "test"
+        "test": "test"
     },
     "scripts": {
-      "test": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
-      "build": "webpack --mode=production --node-env=production",
-      "build:dev": "webpack --mode=development",
-      "build:prod": "webpack --mode=production --node-env=production",
-      "watch": "webpack --watch",
-      "serve": "webpack serve"
+        "test": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
+        "build": "webpack --mode=production --node-env=production",
+        "build:dev": "webpack --mode=development",
+        "build:prod": "webpack --mode=production --node-env=production",
+        "watch": "webpack --watch",
+        "serve": "webpack serve"
     },
     "repository": {
-      "type": "git",
-      "url": "git+https://github.com/Bevara/Player.git"
+        "type": "git",
+        "url": "git+https://github.com/Bevara/Player.git"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "bugs": {
-      "url": "https://github.com/Bevara/Player/issues"
+        "url": "https://github.com/Bevara/Player/issues"
     },
     "homepage": "https://github.com/Bevara/Player#readme",
     "devDependencies": {
