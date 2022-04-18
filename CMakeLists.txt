@@ -12,7 +12,7 @@ configure_file(templates/template.karma.conf.js ${CMAKE_SOURCE_DIR}/karma.conf.j
 configure_file(webinterface/Bevara.ico ${CMAKE_BINARY_DIR}/favicon.ico)
 
 set(USE_DEBUG "-g")
-set(USE_OPT "-O3")
+set(USE_OPT "-O2")
 
 if(DEBUG_MODE)
   set(USE_FLAGS "${USE_DEBUG}")
