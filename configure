@@ -40,6 +40,7 @@ $source_path/third_parties/emsdk/emsdk activate $EMSDK_VERS
 echo "Configuring nodejs dependencies"
 cd $source_path
 npm install
+npx browserslist@latest --update-db
 
 echo "Configuring player"
 cd $BUILD_DIR
