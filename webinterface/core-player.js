@@ -3031,7 +3031,7 @@ updateGlobalBufferAndViews(buffer);
 // include: runtime_init_table.js
 // In RELOCATABLE mode we create the table in JS.
 var wasmTable = new WebAssembly.Table({
-  'initial': 4262,
+  'initial': 4375,
   'element': 'anyfunc'
 });
 
