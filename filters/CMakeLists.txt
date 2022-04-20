@@ -75,7 +75,7 @@ add_filter(writegen
 
 add_filter(pngenc
                 ${GPAC_LOCATION}/src/filters/enc_png.c
-                ${THIRD_PARTIES_BINARIES}/libpng/libpng.a
+                ${THIRD_PARTIES_BINARIES}/libpng/libpng16.a
                 _pngenc_register
                 GPAC_HAS_PNG
                 ""
