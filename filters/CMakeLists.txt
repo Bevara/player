@@ -65,6 +65,16 @@ SET(WRITEGEN_SRC
     ${GPAC_LOCATION}/src/utils/os_config_init.c
 )
 
+if(DEBUG_MODE)
+SET(PNG_LIB
+        ${THIRD_PARTIES_BINARIES}/libpng/libpng16d.a
+)
+else()
+SET(PNG_LIB
+        ${THIRD_PARTIES_BINARIES}/libpng/libpng16.a
+)
+endif()
+
 add_filter(writegen
                 "${WRITEGEN_SRC}"
                 ""
@@ -75,7 +85,7 @@ add_filter(writegen
 
 add_filter(pngenc
                 ${GPAC_LOCATION}/src/filters/enc_png.c
-                ${THIRD_PARTIES_BINARIES}/libpng/libpng16.a
+                "${PNG_LIB}"
                 _pngenc_register
                 GPAC_HAS_PNG
                 ""
