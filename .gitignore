@@ -1,3 +1,4 @@
+.vscode/
 build/
 node_modules/
 Chrome_Headless_*/
@@ -7,3 +8,4 @@ karma.conf.js
 webpack.config.js
 package-lock.json
 test-results.xml
+
