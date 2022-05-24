@@ -61,7 +61,7 @@ add_filter(imgdec
                 _imgdec_register
                 GPAC_HAS_JPEG
                 ${GPAC_LOCATION}/include
-                "-s USE_LIBJPEG=1 -s EXPORTED_FUNCTIONS=['_jpeg_std_error','_jpeg_CreateDecompress']")
+                "-s USE_LIBJPEG=1")
 SET(RFIMG_SRC 
         ${GPAC_LOCATION}/src/filters/reframe_img.c
         ${GPAC_LOCATION}/src/media_tools/img.c
@@ -212,7 +212,7 @@ add_filter(ffdec
         _ffdec_register
         GPAC_HAS_FFMPEG
         "${FF_INCLUDE}"
-        " -s EXPORTED_FUNCTIONS=['_gettimeofday']")
+        "")
 
 SET(FFDMX_SRC
     ${GPAC_LOCATION}/src/filters/ff_dmx.c
