@@ -204,6 +204,7 @@ SET(FFDEC_LIB
     ${THIRD_PARTIES_BINARIES}/ffmpeg/libavutil/libavutil.a
     ${THIRD_PARTIES_BINARIES}/ffmpeg/libavformat/libavformat.a
     ${THIRD_PARTIES_BINARIES}/ffmpeg/libavfilter/libavfilter.a
+    ${THIRD_PARTIES_BINARIES}/ffmpeg/libswresample/libswresample.a
 )
 
 add_filter(ffdec
@@ -216,11 +217,27 @@ add_filter(ffdec
 
 SET(FFDMX_SRC
     ${GPAC_LOCATION}/src/filters/ff_dmx.c
+    ${GPAC_LOCATION}/src/filters/ff_common.c
 )
+
 add_filter(ffdmx
         "${FFDMX_SRC}"
-        ${THIRD_PARTIES_BINARIES}/ffmpeg/libavformat/libavformat.a
+        "${FFDEC_LIB}"
         _ffdmx_register
+        GPAC_HAS_FFMPEG
+        "${FF_INCLUDE}"
+        "")
+
+
+SET(FFRESCALE_SRC
+    ${GPAC_LOCATION}/src/filters/ff_rescale.c
+    ${GPAC_LOCATION}/src/filters/ff_common.c
+)
+
+add_filter(ffrescale
+        "${FFRESCALE_SRC}"
+        "${FFDEC_LIB}"
+        _ffsws_register
         GPAC_HAS_FFMPEG
         "${FF_INCLUDE}"
         "")
@@ -241,6 +258,41 @@ add_filter(rfflac
         ${GPAC_LOCATION}/src/filters/reframe_flac.c
         ""
         _flac_dmx_register
+        ""
+        ""
+        "")
+
+SET(OGGDMX_SRC
+        ${GPAC_LOCATION}/src/filters/dmx_ogg.c
+        ${GPAC_LOCATION}/src/media_tools/gpac_ogg.c
+        ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/constants.c
+        ${GPAC_LOCATION}/src/odf/descriptors.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
+)
+
+add_filter(oggdmx
+        "${OGGDMX_SRC}"
+        ""
+        _oggdmx_register
+        ""
+        ""
+        "")
+
+add_filter(rfadts
+        ${GPAC_LOCATION}/src/filters/reframe_adts.c
+        ""
+        _adts_dmx_register
+        ""
+        ""
+        "")
+
+add_filter(rfamr
+        ${GPAC_LOCATION}/src/filters/reframe_amr.c
+        ""
+        _amrdmx_register
         ""
         ""
         "")
