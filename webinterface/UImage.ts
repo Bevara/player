@@ -89,6 +89,8 @@ class UniversalImage extends HTMLImageElement {
             with_attribute.push("writegen.wasm");
             with_attribute.push("rfimg.wasm");
             with_attribute.push("pngenc.wasm");
+            with_attribute.push("fileout.wasm");
+            with_attribute.push("filein.wasm");
             new (Module as any)({
                 dynamicLibraries: with_attribute
             }).then(module => {
@@ -101,7 +103,7 @@ class UniversalImage extends HTMLImageElement {
                 args["io_out"] = buffer_out.file_io;
 
                 // Set input filters
-                args["filters"] = self.module.filter_entries.map(entry => self.module["_" + entry]());
+                args["filters"] = self.module.filter_entries.map(entry => self.module["_" + entry](0));
 
                 Promise.all(self.io.fetch_promises).then(res_fetch => {
                     Promise.all(self.io.buffer_promises).then(res_buffer => {

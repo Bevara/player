@@ -26,6 +26,22 @@ target_include_directories(${FILTERNAME} PRIVATE ${INCLUDES})
 
 endmacro()
 
+add_filter(fileout
+                ${GPAC_LOCATION}/src/filters/out_file.c
+                ""
+                _fileout_register
+                ""
+                ""
+                "")
+
+add_filter(filein
+                ${GPAC_LOCATION}/src/filters/in_file.c
+                ""
+                _filein_register
+                ""
+                ""
+                "")
+
 add_filter(nanojpeg
                 ${CMAKE_SOURCE_DIR}/filters/nanojpeg.c
                 ${THIRD_PARTIES_BINARIES}/nanojpeg/nanojpeg.o

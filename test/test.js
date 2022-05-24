@@ -41,19 +41,7 @@ function create_test(tag, extension, using_attribute, with_atribute, test_file, 
 
 
 describe('core-player', () => {
-  describe('#imgdec', () => {
-    it('should decode Freedom.jpeg', (done) => {
-      create_test('img', 
-                  'universal-img', 
-                  "core-player.wasm",
-                  "imgdec.wasm",
-                  "http://bevara.ddns.net/test-signals/Freedom.jpg",
-                  "http://bevara.ddns.net/test-signals/Freedom.png",
-                  done
-                  );
-    }).timeout(5000);
-  });
-
+  
   describe('#j2kdec', () => {
     it('should decode Cevennes2.jp2', (done) => {
       create_test('img', 
