@@ -45,7 +45,8 @@
         "unordered_map": "cpp",
         "valarray": "cpp",
         "png.h": "c",
-        "tools.h": "c"
+        "tools.h": "c",
+        "*.in": "cpp"
     },
     "C_Cpp.errorSquiggles": "Enabled"
 }
