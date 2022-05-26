@@ -176,6 +176,18 @@ add_filter(a52dec
         "${A52DEC_INCLUDE}"
         "")
 
+SET(OPENHEVCDEC_SRC
+            ${GPAC_LOCATION}/src/filters/dec_openhevc.c
+)
+
+add_filter(openhevcdec
+        "${OPENHEVCDEC_SRC}"
+        ${THIRD_PARTIES_BINARIES}/openhevc/libLibOpenHevcWrapper.a
+        ohevcdec_register
+        GPAC_HAS_OPENHEVC
+        ${GPAC_LOCATION}/extra_lib/include
+        "")
+
 SET(FFDEC_SRC
     ${GPAC_LOCATION}/src/filters/ff_dec.c
     ${GPAC_LOCATION}/src/filters/ff_common.c
