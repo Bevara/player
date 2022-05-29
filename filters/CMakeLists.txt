@@ -182,7 +182,7 @@ SET(OPENHEVCDEC_SRC
 
 add_filter(openhevcdec
         "${OPENHEVCDEC_SRC}"
-        ${THIRD_PARTIES_BINARIES}/openhevc/libLibOpenHevcWrapper.a
+        ${THIRD_PARTIES_BINARIES}/openHEVC/libLibOpenHevcWrapper.a
         ohevcdec_register
         GPAC_HAS_OPENHEVC
         ${GPAC_LOCATION}/extra_lib/include
@@ -321,6 +321,14 @@ add_filter(rfmpgvid
         ${GPAC_LOCATION}/src/filters/reframe_mpgvid.c
         ""
         _mpgviddmx_register
+        ""
+        ""
+        "")
+
+add_filter(mp4dmx
+        ${GPAC_LOCATION}/src/filters/isoffin_read.c
+        ""
+        _isoffin_register
         ""
         ""
         "")
