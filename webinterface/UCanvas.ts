@@ -2,9 +2,7 @@ import { Common } from "./common"
 import { Module, location, memio } from "./core-player.js"
 import {fileio} from "./memio"
 
-//declare var Module: any;
-
-class UniversalImage extends HTMLImageElement {
+class UniversalCanvas extends HTMLCanvasElement {
     using: string;
     common: Common;
     memory: Uint8Array;
@@ -15,6 +13,7 @@ class UniversalImage extends HTMLImageElement {
     entry: any;
     module: any;
     io: fileio;
+    src: string;
 
     private _decodingPromise: Promise<String>;
 
@@ -64,7 +63,7 @@ class UniversalImage extends HTMLImageElement {
         ctx.putImageData(imageData, 0, 0);
 
         canvas.toBlob(function (blob) {
-            self.srcset = URL.createObjectURL(blob);
+            self.src = URL.createObjectURL(blob);
         })
     }
 
@@ -74,6 +73,7 @@ class UniversalImage extends HTMLImageElement {
         const using_attribute = self.getAttribute("using");
         const with_attribute = self.getAttribute("with").split(';');
         let args: any = {};
+        this.src = self.getAttribute("src");
 
         for (var i = 0, atts = this.attributes, n = atts.length, arr = []; i < n; i++) {
             const nodeName = atts[i].nodeName;
@@ -134,8 +134,8 @@ class UniversalImage extends HTMLImageElement {
                         const json_res_parsed = JSON.parse(json_res);
 
                         const blob = new Blob([buffer_out.buffer_u8]);
-                        self.srcset = URL.createObjectURL(blob);
-                        main_resolve(self.srcset);
+                        self.src = URL.createObjectURL(blob);
+                        main_resolve(self.src);
                     });
                 });
             });
@@ -161,4 +161,4 @@ class UniversalImage extends HTMLImageElement {
     static get observedAttributes() { return ['src', 'using', 'with']; }
 }
 
-export { UniversalImage }
+export { UniversalCanvas }

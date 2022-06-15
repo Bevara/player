@@ -58,7 +58,7 @@ SET(IMG_DEC_SRC
 add_filter(imgdec
                 "${IMG_DEC_SRC}"
                 ""
-                _imgdec_register
+                "[_imgdec_register,_jpeg_std_error]"
                 GPAC_HAS_JPEG
                 ${GPAC_LOCATION}/include
                 "-s USE_LIBJPEG=1")
