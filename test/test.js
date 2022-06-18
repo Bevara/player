@@ -46,7 +46,7 @@ describe('core-player', () => {
   //   it('should decode Freedom.jpeg', (done) => {
   //     create_test('img', 
   //                 'universal-img', 
-  //                 "core-player.wasm",
+  //                 "core-img.wasm",
   //                 "imgdec.wasm",
   //                 "http://bevara.ddns.net/test-signals/Freedom.jpg",
   //                 "http://bevara.ddns.net/test-signals/Freedom.png",
@@ -59,7 +59,7 @@ describe('core-player', () => {
     it('should decode Cevennes2.jp2', (done) => {
       create_test('img',
         'universal-img',
-        "core-player.wasm",
+        "core-img.wasm",
         "j2kdec.wasm",
         "http://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2",
         "http://bevara.ddns.net/test-signals/out/j2k/Cevennes2.png",
@@ -72,7 +72,7 @@ describe('core-player', () => {
     it('should decode ImagineDragons.mp3"', (done) => {
       create_test('audio',
         "universal-audio",
-        "core-player.wasm",
+        "core-audio.wasm",
         "rfmp3.wasm;maddec.wasm",
         "http://bevara.ddns.net/test-signals/ImagineDragons.mp3",
         "http://bevara.ddns.net/test-signals/out/maddec/ImagineDragons.wav",
@@ -85,7 +85,7 @@ describe('core-player', () => {
     it('should decode sound.ac3"', (done) => {
       create_test('audio',
         "universal-audio",
-        "core-player.wasm",
+        "core-audio.wasm",
         "rfac3.wasm;a52dec.wasm",
         "http://bevara.ddns.net/test-signals/sound.ac3",
         "http://bevara.ddns.net/test-signals/out/ac3/sound.wav",
@@ -98,7 +98,7 @@ describe('core-player', () => {
     it('should decode ff-16b-1c-44100hz.flac"', (done) => {
       create_test('audio',
         "universal-audio",
-        "core-player.wasm",
+        "core-audio.wasm",
         "rfflac.wasm;ffdec.wasm",
         "http://bevara.ddns.net/test-signals/ff-16b-1c-44100hz.flac",
         "http://bevara.ddns.net/test-signals/out/flac/ff-16b-1c-44100hz.wav",
