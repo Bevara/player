@@ -349,5 +349,13 @@ add_filter(rfnalu
         ""
         "")
 
+add_filter(compose
+        ${GPAC_LOCATION}/src/filters/compose.c
+        ""
+        _compose_filter_register
+        ""
+        ""
+        "")
+
 ## Should always be at the end of this file
 set(WASM_FILES ${WASM_FILES} PARENT_SCOPE)

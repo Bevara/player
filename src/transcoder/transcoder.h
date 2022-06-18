@@ -22,10 +22,13 @@ typedef struct
 typedef struct _Entry
 {
   GF_FilterSession *session;
+  GF_User* user;
+  GF_Terminal *term;
 } Entry;
 
-void parse_set(Entry* entry, const char *json);
-const char * parse_get(Entry *entry, const char *json);
+void parse_set_session(Entry* entry, const char *json);
+const char * parse_get_session(Entry *entry, const char *json);
+
 
 #ifdef __cplusplus
 }

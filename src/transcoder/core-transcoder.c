@@ -2,9 +2,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "common.h"
+#include "transcoder.h"
 
-extern const GF_FilterRegister* nanojpeg_register(GF_FilterSession *session);
+void gf_fs_reg_all(GF_FilterSession *fsess, GF_FilterSession *a_sess)
+{
+
+}
 
 Entry *EMSCRIPTEN_KEEPALIVE constructor()
 {
@@ -20,7 +23,7 @@ Entry *EMSCRIPTEN_KEEPALIVE constructor()
 int EMSCRIPTEN_KEEPALIVE set(Entry *entry, const char *attrs)
 {
     GF_Err e;
-    parse_set(entry, attrs);
+    parse_set_session(entry, attrs);
 
     e= gf_fs_run(entry->session);
 
@@ -29,7 +32,7 @@ int EMSCRIPTEN_KEEPALIVE set(Entry *entry, const char *attrs)
 
 const char *EMSCRIPTEN_KEEPALIVE get(Entry *entry, const char *attrs)
 {
-    return parse_get(entry, attrs);
+    return parse_get_session(entry, attrs);
 }
 
 EMSCRIPTEN_KEEPALIVE void destructor(Entry *entry)

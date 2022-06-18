@@ -46,7 +46,9 @@
         "valarray": "cpp",
         "png.h": "c",
         "tools.h": "c",
-        "*.in": "cpp"
+        "*.in": "cpp",
+        "filter_session.h": "c",
+        "terminal.h": "c"
     },
     "C_Cpp.errorSquiggles": "Enabled"
 }

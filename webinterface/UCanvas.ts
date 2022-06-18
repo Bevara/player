@@ -87,6 +87,7 @@ class UniversalCanvas extends HTMLCanvasElement {
         this._decodingPromise = new Promise((main_resolve, _main_reject) => {
             with_attribute.push("writegen.wasm");
             with_attribute.push("rfimg.wasm");
+            with_attribute.push("compose.wasm");
             with_attribute.push("pngenc.wasm");
             with_attribute.push("fileout.wasm");
             with_attribute.push("filein.wasm");

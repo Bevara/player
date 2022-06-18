@@ -5,13 +5,13 @@
 #include <rapidjson/stringbuffer.h>
 #include <rapidjson/writer.h>
 
-#include "common.h"
+#include "transcoder.h"
 
 using namespace rapidjson;
 
 StringBuffer sb;
 
-extern "C" void parse_set(Entry *entry, const char *json)
+extern "C" void parse_set_session(Entry *entry, const char *json)
 {
   Document document;
   document.Parse(json);
@@ -52,7 +52,7 @@ extern "C" void parse_set(Entry *entry, const char *json)
   }
 }
 
-extern "C" const char *parse_get(Entry *entry, const char *json)
+extern "C" const char *parse_get_session(Entry *entry, const char *json)
 {
   Document document;
   document.Parse(json);
