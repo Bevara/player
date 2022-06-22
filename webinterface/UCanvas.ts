@@ -1,6 +1,5 @@
 import { Common } from "./common"
 import { Module, location } from "./core-player.js"
-import {fileio} from "./memio"
 
 class UniversalCanvas extends HTMLCanvasElement {
     using: string;
@@ -12,7 +11,6 @@ class UniversalCanvas extends HTMLCanvasElement {
     instance: any;
     entry: any;
     module: any;
-    io: fileio;
     src: string;
 
     private _decodingPromise: Promise<String>;
@@ -82,7 +80,6 @@ class UniversalCanvas extends HTMLCanvasElement {
 
         location.using = using_attribute;
         location.with = with_attribute;
-        this.io = new fileio();
 
         this._decodingPromise = new Promise((main_resolve, _main_reject) => {
             with_attribute.push("writegen.wasm");
@@ -96,19 +93,12 @@ class UniversalCanvas extends HTMLCanvasElement {
                 dynamicLibraries: with_attribute
             }).then(module => {
                 self.module = module;
-                self.io.module = module;
                 self.entry = self.module._constructor();
-                let buffer_in = self.io.make_fileio(self.src, true);
-                let buffer_out = self.io.make_fileio("out.png", false);
-                args["io_in"] = buffer_in.file_io;
-                args["io_out"] = buffer_out.file_io;
 
                 // Set input filters
                 args["filters"] = self.module.filter_entries.map(entry => self.module["_" + entry](0));
                 args["modules"] = self.module.module_entries.map(entry => self.module["_" + entry]());
 
-                Promise.all(self.io.fetch_promises).then(res_fetch => {
-                    Promise.all(self.io.buffer_promises).then(res_buffer => {
 
                         // Convert json to string buffer
                         const json_args = JSON.stringify(args);
@@ -135,12 +125,6 @@ class UniversalCanvas extends HTMLCanvasElement {
                         const ptr_data = self.module._get(self.entry, ptr_get_args);
                         const json_res = self.module.UTF8ToString(ptr_data);
                         const json_res_parsed = JSON.parse(json_res);
-
-                        const blob = new Blob([buffer_out.buffer_u8]);
-                        self.src = URL.createObjectURL(blob);
-                        main_resolve(self.src);
-                    });
-                });
             });
         });
     }
