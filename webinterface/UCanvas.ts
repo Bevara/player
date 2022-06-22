@@ -72,7 +72,7 @@ class UniversalCanvas extends HTMLCanvasElement {
         const with_attribute = self.getAttribute("with").split(';');
         let args: any = {};
         this.src = self.getAttribute("src");
-
+        
         for (var i = 0, atts = this.attributes, n = atts.length, arr = []; i < n; i++) {
             const nodeName = atts[i].nodeName;
             args[nodeName] = atts[i].nodeValue;
@@ -89,9 +89,12 @@ class UniversalCanvas extends HTMLCanvasElement {
             with_attribute.push("fileout.wasm");
             with_attribute.push("filein.wasm");
             with_attribute.push("sdl_out.wasm");
+            with_attribute.push("aout.wasm");
             new (Module as any)({
-                dynamicLibraries: with_attribute
+                dynamicLibraries: with_attribute,
+                canvas:this
             }).then(module => {
+                module['canvas'] = this;
                 self.module = module;
                 self.entry = self.module._constructor();
 

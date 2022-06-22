@@ -357,5 +357,13 @@ add_filter(compose
         ""
         "")
 
+add_filter(aout
+        ${GPAC_LOCATION}/src/filters/out_audio.c
+        ""
+        _aout_register
+        ""
+        ""
+        "")
+
 ## Should always be at the end of this file
 set(WASM_FILES ${WASM_FILES} PARENT_SCOPE)

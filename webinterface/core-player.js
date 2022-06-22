@@ -1,4 +1,6 @@
 
+import { SDL_MODULE } from "./core-sdl.js"
+
 var Module = (() => {
   var _scriptDir = typeof document !== 'undefined' && document.currentScript ? document.currentScript.src : undefined;
   if (typeof __filename !== 'undefined') _scriptDir = _scriptDir || __filename;
@@ -1156,6 +1158,12 @@ function getValue(ptr, type = 'i8', noSafe) {
 // Wasm globals
 
 var wasmMemory;
+
+
+//========================================
+// SDL functions
+//========================================
+
 
 //========================================
 // Runtime essentials
@@ -7903,7 +7911,7 @@ function intArrayToString(array) {
 function checkIncomingModuleAPI() {
   ignoredModuleProp('fetchSettings');
 }
-var asmLibraryArg = {
+var coreLibraryArg = {
   "__assert_fail": ___assert_fail,
   "__call_sighandler": ___call_sighandler,
   "__heap_base": ___heap_base,
@@ -7987,6 +7995,9 @@ var asmLibraryArg = {
   "setTempRet0": _setTempRet0,
   "system": _system
 };
+
+var asmLibraryArg = Object.assign({}, coreLibraryArg, SDL_MODULE(wasmMemory.buffer, Module, abort,createExportWrapper, stringToUTF8, UTF8ToString,allocateUTF8));
+
 var asm = createWasm();
 /** @type {function(...*):?} */
 var ___wasm_call_ctors = Module["___wasm_call_ctors"] = createExportWrapper("__wasm_call_ctors");
