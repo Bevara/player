@@ -10,6 +10,9 @@
 #include <gpac/options.h>
 
 GF_List *filter_registers;
+typedef struct __tag_mod_man GF_ModuleManager;
+
+extern GF_ModuleManager *gpac_modules_static;
 
 void gf_fs_reg_all(GF_FilterSession *fsess, GF_FilterSession *a_sess)
 {
@@ -21,10 +24,6 @@ void gf_fs_reg_all(GF_FilterSession *fsess, GF_FilterSession *a_sess)
         printf("Adding filter %s \n", filter_register->name);
         gf_fs_add_filter_register(fsess, filter_register);
     }
-
-    //Done, cleanup filters
-     gf_list_del(filter_registers);
-     filter_registers = NULL;
 }
 
 
@@ -71,31 +70,15 @@ Bool GPAC_EventProc(void *ptr, GF_Event *evt)
 
 Entry *EMSCRIPTEN_KEEPALIVE constructor()
 {
-    int i;
-	GF_User user;
-	GF_Terminal *term;
-    
+    Entry *entry = malloc(sizeof(Entry));
+	entry->filter_registers = gf_list_new();
+
     gf_sys_init(GF_MemTrackerNone, "0");
     
     gf_opts_set_key("core", "audio-output", "SDL Audio Output");
     gf_opts_set_key("core", "video-output", "SDL Video Output");
 
-
-	user.EventProc = GPAC_EventProc;
-	term = gf_term_new(&user);
-	if (!term)
-		return NULL;
-    
-    int res = play_pause_seek_gettime(term, "test.mp4");
-		if (res == GF_FALSE) {
-			fprintf(stderr, "Failure with input \n");
-			return GF_FALSE;
-		}
-
-    gf_term_disconnect(term);
-	gf_term_del(term);
-
-    return NULL;
+    return entry;
 }
 
 int EMSCRIPTEN_KEEPALIVE set(Entry *entry, const char *attrs)
@@ -110,10 +93,30 @@ int EMSCRIPTEN_KEEPALIVE set(Entry *entry, const char *attrs)
 
 const char *EMSCRIPTEN_KEEPALIVE get(Entry *entry, const char *attrs)
 {
-    return parse_get_term(entry, attrs);
+	int i;
+	GF_User user;
+	GF_Terminal *term;
+
+	const char* ret = parse_get_term(entry, attrs);
+	filter_registers = entry->filter_registers;
+	user.EventProc = GPAC_EventProc;
+	term = gf_term_new(&user);
+	if (!term)
+		return NULL;
+    
+    int res = play_pause_seek_gettime(term, "test.mp4");
+		if (res == GF_FALSE) {
+			fprintf(stderr, "Failure with input \n");
+			return ret;
+		}
+
+    gf_term_disconnect(term);
+	gf_term_del(term);
+	filter_registers = NULL;
+    return ret;
 }
 
 EMSCRIPTEN_KEEPALIVE void destructor(Entry *entry)
 {
-    
+ gf_list_del(entry->filter_registers); 
 }

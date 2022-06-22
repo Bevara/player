@@ -7,6 +7,11 @@
 
 #include "player.h"
 
+#include "gpac/list.h"
+#include "module_wrap.h"
+
+extern GF_ModuleManager *gpac_modules_static;
+
 using namespace rapidjson;
 
 StringBuffer sb;
@@ -22,34 +27,22 @@ extern "C" void parse_set_term(Entry *entry, const char *json)
     assert(document["filters"].IsArray());
     const Value &filters = document["filters"];
     for (SizeType i = 0; i < filters.Size(); i++)
-      gf_fs_add_filter_register(entry->session, (const GF_FilterRegister *)filters[i].GetInt());
+      gf_list_add(entry->filter_registers,(void*)filters[i].GetInt());
+  }
+
+  if (document.HasMember("modules"))
+  {
+    assert(document["modules"].IsArray());
+    const Value &modules = document["modules"];
+    for (SizeType i = 0; i < modules.Size(); i++)
+      gf_list_add(gpac_modules_static->plugin_registry, (void*)modules[i].GetInt());
   }
 
   if (document.HasMember("io_in"))
   {
-    GF_Err err;
-    assert(document["io_in"].IsString());
-    const char *io_in = document["io_in"].GetString();
-
-    gf_fs_load_source(entry->session, io_in, NULL, NULL, &err);
-    if (err)
-    {
-      fprintf(stderr, "session error %s\n", gf_error_to_string(err));
-    }
+    
   }
 
-  if (document.HasMember("io_out"))
-  {
-    GF_Err err;
-    assert(document["io_out"].IsString());
-    const char *io_out = document["io_out"].GetString();
-
-    gf_fs_load_destination(entry->session, io_out, NULL, NULL, &err);
-    if (err)
-    {
-      fprintf(stderr, "session error %s\n", gf_error_to_string(err));
-    }
-  }
 }
 
 extern "C" const char *parse_get_term(Entry *entry, const char *json)
@@ -65,10 +58,6 @@ extern "C" const char *parse_get_term(Entry *entry, const char *json)
   {
     const char *property = itr->GetString();
 
-    if (strcmp(property, "connections") == 0)
-    {
-      gf_fs_print_connections(entry->session);
-    }
   }
 
   sb.Clear();

@@ -1,4 +1,4 @@
-import { memio } from "./core-player.js"
+import { memio } from "./core-coder.js"
 
 class buffer {
     buffer:ArrayBuffer;

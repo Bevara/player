@@ -1,5 +1,5 @@
-#ifndef _COMMON_
-#define _COMMON_
+#ifndef _TRANSCODER_
+#define _TRANSCODER_
 
 #ifdef __cplusplus
 extern "C" {  
@@ -22,8 +22,6 @@ typedef struct
 typedef struct _Entry
 {
   GF_FilterSession *session;
-  GF_User* user;
-  GF_Terminal *term;
 } Entry;
 
 void parse_set_session(Entry* entry, const char *json);

@@ -1,5 +1,5 @@
 import { Common } from "./common"
-import { Module, location, memio } from "./core-player.js"
+import { Module, location } from "./core-player.js"
 import {fileio} from "./memio"
 
 class UniversalCanvas extends HTMLCanvasElement {
@@ -91,6 +91,7 @@ class UniversalCanvas extends HTMLCanvasElement {
             with_attribute.push("pngenc.wasm");
             with_attribute.push("fileout.wasm");
             with_attribute.push("filein.wasm");
+            with_attribute.push("sdl_out.wasm");
             new (Module as any)({
                 dynamicLibraries: with_attribute
             }).then(module => {
@@ -104,6 +105,7 @@ class UniversalCanvas extends HTMLCanvasElement {
 
                 // Set input filters
                 args["filters"] = self.module.filter_entries.map(entry => self.module["_" + entry](0));
+                args["modules"] = self.module.module_entries.map(entry => self.module["_" + entry]());
 
                 Promise.all(self.io.fetch_promises).then(res_fetch => {
                     Promise.all(self.io.buffer_promises).then(res_buffer => {

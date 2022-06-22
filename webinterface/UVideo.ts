@@ -1,6 +1,6 @@
 //import {HEAPU8, asmLibraryArg, writeArrayToMemory, initRuntime, stackCheckInit, Module, wasmTable, wasmMemory, stringToUTF8, stackAlloc} from './player'
 import { Common } from "./common"
-import { Module, location } from "./core-player.js"
+import { Module, location } from "./core-coder.js"
 import { fileio } from "./memio"
 
 class UniversalVideo extends HTMLVideoElement {

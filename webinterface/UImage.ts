@@ -1,5 +1,5 @@
 import { Common } from "./common"
-import { Module, location, memio } from "./core-player.js"
+import { Module, location } from "./core-coder.js"
 import {fileio} from "./memio"
 
 //declare var Module: any;
