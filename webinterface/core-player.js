@@ -1,5 +1,6 @@
 
 import { SDL_MODULE } from "./core-sdl.js"
+import { FETCH_MODULE } from "./core-fetch.js"
 
 var Module = (() => {
   var _scriptDir = typeof document !== 'undefined' && document.currentScript ? document.currentScript.src : undefined;
@@ -7996,7 +7997,11 @@ var coreLibraryArg = {
   "system": _system
 };
 
-var asmLibraryArg = Object.assign({}, coreLibraryArg, SDL_MODULE(wasmMemory.buffer, Module, abort,createExportWrapper, stringToUTF8, UTF8ToString,allocateUTF8));
+var asmLibraryArg = Object.assign({},
+                                  coreLibraryArg,
+                                  SDL_MODULE(wasmMemory.buffer, Module, abort,createExportWrapper, stringToUTF8, UTF8ToString,allocateUTF8, getWasmTableEntry),
+                                  FETCH_MODULE(wasmMemory.buffer, Module, abort, createExportWrapper, stringToUTF8, UTF8ToString)
+                                  );
 
 var asm = createWasm();
 /** @type {function(...*):?} */

@@ -365,5 +365,13 @@ add_filter(aout
         ""
         "")
 
+add_filter(httpin
+        ${GPAC_LOCATION}/src/filters/in_http.c
+        ""
+        _httpin_register
+        ""
+        ""
+        "")
+
 ## Should always be at the end of this file
 set(WASM_FILES ${WASM_FILES} PARENT_SCOPE)

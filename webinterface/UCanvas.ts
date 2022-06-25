@@ -90,6 +90,8 @@ class UniversalCanvas extends HTMLCanvasElement {
             with_attribute.push("filein.wasm");
             with_attribute.push("sdl_out.wasm");
             with_attribute.push("aout.wasm");
+            with_attribute.push("httpin.wasm");
+            
             new (Module as any)({
                 dynamicLibraries: with_attribute,
                 canvas:this
@@ -128,6 +130,12 @@ class UniversalCanvas extends HTMLCanvasElement {
                         const ptr_data = self.module._get(self.entry, ptr_get_args);
                         const json_res = self.module.UTF8ToString(ptr_data);
                         const json_res_parsed = JSON.parse(json_res);
+
+                        function call(){
+                            self.module._run(self.entry);
+                            setTimeout(call, 1);
+                        }
+                        setTimeout(call, 1);
             });
         });
     }
