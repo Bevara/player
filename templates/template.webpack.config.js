@@ -53,6 +53,23 @@ module.exports = () => {
     } else {
       config.mode = "development";
     }
+
+    config.resolve = {
+      ...config.resolve,
+      fallback: {
+        "fs": false,
+        "path": false,
+        "os": false,
+        "zlib": false,
+        "stream": false,
+        "crypto": false,
+        "http": false,
+        "https": false,
+        "net":false,
+        "tls":false
+      }
+    }
+    
     return config;
   };
   

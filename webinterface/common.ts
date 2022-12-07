@@ -12,7 +12,16 @@ import {memcpy,malloc,memset,free} from "./utils/memory"
 import {Filters} from "./filters"
 import {MainModule} from "./main"
 
-type Common_mem = Record<string, Function | RelativeIndexable<number> | WebAssembly.Table | Fetch>
+type Common_mem = Record<string, Function |             
+Int8Array |
+Int16Array |
+Int32Array |
+Uint8Array |
+Uint16Array |
+Uint32Array |
+Float32Array |
+Float64Array|
+WebAssembly.Table | Fetch>
 
 class Common {
     exports_using: any;
