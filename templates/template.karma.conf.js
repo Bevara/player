@@ -7,6 +7,7 @@ module.exports = function (config) {
     files: [{ pattern: '@CMAKE_BINARY_DIR@/dist/universal-img.js', watched: false, included: true },
     { pattern: '@CMAKE_BINARY_DIR@/dist/*.wasm', watched: false, included: false, served: true, nocache: false },
       'test/**/*.js'],
+    reporters: ['dots', 'junit'],
     port: 9876,  // karma web server port
     colors: true,
     logLevel: config.LOG_INFO,
@@ -25,18 +26,11 @@ module.exports = function (config) {
     autoWatch: false,
     // singleRun: false, // Karma captures browsers, runs the tests and exits
     concurrency: Infinity,
-    reporters: ['progress', 'junit'],
-    // the default configuration
-    junitReporter: {
-      outputDir: '', // results will be saved as $outputDir/$browserName.xml
-      outputFile: undefined, // if included, results will be saved as $outputDir/$browserName/$outputFile
-      suite: '', // suite will become the package name attribute in xml testsuite element
-      useBrowserName: true, // add browser name to report and classes names
-      nameFormatter: undefined, // function (browser, result) to customize the name attribute in xml testcase element
-      classNameFormatter: undefined, // function (browser, result) to customize the classname attribute in xml testcase element
-      properties: {}, // key value pair of properties to add to the <properties> section of the report
-      xmlVersion: null // use '1' if reporting to be per SonarQube 6.2 XML format
+    reporters: ['progress', 'nunit'],
+    nunitReporter: {
+      outputFile: 'test-results.xml',
+      suite: ''
     },
     browserNoActivityTimeout: 600000
-  });
-};
+  })
+}
