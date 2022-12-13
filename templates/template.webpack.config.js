@@ -66,9 +66,11 @@ module.exports = () => {
         "http": false,
         "https": false,
         "net":false,
-        "tls":false
+        "tls":false,
+        "utf-8-validate":false,
+        "bufferutil":false
       }
-    }
+    };
     
     return config;
   };
