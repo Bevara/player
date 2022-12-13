@@ -7,7 +7,6 @@ module.exports = function (config) {
     files: [{ pattern: '@CMAKE_BINARY_DIR@/dist/universal-img.js', watched: false, included: true },
     { pattern: '@CMAKE_BINARY_DIR@/dist/*.wasm', watched: false, included: false, served: true, nocache: false },
       'test/**/*.js'],
-    reporters: ['dots', 'junit'],
     port: 9876,  // karma web server port
     colors: true,
     logLevel: config.LOG_INFO,
@@ -32,5 +31,5 @@ module.exports = function (config) {
       suite: ''
     },
     browserNoActivityTimeout: 600000
-  })
-}
+  });
+};
