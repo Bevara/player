@@ -1,0 +1,26 @@
+{
+	"img": {
+		"using": [
+			"core-img.wasm"
+		],
+		"with": [
+			"j2kdec.wasm",
+			"imgdec.wasm"
+		]
+	},
+	"audio": {
+		"using": [
+			"core-audio.wasm"
+		],
+		"with": [
+			"rfac3.wasm",
+			"rfflac.wasm",
+			"rfadts.wasm",
+			"oggdmx.wasm",
+			"a52dec.wasm",
+			"rfamr.wasm",
+			"ffdec.wasm",
+			"maddec.wasm"
+		]
+	}
+}
