@@ -1,6 +1,6 @@
 import { Common } from "./common"
 import { Module, location } from "./core-coder.js"
-import {fileio} from "./memio"
+import { fileio } from "./memio"
 
 //declare var Module: any;
 
@@ -15,6 +15,10 @@ class UniversalImage extends HTMLImageElement {
     entry: any;
     module: any;
     io: fileio;
+    using_attribute: string;
+    with_attribute: string[];
+    print_attribute: Element | null;
+    error_attribute: Element | null;
 
     private _decodingPromise: Promise<String>;
 
@@ -71,8 +75,6 @@ class UniversalImage extends HTMLImageElement {
 
     connectedCallback() {
         const self = this;
-        const using_attribute = self.getAttribute("using");
-        const with_attribute = self.getAttribute("with").split(';');
         let args: any = {};
 
         for (var i = 0, atts = this.attributes, n = atts.length, arr = []; i < n; i++) {
@@ -80,18 +82,42 @@ class UniversalImage extends HTMLImageElement {
             args[nodeName] = atts[i].nodeValue;
         }
 
-        location.using = using_attribute;
-        location.with = with_attribute;
+        location.using = this.using_attribute;
+        location.with = this.with_attribute;
         this.io = new fileio();
 
         this._decodingPromise = new Promise((main_resolve, _main_reject) => {
-            with_attribute.push("writegen.wasm");
-            with_attribute.push("rfimg.wasm");
-            with_attribute.push("pngenc.wasm");
-            with_attribute.push("fileout.wasm");
-            with_attribute.push("filein.wasm");
             new (Module as any)({
-                dynamicLibraries: with_attribute
+                dynamicLibraries: this.with_attribute,
+                print: function () {
+                    if (self.error_attribute){
+                        return function(t){
+                            function clear_text(text){
+                                return text
+                                .replaceAll("[37m",'')
+                                .replaceAll("[0m",'');
+                            }
+                            (self.error_attribute as any).value += clear_text(t) + "\n";
+                        };
+                    }else{
+                        return console.log.bind(console);
+                    }
+                }(),
+                printErr: function () {
+                    if (self.error_attribute){
+                        return function(t){
+                            function clear_text(text){
+                                return text
+                                .replaceAll("[37m",'')
+                                .replaceAll("[0m",'');
+                            }
+
+                            (self.error_attribute as any).value += clear_text(t) + "\n";
+                        };
+                    }else{
+                        return console.warn.bind(console);
+                    }
+                }()
             }).then(module => {
                 self.module = module;
                 self.io.module = module;
@@ -141,10 +167,10 @@ class UniversalImage extends HTMLImageElement {
             });
         });
     }
-
-    disconnectedCallback() {
-
-    }
+    /*
+        disconnectedCallback() {
+    
+        }*/
 
     attributeChangedCallback(name: string, oldValue: string, newValue: string) {
         if (oldValue === newValue) return;
@@ -152,13 +178,26 @@ class UniversalImage extends HTMLImageElement {
             case 'src':
                 break;
             case 'using':
+                this.using_attribute = this.getAttribute("using");
                 break;
             case 'with':
+                this.with_attribute = this.getAttribute("with").split(';');
+                this.with_attribute.push("writegen.wasm");
+                this.with_attribute.push("rfimg.wasm");
+                this.with_attribute.push("pngenc.wasm");
+                this.with_attribute.push("fileout.wasm");
+                this.with_attribute.push("filein.wasm");
+                break;
+            case 'print':
+                this.print_attribute = document.querySelector(this.getAttribute("print"));
+                break;
+            case 'printerr':
+                this.error_attribute = document.querySelector(this.getAttribute("printerr"));
                 break;
         }
     }
 
-    static get observedAttributes() { return ['src', 'using', 'with']; }
+    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr']; }
 }
 
-export { UniversalImage }
+export { UniversalImage };
