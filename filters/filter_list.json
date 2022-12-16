@@ -1,9 +1,9 @@
 {
 	"tag": [
-		"img",
-		"audio",
-		"video",
-		"canvas"
+		"img is='universal-img'",
+		"audio is='universal-audio'",
+		"video is='universal-video'",
+		"canvas is='universal-canvas'"
 	],
 	"using": [
 		"core-img.wasm",
