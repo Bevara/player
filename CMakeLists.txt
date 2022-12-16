@@ -43,7 +43,7 @@ add_custom_target (serve
 )
 
 add_custom_target (release
-  COMMAND npm run build:prod && ${CMAKE_COMMAND} -E copy *.wasm ${CMAKE_CURRENT_BINARY_DIR}/dist/ && ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/filters/filter_list.json ${CMAKE_CURRENT_BINARY_DIR}/dist/
+  COMMAND npm run build:prod && ${CMAKE_COMMAND} -E copy *.wasm ${CMAKE_CURRENT_BINARY_DIR}/dist/ && ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/filters/*.json ${CMAKE_CURRENT_BINARY_DIR}/dist/
 )
 
 add_custom_target (test
