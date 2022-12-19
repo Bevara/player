@@ -18,7 +18,6 @@
 		"aout.wasm",
 		"httpin.wasm",
 		"rfadts.wasm",
-		"imgdec.wasm",
 		"rfamr.wasm",
 		"j2kdec.wasm",
 		"rfflac.wasm",
