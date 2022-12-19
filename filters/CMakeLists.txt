@@ -244,6 +244,7 @@ add_filter(ffdmx
 SET(FFRESCALE_SRC
     ${GPAC_LOCATION}/src/filters/ff_rescale.c
     ${GPAC_LOCATION}/src/filters/ff_common.c
+    ${GPAC_LOCATION}/src/utils/constants.c
 )
 
 add_filter(ffrescale
@@ -257,6 +258,8 @@ add_filter(ffrescale
 SET(FFENC_SRC
     ${GPAC_LOCATION}/src/filters/ff_enc.c
     ${GPAC_LOCATION}/src/filters/ff_common.c
+    ${GPAC_LOCATION}/src/utils/constants.c
+    ${GPAC_LOCATION}/src/utils/list.c
 )
 add_filter(ffenc
         "${FFENC_SRC}"
@@ -317,16 +320,26 @@ add_filter(m2psdmx
         ""
         "")
 
-add_filter(rfmpgvid
+SET(RFMPGVID_SRC
         ${GPAC_LOCATION}/src/filters/reframe_mpgvid.c
+        ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+)
+
+add_filter(rfmpgvid
+        "${RFMPGVID_SRC}"
         ""
         _mpgviddmx_register
         ""
         ""
         "")
 
+SET(MP4DMX_SRC
+    ${GPAC_LOCATION}/src/filters/isoffin_read.c
+    ${GPAC_LOCATION}/src/isomedia/isom_read.c
+)
+
 add_filter(mp4dmx
-        ${GPAC_LOCATION}/src/filters/isoffin_read.c
+        "${MP4DMX_SRC}"
         ""
         _isoffin_register
         ""
@@ -341,8 +354,13 @@ add_filter(mp4mx
         ""
         "")
 
+SET(RFNALU_SRC
+    ${GPAC_LOCATION}/src/filters/reframe_nalu.c
+    ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+)
+
 add_filter(rfnalu
-        ${GPAC_LOCATION}/src/filters/reframe_nalu.c
+        "${RFNALU_SRC}"
         ""
         _naludmx_register
         ""
