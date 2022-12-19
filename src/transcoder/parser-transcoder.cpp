@@ -50,6 +50,11 @@ extern "C" void parse_set_session(Entry *entry, const char *json)
       fprintf(stderr, "session error %s\n", gf_error_to_string(err));
     }
   }
+
+  if (document.HasMember("debug"))
+  {
+    gf_log_set_tool_level(GF_LOG_FILTER, GF_LOG_INFO);
+  }
 }
 
 extern "C" const char *parse_get_session(Entry *entry, const char *json)
