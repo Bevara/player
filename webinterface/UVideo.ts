@@ -37,7 +37,6 @@ class UniversalVideo extends HTMLVideoElement {
         this.io = new fileio();
 
         this._decodingPromise = new Promise((main_resolve, _main_reject) => {
-            with_attribute.push("writegen.wasm");
             new (Module as any)({
                 dynamicLibraries: with_attribute
             }).then(module => {

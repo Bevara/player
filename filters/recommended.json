@@ -13,11 +13,11 @@
 		"wma": "audio/x-ms-wma"
 	},
 	"with":{
-		"jp2": "j2kdec.wasm",
-		"ac3": "rfac3.wasm;a52dec.wasm",
-		"amr": "rfamr.wasm;ffdec.wasm",
-		"flac": "rfflac.wasm;ffdec.wasm",
-		"opus": "oggdmx.wasm;ffdec.wasm",
-		"wma": "rfadts.wasm;ffdec.wasm"
+		"jp2": "filein.wasm;fileout.wasm;pngenc.wasm;rfimg.wasm;writegen.wasm;j2kdec.wasm",
+		"ac3": "filein.wasm;fileout.wasm;writegen.wasm;rfac3.wasm;a52dec.wasm",
+		"amr": "filein.wasm;fileout.wasm;writegen.wasm;rfamr.wasm;ffdec.wasm",
+		"flac": "filein.wasm;fileout.wasm;writegen.wasm;rfflac.wasm;ffdec.wasm",
+		"opus": "filein.wasm;fileout.wasm;writegen.wasm;oggdmx.wasm;ffdec.wasm",
+		"wma": "filein.wasm;fileout.wasm;writegen.wasm;rfadts.wasm;ffdec.wasm"
 	}
 }

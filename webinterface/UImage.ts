@@ -182,11 +182,6 @@ class UniversalImage extends HTMLImageElement {
                 break;
             case 'with':
                 this.with_attribute = this.getAttribute("with").split(';');
-                this.with_attribute.push("writegen.wasm");
-                this.with_attribute.push("rfimg.wasm");
-                this.with_attribute.push("pngenc.wasm");
-                this.with_attribute.push("fileout.wasm");
-                this.with_attribute.push("filein.wasm");
                 break;
             case 'print':
                 this.print_attribute = document.querySelector(this.getAttribute("print"));

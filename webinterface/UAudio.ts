@@ -37,9 +37,6 @@ class UniversalAudio extends HTMLAudioElement {
         this.io = new fileio();
 
         this._decodingPromise = new Promise((main_resolve, _main_reject) => {
-            with_attribute.push("writegen.wasm");
-            with_attribute.push("fileout.wasm");
-            with_attribute.push("filein.wasm");
             new (Module as any)({
                 dynamicLibraries: with_attribute
             }).then(module => {

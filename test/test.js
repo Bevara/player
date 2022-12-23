@@ -60,7 +60,7 @@ describe('core-player', () => {
       create_test('img',
         'universal-img',
         "core-img.wasm",
-        "j2kdec.wasm",
+        "filein.wasm;fileout.wasm;pngenc.wasm;rfimg.wasm;writegen.wasm;j2kdec.wasm",
         "http://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2",
         "http://bevara.ddns.net/test-signals/out/j2k/Cevennes2.png",
         done
@@ -73,7 +73,7 @@ describe('core-player', () => {
       create_test('audio',
         "universal-audio",
         "core-audio.wasm",
-        "rfmp3.wasm;maddec.wasm",
+        "filein.wasm;fileout.wasm;writegen.wasm;rfmp3.wasm;maddec.wasm",
         "http://bevara.ddns.net/test-signals/ImagineDragons.mp3",
         "http://bevara.ddns.net/test-signals/out/maddec/ImagineDragons.wav",
         done
@@ -86,7 +86,7 @@ describe('core-player', () => {
       create_test('audio',
         "universal-audio",
         "core-audio.wasm",
-        "rfac3.wasm;a52dec.wasm",
+        "filein.wasm;fileout.wasm;writegen.wasm;rfac3.wasm;a52dec.wasm",
         "http://bevara.ddns.net/test-signals/sound.ac3",
         "http://bevara.ddns.net/test-signals/out/ac3/sound.wav",
         done
@@ -99,13 +99,13 @@ describe('core-player', () => {
       create_test('audio',
         "universal-audio",
         "core-audio.wasm",
-        "rfflac.wasm;ffdec.wasm",
+        "filein.wasm;fileout.wasm;writegen.wasm;rfflac.wasm;ffdec.wasm",
         "http://bevara.ddns.net/test-signals/ff-16b-1c-44100hz.flac",
         "http://bevara.ddns.net/test-signals/out/flac/ff-16b-1c-44100hz.wav",
         done
       );
     }).timeout(60000);
-  })
+  });
 
   // describe('#rfamr', () => {
   //   it('should decode ff-16b-1c-8000hz.amr"', (done) => {
