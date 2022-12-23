@@ -1,15 +1,9 @@
 {
 	"tag": {
-		"img": "img is='universal-img' with='core-img.wasm' ",
-		"audio": "audio is='universal-audio' with='core-audio.wasm' ",
-		"video":"video is='universal-video' with='core-video.wasm' ",
-		"canvas": "canvas is='universal-canvas' with='core-canvas.wasm' "
-	},
-	"using": {
-		"img": ["core-img.wasm"],
-		"audio": ["core-audio.wasm"],
-		"video": ["core-video.wasm"],
-		"canvas":["core-canvas.wasm"]
+		"image": "img is='universal-img' using='core-img.wasm' ",
+		"audio": "audio is='universal-audio' using='core-audio.wasm' ",
+		"video":"video is='universal-video' using='core-video.wasm' ",
+		"canvas": "canvas is='universal-canvas' using='core-canvas.wasm' "
 	},
 	"with": [
 		"a52dec.wasm",

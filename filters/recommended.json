@@ -7,22 +7,6 @@
 		"opus": "audio/ogg",
 		"wma": "audio/x-ms-wma"
 	},
-	"tag":{
-		"jp2": "img is='universal-img' with='core-img.wasm' ",
-		"ac3": "audio is='universal-audio' with='core-audio.wasm' ",
-		"amr": "audio is='universal-audio' with='core-audio.wasm' ",
-		"flac": "audio is='universal-audio' with='core-audio.wasm' ",
-		"opus": "audio is='universal-audio' with='core-audio.wasm' ",
-		"wma": "audio is='universal-audio' with='core-audio.wasm' "
-	},
-	"core":{
-		"jp2": "core-img.wasm",
-		"ac3": "core-audio.wasm",
-		"amr": "core-audio.wasm",
-		"flac": "core-audio.wasm",
-		"opus": "core-audio.wasm",
-		"wma": "core-audio.wasm"
-	},
 	"with":{
 		"jp2": "j2kdec.wasm",
 		"ac3": "rfac3.wasm;a52dec.wasm",
