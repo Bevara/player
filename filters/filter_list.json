@@ -1,16 +1,16 @@
 {
-	"tag": [
-		"img is='universal-img'",
-		"audio is='universal-audio'",
-		"video is='universal-video'",
-		"canvas is='universal-canvas'"
-	],
-	"using": [
-		"core-img.wasm",
-		"core-audio.wasm",
-		"core-video.wasm",
-		"core-canvas.wasm"
-	],
+	"tag": {
+		"img": "img is='universal-img'",
+		"audio": "audio is='universal-audio'",
+		"video":"video is='universal-video'",
+		"canvas": "canvas is='universal-canvas'"
+	},
+	"using": {
+		"img": ["core-img.wasm"],
+		"audio": ["core-audio.wasm"],
+		"video": ["core-video.wasm"],
+		"canvas":["core-canvas.wasm"]
+	},
 	"with": [
 		"a52dec.wasm",
 		"fileout.wasm",
