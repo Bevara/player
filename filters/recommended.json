@@ -8,12 +8,12 @@
 		"wma": "audio/x-ms-wma"
 	},
 	"tag":{
-		"jp2": "img is='universal-img'",
-		"ac3": "audio is='universal-audio'",
-		"amr": "audio is='universal-audio'",
-		"flac": "audio is='universal-audio'",
-		"opus": "audio is='universal-audio'",
-		"wma": "audio is='universal-audio'"
+		"jp2": "img",
+		"ac3": "audio",
+		"amr": "audio",
+		"flac": "audio",
+		"opus": "audio",
+		"wma": "audio"
 	},
 	"core":{
 		"jp2": "core-img.wasm",
