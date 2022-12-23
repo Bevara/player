@@ -8,12 +8,12 @@
 		"wma": "audio/x-ms-wma"
 	},
 	"tag":{
-		"jp2": "img",
-		"ac3": "audio",
-		"amr": "audio",
-		"flac": "audio",
-		"opus": "audio",
-		"wma": "audio"
+		"jp2": "img is='universal-img' with='core-img.wasm' ",
+		"ac3": "audio is='universal-audio' with='core-audio.wasm' ",
+		"amr": "audio is='universal-audio' with='core-audio.wasm' ",
+		"flac": "audio is='universal-audio' with='core-audio.wasm' ",
+		"opus": "audio is='universal-audio' with='core-audio.wasm' ",
+		"wma": "audio is='universal-audio' with='core-audio.wasm' "
 	},
 	"core":{
 		"jp2": "core-img.wasm",
