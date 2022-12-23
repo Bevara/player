@@ -10,7 +10,10 @@
 		"amr": "audio/amr",
 		"flac": "audio/flac",
 		"opus": "audio/ogg",
-		"wma": "audio/x-ms-wma"
+		"wma": "audio/x-ms-wma",
+		"aiff":"audio/aiff",
+		"mp4":"video/mp4"
+
 	},
 	"with":{
 		"jp2": "filein.wasm;fileout.wasm;pngenc.wasm;rfimg.wasm;writegen.wasm;j2kdec.wasm",
