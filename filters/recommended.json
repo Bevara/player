@@ -1,6 +1,11 @@
 {
 	"mimeTypes": {
 		"jp2": "image/jp2",
+		"jxl": "image/jxl",
+		"tif": "image/tiff",
+		"cr2": "image/x-canon-cr2",
+		"cr3": "image/x-canon-cr3",
+		"3fr": "image/x-hasselblad-3fr",
 		"ac3": "audio/ac3",
 		"amr": "audio/amr",
 		"flac": "audio/flac",
