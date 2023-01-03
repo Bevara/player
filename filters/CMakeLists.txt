@@ -127,6 +127,7 @@ add_filter(j2kdec
 SET(RFMP3_SRC
             ${GPAC_LOCATION}/src/filters/reframe_mp3.c
             ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+            ${GPAC_LOCATION}/src/utils/utf.c
 )
 
 add_filter(rfmp3
