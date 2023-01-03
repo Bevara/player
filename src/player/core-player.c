@@ -6,8 +6,8 @@
   
 #include <gpac/main.h>
 #include <gpac/filters.h>
-#include <gpac/terminal.h>
-#include <gpac/options.h>
+//#include <gpac/terminal.h>
+//#include <gpac/options.h>
  
 GF_List *filter_registers;
 typedef struct __tag_mod_man GF_ModuleManager;
@@ -29,7 +29,7 @@ void gf_fs_reg_all(GF_FilterSession *fsess, GF_FilterSession *a_sess)
 }
 
 volatile Bool connected = GF_FALSE;
-
+/*
 static Bool play_pause_seek_gettime(GF_Terminal *term, const char *fn)
 {
 	u32 time;
@@ -54,7 +54,7 @@ static Bool play_pause_seek_gettime(GF_Terminal *term, const char *fn)
 	// assert(time == 0);
 
 	return GF_TRUE;
-}
+}*/
 
 Bool GPAC_EventProc(void *ptr, GF_Event *evt)
 {
@@ -129,7 +129,7 @@ int EMSCRIPTEN_KEEPALIVE set(Entry *entry, const char *attrs)
 
 const char *EMSCRIPTEN_KEEPALIVE get(Entry *entry, const char *attrs)
 {
-	int i;
+	/*int i;
 	GF_User user;
 
 	const char *ret = parse_get_term(entry, attrs);
@@ -144,12 +144,13 @@ const char *EMSCRIPTEN_KEEPALIVE get(Entry *entry, const char *attrs)
 	{
 		fprintf(stderr, "Failure with input \n");
 		return ret;
-	}
+	}*/
 
 	// gf_term_disconnect(term);
 	// gf_term_del(term);
 	// filter_registers = NULL;
-	return ret;
+	//return ret;
+	return NULL;
 }
 
 EMSCRIPTEN_KEEPALIVE void destructor(Entry *entry)
@@ -159,5 +160,5 @@ EMSCRIPTEN_KEEPALIVE void destructor(Entry *entry)
 
 const char *EMSCRIPTEN_KEEPALIVE run(Entry *entry)
 {
-	gf_term_process_step(entry->term);
+	//gf_term_process_step(entry->term);
 }

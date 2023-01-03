@@ -21,8 +21,8 @@ typedef struct
 
 typedef struct _Entry
 {
-  GF_User* user;
-  GF_Terminal *term;
+  //GF_User* user;
+  //GF_Terminal *term;
   GF_List *filter_registers;
 } Entry;
 

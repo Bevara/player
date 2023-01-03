@@ -8,6 +8,11 @@ void gf_fs_reg_all(GF_FilterSession *fsess, GF_FilterSession *a_sess)
 {
 
 }
+/*
+void on_gpac_log(void *cbck, GF_LOG_Level level, GF_LOG_Tool tool, const char *fmt, va_list vlist)
+{
+    printf("test");
+}*/
 
 Entry *EMSCRIPTEN_KEEPALIVE constructor()
 {
@@ -16,6 +21,7 @@ Entry *EMSCRIPTEN_KEEPALIVE constructor()
 
     Entry *entry = malloc(sizeof(Entry));
     entry->session = gf_fs_new_defaults(sflags);
+    //gf_log_set_callback(entry, on_gpac_log);
 
     return entry;
 }
