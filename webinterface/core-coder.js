@@ -1240,6 +1240,7 @@ function ccall(ident, returnType, argTypes, args, opts) {
   return ret;
 }
 
+
 /** @param {string=} returnType
     @param {Array=} argTypes
     @param {Object=} opts */
@@ -7702,6 +7703,16 @@ var ASM_CONSTS = {
       return -1;
     }
 
+    function __dlinit(main_dso_handle) { 
+      var dso = { refcount: Infinity, name: "__main__", module: Module["asm"], global: true }; 
+      LDSO.loadedLibsByName[dso.name] = dso; 
+      LDSO.loadedLibsByHandle[main_dso_handle] = dso;
+    }
+    
+    function ___syscall_mkdirat(dirfd, path, mode) {
+      try { path = SYSCALLS.getStr(path); path = SYSCALLS.calculateAt(dirfd, path); path = PATH.normalize(path); if (path[path.length - 1] === "/") path = path.substr(0, path.length - 1); FS.mkdir(path, mode, 0); return 0 } catch (e) { if (typeof FS == "undefined" || !(e instanceof FS.ErrnoError)) throw e; return -e.errno }
+    }
+
   var FSNode = /** @constructor */ function(parent, name, mode, rdev) {
     if (!parent) {
       parent = this;  // root node sets parent to itself
@@ -7985,7 +7996,9 @@ var asmLibraryArg = {
   "pthread_setschedparam": _pthread_setschedparam,
   "sem_timedwait": _sem_timedwait,
   "setTempRet0": _setTempRet0,
-  "system": _system
+  "system": _system,
+  "_dlinit":__dlinit,
+  "__syscall_mkdirat": ___syscall_mkdirat,
 };
 var asm = createWasm();
 /** @type {function(...*):?} */
