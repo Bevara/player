@@ -81,7 +81,7 @@ if (Module['ENVIRONMENT']) {
 }
 
 // `/` should be present at the end if `scriptDirectory` is not empty
-var scriptDirectory = '';
+//var scriptDirectory = ''; // FIXME : this variable is now global
 function locateFile(path) {
   if (Module['locateFile']) {
     return Module['locateFile'](path, scriptDirectory);
@@ -2180,7 +2180,7 @@ var ASM_CONSTS = {
       addRunDependency('preloadDylibs');
       dynamicLibraries.reduce(function(chain, lib) {
         return chain.then(function() {
-          return loadDynamicLibrary(scriptDirectory + lib, {loadAsync: true, global: true, nodelete: true, allowUndefined: true});
+          return loadDynamicLibrary(lib, {loadAsync: true, global: true, nodelete: true, allowUndefined: true});
         });
       }, Promise.resolve()).then(function() {
         // we got them all, wonderful
@@ -6971,4 +6971,5 @@ else if (typeof exports === 'object')
  
   const location = {};
   const memio = [];
-  export {Module, location, memio};
+  var scriptDirectory = '';
+  export {Module, location, memio, scriptDirectory};

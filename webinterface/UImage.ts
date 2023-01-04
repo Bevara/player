@@ -89,31 +89,31 @@ class UniversalImage extends HTMLImageElement {
             new (Module as any)({
                 dynamicLibraries: this.with_attribute,
                 print: function () {
-                    if (self.error_attribute){
-                        return function(t){
-                            function clear_text(text){
+                    if (self.error_attribute) {
+                        return function (t) {
+                            function clear_text(text) {
                                 return text
-                                .replaceAll("[37m",'')
-                                .replaceAll("[0m",'');
+                                    .replaceAll("[37m", '')
+                                    .replaceAll("[0m", '');
                             }
                             (self.error_attribute as any).value += clear_text(t) + "\n";
                         };
-                    }else{
+                    } else {
                         return console.log.bind(console);
                     }
                 }(),
                 printErr: function () {
-                    if (self.error_attribute){
-                        return function(t){
-                            function clear_text(text){
+                    if (self.error_attribute) {
+                        return function (t) {
+                            function clear_text(text) {
                                 return text
-                                .replaceAll("[37m",'')
-                                .replaceAll("[0m",'');
+                                    .replaceAll("[37m", '')
+                                    .replaceAll("[0m", '');
                             }
 
                             (self.error_attribute as any).value += clear_text(t) + "\n";
                         };
-                    }else{
+                    } else {
                         return console.warn.bind(console);
                     }
                 }()
@@ -129,40 +129,36 @@ class UniversalImage extends HTMLImageElement {
                 // Set input filters
                 args["filters"] = self.module.filter_entries.map(entry => self.module["_" + entry](0));
 
-                Promise.all(self.io.fetch_promises).then(res_fetch => {
-                    Promise.all(self.io.buffer_promises).then(res_buffer => {
 
-                        // Convert json to string buffer
-                        const json_args = JSON.stringify(args);
-                        const len_args = (json_args.length << 2) + 1;
-                        const ptr_args = self.module.stackAlloc(len_args);
-                        self.module.stringToUTF8(json_args, ptr_args, len_args);
+                // Convert json to string buffer
+                const json_args = JSON.stringify(args);
+                const len_args = (json_args.length << 2) + 1;
+                const ptr_args = self.module.stackAlloc(len_args);
+                self.module.stringToUTF8(json_args, ptr_args, len_args);
 
-                        // Call set function and decode
-                        self.module._set(self.entry, ptr_args);
+                // Call set function and decode
+                self.module._set(self.entry, ptr_args);
 
-                        // Retrieve result
-                        const props = [];
-                        if (self.hasAttribute("connections")) {
-                            props.push("connections");
-                        }
+                // Retrieve result
+                const props = [];
+                if (self.hasAttribute("connections")) {
+                    props.push("connections");
+                }
 
-                        const get_args = JSON.stringify(props);
+                const get_args = JSON.stringify(props);
 
-                        const get_args_len = (get_args.length << 2) + 1;
-                        const ptr_get_args = self.module.stackAlloc(get_args_len);
+                const get_args_len = (get_args.length << 2) + 1;
+                const ptr_get_args = self.module.stackAlloc(get_args_len);
 
-                        self.module.stringToUTF8(get_args, ptr_get_args, get_args_len);
+                self.module.stringToUTF8(get_args, ptr_get_args, get_args_len);
 
-                        const ptr_data = self.module._get(self.entry, ptr_get_args);
-                        const json_res = self.module.UTF8ToString(ptr_data);
-                        const json_res_parsed = JSON.parse(json_res);
+                const ptr_data = self.module._get(self.entry, ptr_get_args);
+                const json_res = self.module.UTF8ToString(ptr_data);
+                const json_res_parsed = JSON.parse(json_res);
 
-                        const blob = new Blob([buffer_out.buffer_u8]);
-                        self.srcset = URL.createObjectURL(blob);
-                        main_resolve(self.srcset);
-                    });
-                });
+                const blob = new Blob([buffer_out.buffer_u8]);
+                self.srcset = URL.createObjectURL(blob);
+                main_resolve(self.srcset);
             });
         });
     }

@@ -50,41 +50,38 @@ class UniversalAudio extends HTMLAudioElement {
                 // Set input filters
                 args["filters"] = self.module.filter_entries.map(entry => self.module["_" + entry](0));
 
-                Promise.all(self.io.fetch_promises).then(res_fetch => {
-                    Promise.all(self.io.buffer_promises).then(res_buffer => {
 
-                        // Convert json to string buffer
-                        const json_args = JSON.stringify(args);
-                        const len_args = (json_args.length << 2) + 1;
-                        const ptr_args = self.module.stackAlloc(len_args);
-                        self.module.stringToUTF8(json_args, ptr_args, len_args);
 
-                        // Call set function and decode
-                        self.module._set(self.entry, ptr_args);
+                // Convert json to string buffer
+                const json_args = JSON.stringify(args);
+                const len_args = (json_args.length << 2) + 1;
+                const ptr_args = self.module.stackAlloc(len_args);
+                self.module.stringToUTF8(json_args, ptr_args, len_args);
 
-                        // Retrieve result
-                        const props = [];
-                        if (self.hasAttribute("connections")) {
-                            props.push("connections");
-                        }
+                // Call set function and decode
+                self.module._set(self.entry, ptr_args);
 
-                        const get_args = JSON.stringify(props);
+                // Retrieve result
+                const props = [];
+                if (self.hasAttribute("connections")) {
+                    props.push("connections");
+                }
 
-                        const get_args_len = (get_args.length << 2) + 1;
-                        const ptr_get_args = self.module.stackAlloc(get_args_len);
+                const get_args = JSON.stringify(props);
 
-                        self.module.stringToUTF8(get_args, ptr_get_args, get_args_len);
+                const get_args_len = (get_args.length << 2) + 1;
+                const ptr_get_args = self.module.stackAlloc(get_args_len);
 
-                        const ptr_data = self.module._get(self.entry, ptr_get_args);
-                        const json_res = self.module.UTF8ToString(ptr_data);
-                        const json_res_parsed = JSON.parse(json_res);
+                self.module.stringToUTF8(get_args, ptr_get_args, get_args_len);
 
-                        const blob = new Blob([buffer_out.buffer_u8], {type : "audio/wave"});
-                        self.src = URL.createObjectURL(blob);
-                          self.load();
-                        main_resolve(self.src);
-                    });
-                });
+                const ptr_data = self.module._get(self.entry, ptr_get_args);
+                const json_res = self.module.UTF8ToString(ptr_data);
+                const json_res_parsed = JSON.parse(json_res);
+
+                const blob = new Blob([buffer_out.buffer_u8], { type: "audio/wave" });
+                self.src = URL.createObjectURL(blob);
+                self.load();
+                main_resolve(self.src);
             });
         });
     }
