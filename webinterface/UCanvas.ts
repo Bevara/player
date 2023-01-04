@@ -1,5 +1,5 @@
 import { Common } from "./common"
-import { Module, location } from "./core-player.js"
+import { Module} from "./core-player.js"
 
 class UniversalCanvas extends HTMLCanvasElement {
     using: string;
@@ -77,9 +77,6 @@ class UniversalCanvas extends HTMLCanvasElement {
             const nodeName = atts[i].nodeName;
             args[nodeName] = atts[i].nodeValue;
         }
-
-        location.using = using_attribute;
-        location.with = with_attribute;
 
         this._decodingPromise = new Promise((main_resolve, _main_reject) => {
             with_attribute.push("writegen.wasm");

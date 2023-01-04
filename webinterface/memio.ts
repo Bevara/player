@@ -1,4 +1,4 @@
-import { memio } from "./core-coder.js"
+import { memio, location } from "./core-coder.js"
 
 class buffer {
     buffer:ArrayBuffer;
@@ -36,6 +36,7 @@ class buffer {
 class fileio{
     fetch_promises:Promise<Response>[]= new Array();
     buffer_promises:Promise<ArrayBuffer>[]= new Array();
+
     io_ctxs:buffer[]= new Array();
     module:any;
     read:any;
@@ -45,12 +46,23 @@ class fileio{
     eof:any;
     printf:any;
     open:any;
+
+
+    in_url:string;
+    out_url:string;
+    
+    buffer_in:any;
+    
     readonly SEEK_SET = 0;
     readonly SEEK_CUR = 1;
     readonly SEEK_END = 2;
 
 
-    constructor() {
+    constructor(in_url, out_url, using_attribute, with_attribute) {
+        this.in_url = in_url;
+        this.out_url = out_url;
+        location.using = using_attribute;
+        location.with = with_attribute;
         this.createIO();
     }
 
@@ -266,17 +278,31 @@ class fileio{
             return gfio;
         }.bind(this);
         this.open.sig = ['i','i','i','i', 'i'];
-        memio.push(this.read, this.write, this.open, this.seek, this.tell,this.eof,this.printf, this.open)
+        memio.push(this.read, this.write, this.open, this.seek, this.tell,this.eof,this.printf, this.open);
     }
 
-    make_fileio (src : string, is_input : Boolean){
+    startDownload(){
+        const fetch_promise = fetch(this.in_url);
+        this.fetch_promises.push(fetch_promise);
+        fetch_promise.then(response => {
+            const buffer_promise = response.arrayBuffer();
+            this.buffer_promises.push(buffer_promise);
 
-        const len_source_str = (src.length << 2) + 1;
+            buffer_promise.then( buffer =>{
+                this.buffer_in = buffer;
+            });
+        });
+
+        return fetch_promise;
+    }
+
+     get fileio_in(){
+        const len_source_str = (this.in_url.length << 2) + 1;
         const ptr_source_str = this.module.stackAlloc(len_source_str);
-        this.module.stringToUTF8(src, ptr_source_str, len_source_str);
+        this.module.stringToUTF8(this.in_url, ptr_source_str, len_source_str);
 
-        let new_buffer = new buffer(src, ptr_source_str, is_input);
-        let buffer_idx = this.io_ctxs.push(new_buffer);
+        const new_buffer = new buffer(this.in_url, ptr_source_str, true);
+        const buffer_idx = this.io_ctxs.push(new_buffer);
     
         const fio = this.module._gf_fileio_new(ptr_source_str, buffer_idx - 1, 
             this.open.value, 
@@ -289,22 +315,36 @@ class fileio{
 
         const fio_url_ptr = this.module._gf_fileio_url(fio);
 
-        if (is_input){
-            const fetch_promise = fetch(src);
-            this.fetch_promises.push(fetch_promise);
-            fetch_promise.then(response => {
-                const buffer_promise = response.arrayBuffer();
-                this.buffer_promises.push(buffer_promise);
-
-                buffer_promise.then( buffer =>{
-                    new_buffer.buffer = buffer;
-                });
-            })
-        }
-
+        new_buffer.buffer = this.buffer_in;
         new_buffer.file_io = this.module.UTF8ToString(fio_url_ptr);
+
+        return new_buffer;
+    }
+
+    get fileio_out(){
+        const len_source_str = (this.out_url.length << 2) + 1;
+        const ptr_source_str = this.module.stackAlloc(len_source_str);
+        this.module.stringToUTF8(this.out_url, ptr_source_str, len_source_str);
+
+        const new_buffer = new buffer(this.out_url, ptr_source_str, false);
+        const buffer_idx = this.io_ctxs.push(new_buffer);
+    
+        const fio = this.module._gf_fileio_new(ptr_source_str, buffer_idx - 1, 
+            this.open.value, 
+            this.seek.value, 
+            this.read.value, 
+            this.write.value, 
+            this.tell.value,
+            this.eof.value,
+            this.printf.value);
+
+        const fio_url_ptr = this.module._gf_fileio_url(fio);
+
+        new_buffer.buffer = this.buffer_in;
+        new_buffer.file_io = this.module.UTF8ToString(fio_url_ptr);
+
         return new_buffer;
     }
 }
 
-export {fileio}
+export {fileio};

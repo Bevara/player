@@ -82,11 +82,9 @@ class UniversalImage extends HTMLImageElement {
             args[nodeName] = atts[i].nodeValue;
         }
 
-        location.using = this.using_attribute;
-        location.with = this.with_attribute;
-        this.io = new fileio();
-
-        this._decodingPromise = new Promise((main_resolve, _main_reject) => {
+        this.io = new fileio(self.src, "out.png", this.using_attribute, this.with_attribute);
+        this._decodingPromise = new Promise(async (main_resolve, _main_reject) => {
+            await this.io.startDownload();
             new (Module as any)({
                 dynamicLibraries: this.with_attribute,
                 print: function () {
@@ -122,8 +120,8 @@ class UniversalImage extends HTMLImageElement {
                 self.module = module;
                 self.io.module = module;
                 self.entry = self.module._constructor();
-                let buffer_in = self.io.make_fileio(self.src, true);
-                let buffer_out = self.io.make_fileio("out.png", false);
+                let buffer_in = self.io.fileio_in;
+                let buffer_out = self.io.fileio_out;
                 args["io_in"] = buffer_in.file_io;
                 args["io_out"] = buffer_out.file_io;
 

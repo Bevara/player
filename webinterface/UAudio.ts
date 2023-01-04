@@ -1,6 +1,6 @@
 //import {HEAPU8, asmLibraryArg, writeArrayToMemory, initRuntime, stackCheckInit, Module, wasmTable, wasmMemory, stringToUTF8, stackAlloc} from './player'
 import { Common } from "./common"
-import { Module, location } from "./core-coder.js"
+import { Module } from "./core-coder.js"
 import { fileio } from "./memio"
 
 class UniversalAudio extends HTMLAudioElement {
@@ -32,19 +32,18 @@ class UniversalAudio extends HTMLAudioElement {
             args[nodeName] = atts[i].nodeValue;
         }
 
-        location.using = using_attribute;
-        location.with = with_attribute;
-        this.io = new fileio();
+        this.io = new fileio(self.src, "out.wav", using_attribute, with_attribute);
 
-        this._decodingPromise = new Promise((main_resolve, _main_reject) => {
+        this._decodingPromise = new Promise(async (main_resolve, _main_reject) => {
+            await this.io.startDownload();
             new (Module as any)({
                 dynamicLibraries: with_attribute
             }).then(module => {
                 self.module = module;
                 self.io.module = module;
                 self.entry = self.module._constructor();
-                let buffer_in = self.io.make_fileio(self.src, true);
-                let buffer_out = self.io.make_fileio("out.wav", false);
+                let buffer_in = self.io.fileio_in;
+                let buffer_out = self.io.fileio_out;
                 args["io_in"] = buffer_in.file_io;
                 args["io_out"] = buffer_out.file_io;
 
