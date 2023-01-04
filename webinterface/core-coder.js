@@ -81,7 +81,7 @@ if (Module['ENVIRONMENT']) {
 }
 
 // `/` should be present at the end if `scriptDirectory` is not empty
-//var scriptDirectory = ''; // FIXME : this variable is now global
+var scriptDirectory = '';
 function locateFile(path) {
   if (Module['locateFile']) {
     return Module['locateFile'](path, scriptDirectory);
@@ -6971,5 +6971,7 @@ else if (typeof exports === 'object')
  
   const location = {};
   const memio = [];
-  var scriptDirectory = '';
+  var _scriptDir = typeof document !== 'undefined' && document.currentScript ? document.currentScript.src : undefined;
+  if (typeof __filename !== 'undefined') _scriptDir = _scriptDir || __filename;
+  let scriptDirectory = _scriptDir.substr(0, _scriptDir.replace(/[?#].*/, "").lastIndexOf('/')+1);
   export {Module, location, memio, scriptDirectory};

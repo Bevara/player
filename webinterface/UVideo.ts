@@ -37,7 +37,7 @@ class UniversalVideo extends HTMLVideoElement {
             await this.io.startDownload();
 
             new (Module as any)({
-                dynamicLibraries: with_attribute
+                dynamicLibraries: this.io.with_attribute,
             }).then(module => {
                 self.module = module;
                 self.io.module = module;

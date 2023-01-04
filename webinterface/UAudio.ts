@@ -37,7 +37,7 @@ class UniversalAudio extends HTMLAudioElement {
         this._decodingPromise = new Promise(async (main_resolve, _main_reject) => {
             await this.io.startDownload();
             new (Module as any)({
-                dynamicLibraries: with_attribute
+                dynamicLibraries: this.io.with_attribute,
             }).then(module => {
                 self.module = module;
                 self.io.module = module;

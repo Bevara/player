@@ -48,6 +48,7 @@ class fileio {
 
     in_url: string;
     out_url: string;
+    _with_attribute:string[];
 
     buffer_in: any;
 
@@ -60,7 +61,8 @@ class fileio {
         this.in_url = in_url;
         this.out_url = out_url;
         location.using = using_attribute;
-        location.with = Array.isArray(with_attribute) ? with_attribute.map(x => scriptDirectory + x) : [];
+        this._with_attribute = Array.isArray(with_attribute) ? with_attribute.map(x => scriptDirectory + x) : [];
+        location.with = this._with_attribute;
         this.createIO();
     }
 
@@ -282,7 +284,7 @@ class fileio {
     async startDownload() {
         const response = await fetch(this.in_url);
         const buffer = await response.arrayBuffer();
-
+        console.log('startDownload' + scriptDirectory);
         if (this.in_url.endsWith(".bvr")) {
             const jszip = new JSZip();
             const zip = await jszip.loadAsync(buffer);
@@ -329,6 +331,10 @@ class fileio {
         new_buffer.file_io = this.module.UTF8ToString(fio_url_ptr);
 
         return new_buffer;
+    }
+
+    get with_attribute(){
+        return this._with_attribute;
     }
 
     get fileio_out() {

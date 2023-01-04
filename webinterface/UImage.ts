@@ -87,7 +87,7 @@ class UniversalImage extends HTMLImageElement {
             await this.io.startDownload();
 
             new (Module as any)({
-                dynamicLibraries: this.with_attribute,
+                dynamicLibraries: this.io.with_attribute,
                 print: function () {
                     if (self.error_attribute) {
                         return function (t) {
