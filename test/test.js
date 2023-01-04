@@ -91,6 +91,18 @@ describe('core-player', () => {
         done
       );
     }).timeout(10000);
+
+    it('should decode ImagineDragons.mp3.bvr"', (done) => {
+      create_test('audio',
+        "universal-audio",
+        "core-audio.wasm",
+        "filein.wasm;fileout.wasm;writegen.wasm;rfmp3.wasm;maddec.wasm",
+        "http://bevara.ddns.net/test-signals/out/maddec/ImagineDragons.mp3.bvr",
+        "http://bevara.ddns.net/test-signals/out/maddec/ImagineDragons.wav",
+        done
+      );
+    }).timeout(10000);
+
   });
 
   describe('#a52dec', () => {
@@ -104,6 +116,17 @@ describe('core-player', () => {
         done
       );
     }).timeout(10000);
+
+    it('should decode sound.ac3.bvr"', (done) => {
+      create_test('audio',
+        "universal-audio",
+        "core-audio.wasm",
+        "filein.wasm;fileout.wasm;writegen.wasm;rfac3.wasm;a52dec.wasm",
+        "http://bevara.ddns.net/test-signals/out/ac3/sound.ac3.bvr",
+        "http://bevara.ddns.net/test-signals/out/ac3/sound.wav",
+        done
+      );
+    }).timeout(10000);
   });
 
   describe('#rfflac', () => {
@@ -113,6 +136,16 @@ describe('core-player', () => {
         "core-audio.wasm",
         "filein.wasm;fileout.wasm;writegen.wasm;rfflac.wasm;ffdec.wasm",
         "http://bevara.ddns.net/test-signals/ff-16b-1c-44100hz.flac",
+        "http://bevara.ddns.net/test-signals/out/flac/ff-16b-1c-44100hz.wav",
+        done
+      );
+    }).timeout(60000);
+    it('should decode ff-16b-1c-44100hz.flac.bvr"', (done) => {
+      create_test('audio',
+        "universal-audio",
+        "core-audio.wasm",
+        "filein.wasm;fileout.wasm;writegen.wasm;rfflac.wasm;ffdec.wasm",
+        "http://bevara.ddns.net/test-signals/out/flac/ff-16b-1c-44100hz.flac.bvr",
         "http://bevara.ddns.net/test-signals/out/flac/ff-16b-1c-44100hz.wav",
         done
       );
