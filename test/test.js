@@ -66,6 +66,18 @@ describe('core-player', () => {
         done
       );
     }).timeout(5000);
+
+    it('should decode Cevennes2.jp2.bvr', (done) => {
+      create_test('img',
+        'universal-img',
+        "core-img.wasm",
+        "filein.wasm;fileout.wasm;pngenc.wasm;rfimg.wasm;writegen.wasm;j2kdec.wasm",
+        "http://bevara.ddns.net/test-signals/out/j2k/Cevennes2.jp2.bvr",
+        "http://bevara.ddns.net/test-signals/out/j2k/Cevennes2.png",
+        done
+      );
+    }).timeout(5000);
+
   });
 
   describe('#maddec', () => {

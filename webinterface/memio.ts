@@ -284,7 +284,7 @@ class fileio {
     async startDownload() {
         const response = await fetch(this.in_url);
         const buffer = await response.arrayBuffer();
-        console.log('startDownload' + scriptDirectory);
+        
         if (this.in_url.endsWith(".bvr")) {
             const jszip = new JSZip();
             const zip = await jszip.loadAsync(buffer);
