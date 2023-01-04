@@ -1,4 +1,5 @@
-import { memio, location } from "./core-coder.js"
+import { memio, location } from "./core-coder.js";
+import JSZip = require("jszip");
 
 class buffer {
     buffer:ArrayBuffer;
@@ -284,12 +285,22 @@ class fileio{
     startDownload(){
         const fetch_promise = fetch(this.in_url);
         this.fetch_promises.push(fetch_promise);
-        fetch_promise.then(response => {
-            const buffer_promise = response.arrayBuffer();
+        fetch_promise.then( (response) => {
+            let buffer_promise = null;
+
+            buffer_promise = response.arrayBuffer();
             this.buffer_promises.push(buffer_promise);
 
-            buffer_promise.then( buffer =>{
-                this.buffer_in = buffer;
+            buffer_promise.then( async (buffer) =>{
+                if (this.in_url.endsWith(".bvr")){
+                    const jszip = new JSZip();
+                    const zip = await jszip.loadAsync(buffer);
+                    const metadata = await zip.file("meta.json").async("string");
+                    const in_file = JSON.parse(metadata).source;
+                    this.buffer_in = await zip.file(in_file).async("arraybuffer");
+                }else{
+                    this.buffer_in = buffer;
+                }
             });
         });
 
