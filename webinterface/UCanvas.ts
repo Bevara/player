@@ -13,6 +13,11 @@ class UniversalCanvas extends HTMLCanvasElement {
     module: any;
     src: string;
 
+    using_attribute: string;
+    with_attribute: string[];
+    print_attribute: Element | null;
+    error_attribute: Element | null;
+
     private _decodingPromise: Promise<String>;
 
     get decodingPromise() {
@@ -68,8 +73,6 @@ class UniversalCanvas extends HTMLCanvasElement {
 
     connectedCallback() {
         const self = this;
-        const using_attribute = self.getAttribute("using");
-        const with_attribute = self.getAttribute("with").split(';');
         let args: any = {};
         this.src = self.getAttribute("src");
         
@@ -79,18 +82,18 @@ class UniversalCanvas extends HTMLCanvasElement {
         }
 
         this._decodingPromise = new Promise((main_resolve, _main_reject) => {
-            with_attribute.push("writegen.wasm");
-            with_attribute.push("rfimg.wasm");
-            with_attribute.push("compose.wasm");
-            with_attribute.push("pngenc.wasm");
-            with_attribute.push("fileout.wasm");
-            with_attribute.push("filein.wasm");
-            with_attribute.push("sdl_out.wasm");
-            with_attribute.push("aout.wasm");
-            with_attribute.push("httpin.wasm");
+            this.with_attribute.push("writegen.wasm");
+            this.with_attribute.push("rfimg.wasm");
+            this.with_attribute.push("compose.wasm");
+            this.with_attribute.push("pngenc.wasm");
+            this.with_attribute.push("fileout.wasm");
+            this.with_attribute.push("filein.wasm");
+            this.with_attribute.push("sdl_out.wasm");
+            this.with_attribute.push("aout.wasm");
+            this.with_attribute.push("httpin.wasm");
             
             new (Module as any)({
-                dynamicLibraries: with_attribute,
+                dynamicLibraries: this.with_attribute,
                 canvas:this
             }).then(module => {
                 module['canvas'] = this;
@@ -147,8 +150,16 @@ class UniversalCanvas extends HTMLCanvasElement {
             case 'src':
                 break;
             case 'using':
+                this.using_attribute = this.getAttribute("using");
                 break;
             case 'with':
+                this.with_attribute = this.getAttribute("with").split(';');
+                break;
+            case 'print':
+                this.print_attribute = document.querySelector(this.getAttribute("print"));
+                break;
+            case 'printerr':
+                this.error_attribute = document.querySelector(this.getAttribute("printerr"));
                 break;
         }
     }

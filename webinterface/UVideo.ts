@@ -14,8 +14,12 @@ class UniversalVideo extends HTMLVideoElement {
     entry: any;
     module: any;
     io: fileio;
+    using_attribute: string;
+    with_attribute: string[];
+    print_attribute: Element | null;
+    error_attribute: Element | null;
 
-    private _decodingPromise: Promise<String>;
+    private _decodingPromise: Promise<string>;
 
     get decodingPromise() {
         return this._decodingPromise;
@@ -96,8 +100,16 @@ class UniversalVideo extends HTMLVideoElement {
             case 'src':
                 break;
             case 'using':
+                this.using_attribute = this.getAttribute("using");
                 break;
             case 'with':
+                this.with_attribute = this.getAttribute("with").split(';');
+                break;
+            case 'print':
+                this.print_attribute = document.querySelector(this.getAttribute("print"));
+                break;
+            case 'printerr':
+                this.error_attribute = document.querySelector(this.getAttribute("printerr"));
                 break;
         }
     }

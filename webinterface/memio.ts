@@ -62,7 +62,6 @@ class fileio {
         this.out_url = out_url;
         location.using = using_attribute;
         this._with_attribute = Array.isArray(with_attribute) ? with_attribute.map(x => scriptDirectory + x) : [];
-        location.with = this._with_attribute;
         this.createIO();
     }
 
@@ -284,8 +283,9 @@ class fileio {
     async startDownload() {
         const response = await fetch(this.in_url);
         const buffer = await response.arrayBuffer();
-        
-        if (this.in_url.endsWith(".bvr")) {
+        const mime =response.headers.get("Content-Type");
+       
+        if (this.in_url.endsWith(".bvr") || mime == "application/x-bevara") {
             const jszip = new JSZip();
             const zip = await jszip.loadAsync(buffer);
             const metadata = await zip.file("meta.json").async("string");
@@ -295,12 +295,8 @@ class fileio {
                 location.using = "data:application/octet-stream;base64," + await zip.file(bvr.core).async("base64");
             }
 
-            if (!location.with) {
-                location.with = [];
-            }
-
             for (const decoder of bvr.decoders) {
-                location.with.push("data:application/octet-stream;base64," + await zip.file(decoder).async("base64"));
+                this._with_attribute.push("data:application/octet-stream;base64," + await zip.file(decoder).async("base64"));
             }
 
         } else {

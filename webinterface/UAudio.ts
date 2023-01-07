@@ -14,8 +14,12 @@ class UniversalAudio extends HTMLAudioElement {
     entry: any;
     module: any;
     io: fileio;
+    using_attribute: string;
+    with_attribute: string[];
+    print_attribute: Element | null;
+    error_attribute: Element | null;
 
-    private _decodingPromise: Promise<String>;
+    private _decodingPromise: Promise<string>;
 
     get decodingPromise() {
         return this._decodingPromise;
@@ -23,8 +27,6 @@ class UniversalAudio extends HTMLAudioElement {
 
     connectedCallback() {
         const self = this;
-        const using_attribute = self.getAttribute("using");
-        const with_attribute = self.getAttribute("with").split(';');
         let args: any = {};
 
         for (var i = 0, atts = this.attributes, n = atts.length, arr = []; i < n; i++) {
@@ -32,7 +34,7 @@ class UniversalAudio extends HTMLAudioElement {
             args[nodeName] = atts[i].nodeValue;
         }
 
-        this.io = new fileio(self.src, "out.wav", using_attribute, with_attribute);
+        this.io = new fileio(self.src, "out.wav", this.using_attribute, this.with_attribute);
 
         this._decodingPromise = new Promise(async (main_resolve, _main_reject) => {
             await this.io.startDownload();
@@ -97,8 +99,16 @@ class UniversalAudio extends HTMLAudioElement {
             case 'src':
                 break;
             case 'using':
+                this.using_attribute = this.getAttribute("using");
                 break;
             case 'with':
+                this.with_attribute = this.getAttribute("with").split(';');
+                break;
+            case 'print':
+                this.print_attribute = document.querySelector(this.getAttribute("print"));
+                break;
+            case 'printerr':
+                this.error_attribute = document.querySelector(this.getAttribute("printerr"));
                 break;
         }
     }
@@ -106,4 +116,4 @@ class UniversalAudio extends HTMLAudioElement {
     static get observedAttributes() { return ['src', 'using', 'with']; }
 }
 
-export { UniversalAudio }
+export { UniversalAudio };
