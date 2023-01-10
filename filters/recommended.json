@@ -30,6 +30,7 @@
 		"mp3":"filein.wasm;fileout.wasm;writegen.wasm;rfmp3.wasm;maddec.wasm",
 		"tif":"fileout.wasm;ffdec.wasm;ffdmx.wasm;writegen.wasm;ffrescale.wasm;filein.wasm;pngenc.wasm",
 		"pbm":"fileout.wasm;ffdec.wasm;ffdmx.wasm;writegen.wasm;ffrescale.wasm;filein.wasm;pngenc.wasm",
+		"pnm":"fileout.wasm;ffdec.wasm;ffdmx.wasm;writegen.wasm;ffrescale.wasm;filein.wasm;pngenc.wasm",
 		"aiff":"fileout.wasm;ffdmx.wasm;writegen.wasm"
 	}
 }
