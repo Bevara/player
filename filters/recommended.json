@@ -18,7 +18,8 @@
 		"pnm":"image/x-portable-anymap",
 		"pgm":"image/x-portable-graymap",
 		"ppm":"image/x-portable-pixmap",
-		"rgb":"image/x-rgb"
+		"rgb":"image/x-rgb",
+		"pcx":"image/x-pxc"
 	},
 	"with":{
 		"jp2": "filein.wasm;fileout.wasm;pngenc.wasm;rfimg.wasm;writegen.wasm;j2kdec.wasm",
@@ -31,6 +32,7 @@
 		"tif":"fileout.wasm;ffdec.wasm;ffdmx.wasm;writegen.wasm;ffrescale.wasm;filein.wasm;pngenc.wasm",
 		"pbm":"fileout.wasm;ffdec.wasm;ffdmx.wasm;writegen.wasm;ffrescale.wasm;filein.wasm;pngenc.wasm",
 		"pnm":"fileout.wasm;ffdec.wasm;ffdmx.wasm;writegen.wasm;ffrescale.wasm;filein.wasm;pngenc.wasm",
+		"pcx":"fileout.wasm;ffdec.wasm;ffdmx.wasm;writegen.wasm;ffrescale.wasm;pngenc.wasm",
 		"aiff":"fileout.wasm;ffdmx.wasm;writegen.wasm"
 	}
 }
