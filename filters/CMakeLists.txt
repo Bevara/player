@@ -260,6 +260,11 @@ SET(FFRESCALE_SRC
     ${GPAC_LOCATION}/src/filters/ff_common.c
     ${GPAC_LOCATION}/src/utils/constants.c
     ${GPAC_LOCATION}/src/evg/surface.c
+    ${GPAC_LOCATION}/src/evg/raster_rgb.c
+    ${GPAC_LOCATION}/src/evg/stencil.c
+    ${GPAC_LOCATION}/src/evg/raster_argb.c
+    ${GPAC_LOCATION}/src/evg/raster_565.c
+    ${GPAC_LOCATION}/src/evg/raster_yuv.c
 )
 
 add_filter(ffrescale

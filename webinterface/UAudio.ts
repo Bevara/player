@@ -40,6 +40,35 @@ class UniversalAudio extends HTMLAudioElement {
             await this.io.startDownload();
             new (Module as any)({
                 dynamicLibraries: this.io.with_attribute,
+                print: function () {
+                    if (self.error_attribute) {
+                        return function (t) {
+                            function clear_text(text) {
+                                return text
+                                    .replaceAll("[37m", '')
+                                    .replaceAll("[0m", '');
+                            }
+                            (self.error_attribute as any).value += clear_text(t) + "\n";
+                        };
+                    } else {
+                        return console.log.bind(console);
+                    }
+                }(),
+                printErr: function () {
+                    if (self.error_attribute) {
+                        return function (t) {
+                            function clear_text(text) {
+                                return text
+                                    .replaceAll("[37m", '')
+                                    .replaceAll("[0m", '');
+                            }
+
+                            (self.error_attribute as any).value += clear_text(t) + "\n";
+                        };
+                    } else {
+                        return console.warn.bind(console);
+                    }
+                }()
             }).then(module => {
                 self.module = module;
                 self.io.module = module;
