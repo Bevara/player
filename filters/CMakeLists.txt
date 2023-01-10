@@ -99,8 +99,17 @@ add_filter(writegen
                 ""
                 "")
 
+ SET(PNGENC_SRC
+        ${GPAC_LOCATION}/src/filters/enc_png.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+ )
+
 add_filter(pngenc
-                ${GPAC_LOCATION}/src/filters/enc_png.c
+                "${PNGENC_SRC}"
                 "${PNG_LIB}"
                 _pngenc_register
                 GPAC_HAS_PNG
@@ -231,6 +240,10 @@ add_filter(ffdec
 SET(FFDMX_SRC
     ${GPAC_LOCATION}/src/filters/ff_dmx.c
     ${GPAC_LOCATION}/src/filters/ff_common.c
+    ${GPAC_LOCATION}/src/utils/error.c
+    ${GPAC_LOCATION}/src/filter_core/filter.c
+    ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+    ${GPAC_LOCATION}/src/utils/os_thread.c
 )
 
 add_filter(ffdmx
@@ -246,6 +259,7 @@ SET(FFRESCALE_SRC
     ${GPAC_LOCATION}/src/filters/ff_rescale.c
     ${GPAC_LOCATION}/src/filters/ff_common.c
     ${GPAC_LOCATION}/src/utils/constants.c
+    ${GPAC_LOCATION}/src/evg/surface.c
 )
 
 add_filter(ffrescale
