@@ -4,6 +4,7 @@ set(CMAKE_EXECUTABLE_SUFFIX ".wasm")
 set (THIRD_PARTIES ${CMAKE_SOURCE_DIR}/third_parties)
 set (THIRD_PARTIES_BINARIES ${CMAKE_BINARY_DIR}/third_parties)
 set (GPAC_LOCATION ${THIRD_PARTIES}/gpac)
+set (FFMPEG_LOCATION ${THIRD_PARTIES}/ffmpeg)
 
 add_compile_definitions(GPAC_HAVE_CONFIG_H)
 
@@ -77,8 +78,15 @@ add_filter(rfimg
 
 SET(WRITEGEN_SRC
     ${GPAC_LOCATION}/src/filters/write_generic.c
+    ${GPAC_LOCATION}/src/filter_core/filter.c
+    ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+    ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+    ${GPAC_LOCATION}/src/filter_core/filter_props.c
+    ${GPAC_LOCATION}/src/filter_core/filter_session.c
     ${GPAC_LOCATION}/src/utils/constants.c
+    ${GPAC_LOCATION}/src/utils/list.c
     ${GPAC_LOCATION}/src/utils/os_config_init.c
+    ${GPAC_LOCATION}/src/utils/os_thread.c
 )
 
 if(DEBUG_MODE)
@@ -227,6 +235,7 @@ SET(FFDEC_LIB
     ${THIRD_PARTIES_BINARIES}/ffmpeg/libavformat/libavformat.a
     ${THIRD_PARTIES_BINARIES}/ffmpeg/libavfilter/libavfilter.a
     ${THIRD_PARTIES_BINARIES}/ffmpeg/libswresample/libswresample.a
+    ${THIRD_PARTIES_BINARIES}/ffmpeg/libswscale/libswscale.a
 )
 
 add_filter(ffdec
@@ -240,10 +249,18 @@ add_filter(ffdec
 SET(FFDMX_SRC
     ${GPAC_LOCATION}/src/filters/ff_dmx.c
     ${GPAC_LOCATION}/src/filters/ff_common.c
-    ${GPAC_LOCATION}/src/utils/error.c
     ${GPAC_LOCATION}/src/filter_core/filter.c
-    ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+    ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+    ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+    ${GPAC_LOCATION}/src/filter_core/filter_props.c
+    ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+    ${GPAC_LOCATION}/src/filter_core/filter_session.c
+    ${GPAC_LOCATION}/src/utils/error.c
+    ${GPAC_LOCATION}/src/utils/list.c
+    ${GPAC_LOCATION}/src/utils/constants.c
     ${GPAC_LOCATION}/src/utils/os_thread.c
+    ${GPAC_LOCATION}/src/utils/os_divers.c    
+    ${GPAC_LOCATION}/src/media_tools/av_parsers.c
 )
 
 add_filter(ffdmx
@@ -258,13 +275,21 @@ add_filter(ffdmx
 SET(FFRESCALE_SRC
     ${GPAC_LOCATION}/src/filters/ff_rescale.c
     ${GPAC_LOCATION}/src/filters/ff_common.c
+    ${GPAC_LOCATION}/src/filter_core/filter.c
+    ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+    ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+    ${GPAC_LOCATION}/src/filter_core/filter_session.c
     ${GPAC_LOCATION}/src/utils/constants.c
+    ${GPAC_LOCATION}/src/utils/list.c
     ${GPAC_LOCATION}/src/evg/surface.c
     ${GPAC_LOCATION}/src/evg/raster_rgb.c
     ${GPAC_LOCATION}/src/evg/stencil.c
     ${GPAC_LOCATION}/src/evg/raster_argb.c
     ${GPAC_LOCATION}/src/evg/raster_565.c
     ${GPAC_LOCATION}/src/evg/raster_yuv.c
+    ${GPAC_LOCATION}/src/utils/color.c
+    ${GPAC_LOCATION}/src/utils/path2d.c
+    ${GPAC_LOCATION}/src/utils/os_thread.c
 )
 
 add_filter(ffrescale
