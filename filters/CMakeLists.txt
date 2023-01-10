@@ -109,11 +109,14 @@ add_filter(writegen
 
  SET(PNGENC_SRC
         ${GPAC_LOCATION}/src/filters/enc_png.c
-        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
         ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
         ${GPAC_LOCATION}/src/filter_core/filter_props.c
         ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
  )
 
 add_filter(pngenc
