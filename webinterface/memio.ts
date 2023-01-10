@@ -35,7 +35,8 @@ class buffer {
 }
 
 class fileio {
-    io_ctxs: buffer[] = new Array();
+    io_ctxs: { [key: number]: buffer } = {};
+    io_ctxs_idx = 0;
     module: any;
     read: any;
     write: any;
@@ -185,9 +186,9 @@ class fileio {
                 const path = this.module.UTF8ToString(path_ptr);
 
                 let new_buffer = new buffer(path, path_ptr, cur_buffer.is_input);
-                let buffer_idx = this.io_ctxs.push(new_buffer);
+                this.io_ctxs[this.io_ctxs_idx++] = new_buffer;
 
-                const gfio = this.module._gf_fileio_new(path_ptr, buffer_idx - 1,
+                const gfio = this.module._gf_fileio_new(path_ptr, this.io_ctxs_idx-1,
                     this.open.value,
                     this.seek.value,
                     this.read.value,
@@ -209,7 +210,7 @@ class fileio {
             if (!url_ptr) {
 
                 if (!cur_buffer.nb_refs) {
-                    this.io_ctxs.splice(ioctx_id, 1);
+                    //delete this.io_ctxs[ioctx_id]; FIXME
                 }
                 return 0;
             }
@@ -260,8 +261,8 @@ class fileio {
                 new_buffer = new buffer(url, path_ptr, cur_buffer.is_input);
                 new_buffer.buffer = cur_buffer.buffer;
                 new_buffer.open(mode);
-                let buffer_idx = this.io_ctxs.push(new_buffer);
-                gfio = this.module._gf_fileio_new(path_ptr, buffer_idx - 1,
+                this.io_ctxs[this.io_ctxs_idx++] = new_buffer;
+                gfio = this.module._gf_fileio_new(path_ptr, this.io_ctxs_idx - 1,
                     this.open.value,
                     this.seek.value,
                     this.read.value,
@@ -310,9 +311,9 @@ class fileio {
         this.module.stringToUTF8(this.in_url, ptr_source_str, len_source_str);
 
         const new_buffer = new buffer(this.in_url, ptr_source_str, true);
-        const buffer_idx = this.io_ctxs.push(new_buffer);
+        this.io_ctxs[this.io_ctxs_idx++] = new_buffer;
 
-        const fio = this.module._gf_fileio_new(ptr_source_str, buffer_idx - 1,
+        const fio = this.module._gf_fileio_new(ptr_source_str, this.io_ctxs_idx -1,
             this.open.value,
             this.seek.value,
             this.read.value,
@@ -339,9 +340,9 @@ class fileio {
         this.module.stringToUTF8(this.out_url, ptr_source_str, len_source_str);
 
         const new_buffer = new buffer(this.out_url, ptr_source_str, false);
-        const buffer_idx = this.io_ctxs.push(new_buffer);
+        this.io_ctxs[this.io_ctxs_idx++] = new_buffer;
 
-        const fio = this.module._gf_fileio_new(ptr_source_str, buffer_idx - 1,
+        const fio = this.module._gf_fileio_new(ptr_source_str, this.io_ctxs_idx -1,
             this.open.value,
             this.seek.value,
             this.read.value,
