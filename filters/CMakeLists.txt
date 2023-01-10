@@ -83,10 +83,12 @@ SET(WRITEGEN_SRC
     ${GPAC_LOCATION}/src/filter_core/filter_queue.c
     ${GPAC_LOCATION}/src/filter_core/filter_props.c
     ${GPAC_LOCATION}/src/filter_core/filter_session.c
+    ${GPAC_LOCATION}/src/filter_core/filter_pid.c
     ${GPAC_LOCATION}/src/utils/constants.c
     ${GPAC_LOCATION}/src/utils/list.c
     ${GPAC_LOCATION}/src/utils/os_config_init.c
     ${GPAC_LOCATION}/src/utils/os_thread.c
+    ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
 if(DEBUG_MODE)

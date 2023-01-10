@@ -41,14 +41,14 @@ class UniversalAudio extends HTMLAudioElement {
             new (Module as any)({
                 dynamicLibraries: this.io.with_attribute,
                 print: function () {
-                    if (self.error_attribute) {
+                    if (self.print_attribute) {
                         return function (t) {
                             function clear_text(text) {
                                 return text
                                     .replaceAll("[37m", '')
                                     .replaceAll("[0m", '');
                             }
-                            (self.error_attribute as any).value += clear_text(t) + "\n";
+                            (self.print_attribute as any).value += clear_text(t) + "\n";
                         };
                     } else {
                         return console.log.bind(console);
@@ -142,7 +142,7 @@ class UniversalAudio extends HTMLAudioElement {
         }
     }
 
-    static get observedAttributes() { return ['src', 'using', 'with']; }
+    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr']; }
 }
 
 export { UniversalAudio };
