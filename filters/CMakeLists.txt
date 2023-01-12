@@ -376,6 +376,7 @@ SET(M2PSDMX_SRC
         ${GPAC_LOCATION}/src/utils/os_divers.c
         ${GPAC_LOCATION}/src/media_tools/mpeg2_ps.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/media_tools/media_import.c
 )
 
 add_filter(m2psdmx
@@ -412,8 +413,32 @@ add_filter(mp4dmx
         ""
         "")
 
-add_filter(mp4mx
+SET(MP4MX_SRC
         ${GPAC_LOCATION}/src/filters/mux_isom.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/media_tools/webvtt.c        
+        ${GPAC_LOCATION}/src/isomedia/isom_read.c
+        ${GPAC_LOCATION}/src/isomedia/isom_intern.c
+        ${GPAC_LOCATION}/src/isomedia/box_funcs.c
+        ${GPAC_LOCATION}/src/isomedia/box_code_base.c
+        ${GPAC_LOCATION}/src/isomedia/box_dump.c
+        ${GPAC_LOCATION}/src/isomedia/box_code_meta.c
+        ${GPAC_LOCATION}/src/isomedia/avc_ext.c
+        ${GPAC_LOCATION}/src/isomedia/box_code_drm.c
+        ${GPAC_LOCATION}/src/isomedia/box_code_3gpp.c
+        ${GPAC_LOCATION}/src/isomedia/hinting.c
+        ${GPAC_LOCATION}/src/isomedia/iff.c
+        ${GPAC_LOCATION}/src/isomedia/box_code_apple.c
+        ${GPAC_LOCATION}/src/isomedia/box_code_adobe.c
+        ${GPAC_LOCATION}/src/isomedia/data_map.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/os_config_init.c
+        ${GPAC_LOCATION}/src/utils/os_file.c
+)
+
+        
+add_filter(mp4mx
+        "${MP4MX_SRC}"
         ""
         _mp4_mux_register
         ""
