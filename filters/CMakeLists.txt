@@ -362,8 +362,24 @@ add_filter(rfamr
         ""
         "")
 
-add_filter(m2psdmx
+SET(M2PSDMX_SRC
         ${GPAC_LOCATION}/src/filters/dmx_mpegps.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/error.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
+        ${GPAC_LOCATION}/src/media_tools/mpeg2_ps.c
+        ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+)
+
+add_filter(m2psdmx
+        "${M2PSDMX_SRC}"
         ""
         _m2psdmx_register
         ""

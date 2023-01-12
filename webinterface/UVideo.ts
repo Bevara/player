@@ -27,8 +27,6 @@ class UniversalVideo extends HTMLVideoElement {
 
     connectedCallback() {
         const self = this;
-        const using_attribute = self.getAttribute("using");
-        const with_attribute = self.getAttribute("with").split(';');
         let args: any = {};
 
         for (var i = 0, atts = this.attributes, n = atts.length, arr = []; i < n; i++) {
@@ -36,12 +34,41 @@ class UniversalVideo extends HTMLVideoElement {
             args[nodeName] = atts[i].nodeValue;
         }
 
-        this.io = new fileio(self.src, "out.mp4", using_attribute, with_attribute);
         this._decodingPromise = new Promise(async (main_resolve, _main_reject) => {
+            this.io = new fileio(self.src, "out.mp4", this.using_attribute, this.with_attribute);
             await this.io.startDownload();
 
             new (Module as any)({
                 dynamicLibraries: this.io.with_attribute,
+                print: function () {
+                    if (self.print_attribute) {
+                        return function (t) {
+                            function clear_text(text) {
+                                return text
+                                    .replaceAll("[37m", '')
+                                    .replaceAll("[0m", '');
+                            }
+                            (self.print_attribute as any).value += clear_text(t) + "\n";
+                        };
+                    } else {
+                        return console.log.bind(console);
+                    }
+                }(),
+                printErr: function () {
+                    if (self.error_attribute) {
+                        return function (t) {
+                            function clear_text(text) {
+                                return text
+                                    .replaceAll("[37m", '')
+                                    .replaceAll("[0m", '');
+                            }
+
+                            (self.error_attribute as any).value += clear_text(t) + "\n";
+                        };
+                    } else {
+                        return console.warn.bind(console);
+                    }
+                }()
             }).then(module => {
                 self.module = module;
                 self.io.module = module;
@@ -114,7 +141,7 @@ class UniversalVideo extends HTMLVideoElement {
         }
     }
 
-    static get observedAttributes() { return ['src', 'using', 'with']; }
+    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr']; }
 }
 
-export { UniversalVideo }
+export { UniversalVideo };
