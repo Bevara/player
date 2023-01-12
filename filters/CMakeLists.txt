@@ -370,6 +370,7 @@ SET(M2PSDMX_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_props.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/error.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
@@ -389,7 +390,15 @@ add_filter(m2psdmx
 
 SET(RFMPGVID_SRC
         ${GPAC_LOCATION}/src/filters/reframe_mpgvid.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/constants.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
 )
 
 add_filter(rfmpgvid
@@ -416,9 +425,17 @@ add_filter(mp4dmx
 SET(MP4MX_SRC
         ${GPAC_LOCATION}/src/filters/mux_isom.c
         ${GPAC_LOCATION}/src/filter_core/filter.c
-        ${GPAC_LOCATION}/src/media_tools/webvtt.c        
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/media_tools/webvtt.c    
+        ${GPAC_LOCATION}/src/media_tools/media_import.c    
         ${GPAC_LOCATION}/src/isomedia/isom_read.c
+        ${GPAC_LOCATION}/src/isomedia/isom_write.c
         ${GPAC_LOCATION}/src/isomedia/isom_intern.c
+        ${GPAC_LOCATION}/src/isomedia/isom_store.c
         ${GPAC_LOCATION}/src/isomedia/box_funcs.c
         ${GPAC_LOCATION}/src/isomedia/box_code_base.c
         ${GPAC_LOCATION}/src/isomedia/box_dump.c
@@ -431,9 +448,25 @@ SET(MP4MX_SRC
         ${GPAC_LOCATION}/src/isomedia/box_code_apple.c
         ${GPAC_LOCATION}/src/isomedia/box_code_adobe.c
         ${GPAC_LOCATION}/src/isomedia/data_map.c
+        ${GPAC_LOCATION}/src/isomedia/track.c
+        ${GPAC_LOCATION}/src/isomedia/media.c
+        ${GPAC_LOCATION}/src/isomedia/sample_descs.c
+        ${GPAC_LOCATION}/src/isomedia/drm_sample.c
+        ${GPAC_LOCATION}/src/isomedia/stbl_write.c
+        ${GPAC_LOCATION}/src/isomedia/stbl_read.c
+        ${GPAC_LOCATION}/src/utils/constants.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_config_init.c
         ${GPAC_LOCATION}/src/utils/os_file.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
+        ${GPAC_LOCATION}/src/filters/mux_ts.c
+        ${GPAC_LOCATION}/src/odf/odf_codec.c
+        ${GPAC_LOCATION}/src/odf/desc_private.c
+        ${GPAC_LOCATION}/src/odf/odf_code.c
+        ${GPAC_LOCATION}/src/odf/slc.c
+        ${GPAC_LOCATION}/src/odf/descriptors.c
 )
 
         
