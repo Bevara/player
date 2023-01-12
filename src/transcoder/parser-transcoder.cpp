@@ -38,6 +38,19 @@ extern "C" void parse_set_session(Entry *entry, const char *json)
     }
   }
 
+  if (document.HasMember("enc"))
+  {
+    GF_Err err;
+    assert(document["enc"].IsString());
+    const char *enc = document["enc"].GetString();
+
+    gf_fs_load_filter(entry->session, enc, &err);
+    if (err)
+    {
+      fprintf(stderr, "session error %s\n", gf_error_to_string(err));
+    }
+  }
+
   if (document.HasMember("io_out"))
   {
     GF_Err err;

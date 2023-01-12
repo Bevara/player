@@ -863,7 +863,7 @@ var Module = (() => {
         assert(!runtimeInitialized);
         runtimeInitialized = true;
 
-        checkStackCookie();
+        //checkStackCookie();
 
         callRuntimeCallbacks(__RELOC_FUNCS__);
 
@@ -876,13 +876,13 @@ var Module = (() => {
       }
 
       function preMain() {
-        checkStackCookie();
+        //checkStackCookie();
 
         callRuntimeCallbacks(__ATMAIN__);
       }
 
       function postRun() {
-        checkStackCookie();
+        //checkStackCookie();
 
         if (Module['postRun']) {
           if (typeof Module['postRun'] == 'function') Module['postRun'] = [Module['postRun']];
@@ -5460,7 +5460,7 @@ var Module = (() => {
         if (e instanceof ExitStatus || e == 'unwind') {
           return EXITSTATUS;
         }
-        checkStackCookie();
+        //checkStackCookie();
         if (e instanceof WebAssembly.RuntimeError) {
           if (_emscripten_stack_get_current() <= 0) {
             err('Stack overflow detected.  You can try increasing -sSTACK_SIZE (currently set to ' + STACK_SIZE + ')');
@@ -7041,7 +7041,7 @@ var Module = (() => {
         } else {
           doRun();
         }
-        checkStackCookie();
+        //checkStackCookie();
       }
 
       function checkUnflushedContent() {

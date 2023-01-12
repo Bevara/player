@@ -77,6 +77,7 @@ class UniversalVideo extends HTMLVideoElement {
                 const buffer_out = self.io.fileio_out;
                 args["io_in"] = buffer_in.file_io;
                 args["io_out"] = buffer_out.file_io;
+                args["enc"] = "enc:c=avc";
 
                 // Set input filters
                 args["filters"] = self.module.filter_entries.map(entry => self.module["_" + entry](0));
