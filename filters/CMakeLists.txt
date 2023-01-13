@@ -1,115 +1,111 @@
 
 set(CMAKE_EXECUTABLE_SUFFIX ".wasm")
 
-set (THIRD_PARTIES ${CMAKE_SOURCE_DIR}/third_parties)
-set (THIRD_PARTIES_BINARIES ${CMAKE_BINARY_DIR}/third_parties)
-set (GPAC_LOCATION ${THIRD_PARTIES}/gpac)
-set (FFMPEG_LOCATION ${THIRD_PARTIES}/ffmpeg)
+set(THIRD_PARTIES ${CMAKE_SOURCE_DIR}/third_parties)
+set(THIRD_PARTIES_BINARIES ${CMAKE_BINARY_DIR}/third_parties)
+set(GPAC_LOCATION ${THIRD_PARTIES}/gpac)
+set(FFMPEG_LOCATION ${THIRD_PARTIES}/ffmpeg)
 
 add_compile_definitions(GPAC_HAVE_CONFIG_H)
 
-
 macro(add_filter FILTERNAME ENTRYFILES LINKFILES ENTRY_FN DEFINITIONS INCLUDES LINK_FLAGS)
+        list(APPEND WASM_FILES ${CMAKE_BINARY_DIR}/${FILTERNAME}.wasm)
 
-list(APPEND WASM_FILES ${CMAKE_BINARY_DIR}/${FILTERNAME}.wasm)
+        add_executable(${FILTERNAME} ${ENTRYFILES})
 
-add_executable(${FILTERNAME} ${ENTRYFILES})
+        target_link_libraries(${FILTERNAME} ${LINKFILES})
 
-target_link_libraries(${FILTERNAME} ${LINKFILES})
+        set_target_properties(${FILTERNAME}
+                PROPERTIES
+                LINK_FLAGS "-s SIDE_MODULE=2 -s EXPORTED_FUNCTIONS=${ENTRY_FN} ${LINK_FLAGS}"
+        )
 
-set_target_properties(${FILTERNAME}
-                        PROPERTIES 
-                            LINK_FLAGS "-s SIDE_MODULE=2 -s EXPORTED_FUNCTIONS=${ENTRY_FN} ${LINK_FLAGS}"
-                            )
-
-target_compile_definitions(${FILTERNAME} PRIVATE ${DEFINITIONS})
-target_include_directories(${FILTERNAME} PRIVATE ${INCLUDES})
-
+        target_compile_definitions(${FILTERNAME} PRIVATE ${DEFINITIONS})
+        target_include_directories(${FILTERNAME} PRIVATE ${INCLUDES})
 endmacro()
 
 add_filter(fileout
-                ${GPAC_LOCATION}/src/filters/out_file.c
-                ""
-                _fileout_register
-                ""
-                ""
-                "")
+        ${GPAC_LOCATION}/src/filters/out_file.c
+        ""
+        _fileout_register
+        ""
+        ""
+        "")
 
 add_filter(filein
-                ${GPAC_LOCATION}/src/filters/in_file.c
-                ""
-                _filein_register
-                ""
-                ""
-                "")
+        ${GPAC_LOCATION}/src/filters/in_file.c
+        ""
+        _filein_register
+        ""
+        ""
+        "")
 
 add_filter(nanojpeg
-                ${CMAKE_SOURCE_DIR}/filters/nanojpeg.c
-                ${THIRD_PARTIES_BINARIES}/nanojpeg/nanojpeg.o
-                _nanojpeg_register
-                ""
-                ""
-                "")
+        ${CMAKE_SOURCE_DIR}/filters/nanojpeg.c
+        ${THIRD_PARTIES_BINARIES}/nanojpeg/nanojpeg.o
+        _nanojpeg_register
+        ""
+        ""
+        "")
 
-SET(IMG_DEC_SRC 
-    ${GPAC_LOCATION}/src/filters/dec_img.c
-    ${GPAC_LOCATION}/src/media_tools/img.c)
-
+SET(IMG_DEC_SRC
+        ${GPAC_LOCATION}/src/filters/dec_img.c
+        ${GPAC_LOCATION}/src/media_tools/img.c)
 
 add_filter(imgdec
-                "${IMG_DEC_SRC}"
-                ""
-                "[_imgdec_register,_jpeg_std_error]"
-                GPAC_HAS_JPEG
-                ${GPAC_LOCATION}/include
-                "-s USE_LIBJPEG=1")
-SET(RFIMG_SRC 
+        "${IMG_DEC_SRC}"
+        ""
+        "[_imgdec_register,_jpeg_std_error]"
+        GPAC_HAS_JPEG
+        ${GPAC_LOCATION}/include
+        "-s USE_LIBJPEG=1")
+SET(RFIMG_SRC
         ${GPAC_LOCATION}/src/filters/reframe_img.c
         ${GPAC_LOCATION}/src/media_tools/img.c
         ${GPAC_LOCATION}/src/utils/bitstream.c)
 
 add_filter(rfimg
-                "${RFIMG_SRC}"
-                ""
-                _img_reframe_register
-                GPAC_HAS_JPEG
-                ""
-                "-s USE_LIBJPEG=1")
+        "${RFIMG_SRC}"
+        ""
+        _img_reframe_register
+        GPAC_HAS_JPEG
+        ""
+        "-s USE_LIBJPEG=1")
 
 SET(WRITEGEN_SRC
-    ${GPAC_LOCATION}/src/filters/write_generic.c
-    ${GPAC_LOCATION}/src/filter_core/filter.c
-    ${GPAC_LOCATION}/src/filter_core/filter_pck.c
-    ${GPAC_LOCATION}/src/filter_core/filter_queue.c
-    ${GPAC_LOCATION}/src/filter_core/filter_props.c
-    ${GPAC_LOCATION}/src/filter_core/filter_session.c
-    ${GPAC_LOCATION}/src/filter_core/filter_pid.c
-    ${GPAC_LOCATION}/src/utils/constants.c
-    ${GPAC_LOCATION}/src/utils/list.c
-    ${GPAC_LOCATION}/src/utils/os_config_init.c
-    ${GPAC_LOCATION}/src/utils/os_thread.c
-    ${GPAC_LOCATION}/src/utils/os_divers.c
+        ${GPAC_LOCATION}/src/filters/write_generic.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/utils/constants.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/os_config_init.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
 if(DEBUG_MODE)
-SET(PNG_LIB
-        ${THIRD_PARTIES_BINARIES}/libpng/libpng16d.a
-)
+        SET(PNG_LIB
+                ${THIRD_PARTIES_BINARIES}/libpng/libpng16d.a
+        )
 else()
-SET(PNG_LIB
-        ${THIRD_PARTIES_BINARIES}/libpng/libpng16.a
-)
+        SET(PNG_LIB
+                ${THIRD_PARTIES_BINARIES}/libpng/libpng16.a
+        )
 endif()
 
 add_filter(writegen
-                "${WRITEGEN_SRC}"
-                ""
-                _writegen_register
-                ""
-                ""
-                "")
+        "${WRITEGEN_SRC}"
+        ""
+        _writegen_register
+        ""
+        ""
+        "")
 
- SET(PNGENC_SRC
+SET(PNGENC_SRC
         ${GPAC_LOCATION}/src/filters/enc_png.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
         ${GPAC_LOCATION}/src/utils/list.c
@@ -119,76 +115,75 @@ add_filter(writegen
         ${GPAC_LOCATION}/src/filter_core/filter_pck.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/filter_core/filter_pid.c
- )
+)
 
 add_filter(pngenc
-                "${PNGENC_SRC}"
-                "${PNG_LIB}"
-                _pngenc_register
-                GPAC_HAS_PNG
-                ""
-                "")
+        "${PNGENC_SRC}"
+        "${PNG_LIB}"
+        _pngenc_register
+        GPAC_HAS_PNG
+        ""
+        "")
 SET(J2KDEC_LIB
-${THIRD_PARTIES}/openjpeg/src/lib/openjp2
-${THIRD_PARTIES_BINARIES}/openjpeg/src/lib/openjp2
+        ${THIRD_PARTIES}/openjpeg/src/lib/openjp2
+        ${THIRD_PARTIES_BINARIES}/openjpeg/src/lib/openjp2
 )
 
 SET(J2KDEC_SRC
-${GPAC_LOCATION}/src/filters/dec_j2k.c
-${GPAC_LOCATION}/src/utils/error.c
-${GPAC_LOCATION}/src/utils/bitstream.c
+        ${GPAC_LOCATION}/src/filters/dec_j2k.c
+        ${GPAC_LOCATION}/src/utils/error.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c
 )
 
 add_filter(j2kdec
-                "${J2KDEC_SRC}"
-                ${THIRD_PARTIES_BINARIES}/openjpeg/bin/libopenjp2.a
-                _j2kdec_register
-                GPAC_HAS_JP2
-                "${J2KDEC_LIB}"
-                "")
+        "${J2KDEC_SRC}"
+        ${THIRD_PARTIES_BINARIES}/openjpeg/bin/libopenjp2.a
+        _j2kdec_register
+        GPAC_HAS_JP2
+        "${J2KDEC_LIB}"
+        "")
 SET(RFMP3_SRC
-            ${GPAC_LOCATION}/src/filters/reframe_mp3.c
-            ${GPAC_LOCATION}/src/media_tools/av_parsers.c
-            ${GPAC_LOCATION}/src/utils/utf.c
+        ${GPAC_LOCATION}/src/filters/reframe_mp3.c
+        ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/utf.c
 )
 
 add_filter(rfmp3
-                "${RFMP3_SRC}"
-                ""
-                _mp3_dmx_register
-                ""
-                ${GPAC_LOCATION}/include
-                "")
+        "${RFMP3_SRC}"
+        ""
+        _mp3_dmx_register
+        ""
+        ${GPAC_LOCATION}/include
+        "")
 
 add_filter(maddec
-                ${GPAC_LOCATION}/src/filters/dec_mad.c
-                ${THIRD_PARTIES_BINARIES}/libmad/.libs/libmad.a
-                _maddec_register
-                GPAC_HAS_MAD
-                ${THIRD_PARTIES_BINARIES}/libmad
-                "")
-
+        ${GPAC_LOCATION}/src/filters/dec_mad.c
+        ${THIRD_PARTIES_BINARIES}/libmad/.libs/libmad.a
+        _maddec_register
+        GPAC_HAS_MAD
+        ${THIRD_PARTIES_BINARIES}/libmad
+        "")
 
 SET(RFAC3_SRC
-            ${GPAC_LOCATION}/src/filters/reframe_ac3.c
-            ${GPAC_LOCATION}/src/media_tools/av_parsers.c
-            ${GPAC_LOCATION}/src/utils/bitstream.c
+        ${GPAC_LOCATION}/src/filters/reframe_ac3.c
+        ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c
 )
 
 add_filter(rfac3
-            "${RFAC3_SRC}"
-            ""
-            _ac3dmx_register
-            ""
-            ${GPAC_LOCATION}/include
-            "")
+        "${RFAC3_SRC}"
+        ""
+        _ac3dmx_register
+        ""
+        ${GPAC_LOCATION}/include
+        "")
 
 SET(A52DEC_SRC
-            ${GPAC_LOCATION}/src/filters/dec_ac52.c
+        ${GPAC_LOCATION}/src/filters/dec_ac52.c
 )
 
 SET(A52DEC_INCLUDE
-    ${THIRD_PARTIES}/a52dec-0.7.4/include
+        ${THIRD_PARTIES}/a52dec-0.7.4/include
 )
 
 add_filter(a52dec
@@ -200,7 +195,7 @@ add_filter(a52dec
         "")
 
 SET(OPENHEVCDEC_SRC
-            ${GPAC_LOCATION}/src/filters/dec_openhevc.c
+        ${GPAC_LOCATION}/src/filters/dec_openhevc.c
 )
 
 add_filter(openhevcdec
@@ -212,35 +207,35 @@ add_filter(openhevcdec
         "")
 
 SET(FFDEC_SRC
-    ${GPAC_LOCATION}/src/filters/ff_dec.c
-    ${GPAC_LOCATION}/src/filters/ff_common.c
-    ${GPAC_LOCATION}/src/utils/alloc.c
-    ${GPAC_LOCATION}/src/utils/constants.c
-    ${GPAC_LOCATION}/src/utils/list.c
-    ${GPAC_LOCATION}/src/utils/error.c
-    ${GPAC_LOCATION}/src/utils/os_divers.c
-    ${GPAC_LOCATION}/src/utils/os_thread.c
-    ${GPAC_LOCATION}/src/utils/os_file.c
-    ${GPAC_LOCATION}/src/filter_core/filter.c
-    ${GPAC_LOCATION}/src/filter_core/filter_pid.c
-    ${GPAC_LOCATION}/src/filter_core/filter_props.c
-    ${GPAC_LOCATION}/src/filter_core/filter_queue.c
-    ${GPAC_LOCATION}/src/filter_core/filter_pck.c
-    ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/filters/ff_dec.c
+        ${GPAC_LOCATION}/src/filters/ff_common.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
+        ${GPAC_LOCATION}/src/utils/constants.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/error.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_file.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
 )
 
 SET(FF_INCLUDE
-    ${THIRD_PARTIES}/ffmpeg
-    ${THIRD_PARTIES_BINARIES}/ffmpeg
+        ${THIRD_PARTIES}/ffmpeg
+        ${THIRD_PARTIES_BINARIES}/ffmpeg
 )
 
 SET(FFDEC_LIB
-    ${THIRD_PARTIES_BINARIES}/ffmpeg/libavcodec/libavcodec.a
-    ${THIRD_PARTIES_BINARIES}/ffmpeg/libavutil/libavutil.a
-    ${THIRD_PARTIES_BINARIES}/ffmpeg/libavformat/libavformat.a
-    ${THIRD_PARTIES_BINARIES}/ffmpeg/libavfilter/libavfilter.a
-    ${THIRD_PARTIES_BINARIES}/ffmpeg/libswresample/libswresample.a
-    ${THIRD_PARTIES_BINARIES}/ffmpeg/libswscale/libswscale.a
+        ${THIRD_PARTIES_BINARIES}/ffmpeg/libavcodec/libavcodec.a
+        ${THIRD_PARTIES_BINARIES}/ffmpeg/libavutil/libavutil.a
+        ${THIRD_PARTIES_BINARIES}/ffmpeg/libavformat/libavformat.a
+        ${THIRD_PARTIES_BINARIES}/ffmpeg/libavfilter/libavfilter.a
+        ${THIRD_PARTIES_BINARIES}/ffmpeg/libswresample/libswresample.a
+        ${THIRD_PARTIES_BINARIES}/ffmpeg/libswscale/libswscale.a
 )
 
 add_filter(ffdec
@@ -252,20 +247,20 @@ add_filter(ffdec
         "")
 
 SET(FFDMX_SRC
-    ${GPAC_LOCATION}/src/filters/ff_dmx.c
-    ${GPAC_LOCATION}/src/filters/ff_common.c
-    ${GPAC_LOCATION}/src/filter_core/filter.c
-    ${GPAC_LOCATION}/src/filter_core/filter_pid.c
-    ${GPAC_LOCATION}/src/filter_core/filter_queue.c
-    ${GPAC_LOCATION}/src/filter_core/filter_props.c
-    ${GPAC_LOCATION}/src/filter_core/filter_pck.c
-    ${GPAC_LOCATION}/src/filter_core/filter_session.c
-    ${GPAC_LOCATION}/src/utils/error.c
-    ${GPAC_LOCATION}/src/utils/list.c
-    ${GPAC_LOCATION}/src/utils/constants.c
-    ${GPAC_LOCATION}/src/utils/os_thread.c
-    ${GPAC_LOCATION}/src/utils/os_divers.c    
-    ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/filters/ff_dmx.c
+        ${GPAC_LOCATION}/src/filters/ff_common.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/utils/error.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/constants.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
+        ${GPAC_LOCATION}/src/media_tools/av_parsers.c
 )
 
 add_filter(ffdmx
@@ -276,25 +271,24 @@ add_filter(ffdmx
         "${FF_INCLUDE}"
         "")
 
-
 SET(FFRESCALE_SRC
-    ${GPAC_LOCATION}/src/filters/ff_rescale.c
-    ${GPAC_LOCATION}/src/filters/ff_common.c
-    ${GPAC_LOCATION}/src/filter_core/filter.c
-    ${GPAC_LOCATION}/src/filter_core/filter_pck.c
-    ${GPAC_LOCATION}/src/filter_core/filter_queue.c
-    ${GPAC_LOCATION}/src/filter_core/filter_session.c
-    ${GPAC_LOCATION}/src/utils/constants.c
-    ${GPAC_LOCATION}/src/utils/list.c
-    ${GPAC_LOCATION}/src/evg/surface.c
-    ${GPAC_LOCATION}/src/evg/raster_rgb.c
-    ${GPAC_LOCATION}/src/evg/stencil.c
-    ${GPAC_LOCATION}/src/evg/raster_argb.c
-    ${GPAC_LOCATION}/src/evg/raster_565.c
-    ${GPAC_LOCATION}/src/evg/raster_yuv.c
-    ${GPAC_LOCATION}/src/utils/color.c
-    ${GPAC_LOCATION}/src/utils/path2d.c
-    ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/filters/ff_rescale.c
+        ${GPAC_LOCATION}/src/filters/ff_common.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/utils/constants.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/evg/surface.c
+        ${GPAC_LOCATION}/src/evg/raster_rgb.c
+        ${GPAC_LOCATION}/src/evg/stencil.c
+        ${GPAC_LOCATION}/src/evg/raster_argb.c
+        ${GPAC_LOCATION}/src/evg/raster_565.c
+        ${GPAC_LOCATION}/src/evg/raster_yuv.c
+        ${GPAC_LOCATION}/src/utils/color.c
+        ${GPAC_LOCATION}/src/utils/path2d.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
 )
 
 add_filter(ffrescale
@@ -305,18 +299,42 @@ add_filter(ffrescale
         "${FF_INCLUDE}"
         "")
 
-SET(FFENC_SRC
-    ${GPAC_LOCATION}/src/filters/ff_enc.c
-    ${GPAC_LOCATION}/src/filters/ff_common.c
-    ${GPAC_LOCATION}/src/utils/constants.c
-    ${GPAC_LOCATION}/src/utils/list.c
+SET(FFENC_INCLUDE
+        ${THIRD_PARTIES}/ffmpeg
+        ${THIRD_PARTIES_BINARIES}/ffmpeg-enc
+        ${THIRD_PARTIES}/x264
+        ${THIRD_PARTIES_BINARIES}/x264
 )
+
+SET(FFENC_LIB
+        ${THIRD_PARTIES_BINARIES}/ffmpeg-enc/libavcodec/libavcodec.a
+        ${THIRD_PARTIES_BINARIES}/ffmpeg-enc/libavutil/libavutil.a
+        ${THIRD_PARTIES_BINARIES}/ffmpeg-enc/libavformat/libavformat.a
+        ${THIRD_PARTIES_BINARIES}/ffmpeg-enc/libavfilter/libavfilter.a
+        ${THIRD_PARTIES_BINARIES}/ffmpeg-enc/libswresample/libswresample.a
+        ${THIRD_PARTIES_BINARIES}/ffmpeg-enc/libswscale/libswscale.a
+        ${THIRD_PARTIES_BINARIES}/x264/libx264.a
+)
+
+SET(FFENC_SRC
+        ${GPAC_LOCATION}/src/filters/ff_enc.c
+        ${GPAC_LOCATION}/src/filters/ff_common.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/constants.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
+)
+
 add_filter(ffenc
         "${FFENC_SRC}"
-        "${FFDEC_LIB}"
+        "${FFENC_LIB}"
         _ffenc_register
         GPAC_HAS_FFMPEG
-        "${FF_INCLUDE}"
+        "${FFENC_INCLUDE}"
         "")
 
 add_filter(rfflac
@@ -410,8 +428,8 @@ add_filter(rfmpgvid
         "")
 
 SET(MP4DMX_SRC
-    ${GPAC_LOCATION}/src/filters/isoffin_read.c
-    ${GPAC_LOCATION}/src/isomedia/isom_read.c
+        ${GPAC_LOCATION}/src/filters/isoffin_read.c
+        ${GPAC_LOCATION}/src/isomedia/isom_read.c
 )
 
 add_filter(mp4dmx
@@ -430,8 +448,9 @@ SET(MP4MX_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_props.c
         ${GPAC_LOCATION}/src/filter_core/filter_pck.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
-        ${GPAC_LOCATION}/src/media_tools/webvtt.c    
-        ${GPAC_LOCATION}/src/media_tools/media_import.c    
+        ${GPAC_LOCATION}/src/media_tools/webvtt.c
+        ${GPAC_LOCATION}/src/media_tools/media_import.c
+        ${GPAC_LOCATION}/src/media_tools/av_parsers.c
         ${GPAC_LOCATION}/src/isomedia/isom_read.c
         ${GPAC_LOCATION}/src/isomedia/isom_write.c
         ${GPAC_LOCATION}/src/isomedia/isom_intern.c
@@ -469,7 +488,6 @@ SET(MP4MX_SRC
         ${GPAC_LOCATION}/src/odf/descriptors.c
 )
 
-        
 add_filter(mp4mx
         "${MP4MX_SRC}"
         ""
@@ -479,8 +497,18 @@ add_filter(mp4mx
         "")
 
 SET(RFNALU_SRC
-    ${GPAC_LOCATION}/src/filters/reframe_nalu.c
-    ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/filters/reframe_nalu.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c
+        ${GPAC_LOCATION}/src/utils/constants.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/odf/descriptors.c
 )
 
 add_filter(rfnalu
@@ -515,5 +543,5 @@ add_filter(httpin
         ""
         "")
 
-## Should always be at the end of this file
+# # Should always be at the end of this file
 set(WASM_FILES ${WASM_FILES} PARENT_SCOPE)
