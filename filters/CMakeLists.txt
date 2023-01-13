@@ -435,6 +435,10 @@ SET(MP4DMX_SRC
         ${GPAC_LOCATION}/src/isomedia/data_map.c
         ${GPAC_LOCATION}/src/isomedia/box_funcs.c
         ${GPAC_LOCATION}/src/isomedia/movie_fragments.c
+        ${GPAC_LOCATION}/src/isomedia/track.c
+        ${GPAC_LOCATION}/src/isomedia/drm_sample.c
+        ${GPAC_LOCATION}/src/isomedia/media.c
+        ${GPAC_LOCATION}/src/media_tools/isom_tools.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_file.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
@@ -508,26 +512,22 @@ add_filter(mp4mx
 
 SET(RFNALU_SRC
         ${GPAC_LOCATION}/src/filters/reframe_nalu.c
-        # ${GPAC_LOCATION}/src/filter_core/filter.c
-        # ${GPAC_LOCATION}/src/filter_core/filter_pck.c
-        # ${GPAC_LOCATION}/src/filter_core/filter_queue.c
-        # ${GPAC_LOCATION}/src/filter_core/filter_props.c
-        # ${GPAC_LOCATION}/src/filter_core/filter_session.c
-        # ${GPAC_LOCATION}/src/media_tools/av_parsers.c
-        # ${GPAC_LOCATION}/src/utils/bitstream.c
-        # ${GPAC_LOCATION}/src/utils/constants.c
-        # ${GPAC_LOCATION}/src/utils/list.c
-        # ${GPAC_LOCATION}/src/utils/os_thread.c
-        # ${GPAC_LOCATION}/src/odf/descriptors.c
-)
-
-SET(RFNALU_LIB
-        ${THIRD_PARTIES_BINARIES}/gpac/bin/gcc/libgpac_static.a
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c
+        ${GPAC_LOCATION}/src/utils/constants.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/odf/descriptors.c
 )
 
 add_filter(rfnalu
         "${RFNALU_SRC}"
-        "${RFNALU_LIB}"
+        ""
         _naludmx_register
         ""
         ""
