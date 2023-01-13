@@ -431,17 +431,30 @@ SET(MP4DMX_SRC
         ${GPAC_LOCATION}/src/filters/isoffin_read.c
         ${GPAC_LOCATION}/src/filters/isoffin_load.c
         ${GPAC_LOCATION}/src/isomedia/isom_read.c
+        ${GPAC_LOCATION}/src/isomedia/isom_write.c
         ${GPAC_LOCATION}/src/isomedia/isom_intern.c
         ${GPAC_LOCATION}/src/isomedia/data_map.c
         ${GPAC_LOCATION}/src/isomedia/box_funcs.c
+        ${GPAC_LOCATION}/src/isomedia/box_code_apple.c
         ${GPAC_LOCATION}/src/isomedia/movie_fragments.c
         ${GPAC_LOCATION}/src/isomedia/track.c
         ${GPAC_LOCATION}/src/isomedia/drm_sample.c
         ${GPAC_LOCATION}/src/isomedia/media.c
+        ${GPAC_LOCATION}/src/isomedia/meta.c
+        ${GPAC_LOCATION}/src/isomedia/sample_descs.c
+        ${GPAC_LOCATION}/src/isomedia/avc_ext.c
+        ${GPAC_LOCATION}/src/isomedia/stbl_read.c
         ${GPAC_LOCATION}/src/media_tools/isom_tools.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_file.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
+        ${GPAC_LOCATION}/src/utils/constants.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
+        ${GPAC_LOCATION}/src/odf/odf_codec.c
+        ${GPAC_LOCATION}/src/odf/desc_private.c
+        ${GPAC_LOCATION}/src/odf/odf_code.c
+        ${GPAC_LOCATION}/src/odf/descriptors.c
+        ${GPAC_LOCATION}/src/odf/slc.c
 )
 
 add_filter(mp4dmx
