@@ -20,6 +20,7 @@ Entry *EMSCRIPTEN_KEEPALIVE constructor()
     u32 sflags=0;
 
     Entry *entry = malloc(sizeof(Entry));
+    //gf_log_set_tool_level(GF_LOG_FILTER, GF_LOG_DEBUG);
     entry->session = gf_fs_new_defaults(sflags);
     //gf_log_set_callback(entry, on_gpac_log);
 

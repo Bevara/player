@@ -194,16 +194,31 @@ add_filter(a52dec
         "${A52DEC_INCLUDE}"
         "")
 
+
+SET(OPENHEVCDEC_INCLUDE
+        ${GPAC_LOCATION}/extra_lib/include
+)
+
 SET(OPENHEVCDEC_SRC
         ${GPAC_LOCATION}/src/filters/dec_openhevc.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/odf/descriptors.c
+        ${GPAC_LOCATION}/src/media_tools/av_parsers.c
 )
 
 add_filter(openhevcdec
         "${OPENHEVCDEC_SRC}"
-        ${THIRD_PARTIES_BINARIES}/openHEVC/libLibOpenHevcWrapper.a
-        ohevcdec_register
-        GPAC_HAS_OPENHEVC
-        ${GPAC_LOCATION}/extra_lib/include
+        ${THIRD_PARTIES_BINARIES}/openHEVC/libopenhevc/libopenhevc.a
+        _ohevcdec_register
+        "-DGPAC_HAS_OPENHEVC -DGPAC_OPENHEVC_STATIC -DOPENHEVC_HAS_AVC_BASE" 
+        "${OPENHEVCDEC_INCLUDE}"
         "")
 
 SET(FFDEC_SRC
@@ -430,6 +445,11 @@ add_filter(rfmpgvid
 SET(MP4DMX_SRC
         ${GPAC_LOCATION}/src/filters/isoffin_read.c
         ${GPAC_LOCATION}/src/filters/isoffin_load.c
+        ${GPAC_LOCATION}/src/filters/isoffin_read_ch.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/isomedia/isom_read.c
         ${GPAC_LOCATION}/src/isomedia/isom_write.c
         ${GPAC_LOCATION}/src/isomedia/isom_intern.c
@@ -446,10 +466,11 @@ SET(MP4DMX_SRC
         ${GPAC_LOCATION}/src/isomedia/stbl_read.c
         ${GPAC_LOCATION}/src/media_tools/isom_tools.c
         ${GPAC_LOCATION}/src/utils/list.c
-        ${GPAC_LOCATION}/src/utils/os_file.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/constants.c
+        ${GPAC_LOCATION}/src/utils/os_file.c
         ${GPAC_LOCATION}/src/utils/os_divers.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
         ${GPAC_LOCATION}/src/odf/odf_codec.c
         ${GPAC_LOCATION}/src/odf/desc_private.c
         ${GPAC_LOCATION}/src/odf/odf_code.c
