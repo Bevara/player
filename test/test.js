@@ -164,6 +164,19 @@ describe('core-player', () => {
     }).timeout(60000);
   });
 
+  describe('#mpeg', () => {
+    it('should decode centaur_2.mpg"', (done) => {
+      create_test('video',
+        "universal-video",
+        "core-video.wasm",
+        "fileout.wasm;m2psdmx.wasm;rfmpgvid.wasm;ffdec.wasm;mp4mx.wasm;rfnalu.wasm;ffenc.wasm;filein.wasm",
+        "http://bevara.ddns.net/test-signals/mpeg1/centaur_2.mpg",
+        "http://bevara.ddns.net/test-signals/out/mpeg/centaur_2.mp4",
+        done
+      );
+    }).timeout(60000);
+  });
+
   // describe('#rfamr', () => {
   //   it('should decode ff-16b-1c-8000hz.amr"', (done) => {
   //     create_test('audio',
