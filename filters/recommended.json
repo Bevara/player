@@ -1,6 +1,7 @@
 {
 	"mimeTypes": {
 		"jp2": "image/jp2",
+		"j2k": "image/jp2",
 		"jxl": "image/jxl",
 		"tif": "image/tiff",
 		"pbm":"image/x-portable-bitmap",
@@ -20,10 +21,12 @@
 		"wma": "audio/x-ms-wma",
 		"aiff":"audio/aiff",
 		"mp4":"video/mp4",
-		"mpg":"video/mpeg"
+		"mpg":"video/mpeg",
+		"avi":"video/x-msvideo"
 	},
 	"with":{
 		"jp2": "filein.wasm;fileout.wasm;pngenc.wasm;rfimg.wasm;writegen.wasm;j2kdec.wasm",
+		"j2k":"fileout.wasm;j2kdec.wasm;ffdmx.wasm;writegen.wasm;pngenc.wasm",
 		"ac3": "filein.wasm;fileout.wasm;writegen.wasm;rfac3.wasm;a52dec.wasm",
 		"amr": "filein.wasm;fileout.wasm;writegen.wasm;rfamr.wasm;ffdec.wasm",
 		"flac": "filein.wasm;fileout.wasm;writegen.wasm;rfflac.wasm;ffdec.wasm",

@@ -67,6 +67,18 @@ describe('core-player', () => {
       );
     }).timeout(5000);
 
+    it('should decode Bretagne1.j2k', (done) => {
+      create_test('img',
+        'universal-img',
+        "core-img.wasm",
+        "fileout.wasm;j2kdec.wasm;ffdmx.wasm;writegen.wasm;pngenc.wasm",
+        "http://bevara.ddns.net/test-signals/j2k/Bretagne1.j2k",
+        "http://bevara.ddns.net/test-signals/out/j2k/Bretagne1.png",
+        done
+      );
+    }).timeout(5000);
+
+
     it('should decode Cevennes2.jp2.bvr', (done) => {
       create_test('img',
         'universal-img',
