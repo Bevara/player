@@ -164,6 +164,20 @@ describe('core-player', () => {
     }).timeout(60000);
   });
 
+  describe('#faaddec', () => {
+    it('should decode sample.aac"', (done) => {
+      create_test('audio',
+        "universal-audio",
+        "core-audio.wasm",
+        "faaddec.wasm;fileout.wasm;rfadts.wasm;writegen.wasm;filein.wasm",
+        "http://bevara.ddns.net/test-signals/sample.aac",
+        "http://bevara.ddns.net/test-signals/out/faad/sample.wav",
+        done
+      );
+    }).timeout(10000);
+  });
+
+
   // describe('#mpeg', () => {
   //   it('should decode centaur_2.mpg"', (done) => {
   //     create_test('video',

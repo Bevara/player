@@ -33,6 +33,7 @@
 		"ffrescale.wasm",
 		"openhevcdec.wasm",
 		"filein.wasm",
-		"pngenc.wasm"
+		"pngenc.wasm",
+		"faaddec.wasm"
 	]
 }
