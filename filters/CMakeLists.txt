@@ -178,6 +178,22 @@ add_filter(rfac3
         ${GPAC_LOCATION}/include
         "")
 
+SET(FAAD_SRC
+        ${GPAC_LOCATION}/src/filters/dec_faad.c
+)
+
+SET(FAAD_INCLUDE
+        ${THIRD_PARTIES}/faac-1.29.9.2/include
+)
+
+add_filter(faaddec
+        "${FAAD_SRC}"
+        ${THIRD_PARTIES_BINARIES}/libfaad2/libfaac/.libs/libfaac.a
+        _faad_register
+        GPAC_HAS_FAAD
+        "${FAAD_INCLUDE}"
+        "")
+
 SET(A52DEC_SRC
         ${GPAC_LOCATION}/src/filters/dec_ac52.c
 )
@@ -193,7 +209,6 @@ add_filter(a52dec
         GPAC_HAS_LIBA52
         "${A52DEC_INCLUDE}"
         "")
-
 
 SET(OPENHEVCDEC_INCLUDE
         ${GPAC_LOCATION}/extra_lib/include

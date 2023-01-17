@@ -15,6 +15,7 @@
 		"3fr": "image/x-hasselblad-3fr",
 		"mp3":"audio/mpeg",
 		"ac3": "audio/ac3",
+		"aac":"audio/aac",
 		"amr": "audio/amr",
 		"flac": "audio/flac",
 		"opus": "audio/ogg",
