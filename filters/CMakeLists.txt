@@ -183,12 +183,12 @@ SET(FAAD_SRC
 )
 
 SET(FAAD_INCLUDE
-        ${THIRD_PARTIES}/faac-1.29.9.2/include
+        ${THIRD_PARTIES}/faad2-2.8.8/include
 )
 
 add_filter(faaddec
         "${FAAD_SRC}"
-        ${THIRD_PARTIES_BINARIES}/libfaad2/libfaac/.libs/libfaac.a
+        ${THIRD_PARTIES_BINARIES}/libfaad/libfaad/.libs/libfaad.a
         _faad_register
         GPAC_HAS_FAAD
         "${FAAD_INCLUDE}"
