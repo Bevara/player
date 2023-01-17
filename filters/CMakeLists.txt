@@ -428,6 +428,33 @@ add_filter(vorbisdec
         "${VORBISDEC_INCLUDE}"
         "")
 
+        SET(VORBISDEC_SRC
+        ${GPAC_LOCATION}/src/filters/dec_vorbis.c
+)
+
+SET(THEORADEC_SRC
+        ${GPAC_LOCATION}/src/filters/dec_theora.c
+)
+
+SET(THEORADEC_INCLUDE
+        ${THIRD_PARTIES}/theora/include
+        ${THIRD_PARTIES}/ogg/include
+        ${THIRD_PARTIES_BINARIES}/ogg/include
+)
+
+SET(THEORADEC_LIB
+        ${THIRD_PARTIES_BINARIES}/theora/lib/.libs/libtheora.a
+        ${THIRD_PARTIES_BINARIES}/ogg/libogg.a
+)
+
+add_filter(theoradec
+        "${THEORADEC_SRC}"
+        "${THEORADEC_LIB}"
+        _theoradec_register
+        GPAC_HAS_THEORA
+        "${THEORADEC_INCLUDE}"
+        "")
+
 add_filter(rfadts
         ${GPAC_LOCATION}/src/filters/reframe_adts.c
         ""
