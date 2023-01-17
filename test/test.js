@@ -174,7 +174,7 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/faad/sample.wav",
         done
       );
-    }).timeout(10000);
+    }).timeout(60000);
   });
 
   describe('#vorbisdec', () => {
@@ -187,7 +187,7 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/ogg/Median_test.wav",
         done
       );
-    }).timeout(10000);
+    }).timeout(60000);
   });
 
 
