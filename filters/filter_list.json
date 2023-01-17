@@ -34,6 +34,7 @@
 		"openhevcdec.wasm",
 		"filein.wasm",
 		"pngenc.wasm",
-		"faaddec.wasm"
+		"faaddec.wasm",
+		"vorbisdec.wasm"
 	]
 }

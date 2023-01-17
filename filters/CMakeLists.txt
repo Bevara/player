@@ -405,6 +405,22 @@ add_filter(oggdmx
         ""
         "")
 
+SET(VORBISDEC_SRC
+        ${GPAC_LOCATION}/src/filters/dmx_ogg.c
+)
+
+SET(VORBISDEC_INCLUDE
+        ${THIRD_PARTIES}/vorbis/include
+)
+
+add_filter(vorbisdec
+        "${VORBISDEC_SRC}"
+        ${THIRD_PARTIES_BINARIES}/vorbis/lib/libvorbis.a
+        _vorbisdec_register
+        GPAC_HAS_VORBIS
+        "${VORBISDEC_INCLUDE}"
+        "")
+
 add_filter(rfadts
         ${GPAC_LOCATION}/src/filters/reframe_adts.c
         ""

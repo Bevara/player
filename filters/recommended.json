@@ -40,6 +40,7 @@
 		"pbm":"fileout.wasm;ffdec.wasm;ffdmx.wasm;writegen.wasm;ffrescale.wasm;filein.wasm;pngenc.wasm",
 		"pnm":"fileout.wasm;ffdec.wasm;ffdmx.wasm;writegen.wasm;ffrescale.wasm;filein.wasm;pngenc.wasm",
 		"pcx":"fileout.wasm;ffdec.wasm;ffdmx.wasm;writegen.wasm;ffrescale.wasm;pngenc.wasm",
-		"aiff":"fileout.wasm;ffdmx.wasm;writegen.wasm"
+		"aiff":"fileout.wasm;ffdmx.wasm;writegen.wasm",
+		"aac":"faaddec.wasm;fileout.wasm;rfadts.wasm;writegen.wasm;filein.wasm"
 	}
 }
