@@ -39,7 +39,7 @@ var Module = (() => {
       Object.defineProperty(Module, "filter_entries", { configurable: true, get: function () { return filter_entries } });
       Object.defineProperty(Module, "module_entries", { configurable: true, get: function () { return module_entries } });
 
-      ["_saveSetjmp", "_stdout", "_stderr", "_stdin", "_hypot", "_pthread_mutexattr_init", "_log10f", "_cosf", "_cbrt", "_exp2", "_sinf", "_atanf", "_atan2f", "_snprintf", "_atoi", "_access", "_strtod", "_strspn", "_strncat", "_strerror_r", "_ldexpf", "_gf_m4a_write_config_bs", "_gf_fgetc", "_gf_bs_get_content", "_gf_bs_align", "_gf_m4a_get_profile", "_memchr", "_gettimeofday", "_tolower", "_strrchr", "_sscanf", "_gf_bs_seek", "_gf_bs_from_file", "_gf_bs_write_data", "_gf_bs_reassign_buffer", "_gf_fopen", "_gf_log_get_tool_level", "_gf_4cc_to_str", "_gf_filter_pck_get_interlaced", "_gf_filter_pid_set_udta", "_gf_filter_pid_set_property_dyn", "_gf_bs_skip_bytes", "_gf_bs_write_u16_le", "_gf_filter_pck_set_roll_info", "_gf_filter_pid_set_property_str", "_gf_bs_write_u32_le", "_gf_itags_get_name", "_gf_filter_pck_set_corrupted", "_gf_filter_pck_set_dts", "_gf_itags_find_by_id3tag", "_gf_bs_read_u16_le", "_gf_bs_read_u32_le", "_gf_bs_read_data", "_gf_odf_ac3_cfg_write", "_gf_feof", "_gf_bs_read_u16", "_gf_bs_read_u32", "_gf_bs_read_u8", "_gf_filter_pid_set_name", "_gf_opts_get_int", "_gf_ftell", "_gf_filter_pck_get_byte_offset", "_gf_filter_pid_get_property_str", "_gf_sys_is_test_mode", "_gf_filter_pid_would_block", "_gf_filter_post_process_task", "_gf_filter_pck_new_shared", "_gf_filter_pid_set_info", "_gf_fileio_get_stats", "_gf_fileio_check", "_gf_filter_pid_raw_new", "_gf_fread", "_gf_fseek", "_gf_fsize", "_gf_fileio_read_mode", "_my_str_lwr", "_strncasecmp", "_strstr", "_strcspn", "_strcasecmp", "_deflate", "_deflateInit2_", "_crc32", "_deflateEnd", "_free", "_emscripten_stack_get_end", "_emscripten_stack_set_limits", "_gf_free", "_gf_fwrite", "_gf_malloc", "_gf_realloc", "_gf_pixel_get_size_info", "_gf_file_ext_start", "_gf_filter_reporting_enabled", "_gf_file_exists", "_gf_fclose", "_gf_fopen_ex", "_gf_fileio_from_url", "_gf_fileio_open_url", "_gf_fileio_write_mode", "_gf_fileio_translate_url", "_gf_filter_pck_merge_properties", "_gf_filter_pck_expand", "_gf_filter_pck_discard", "_gf_filter_pid_caps_query", "_gf_filter_override_caps", "_gf_filter_pck_truncate", "_gf_filter_pid_send_event", "_gf_filter_pid_set_eos", "_gf_filter_pid_init_play_event", "_gf_log", "_gf_log_lt", "_emscripten_longjmp", "_gf_log_tool_level_on", "_gf_filter_pid_drop_packet", "_gf_filter_pck_get_frame_interface", "_gf_filter_pid_is_eos", "___threwValue", "___THREW__", "_logs_mx", "_pthread_mutex_unlock", "_pthread_mutex_lock", "_pthread_self", "_sprintf", "_vfprintf", "_fprintf", "_bsearch", "_frexp", "_exp2f", "_llrint", "_fwrite", "_cos", "_cosh", "_acos", "_sin", "_sinh", "_asin", "_tan", "_tanh", "_atan", "_exp", "_log", "_fabs", "_strncmp", "_strdup", "_gf_filter_pck_get_timescale", "_gf_filter_pck_get_cts", "_gf_filter_pck_get_duration", "_gf_fileio_url", "_gf_fileio_new", "_gf_fileio_set_stats_u32", "_ldexp", "_pthread_mutex_destroy", "_pthread_mutex_init", "_posix_memalign", "_pow", "_vsnprintf", "_getenv", "_strcmp", "_strlen", "_strcpy", "_strcat", "_strncpy", "_strchr", "_memset", "_memcpy", "_memmove", "_memalign", "_memcmp", "_calloc", "_realloc", "_gf_url_concatenate", "_gf_strdup", "_gf_fileio_get_udta", "_gf_bs_new", "_gf_bs_available", "_gf_bs_read_int", "_gf_bs_get_position", "_gf_bs_del", "_gf_filter_get_udta", "_gf_filter_pid_get_packet", "_gf_filter_pck_get_data", "_gf_filter_pid_set_property", "_gf_filter_pck_new_alloc", "_gf_filter_pck_send", "_gf_filter_pid_check_caps", "_gf_filter_pid_get_property", "_gf_filter_pid_new", "_gf_filter_pid_copy_properties", "_gf_filter_set_name", "_gf_filter_pck_set_dependency_flags", "_gf_filter_pid_set_framing_mode", "_gf_filter_pck_new_ref", "_gf_filter_pck_set_cts", "_gf_filter_pck_set_sap", "_gf_filter_pck_set_duration", "_gf_filter_pck_get_property", "_gf_filter_pck_set_byte_offset", "_gf_filter_pck_set_framing", "_gf_crc_32", "_gf_bs_read_long_int", "_gf_bs_read_u24", "_gf_filter_pck_get_dependency_flags", "_gf_filter_pck_get_framing", "_gf_filter_pck_set_seek_flag", "_gf_filter_pck_get_seek_flag", "_fflush", "_siprintf", "_gf_opts_get_bool", "_gf_bs_mark_overflow", "_gf_bs_is_overflow", "_gf_fflush", "_evg_fill_run", "_evg_grey_fill_const_a", "_evg_grey_fill_const", "_evg_grey_fill_var", "_evg_grey_fill_single", "_gf_filter_renegociate_output_task", "_gf_pixel_fmt_parse", "_gf_pixel_fmt_name", "_gf_pixel_fmt_all_names", "_gf_audio_fmt_parse", "_gf_audio_fmt_name", "_gf_audio_fmt_all_names", "_gf_cicp_parse_color_primaries", "_gf_cicp_color_primaries_name", "_gf_cicp_color_primaries_all_names", "_gf_cicp_parse_color_transfer", "_gf_cicp_color_transfer_name", "_gf_cicp_color_matrix_name", "_gf_cicp_color_transfer_all_names", "_gf_cicp_parse_color_matrix", "_gf_cicp_color_matrix_all_names", "_isatty", "_fputs", "_gf_filter_pid_reconfigure_task", "_gf_filter_pid_reconfigure_task_discard", "_gf_filter_pid_remove", "_strtol", "_gf_filter_pid_disconnect_task", "_gf_filter_pid_detach_task", "_tmpfile", "___wasm_apply_data_relocs", "_constructor", "_set", "_get", "_destructor", "_orig$gf_fsize", "_orig$gf_ftell", "_orig$gf_fseek", "_orig$gf_bs_reassign_buffer", "_orig$gf_bs_new", "_orig$gf_bs_seek", "_orig$gf_bs_read_long_int", "_orig$gf_bs_available", "_orig$gf_bs_skip_bytes", "_orig$gf_bs_get_position", "_orig$gf_filter_pck_set_dts", "_orig$gf_filter_pck_set_cts", "_orig$gf_filter_pck_get_cts", "_orig$gf_filter_pck_set_byte_offset", "_orig$gf_filter_pck_get_byte_offset", "_orig$llrint", "onRuntimeInitialized"].forEach((prop) => {
+      ["_saveSetjmp", "_stdout", "_stderr", "_stdin", "_hypot", "_pthread_mutexattr_init", "_log10f", "_cosf", "_cbrt", "_exp2", "_sinf", "_atanf", "_atan2f", "_log2f", "_snprintf", "_atoi", "_access", "_strtod", "_strspn", "_strncat", "_strerror_r", "_ldexpf", "_gf_m4a_write_config_bs", "_gf_fgetc", "_gf_bs_get_content", "_gf_bs_align", "_gf_m4a_get_profile", "_memchr", "_gettimeofday", "_tolower", "_strrchr", "_sscanf", "_gf_bs_seek", "_gf_bs_from_file", "_gf_bs_write_data", "_gf_bs_reassign_buffer", "_gf_fopen", "_gf_log_get_tool_level", "_gf_4cc_to_str", "_gf_filter_pck_get_interlaced", "_gf_filter_pid_set_udta", "_gf_filter_pid_set_property_dyn", "_gf_bs_skip_bytes", "_gf_bs_write_u16_le", "_gf_filter_pck_set_roll_info", "_gf_filter_pid_set_property_str", "_gf_bs_write_u32_le", "_gf_itags_get_name", "_gf_filter_pck_set_corrupted", "_gf_filter_pck_set_dts", "_gf_itags_find_by_id3tag", "_gf_bs_read_u16_le", "_gf_bs_read_u32_le", "_gf_bs_read_data", "_gf_odf_ac3_cfg_write", "_gf_feof", "_gf_bs_read_u16", "_gf_bs_read_u32", "_gf_bs_read_u8", "_gf_filter_pid_set_name", "_gf_opts_get_int", "_gf_ftell", "_gf_filter_pck_get_byte_offset", "_gf_filter_pid_get_property_str", "_gf_sys_is_test_mode", "_gf_filter_pid_would_block", "_gf_filter_post_process_task", "_gf_filter_pck_new_shared", "_gf_filter_pid_set_info", "_gf_fileio_get_stats", "_gf_fileio_check", "_gf_filter_pid_raw_new", "_gf_fread", "_gf_fseek", "_gf_fsize", "_gf_fileio_read_mode", "_my_str_lwr", "_strncasecmp", "_strstr", "_strcspn", "_strcasecmp", "_deflate", "_deflateInit2_", "_crc32", "_deflateEnd", "_free", "_emscripten_stack_get_end", "_emscripten_stack_set_limits", "_gf_free", "_gf_fwrite", "_gf_malloc", "_gf_realloc", "_gf_pixel_get_size_info", "_gf_file_ext_start", "_gf_filter_reporting_enabled", "_gf_file_exists", "_gf_fclose", "_gf_fopen_ex", "_gf_fileio_from_url", "_gf_fileio_open_url", "_gf_fileio_write_mode", "_gf_fileio_translate_url", "_gf_filter_pck_merge_properties", "_gf_filter_pck_expand", "_gf_filter_pck_discard", "_gf_filter_pid_caps_query", "_gf_filter_override_caps", "_gf_filter_pck_truncate", "_gf_filter_pid_send_event", "_gf_filter_pid_set_eos", "_gf_filter_pid_init_play_event", "_gf_log", "_gf_log_lt", "_emscripten_longjmp", "_gf_log_tool_level_on", "_gf_filter_pid_drop_packet", "_gf_filter_pck_get_frame_interface", "_gf_filter_pid_is_eos", "___threwValue", "___THREW__", "_logs_mx", "_pthread_mutex_unlock", "_pthread_mutex_lock", "_pthread_self", "_sprintf", "_vfprintf", "_fprintf", "_bsearch", "_frexp", "_exp2f", "_llrint", "_fwrite", "_cos", "_cosh", "_acos", "_sin", "_sinh", "_asin", "_tan", "_tanh", "_atan", "_exp", "_log", "_fabs", "_strncmp", "_strdup", "_gf_filter_pck_get_timescale", "_gf_filter_pck_get_cts", "_gf_filter_pck_get_duration", "_gf_fileio_url", "_gf_fileio_new", "_gf_fileio_set_stats_u32", "_ldexp", "_pthread_mutex_destroy", "_pthread_mutex_init", "_posix_memalign", "_pow", "_vsnprintf", "_getenv", "_strcmp", "_strlen", "_strcpy", "_strcat", "_strncpy", "_strchr", "_memset", "_memcpy", "_memmove", "_memalign", "_memcmp", "_calloc", "_realloc", "_gf_url_concatenate", "_gf_strdup", "_gf_fileio_get_udta", "_gf_bs_new", "_gf_bs_available", "_gf_bs_read_int", "_gf_bs_get_position", "_gf_bs_del", "_gf_filter_get_udta", "_gf_filter_pid_get_packet", "_gf_filter_pck_get_data", "_gf_filter_pid_set_property", "_gf_filter_pck_new_alloc", "_gf_filter_pck_send", "_gf_filter_pid_check_caps", "_gf_filter_pid_get_property", "_gf_filter_pid_new", "_gf_filter_pid_copy_properties", "_gf_filter_set_name", "_gf_filter_pck_set_dependency_flags", "_gf_filter_pid_set_framing_mode", "_gf_filter_pck_new_ref", "_gf_filter_pck_set_cts", "_gf_filter_pck_set_sap", "_gf_filter_pck_set_duration", "_gf_filter_pck_get_property", "_gf_filter_pck_set_byte_offset", "_gf_filter_pck_set_framing", "_gf_crc_32", "_gf_bs_read_long_int", "_gf_bs_read_u24", "_gf_filter_pck_get_dependency_flags", "_gf_filter_pck_get_framing", "_gf_filter_pck_set_seek_flag", "_gf_filter_pck_get_seek_flag", "_fflush", "_siprintf", "_gf_opts_get_bool", "_gf_bs_mark_overflow", "_gf_bs_is_overflow", "_gf_fflush", "_evg_fill_run", "_evg_grey_fill_const_a", "_evg_grey_fill_const", "_evg_grey_fill_var", "_evg_grey_fill_single", "_gf_filter_renegociate_output_task", "_gf_pixel_fmt_parse", "_gf_pixel_fmt_name", "_gf_pixel_fmt_all_names", "_gf_audio_fmt_parse", "_gf_audio_fmt_name", "_gf_audio_fmt_all_names", "_gf_cicp_parse_color_primaries", "_gf_cicp_color_primaries_name", "_gf_cicp_color_primaries_all_names", "_gf_cicp_parse_color_transfer", "_gf_cicp_color_transfer_name", "_gf_cicp_color_matrix_name", "_gf_cicp_color_transfer_all_names", "_gf_cicp_parse_color_matrix", "_gf_cicp_color_matrix_all_names", "_isatty", "_fputs", "_gf_filter_pid_reconfigure_task", "_gf_filter_pid_reconfigure_task_discard", "_gf_filter_pid_remove", "_strtol", "_gf_filter_pid_disconnect_task", "_gf_filter_pid_detach_task", "_tmpfile", "_ftello", "_fseeko", "_fread", "_fclose", "_gf_filter_has_out_caps", "_gf_sys_clock_high_res", "_roundf", "_round", "___small_sprintf", "_lrintf", "_qsort", "___wasm_apply_data_relocs", "_constructor", "_set", "_get", "_destructor", "_orig$gf_sys_clock_high_res", "_orig$gf_fsize", "_orig$gf_ftell", "_orig$ftello", "_orig$gf_fseek", "_orig$fseeko", "_orig$gf_bs_reassign_buffer", "_orig$gf_bs_new", "_orig$gf_bs_seek", "_orig$gf_bs_read_long_int", "_orig$gf_bs_available", "_orig$gf_bs_skip_bytes", "_orig$gf_bs_get_position", "_orig$gf_filter_pck_set_dts", "_orig$gf_filter_pck_set_cts", "_orig$gf_filter_pck_get_cts", "_orig$gf_filter_pck_set_byte_offset", "_orig$gf_filter_pck_get_byte_offset", "_orig$llrint", "onRuntimeInitialized"].forEach((prop) => {
         if (!Object.getOwnPropertyDescriptor(Module['ready'], prop)) {
           Object.defineProperty(Module['ready'], prop, {
             get: () => abort('You are getting ' + prop + ' on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js'),
@@ -775,7 +775,7 @@ var Module = (() => {
       // include: runtime_init_table.js
       // In RELOCATABLE mode we create the table in JS.
       var wasmTable = new WebAssembly.Table({
-        'initial': 77,
+        'initial': 78,
         'element': 'anyfunc'
       });
 
@@ -863,7 +863,7 @@ var Module = (() => {
         assert(!runtimeInitialized);
         runtimeInitialized = true;
 
-        //checkStackCookie();
+        checkStackCookie();
 
         callRuntimeCallbacks(__RELOC_FUNCS__);
 
@@ -876,13 +876,13 @@ var Module = (() => {
       }
 
       function preMain() {
-        //checkStackCookie();
+        checkStackCookie();
 
         callRuntimeCallbacks(__ATMAIN__);
       }
 
       function postRun() {
-        //checkStackCookie();
+        checkStackCookie();
 
         if (Module['postRun']) {
           if (typeof Module['postRun'] == 'function') Module['postRun'] = [Module['postRun']];
@@ -1544,7 +1544,7 @@ var Module = (() => {
         }
       }
 
-      var ___heap_base = 203744;
+      var ___heap_base = 204080;
 
       function zeroMemory(address, size) {
         HEAPU8.fill(0, address, address + size);
@@ -1947,7 +1947,7 @@ var Module = (() => {
           };
 
           function postInstantiation(instance) {
-                        //FIXME : Set this information in custom section
+            //FIXME : Set this information in custom section
             const filter_entry = Object.keys(instance.exports).filter(fn => fn.endsWith("_register"));
             filter_entries = filter_entries.concat(filter_entry);
             const module_entry = Object.keys(instance.exports).filter(fn => fn.startsWith("gf_register_module_"));
@@ -2164,7 +2164,7 @@ var Module = (() => {
           }
         }
       }
-      
+
       function add_file_io() {
         memio.forEach(x => {
           x.value = addFunction(x, x.sig);
@@ -2235,11 +2235,11 @@ var Module = (() => {
 
       var ___memory_base = new WebAssembly.Global({ 'value': 'i32', 'mutable': false }, 1024);
 
-      var ___stack_high = 203744;
+      var ___stack_high = 204080;
 
-      var ___stack_low = 138208;
+      var ___stack_low = 138544;
 
-      var ___stack_pointer = new WebAssembly.Global({ 'value': 'i32', 'mutable': true }, 203744);
+      var ___stack_pointer = new WebAssembly.Global({ 'value': 'i32', 'mutable': true }, 204080);
 
       var PATH = {
         isAbs: (path) => path.charAt(0) === '/', splitPath: (filename) => {
@@ -5442,7 +5442,7 @@ var Module = (() => {
         return getTempRet0();
       }
       _getTempRet0.sig = 'i';
-      
+
       function _sem_timedwait(
       ) {
         if (!Module['_sem_timedwait']) abort("external symbol 'sem_timedwait' is missing. perhaps a side module was not linked in? if this function was expected to arrive from a system library, try to build the MAIN_MODULE with EMCC_FORCE_STDLIBS=1 in the environment");
@@ -5460,7 +5460,7 @@ var Module = (() => {
         if (e instanceof ExitStatus || e == 'unwind') {
           return EXITSTATUS;
         }
-        //checkStackCookie();
+        checkStackCookie();
         if (e instanceof WebAssembly.RuntimeError) {
           if (_emscripten_stack_get_current() <= 0) {
             err('Stack overflow detected.  You can try increasing -sSTACK_SIZE (currently set to ' + STACK_SIZE + ')');
@@ -5742,6 +5742,9 @@ var Module = (() => {
       var _memmove = Module["_memmove"] = createExportWrapper("memmove");
 
       /** @type {function(...*):?} */
+      var _gf_sys_clock_high_res = Module["_gf_sys_clock_high_res"] = createExportWrapper("gf_sys_clock_high_res");
+
+      /** @type {function(...*):?} */
       var _my_str_lwr = Module["_my_str_lwr"] = createExportWrapper("my_str_lwr");
 
       /** @type {function(...*):?} */
@@ -5883,7 +5886,16 @@ var Module = (() => {
       var _gf_ftell = Module["_gf_ftell"] = createExportWrapper("gf_ftell");
 
       /** @type {function(...*):?} */
+      var _ftello = Module["_ftello"] = createExportWrapper("ftello");
+
+      /** @type {function(...*):?} */
       var _gf_fseek = Module["_gf_fseek"] = createExportWrapper("gf_fseek");
+
+      /** @type {function(...*):?} */
+      var _fseeko = Module["_fseeko"] = createExportWrapper("fseeko");
+
+      /** @type {function(...*):?} */
+      var _fclose = Module["_fclose"] = createExportWrapper("fclose");
 
       /** @type {function(...*):?} */
       var _gf_fwrite = Module["_gf_fwrite"] = createExportWrapper("gf_fwrite");
@@ -5893,6 +5905,9 @@ var Module = (() => {
 
       /** @type {function(...*):?} */
       var _strerror_r = Module["_strerror_r"] = createExportWrapper("strerror_r");
+
+      /** @type {function(...*):?} */
+      var _fread = Module["_fread"] = createExportWrapper("fread");
 
       /** @type {function(...*):?} */
       var _gf_fgetc = Module["_gf_fgetc"] = createExportWrapper("gf_fgetc");
@@ -6237,6 +6252,9 @@ var Module = (() => {
       var _gf_filter_pid_set_udta = Module["_gf_filter_pid_set_udta"] = createExportWrapper("gf_filter_pid_set_udta");
 
       /** @type {function(...*):?} */
+      var _gf_filter_has_out_caps = Module["_gf_filter_has_out_caps"] = createExportWrapper("gf_filter_has_out_caps");
+
+      /** @type {function(...*):?} */
       var _gf_filter_pid_check_caps = Module["_gf_filter_pid_check_caps"] = createExportWrapper("gf_filter_pid_check_caps");
 
       /** @type {function(...*):?} */
@@ -6324,6 +6342,9 @@ var Module = (() => {
       var _strtol = Module["_strtol"] = createExportWrapper("strtol");
 
       /** @type {function(...*):?} */
+      var _qsort = Module["_qsort"] = createExportWrapper("qsort");
+
+      /** @type {function(...*):?} */
       var _gf_filter_get_udta = Module["_gf_filter_get_udta"] = createExportWrapper("gf_filter_get_udta");
 
       /** @type {function(...*):?} */
@@ -6405,6 +6426,18 @@ var Module = (() => {
       var _log10f = Module["_log10f"] = createExportWrapper("log10f");
 
       /** @type {function(...*):?} */
+      var _log2f = Module["_log2f"] = createExportWrapper("log2f");
+
+      /** @type {function(...*):?} */
+      var _lrintf = Module["_lrintf"] = createExportWrapper("lrintf");
+
+      /** @type {function(...*):?} */
+      var _round = Module["_round"] = createExportWrapper("round");
+
+      /** @type {function(...*):?} */
+      var _roundf = Module["_roundf"] = createExportWrapper("roundf");
+
+      /** @type {function(...*):?} */
       var _sinf = Module["_sinf"] = createExportWrapper("sinf");
 
       /** @type {function(...*):?} */
@@ -6412,6 +6445,9 @@ var Module = (() => {
 
       /** @type {function(...*):?} */
       var _siprintf = Module["_siprintf"] = createExportWrapper("siprintf");
+
+      /** @type {function(...*):?} */
+      var ___small_sprintf = Module["___small_sprintf"] = createExportWrapper("__small_sprintf");
 
       /** @type {function(...*):?} */
       var _strcspn = Module["_strcspn"] = createExportWrapper("strcspn");
@@ -6481,13 +6517,22 @@ var Module = (() => {
       var dynCall_jiji = Module["dynCall_jiji"] = createExportWrapper("dynCall_jiji");
 
       /** @type {function(...*):?} */
+      var _orig$gf_sys_clock_high_res = Module["_orig$gf_sys_clock_high_res"] = createExportWrapper("orig$gf_sys_clock_high_res");
+
+      /** @type {function(...*):?} */
       var _orig$gf_fsize = Module["_orig$gf_fsize"] = createExportWrapper("orig$gf_fsize");
 
       /** @type {function(...*):?} */
       var _orig$gf_ftell = Module["_orig$gf_ftell"] = createExportWrapper("orig$gf_ftell");
 
       /** @type {function(...*):?} */
+      var _orig$ftello = Module["_orig$ftello"] = createExportWrapper("orig$ftello");
+
+      /** @type {function(...*):?} */
       var _orig$gf_fseek = Module["_orig$gf_fseek"] = createExportWrapper("orig$gf_fseek");
+
+      /** @type {function(...*):?} */
+      var _orig$fseeko = Module["_orig$fseeko"] = createExportWrapper("orig$fseeko");
 
       /** @type {function(...*):?} */
       var _orig$gf_bs_reassign_buffer = Module["_orig$gf_bs_reassign_buffer"] = createExportWrapper("orig$gf_bs_reassign_buffer");
@@ -6528,12 +6573,12 @@ var Module = (() => {
       /** @type {function(...*):?} */
       var _orig$llrint = Module["_orig$llrint"] = createExportWrapper("orig$llrint");
 
-      var _stderr = Module['_stderr'] = 125752;
-      var _logs_mx = Module['_logs_mx'] = 126272;
-      var _stdin = Module['_stdin'] = 125904;
-      var _stdout = Module['_stdout'] = 126056;
-      var ___THREW__ = Module['___THREW__'] = 138192;
-      var ___threwValue = Module['___threwValue'] = 138196;
+      var _stderr = Module['_stderr'] = 126088;
+      var _logs_mx = Module['_logs_mx'] = 126608;
+      var _stdin = Module['_stdin'] = 126240;
+      var _stdout = Module['_stdout'] = 126392;
+      var ___THREW__ = Module['___THREW__'] = 138528;
+      var ___threwValue = Module['___threwValue'] = 138532;
 
 
 
@@ -6973,7 +7018,7 @@ var Module = (() => {
         // This is normally called automatically during __wasm_call_ctors but need to
         // get these values before even running any of the ctors so we call it redundantly
         // here.
-        _emscripten_stack_set_limits(203744, 138208);
+        _emscripten_stack_set_limits(204080, 138544);
         // TODO(sbc): Move writeStackCookie to native to to avoid this.
         writeStackCookie();
       }
@@ -7041,7 +7086,7 @@ var Module = (() => {
         } else {
           doRun();
         }
-        //checkStackCookie();
+        checkStackCookie();
       }
 
       function checkUnflushedContent() {

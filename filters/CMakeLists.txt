@@ -406,16 +406,23 @@ add_filter(oggdmx
         "")
 
 SET(VORBISDEC_SRC
-        ${GPAC_LOCATION}/src/filters/dmx_ogg.c
+        ${GPAC_LOCATION}/src/filters/dec_vorbis.c
 )
 
 SET(VORBISDEC_INCLUDE
         ${THIRD_PARTIES}/vorbis/include
+        ${THIRD_PARTIES}/ogg/include
+        ${THIRD_PARTIES_BINARIES}/ogg/include
+)
+
+SET(VORBISDEC_LIB
+        ${THIRD_PARTIES_BINARIES}/vorbis/lib/libvorbis.a
+        ${THIRD_PARTIES_BINARIES}/ogg/libogg.a
 )
 
 add_filter(vorbisdec
         "${VORBISDEC_SRC}"
-        ${THIRD_PARTIES_BINARIES}/vorbis/lib/libvorbis.a
+        "${VORBISDEC_LIB}"
         _vorbisdec_register
         GPAC_HAS_VORBIS
         "${VORBISDEC_INCLUDE}"

@@ -177,6 +177,19 @@ describe('core-player', () => {
     }).timeout(10000);
   });
 
+  describe('#vorbisdec', () => {
+    it('should decode Median_test.ogg"', (done) => {
+      create_test('audio',
+        "universal-audio",
+        "core-audio.wasm",
+        "vorbisdec.wasm;fileout.wasm;oggdmx.wasm;writegen.wasm;filein.wasm",
+        "http://bevara.ddns.net/test-signals/ogg/Median_test.ogg",
+        "http://bevara.ddns.net/test-signals/out/ogg/Median_test.wav",
+        done
+      );
+    }).timeout(10000);
+  });
+
 
   // describe('#mpeg', () => {
   //   it('should decode centaur_2.mpg"', (done) => {
