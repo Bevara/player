@@ -31,6 +31,7 @@ module.exports = function (config) {
       outputFile: 'test-results.xml',
       suite: ''
     },
-    browserNoActivityTimeout: 600000
+    browserNoActivityTimeout: 600000,
+    browserDisconnectTimeout: 96000
   })
 }
