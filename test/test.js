@@ -221,6 +221,19 @@ describe('core-player', () => {
     }).timeout(60000);
   });
 
+  describe('#xvid', () => {
+    it('should decode Big_Buck_Bunny_Trailer_400p.avi"', (done) => {
+      create_test('video',
+        "universal-video",
+        "core-video.wasm",
+        "mp4mx.wasm;avidmx.wasm;xviddec.wasm;fileout.wasm;rfmp3.wasm;rfmpgvid.wasm;rfnalu.wasm;ffenc.wasm;writegen.wasm;filein.wasm",
+        "http://bevara.ddns.net/test-signals/xvid/Big_Buck_Bunny_Trailer_400p.avi",
+        null,
+        done
+      );
+    }).timeout(60000);
+  });
+
   // describe('#rfamr', () => {
   //   it('should decode ff-16b-1c-8000hz.amr"', (done) => {
   //     create_test('audio',

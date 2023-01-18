@@ -144,8 +144,16 @@ add_filter(j2kdec
         "")
 SET(RFMP3_SRC
         ${GPAC_LOCATION}/src/filters/reframe_mp3.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/constants.c
+        ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/utf.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
 )
 
 add_filter(rfmp3
@@ -464,6 +472,35 @@ add_filter(theoradec
         "${THEORADEC_INCLUDE}"
         "")
 
+SET(XVIDDEC_SRC
+        ${GPAC_LOCATION}/src/filters/dec_xvid.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/constants.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
+)
+
+SET(XVIDDEC_INCLUDE
+        ${THIRD_PARTIES}/xvidcore/src
+)
+
+SET(XVIDDEC_LIB
+        ${THIRD_PARTIES_BINARIES}/xvidcore/libxvidcore.a
+)
+
+add_filter(xviddec
+        "${XVIDDEC_SRC}"
+        "${XVIDDEC_LIB}"
+        _xviddec_register
+        GPAC_HAS_XVID
+        "${XVIDDEC_INCLUDE}"
+        "")
+
 add_filter(rfadts
         ${GPAC_LOCATION}/src/filters/reframe_adts.c
         ""
@@ -672,6 +709,22 @@ add_filter(httpin
         ${GPAC_LOCATION}/src/filters/in_http.c
         ""
         _httpin_register
+        ""
+        ""
+        "")
+
+SET(AVIDMX_SRC
+        ${GPAC_LOCATION}/src/filters/dmx_avi.c
+        ${GPAC_LOCATION}/src/media_tools/avilib.c
+        ${GPAC_LOCATION}/src/media_tools/media_import.c
+        ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/list.c
+)
+
+add_filter(avidmx
+        "${AVIDMX_SRC}"
+        ""
+        _avidmx_register
         ""
         ""
         "")

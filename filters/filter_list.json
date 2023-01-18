@@ -36,6 +36,8 @@
 		"pngenc.wasm",
 		"faaddec.wasm",
 		"vorbisdec.wasm",
-		"theoradec.wasm"
+		"theoradec.wasm",
+		"xviddec.wasm",
+		"avidmx.wasm"
 	]
 }
