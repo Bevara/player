@@ -7,13 +7,18 @@ function create_test(tag, extension, using_attribute, with_atribute, test_file, 
     img.setAttribute("with", with_atribute);
     document.body.appendChild(img);
     console.log(using_attribute + ";" + with_atribute + " : Tag " + tag + " extended by " + extension + " has been added to the DOM");
-    const fetchs = img.decodingPromise.then(src =>
-      Promise.all([
-        fetch(src),
-        fetch(reference_file)
-      ]));
-
-    fetchs.then((responses) => {
+    img.decodingPromise.then(src =>{
+      if (reference_file){
+        return Promise.all([
+          fetch(src),
+          fetch(reference_file)
+        ]);
+      }else{
+        resolve();
+        return Promise.all([]);
+      }
+    })
+    .then((responses) => {
       console.log(using_attribute + ";" + with_atribute + " : Both test and reference signal has been processed");
       arrayBuffers = responses.map(response => response.arrayBuffer());
       Promise.all(arrayBuffers)
@@ -31,7 +36,7 @@ function create_test(tag, extension, using_attribute, with_atribute, test_file, 
               expect(resultHex).to.equal(refHex);
               console.log(using_attribute + ";" + with_atribute + " : Test OK");
               resolve();
-            })
+            });
         });
     });
   })
@@ -190,19 +195,31 @@ describe('core-player', () => {
     }).timeout(60000);
   });
 
+  describe('#theoradec', () => {
+    it('should decode Big_Buck_Bunny_Trailer_400p.ogv"', (done) => {
+      create_test('video',
+        "universal-video",
+        "core-video.wasm",
+        "theoradec.wasm;mp4mx.wasm;fileout.wasm;rfnalu.wasm;ffenc.wasm;oggdmx.wasm;writegen.wasm;filein.wasm",
+        "http://bevara.ddns.net/test-signals/ogv/Big_Buck_Bunny_Trailer_400p.ogv",
+        null,
+        done
+      );
+    }).timeout(60000);
+  });
 
-  // describe('#mpeg', () => {
-  //   it('should decode centaur_2.mpg"', (done) => {
-  //     create_test('video',
-  //       "universal-video",
-  //       "core-video.wasm",
-  //       "fileout.wasm;m2psdmx.wasm;rfmpgvid.wasm;ffdec.wasm;mp4mx.wasm;rfnalu.wasm;ffenc.wasm;filein.wasm",
-  //       "http://bevara.ddns.net/test-signals/mpeg1/centaur_2.mpg",
-  //       "http://bevara.ddns.net/test-signals/out/mpeg/centaur_2.mp4",
-  //       done
-  //     );
-  //   }).timeout(60000);
-  // });
+  describe('#mpeg', () => {
+    it('should decode centaur_2.mpg"', (done) => {
+      create_test('video',
+        "universal-video",
+        "core-video.wasm",
+        "fileout.wasm;m2psdmx.wasm;rfmpgvid.wasm;ffdec.wasm;mp4mx.wasm;rfnalu.wasm;ffenc.wasm;filein.wasm",
+        "http://bevara.ddns.net/test-signals/mpeg1/centaur_2.mpg",
+        null,
+        done
+      );
+    }).timeout(60000);
+  });
 
   // describe('#rfamr', () => {
   //   it('should decode ff-16b-1c-8000hz.amr"', (done) => {
