@@ -124,6 +124,20 @@ add_filter(pngenc
         GPAC_HAS_PNG
         ""
         "")
+
+SET(JPGENC_SRC
+        ${GPAC_LOCATION}/src/filters/enc_jpg.c
+)
+
+add_filter(jpgenc
+        "${JPGENC_SRC}"
+        ""
+        _jpgenc_register
+        GPAC_HAS_JPEG
+        ""
+        "")
+
+
 SET(J2KDEC_LIB
         ${THIRD_PARTIES}/openjpeg/src/lib/openjp2
         ${THIRD_PARTIES_BINARIES}/openjpeg/src/lib/openjp2
@@ -295,6 +309,30 @@ add_filter(ffdec
         "${FF_INCLUDE}"
         "")
 
+SET(FFBSF_SRC
+        ${GPAC_LOCATION}/src/filters/ff_bsf.c
+)
+
+add_filter(ffbsf
+        "${FFBSF_SRC}"
+        "${FFDEC_LIB}"
+        _ffbsf_register
+        GPAC_HAS_FFMPEG
+        "${FF_INCLUDE}"
+        "")
+
+SET(FFAVF_SRC
+        ${GPAC_LOCATION}/src/filters/ff_avf.c
+)
+
+add_filter(ffavf
+        "${FFAVF_SRC}"
+        "${FFDEC_LIB}"
+        _ffavf_register
+        GPAC_HAS_FFMPEG
+        "${FF_INCLUDE}"
+        "")
+
 SET(FFDMX_SRC
         ${GPAC_LOCATION}/src/filters/ff_dmx.c
         ${GPAC_LOCATION}/src/filters/ff_common.c
@@ -320,6 +358,7 @@ add_filter(ffdmx
         "${FF_INCLUDE}"
         "")
 
+
 SET(FFRESCALE_SRC
         ${GPAC_LOCATION}/src/filters/ff_rescale.c
         ${GPAC_LOCATION}/src/filters/ff_common.c
@@ -344,6 +383,18 @@ add_filter(ffrescale
         "${FFRESCALE_SRC}"
         "${FFDEC_LIB}"
         _ffsws_register
+        GPAC_HAS_FFMPEG
+        "${FF_INCLUDE}"
+        "")
+
+SET(FFMX_SRC
+        ${GPAC_LOCATION}/src/filters/ff_mx.c
+)
+
+add_filter(ffmx
+        "${FFMX_SRC}"
+        "${FFDEC_LIB}"
+        _ffmx_register
         GPAC_HAS_FFMPEG
         "${FF_INCLUDE}"
         "")
@@ -725,6 +776,497 @@ add_filter(avidmx
         "${AVIDMX_SRC}"
         ""
         _avidmx_register
+        ""
+        ""
+        "")
+
+add_filter(ufvtt
+        ${GPAC_LOCATION}/src/filters/write_vtt.c
+        ""
+        _vttmx_register
+        ""
+        ""
+        "")
+
+add_filter(tx3g2ttml
+        ${GPAC_LOCATION}/src/filters/write_tx3g.c
+        ""
+        _tx3g2ttml_register
+        ""
+        ""
+        "")
+
+add_filter(tx3g2vtt
+        ${GPAC_LOCATION}/src/filters/write_tx3g.c
+        ""
+        _tx3g2vtt_register
+        ""
+        ""
+        "")
+
+add_filter(tx3g2srt
+        ${GPAC_LOCATION}/src/filters/write_tx3g.c
+        ""
+        _tx3g2srt_register
+        ""
+        ""
+        "")
+
+add_filter(ufttxt
+        ${GPAC_LOCATION}/src/filters/write_tx3g.c
+        ""
+        _ttxtuf_register
+        ""
+        ""
+        "")
+
+
+add_filter(writeqcp
+        ${GPAC_LOCATION}/src/filters/write_qcp.c
+        ""
+        _qcpmx_register
+        ""
+        ""
+        "")
+
+add_filter(nhntw
+        ${GPAC_LOCATION}/src/filters/write_nhnt.c
+        ""
+        _nhntdump_register
+        ""
+        ""
+        "")
+
+add_filter(nhmlw
+        ${GPAC_LOCATION}/src/filters/write_nhml.c
+        ""
+        _nhmldump_register
+        ""
+        ""
+        "")
+
+add_filter(writeuf
+        ${GPAC_LOCATION}/src/filters/write_generic.c
+        ""
+        _writeuf_register
+        ""
+        ""
+        "")
+
+add_filter(vflip
+        ${GPAC_LOCATION}/src/filters/vflip.c
+        ""
+        _vflip_register
+        ""
+        ""
+        "")
+
+add_filter(vcrop
+        ${GPAC_LOCATION}/src/filters/vcrop.c
+        ""
+        _vcrop_register
+        ""
+        ""
+        "")
+
+add_filter(unframer
+        ${GPAC_LOCATION}/src/filters/unframer.c
+        ""
+        _unframer_register
+        ""
+        ""
+        "")
+
+add_filter(ttml2srt
+        ${GPAC_LOCATION}/src/filters/ttml_conv.c
+        ""
+        _ttmlconv2_register
+        ""
+        ""
+        "")
+
+add_filter(ttml2vtt
+        ${GPAC_LOCATION}/src/filters/ttml_conv.c
+        ""
+        _ttmlconv_register
+        ""
+        ""
+        "")
+
+add_filter(tssplit
+        ${GPAC_LOCATION}/src/filters/tssplit.c
+        ""
+        _m2tssplit_register
+        ""
+        ""
+        "")
+
+add_filter(tilesplit
+        ${GPAC_LOCATION}/src/filters/tilesplit.c
+        ""
+        _tilesplit_register
+        ""
+        ""
+        "")
+
+add_filter(tileagg
+        ${GPAC_LOCATION}/src/filters/tileagg.c
+        ""
+        _tileagg_register
+        ""
+        ""
+        "")
+
+add_filter(ufobu
+        ${GPAC_LOCATION}/src/filters/rewrite_obu.c
+        ""
+        _obumx_register
+        ""
+        ""
+        "")
+
+add_filter(ufnalu
+        ${GPAC_LOCATION}/src/filters/rewrite_nalu.c
+        ""
+        _nalumx_register
+        ""
+        ""
+        "")
+
+add_filter(ufvc1
+        ${GPAC_LOCATION}/src/filters/rewrite_mp4v.c
+        ""
+        _vc1mx_register
+        ""
+        ""
+        "")
+
+add_filter(ufmhas
+        ${GPAC_LOCATION}/src/filters/rewrite_mhas.c
+        ""
+        _mhasmx_register
+        ""
+        ""
+        "")
+
+add_filter(uflatm
+        ${GPAC_LOCATION}/src/filters/rewrite_adts.c
+        ""
+        _latm_mx_register
+        ""
+        ""
+        "")
+
+add_filter(rewind
+        ${GPAC_LOCATION}/src/filters/rewind.c
+        ""
+        _rewind_register
+        ""
+        ""
+        "")
+
+add_filter(restamp
+        ${GPAC_LOCATION}/src/filters/restamp.c
+        ""
+        _restamp_register
+        ""
+        ""
+        "")
+
+add_filter(resample
+        ${GPAC_LOCATION}/src/filters/resample_audio.c
+        ""
+        _resample_register
+        ""
+        ""
+        "")
+
+add_filter(reframer
+        ${GPAC_LOCATION}/src/filters/reframer.c
+        ""
+        _reframer_register
+        ""
+        ""
+        "")
+
+
+add_filter(rftruehd
+        ${GPAC_LOCATION}/src/filters/reframe_truehd.c
+        ""
+        _truehd_register
+        ""
+        ""
+        "")
+
+add_filter(rfrawvid
+        ${GPAC_LOCATION}/src/filters/reframe_rawvid.c
+        ""
+        _rawvidreframe_register
+        ""
+        ""
+        "")
+
+add_filter(rfpcm
+        ${GPAC_LOCATION}/src/filters/reframe_rawpcm.c
+        ""
+        _pcmreframe_register
+        ""
+        ""
+        "")
+
+add_filter(rfqcp
+        ${GPAC_LOCATION}/src/filters/reframe_qcp.c
+        ""
+        _qcpdmx_register
+        ""
+        ""
+        "")
+
+add_filter(rfprores
+        ${GPAC_LOCATION}/src/filters/reframe_prores.c
+        ""
+        _proresdmx_register
+        ""
+        ""
+        "")
+
+add_filter(rfmhas
+        ${GPAC_LOCATION}/src/filters/reframe_mhas.c
+        ""
+        _mhas_dmx_register
+        ""
+        ""
+        "")        
+
+add_filter(rflatm
+        ${GPAC_LOCATION}/src/filters/reframe_latm.c
+        ""
+        _latm_dmx_register
+        ""
+        ""
+        "")
+       
+add_filter(rfh263
+        ${GPAC_LOCATION}/src/filters/reframe_h263.c
+        ""
+        _h263dmx_register
+        ""
+        ""
+        "")
+
+add_filter(rfav1
+        ${GPAC_LOCATION}/src/filters/reframe_av1.c
+        ""
+        _av1dmx_register
+        ""
+        ""
+        "")
+
+add_filter(vout
+        ${GPAC_LOCATION}/src/filters/out_video.c
+        ""
+        _vout_register
+        ""
+        ""
+        "")        
+
+add_filter(m2tsmx
+        ${GPAC_LOCATION}/src/filters/mux_ts.c
+        ""
+        _tsmux_register
+        ""
+        ""
+        "") 
+
+add_filter(oggmx
+        ${GPAC_LOCATION}/src/filters/mux_ogg.c
+        ""
+        _oggmux_register
+        ""
+        ""
+        "") 
+
+add_filter(gsfmx
+        ${GPAC_LOCATION}/src/filters/mux_gsf.c
+        ""
+        _gsfmx_register
+        ""
+        ""
+        "") 
+
+add_filter(rfsrt
+        ${GPAC_LOCATION}/src/filters/load_text.c
+        ""
+        _rfsrt_register
+        ""
+        ""
+        "") 
+
+add_filter(vtt2tx3g
+        ${GPAC_LOCATION}/src/filters/load_text.c
+        ""
+        _vtt2tx3g_register
+        ""
+        ""
+        "")
+
+add_filter(txtin
+        ${GPAC_LOCATION}/src/filters/load_text.c
+        ""
+        _txtin_register
+        ""
+        ""
+        "")
+
+add_filter(svgplay
+        ${GPAC_LOCATION}/src/filters/load_svg.c
+        ""
+        _svgin_register
+        ""
+        ""
+        "")
+
+add_filter(btplay
+        ${GPAC_LOCATION}/src/filters/load_bt_xmt.c
+        ""
+        _ctxload_register
+        ""
+        ""
+        "")
+
+add_filter(cryptin
+        ${GPAC_LOCATION}/src/filters/io_fcryp.c
+        ""
+        _cryptfin_register
+        ""
+        ""
+        "")
+
+add_filter(cryptout
+        ${GPAC_LOCATION}/src/filters/io_fcryp.c
+        ""
+        _cryptfout_register
+        ""
+        ""
+        "")
+
+add_filter(probe
+        ${GPAC_LOCATION}/src/filters/inspect.c
+        ""
+        _probe_register
+        ""
+        ""
+        "")
+
+add_filter(inspect
+        ${GPAC_LOCATION}/src/filters/inspect.c
+        ""
+        _inspect_register
+        ""
+        ""
+        "")
+
+
+add_filter(hevcsplit
+        ${GPAC_LOCATION}/src/filters/hevcsplit.c
+        ""
+        _hevcsplit_register
+        ""
+        ""
+        "")
+
+add_filter(hevcmerge
+        ${GPAC_LOCATION}/src/filters/hevcmerge.c
+        ""
+        _hevcmerge_register
+        ""
+        ""
+        "")
+
+add_filter(flist
+        ${GPAC_LOCATION}/src/filters/filelist.c
+        ""
+        _filelist_register
+        ""
+        ""
+        "")
+
+add_filter(cecrypt
+        ${GPAC_LOCATION}/src/filters/encrypt_cenc_isma.c
+        ""
+        _cenc_encrypt_register
+        ""
+        ""
+        "")
+
+add_filter(vobsubdmx
+        ${GPAC_LOCATION}/src/filters/dmx_vobsub.c
+        ""
+        _vobsubdmx_register
+        ""
+        ""
+        "")
+
+add_filter(safdmx
+        ${GPAC_LOCATION}/src/filters/dmx_saf.c
+        ""
+        _safdmx_register
+        ""
+        ""
+        "")
+
+add_filter(nhntr
+        ${GPAC_LOCATION}/src/filters/dmx_nhnt.c
+        ""
+        _nhntdmx_register
+        ""
+        ""
+        "")
+
+add_filter(nhmlr
+        ${GPAC_LOCATION}/src/filters/dmx_nhml.c
+        ""
+        _nhmldmx_register
+        ""
+        ""
+        "")
+
+add_filter(m2tsdmx
+        ${GPAC_LOCATION}/src/filters/dmx_m2ts.c
+        ""
+        _m2tsdmx_register
+        ""
+        ""
+        "")
+
+add_filter(gsfdmx
+        ${GPAC_LOCATION}/src/filters/dmx_gsf.c
+        ""
+        _gsfdmx_register
+        ""
+        ""
+        "")
+
+add_filter(dashin
+        ${GPAC_LOCATION}/src/filters/dmx_dash.c
+        ""
+        _dashdmx_register
+        ""
+        ""
+        "")
+
+add_filter(cdcrypt
+        ${GPAC_LOCATION}/src/filters/decrypt_cenc_isma.c
+        ""
+        _cenc_decrypt_register
+        ""
+        ""
+        "")
+
+add_filter(vttdec
+        ${GPAC_LOCATION}/src/filters/dec_webvtt.c
+        ""
+        _vttdec_register
         ""
         ""
         "")
