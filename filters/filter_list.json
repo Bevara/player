@@ -35,6 +35,7 @@
 		"filein.wasm",
 		"pngenc.wasm",
 		"faaddec.wasm",
-		"vorbisdec.wasm"
+		"vorbisdec.wasm",
+		"theoradec.wasm"
 	]
 }
