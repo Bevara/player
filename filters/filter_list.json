@@ -25,7 +25,7 @@
 		"ufnalu.wasm",
 		"vttdec.wasm",
 		"avidmx.wasm",
-		"ffrescale.wasm",
+		"ffsws.wasm",
 		"jpgenc.wasm",
 		"nhntw.wasm",
 		"rfac3.wasm",

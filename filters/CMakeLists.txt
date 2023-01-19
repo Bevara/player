@@ -65,7 +65,7 @@ else()
 endif()
 
 SET(JPEG_LIB
-        /Users/gorinje/project/libjpeg-turbo/build/libjpeg.a 
+        ${THIRD_PARTIES_BINARIES}/libjpeg/.libs/libjpeg.a
 )
 
 SET(IMG_FLAGS
@@ -310,8 +310,8 @@ SET(FFDEC_SRC
         ${GPAC_LOCATION}/src/utils/os_file.c
         ${GPAC_LOCATION}/src/filter_core/filter.c
         ${GPAC_LOCATION}/src/filter_core/filter_pid.c
-        ${GPAC_LOCATION}/src/filter_core/filter_props.c
         ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
         ${GPAC_LOCATION}/src/filter_core/filter_pck.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
 )
@@ -341,6 +341,12 @@ add_filter(ffdec
 SET(FFBSF_SRC
         ${GPAC_LOCATION}/src/filters/ff_bsf.c
         ${GPAC_LOCATION}/src/filters/ff_common.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
 )
 
 add_filter(ffbsf
@@ -354,6 +360,12 @@ add_filter(ffbsf
 SET(FFAVF_SRC
         ${GPAC_LOCATION}/src/filters/ff_avf.c
         ${GPAC_LOCATION}/src/filters/ff_common.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
 )
 
 add_filter(ffavf
@@ -394,8 +406,10 @@ SET(FFRESCALE_SRC
         ${GPAC_LOCATION}/src/filters/ff_rescale.c
         ${GPAC_LOCATION}/src/filters/ff_common.c
         ${GPAC_LOCATION}/src/filter_core/filter.c
-        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
         ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/list.c
@@ -410,7 +424,7 @@ SET(FFRESCALE_SRC
         ${GPAC_LOCATION}/src/utils/os_thread.c
 )
 
-add_filter(ffrescale
+add_filter(ffsws
         "${FFRESCALE_SRC}"
         "${FFDEC_LIB}"
         _ffsws_register
@@ -421,6 +435,12 @@ add_filter(ffrescale
 SET(FFMX_SRC
         ${GPAC_LOCATION}/src/filters/ff_mx.c
         ${GPAC_LOCATION}/src/filters/ff_common.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
 )
 
 add_filter(ffmx
@@ -452,21 +472,28 @@ SET(FFENC_SRC
         ${GPAC_LOCATION}/src/filters/ff_enc.c
         ${GPAC_LOCATION}/src/filters/ff_common.c
         ${GPAC_LOCATION}/src/filter_core/filter.c
-        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
         ${GPAC_LOCATION}/src/filter_core/filter_queue.c
         ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/error.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
+)
+
+SET(FFENC_FLAGS
+        GPAC_HAS_FFMPEG
 )
 
 add_filter(ffenc
         "${FFENC_SRC}"
         "${FFENC_LIB}"
         _ffenc_register
-        GPAC_HAS_FFMPEG
+        "${FFENC_FLAGS}"
         "${FFENC_INCLUDE}"
         "")
 
