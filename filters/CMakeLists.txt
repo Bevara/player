@@ -340,6 +340,7 @@ add_filter(ffdec
 
 SET(FFBSF_SRC
         ${GPAC_LOCATION}/src/filters/ff_bsf.c
+        ${GPAC_LOCATION}/src/filters/ff_common.c
 )
 
 add_filter(ffbsf
@@ -352,6 +353,7 @@ add_filter(ffbsf
 
 SET(FFAVF_SRC
         ${GPAC_LOCATION}/src/filters/ff_avf.c
+        ${GPAC_LOCATION}/src/filters/ff_common.c
 )
 
 add_filter(ffavf
@@ -418,6 +420,7 @@ add_filter(ffrescale
 
 SET(FFMX_SRC
         ${GPAC_LOCATION}/src/filters/ff_mx.c
+        ${GPAC_LOCATION}/src/filters/ff_common.c
 )
 
 add_filter(ffmx
@@ -657,7 +660,13 @@ SET(MP4DMX_SRC
         ${GPAC_LOCATION}/src/isomedia/isom_intern.c
         ${GPAC_LOCATION}/src/isomedia/data_map.c
         ${GPAC_LOCATION}/src/isomedia/box_funcs.c
+        ${GPAC_LOCATION}/src/isomedia/box_code_3gpp.c
+        ${GPAC_LOCATION}/src/isomedia/box_code_adobe.c
         ${GPAC_LOCATION}/src/isomedia/box_code_apple.c
+        ${GPAC_LOCATION}/src/isomedia/box_code_base.c
+        ${GPAC_LOCATION}/src/isomedia/box_code_meta.c
+        ${GPAC_LOCATION}/src/isomedia/box_code_drm.c
+        ${GPAC_LOCATION}/src/isomedia/box_dump.c
         ${GPAC_LOCATION}/src/isomedia/movie_fragments.c
         ${GPAC_LOCATION}/src/isomedia/track.c
         ${GPAC_LOCATION}/src/isomedia/drm_sample.c
@@ -666,6 +675,9 @@ SET(MP4DMX_SRC
         ${GPAC_LOCATION}/src/isomedia/sample_descs.c
         ${GPAC_LOCATION}/src/isomedia/avc_ext.c
         ${GPAC_LOCATION}/src/isomedia/stbl_read.c
+        ${GPAC_LOCATION}/src/isomedia/hinting.c
+        ${GPAC_LOCATION}/src/isomedia/iff.c
+        ${GPAC_LOCATION}/src/media_tools/webvtt.c
         ${GPAC_LOCATION}/src/media_tools/isom_tools.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
@@ -1002,8 +1014,13 @@ add_filter(restamp
         ""
         "")
 
-add_filter(resample
+SET(RESAMPLE_SRC
         ${GPAC_LOCATION}/src/filters/resample_audio.c
+        ${GPAC_LOCATION}/src/utils/constants.c
+)
+
+add_filter(resample
+        "${RESAMPLE_SRC}"
         ""
         _resample_register
         ""
@@ -1018,25 +1035,40 @@ add_filter(reframer
         ""
         "")
 
+SET(RFTRUEHD_SRC
+        ${GPAC_LOCATION}/src/filters/reframe_truehd.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c
+)
+
 
 add_filter(rftruehd
-        ${GPAC_LOCATION}/src/filters/reframe_truehd.c
+        "${RFTRUEHD_SRC}"
         ""
         _truehd_register
         ""
         ""
         "")
+ 
+ SET(RFRAW_SRC
+        ${GPAC_LOCATION}/src/filters/reframe_rawvid.c
+        ${GPAC_LOCATION}/src/utils/constants.c
+)
 
 add_filter(rfrawvid
-        ${GPAC_LOCATION}/src/filters/reframe_rawvid.c
+        "${RFRAW_SRC}"
         ""
         _rawvidreframe_register
         ""
         ""
         "")
 
-add_filter(rfpcm
+SET(RFPCM_SRC
         ${GPAC_LOCATION}/src/filters/reframe_rawpcm.c
+        ${GPAC_LOCATION}/src/utils/constants.c
+        )
+
+add_filter(rfpcm
+        "${RFPCM_SRC}"
         ""
         _pcmreframe_register
         ""
@@ -1083,8 +1115,17 @@ add_filter(rfh263
         ""
         "")
 
-add_filter(rfav1
+SET(RFAV1_SRC
         ${GPAC_LOCATION}/src/filters/reframe_av1.c
+        ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/error.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/odf/descriptors.c
+)
+
+add_filter(rfav1
+        "${RFAV1_SRC}"
         ""
         _av1dmx_register
         ""
@@ -1123,24 +1164,39 @@ add_filter(gsfmx
         ""
         "") 
 
-add_filter(rfsrt
+SET(RFSRT_SRC
         ${GPAC_LOCATION}/src/filters/load_text.c
+        ${GPAC_LOCATION}/src/utils/utf.c
+)
+
+add_filter(rfsrt
+        "${RFSRT_SRC}"
         ""
         _rfsrt_register
         ""
         ""
         "") 
 
-add_filter(vtt2tx3g
+SET(VTT2TX3G_SRC
         ${GPAC_LOCATION}/src/filters/load_text.c
+        ${GPAC_LOCATION}/src/utils/utf.c
+)
+
+add_filter(vtt2tx3g
+        "${VTT2TX3G_SRC}"
         ""
         _vtt2tx3g_register
         ""
         ""
         "")
 
-add_filter(txtin
+SET(TXTIN_SRC
         ${GPAC_LOCATION}/src/filters/load_text.c
+        ${GPAC_LOCATION}/src/utils/utf.c
+)
+
+add_filter(txtin
+        "${TXTIN_SRC}"
         ""
         _txtin_register
         ""
@@ -1155,8 +1211,13 @@ add_filter(svgplay
         ""
         "")
 
-add_filter(btplay
+SET(BTPLAY_SRC
         ${GPAC_LOCATION}/src/filters/load_bt_xmt.c
+        ${GPAC_LOCATION}/src/utils/utf.c
+)
+
+add_filter(btplay
+        "${BTPLAY_SRC}"
         ""
         _ctxload_register
         ""
@@ -1212,8 +1273,14 @@ add_filter(hevcmerge
         ""
         "")
 
-add_filter(flist
+SET(FLIST_SRC
         ${GPAC_LOCATION}/src/filters/filelist.c
+        ${GPAC_LOCATION}/src/utils/utf.c
+)
+        
+
+add_filter(flist
+        "${FLIST_SRC}"
         ""
         _filelist_register
         ""
@@ -1260,8 +1327,15 @@ add_filter(nhmlr
         ""
         "")
 
-add_filter(m2tsdmx
+SET(M2TSDMX_SRC
         ${GPAC_LOCATION}/src/filters/dmx_m2ts.c
+        ${GPAC_LOCATION}/src/media_tools/mpegts.c
+        ${GPAC_LOCATION}/src/utils/error.c
+        ${GPAC_LOCATION}/src/utils/list.c
+)
+
+add_filter(m2tsdmx
+        "${M2TSDMX_SRC}"
         ""
         _m2tsdmx_register
         ""
@@ -1324,8 +1398,13 @@ add_filter(odfdec
         ""
         "")
 
-add_filter(lsrdec
+SET(LSRDRC_SRC
         ${GPAC_LOCATION}/src/filters/dec_laser.c
+        ${GPAC_LOCATION}/src/compositor/scene.c
+)
+
+add_filter(lsrdec
+        "${LSRDRC_SRC}"
         ""
         _lsrdec_register
         ""
@@ -1340,8 +1419,13 @@ add_filter(bifsdec
         ""
         "")
 
-add_filter(dasher
+SET(DASHER_SRC
         ${GPAC_LOCATION}/src/filters/dasher.c
+        ${GPAC_LOCATION}/src/media_tools/mpd.c
+)
+
+add_filter(dasher
+        "${DASHER_SRC}"
         ""
         _dasher_register
         ""
