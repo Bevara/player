@@ -1,10 +1,15 @@
 
-function create_test(tag, extension, using_attribute, with_atribute, test_file, reference_file, done) {
+function create_test(tag, extension, using_attribute, with_atribute, test_file, reference_file, done, out) {
   new Promise(function (resolve) {
     const img = document.createElement(tag, { "is": extension });
     img.setAttribute("src", test_file);
     img.setAttribute("using", using_attribute);
     img.setAttribute("with", with_atribute);
+
+    if (out){
+      img.setAttribute("out", out);
+    }
+
     document.body.appendChild(img);
     console.log(using_attribute + ";" + with_atribute + " : Tag " + tag + " extended by " + extension + " has been added to the DOM");
     img.decodingPromise.then(src =>{
@@ -47,18 +52,30 @@ function create_test(tag, extension, using_attribute, with_atribute, test_file, 
 
 describe('core-player', () => {
 
-  // describe('#imgdec', () => {
-  //   it('should decode Freedom.jpeg', (done) => {
-  //     create_test('img', 
-  //                 'universal-img', 
-  //                 "core-img.wasm",
-  //                 "imgdec.wasm",
-  //                 "http://bevara.ddns.net/test-signals/Freedom.jpg",
-  //                 "http://bevara.ddns.net/test-signals/Freedom.png",
-  //                 done
-  //                 );
-  //   }).timeout(5000);
-  // });
+  describe('#imgdec', () => {
+    it('should decode Freedom.jpeg', (done) => {
+      create_test('img', 
+                  'universal-img', 
+                  "core-img.wasm",
+                  "imgdec.wasm;filein.wasm;fileout.wasm;pngenc.wasm;rfimg.wasm;writegen.wasm",
+                  "http://bevara.ddns.net/test-signals/Freedom.jpg",
+                  "http://bevara.ddns.net/test-signals/Freedom.png",
+                  done
+                  );
+    }).timeout(5000);
+    
+    it('should transcode Freedom.png to Freedom.jpeg', (done) => {
+      create_test('img', 
+                  'universal-img', 
+                  "core-img.wasm",
+                  "filein.wasm;fileout.wasm;rfimg.wasm;writegen.wasm;ffsws.wasm;jpgenc.wasm;rfimg.wasm;imgdec.wasm",
+                  "http://bevara.ddns.net/test-signals/Freedom.png",
+                  "http://bevara.ddns.net/test-signals/out/png/Freedom.jpeg",
+                  done,
+                  "jpg"
+                  );
+    }).timeout(5000);
+  });
   
   describe('#j2kdec', () => {
     it('should decode Cevennes2.jp2', (done) => {
