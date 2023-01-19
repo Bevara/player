@@ -50,15 +50,43 @@ add_filter(nanojpeg
 
 SET(IMG_DEC_SRC
         ${GPAC_LOCATION}/src/filters/dec_img.c
-        ${GPAC_LOCATION}/src/media_tools/img.c)
+        ${GPAC_LOCATION}/src/media_tools/img.c
+        )
+
+
+if(DEBUG_MODE)
+        SET(PNG_LIB
+                ${THIRD_PARTIES_BINARIES}/libpng/libpng16d.a
+        )
+else()
+        SET(PNG_LIB
+                ${THIRD_PARTIES_BINARIES}/libpng/libpng16.a
+        )
+endif()
+
+SET(JPEG_LIB
+        /Users/gorinje/project/libjpeg-turbo/build/libjpeg.a 
+)
+
+SET(IMG_FLAGS
+        GPAC_HAS_JPEG
+        GPAC_HAS_PNG
+)
+
+SET(IMG_LIBS
+        ${PNG_LIB}
+        ${JPEG_LIB}
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libz.a
+)
 
 add_filter(imgdec
         "${IMG_DEC_SRC}"
-        ""
+        "${IMG_LIBS}"
         _imgdec_register
-        GPAC_HAS_JPEG
-        ${GPAC_LOCATION}/include
-        "-s USE_LIBJPEG=1")
+        "${IMG_FLAGS}"
+        ""
+        "-sUSE_ZLIB=1")
+
 SET(RFIMG_SRC
         ${GPAC_LOCATION}/src/filters/reframe_img.c
         ${GPAC_LOCATION}/src/media_tools/img.c
@@ -66,11 +94,11 @@ SET(RFIMG_SRC
 
 add_filter(rfimg
         "${RFIMG_SRC}"
-        ""
+        "${IMG_LIBS}"
         _img_reframe_register
-        GPAC_HAS_JPEG
+        "${IMG_FLAGS}"
         ""
-        "-s USE_LIBJPEG=1")
+        "")
 
 SET(WRITEGEN_SRC
         ${GPAC_LOCATION}/src/filters/write_generic.c
@@ -87,15 +115,7 @@ SET(WRITEGEN_SRC
         ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
-if(DEBUG_MODE)
-        SET(PNG_LIB
-                ${THIRD_PARTIES_BINARIES}/libpng/libpng16d.a
-        )
-else()
-        SET(PNG_LIB
-                ${THIRD_PARTIES_BINARIES}/libpng/libpng16.a
-        )
-endif()
+
 
 add_filter(writegen
         "${WRITEGEN_SRC}"
@@ -127,11 +147,19 @@ add_filter(pngenc
 
 SET(JPGENC_SRC
         ${GPAC_LOCATION}/src/filters/enc_jpg.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
 )
 
 add_filter(jpgenc
         "${JPGENC_SRC}"
-        ""
+        "${JPEG_LIB}"
         _jpgenc_register
         GPAC_HAS_JPEG
         ""
@@ -156,6 +184,7 @@ add_filter(j2kdec
         GPAC_HAS_JP2
         "${J2KDEC_LIB}"
         "")
+
 SET(RFMP3_SRC
         ${GPAC_LOCATION}/src/filters/reframe_mp3.c
         ${GPAC_LOCATION}/src/filter_core/filter.c

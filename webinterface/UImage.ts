@@ -19,6 +19,7 @@ class UniversalImage extends HTMLImageElement {
     with_attribute: string[];
     print_attribute: Element | null;
     error_attribute: Element | null;
+    out = "png";
 
     private _decodingPromise: Promise<String>;
 
@@ -83,7 +84,7 @@ class UniversalImage extends HTMLImageElement {
         }
 
         this._decodingPromise = new Promise(async (main_resolve, _main_reject) => {
-            this.io = new fileio(self.src, "out.png", this.using_attribute, this.with_attribute);
+            this.io = new fileio(self.src, "out."+this.out, this.using_attribute, this.with_attribute);
             await this.io.startDownload();
 
             new (Module as any)({
@@ -184,10 +185,13 @@ class UniversalImage extends HTMLImageElement {
             case 'printerr':
                 this.error_attribute = document.querySelector(this.getAttribute("printerr"));
                 break;
+            case 'out':
+                this.out = this.getAttribute("out");
+                break;
         }
     }
 
-    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr']; }
+    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out']; }
 }
 
 export { UniversalImage };
