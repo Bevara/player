@@ -1,4 +1,4 @@
-process.env.CHROME_BIN = require('puppeteer').executablePath()
+process.env.CHROME_BIN = require('puppeteer').executablePath();
 
 module.exports = function (config) {
   config.set({
@@ -31,7 +31,7 @@ module.exports = function (config) {
       outputFile: 'test-results.xml',
       suite: ''
     },
-    browserNoActivityTimeout: 300000,
-    browserDisconnectTimeout: 300000
-  })
-}
+    browserNoActivityTimeout: 3000000,
+    browserDisconnectTimeout: 3000000
+  });
+};

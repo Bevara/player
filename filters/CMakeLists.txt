@@ -55,7 +55,7 @@ SET(IMG_DEC_SRC
 add_filter(imgdec
         "${IMG_DEC_SRC}"
         ""
-        "[_imgdec_register,_jpeg_std_error]"
+        _imgdec_register
         GPAC_HAS_JPEG
         ${GPAC_LOCATION}/include
         "-s USE_LIBJPEG=1")
@@ -1271,5 +1271,77 @@ add_filter(vttdec
         ""
         "")
 
-# # Should always be at the end of this file
+add_filter(ttxtdec
+        ${GPAC_LOCATION}/src/filters/dec_ttxt.c
+        ""
+        _ttxtdec_register
+        ""
+        ""
+        "")
+
+add_filter(ttmldec
+        ${GPAC_LOCATION}/src/filters/dec_ttml.c
+        ""
+        _ttmldec_register
+        ""
+        ""
+        "")
+
+add_filter(odfdec
+        ${GPAC_LOCATION}/src/filters/dec_odf.c
+        ""
+        _odf_dec_register
+        ""
+        ""
+        "")
+
+add_filter(lsrdec
+        ${GPAC_LOCATION}/src/filters/dec_laser.c
+        ""
+        _lsrdec_register
+        ""
+        ""
+        "")
+
+add_filter(bifsdec
+        ${GPAC_LOCATION}/src/filters/dec_bifs.c
+        ""
+        _bifs_dec_register
+        ""
+        ""
+        "")
+
+add_filter(dasher
+        ${GPAC_LOCATION}/src/filters/dasher.c
+        ""
+        _dasher_register
+        ""
+        ""
+        "")
+
+add_filter(bsrw
+        ${GPAC_LOCATION}/src/filters/bsrw.c
+        ""
+        _bsrw_register
+        ""
+        ""
+        "")
+
+add_filter(bssplit
+        ${GPAC_LOCATION}/src/filters/bs_split.c
+        ""
+        _bs_split_register
+        ""
+        ""
+        "")
+
+add_filter(bsagg
+        ${GPAC_LOCATION}/src/filters/bs_agg.c
+        ""
+        _bs_agg_register
+        ""
+        ""
+        "")
+
+# Should always be at the end of this file
 set(WASM_FILES ${WASM_FILES} PARENT_SCOPE)
