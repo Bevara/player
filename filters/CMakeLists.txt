@@ -178,9 +178,14 @@ SET(PNGENC_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_pid.c
 )
 
+SET(PNGENC_LIBS
+        ${PNG_LIB}
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libz.a
+)
+
 add_filter(pngenc
         "${PNGENC_SRC}"
-        "${PNG_LIB}"
+        "${PNGENC_LIBS}"
         _pngenc_register
         GPAC_HAS_PNG
         ""
@@ -286,6 +291,7 @@ SET(RFAC3_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/filter_core/filter_pid.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/odf/descriptors.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
