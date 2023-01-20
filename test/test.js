@@ -57,7 +57,7 @@ describe('core-player', () => {
       create_test('img', 
                   'universal-img', 
                   "core-img.wasm",
-                  "imgdec.wasm;filein.wasm;fileout.wasm;pngenc.wasm;rfimg.wasm;writegen.wasm",
+                  "imgdec.wasm;fin.wasm;fout.wasm;pngenc.wasm;rfimg.wasm;writegen.wasm",
                   "http://bevara.ddns.net/test-signals/Freedom.jpg",
                   "http://bevara.ddns.net/test-signals/Freedom.png",
                   done
@@ -68,7 +68,7 @@ describe('core-player', () => {
       create_test('img', 
                   'universal-img', 
                   "core-img.wasm",
-                  "filein.wasm;fileout.wasm;rfimg.wasm;writegen.wasm;ffsws.wasm;jpgenc.wasm;rfimg.wasm;imgdec.wasm",
+                  "fin.wasm;fout.wasm;rfimg.wasm;writegen.wasm;ffsws.wasm;jpgenc.wasm;rfimg.wasm;imgdec.wasm",
                   "http://bevara.ddns.net/test-signals/Freedom.png",
                   "http://bevara.ddns.net/test-signals/out/png/Freedom.jpeg",
                   done,
@@ -82,7 +82,7 @@ describe('core-player', () => {
       create_test('img',
         'universal-img',
         "core-img.wasm",
-        "filein.wasm;fileout.wasm;pngenc.wasm;rfimg.wasm;writegen.wasm;j2kdec.wasm",
+        "fin.wasm;fout.wasm;pngenc.wasm;rfimg.wasm;writegen.wasm;j2kdec.wasm",
         "http://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2",
         "http://bevara.ddns.net/test-signals/out/j2k/Cevennes2.png",
         done
@@ -93,7 +93,7 @@ describe('core-player', () => {
       create_test('img',
         'universal-img',
         "core-img.wasm",
-        "fileout.wasm;j2kdec.wasm;ffdmx.wasm;writegen.wasm;pngenc.wasm",
+        "fout.wasm;j2kdec.wasm;ffdmx.wasm;writegen.wasm;pngenc.wasm",
         "http://bevara.ddns.net/test-signals/j2k/Bretagne1.j2k",
         "http://bevara.ddns.net/test-signals/out/j2k/Bretagne1.png",
         done
@@ -105,7 +105,7 @@ describe('core-player', () => {
       create_test('img',
         'universal-img',
         "core-img.wasm",
-        "filein.wasm;fileout.wasm;pngenc.wasm;rfimg.wasm;writegen.wasm;j2kdec.wasm",
+        "fin.wasm;fout.wasm;pngenc.wasm;rfimg.wasm;writegen.wasm;j2kdec.wasm",
         "http://bevara.ddns.net/test-signals/out/j2k/Cevennes2.jp2.bvr",
         "http://bevara.ddns.net/test-signals/out/j2k/Cevennes2.png",
         done
@@ -119,7 +119,7 @@ describe('core-player', () => {
       create_test('audio',
         "universal-audio",
         "core-audio.wasm",
-        "filein.wasm;fileout.wasm;writegen.wasm;rfmp3.wasm;maddec.wasm",
+        "fin.wasm;fout.wasm;writegen.wasm;rfmp3.wasm;maddec.wasm",
         "http://bevara.ddns.net/test-signals/ImagineDragons.mp3",
         "http://bevara.ddns.net/test-signals/out/maddec/ImagineDragons.wav",
         done
@@ -130,7 +130,7 @@ describe('core-player', () => {
       create_test('audio',
         "universal-audio",
         "core-audio.wasm",
-        "filein.wasm;fileout.wasm;writegen.wasm;rfmp3.wasm;maddec.wasm",
+        "fin.wasm;fout.wasm;writegen.wasm;rfmp3.wasm;maddec.wasm",
         "http://bevara.ddns.net/test-signals/out/maddec/ImagineDragons.mp3.bvr",
         "http://bevara.ddns.net/test-signals/out/maddec/ImagineDragons.wav",
         done
@@ -144,7 +144,7 @@ describe('core-player', () => {
       create_test('audio',
         "universal-audio",
         "core-audio.wasm",
-        "filein.wasm;fileout.wasm;writegen.wasm;rfac3.wasm;a52dec.wasm",
+        "fin.wasm;fout.wasm;writegen.wasm;rfac3.wasm;a52dec.wasm",
         "http://bevara.ddns.net/test-signals/sound.ac3",
         "http://bevara.ddns.net/test-signals/out/ac3/sound.wav",
         done
@@ -155,7 +155,7 @@ describe('core-player', () => {
       create_test('audio',
         "universal-audio",
         "core-audio.wasm",
-        "filein.wasm;fileout.wasm;writegen.wasm;rfac3.wasm;a52dec.wasm",
+        "fin.wasm;fout.wasm;writegen.wasm;rfac3.wasm;a52dec.wasm",
         "http://bevara.ddns.net/test-signals/out/ac3/sound.ac3.bvr",
         "http://bevara.ddns.net/test-signals/out/ac3/sound.wav",
         done
@@ -168,7 +168,7 @@ describe('core-player', () => {
       create_test('audio',
         "universal-audio",
         "core-audio.wasm",
-        "filein.wasm;fileout.wasm;writegen.wasm;rfflac.wasm;ffdec.wasm",
+        "fin.wasm;fout.wasm;writegen.wasm;rfflac.wasm;ffdec.wasm",
         "http://bevara.ddns.net/test-signals/ff-16b-1c-44100hz.flac",
         "http://bevara.ddns.net/test-signals/out/flac/ff-16b-1c-44100hz.wav",
         done
@@ -178,7 +178,7 @@ describe('core-player', () => {
       create_test('audio',
         "universal-audio",
         "core-audio.wasm",
-        "filein.wasm;fileout.wasm;writegen.wasm;rfflac.wasm;ffdec.wasm",
+        "fin.wasm;fout.wasm;writegen.wasm;rfflac.wasm;ffdec.wasm",
         "http://bevara.ddns.net/test-signals/out/flac/ff-16b-1c-44100hz.flac.bvr",
         "http://bevara.ddns.net/test-signals/out/flac/ff-16b-1c-44100hz.wav",
         done
@@ -186,12 +186,13 @@ describe('core-player', () => {
     }).timeout(60000);
   });
 
+
   describe('#faaddec', () => {
     it('should decode sample.aac"', (done) => {
       create_test('audio',
         "universal-audio",
         "core-audio.wasm",
-        "faaddec.wasm;fileout.wasm;rfadts.wasm;writegen.wasm;filein.wasm",
+        "faaddec.wasm;fout.wasm;rfadts.wasm;writegen.wasm;fin.wasm",
         "http://bevara.ddns.net/test-signals/sample.aac",
         "http://bevara.ddns.net/test-signals/out/faad/sample.wav",
         done
@@ -204,7 +205,7 @@ describe('core-player', () => {
       create_test('audio',
         "universal-audio",
         "core-audio.wasm",
-        "vorbisdec.wasm;fileout.wasm;oggdmx.wasm;writegen.wasm;filein.wasm",
+        "vorbisdec.wasm;fout.wasm;oggdmx.wasm;writegen.wasm;fin.wasm",
         "http://bevara.ddns.net/test-signals/ogg/Median_test.ogg",
         "http://bevara.ddns.net/test-signals/out/ogg/Median_test.wav",
         done
@@ -212,12 +213,26 @@ describe('core-player', () => {
     }).timeout(60000);
   });
 
+  describe('#rfamr', () => {
+    it('should decode ff-16b-1c-8000hz.amr"', (done) => {
+      create_test('audio',
+        "universal-audio",
+        "core-audio.wasm",
+        "rfamr.wasm;writegen.wasm;resample.wasm;ffdec.wasm;rfamr.wasm;fin.wasm;fout.wasm",
+        "http://bevara.ddns.net/test-signals/ff-16b-1c-8000hz.amr",
+        "http://bevara.ddns.net/test-signals/out/amr/ff-16b-1c-8000hz.wav",
+        done
+      );
+    }).timeout(60000);
+  });
+  
+
   describe('#theoradec', () => {
     it('should decode Big_Buck_Bunny_Trailer_400p.ogv"', (done) => {
       create_test('video',
         "universal-video",
         "core-video.wasm",
-        "theoradec.wasm;mp4mx.wasm;fileout.wasm;rfnalu.wasm;ffenc.wasm;oggdmx.wasm;writegen.wasm;filein.wasm",
+        "theoradec.wasm;mp4mx.wasm;fout.wasm;rfnalu.wasm;ffenc.wasm;oggdmx.wasm;writegen.wasm;fin.wasm",
         "http://bevara.ddns.net/test-signals/ogv/Big_Buck_Bunny_Trailer_400p.ogv",
         null,
         done
@@ -230,7 +245,7 @@ describe('core-player', () => {
       create_test('video',
         "universal-video",
         "core-video.wasm",
-        "fileout.wasm;m2psdmx.wasm;rfmpgvid.wasm;ffdec.wasm;mp4mx.wasm;rfnalu.wasm;ffenc.wasm;filein.wasm",
+        "fout.wasm;m2psdmx.wasm;rfmpgvid.wasm;ffdec.wasm;mp4mx.wasm;rfnalu.wasm;ffenc.wasm;fin.wasm",
         "http://bevara.ddns.net/test-signals/mpeg1/centaur_2.mpg",
         null,
         done
@@ -243,7 +258,7 @@ describe('core-player', () => {
       create_test('video',
         "universal-video",
         "core-video.wasm",
-        "mp4mx.wasm;avidmx.wasm;xviddec.wasm;fileout.wasm;rfmp3.wasm;rfmpgvid.wasm;rfnalu.wasm;ffenc.wasm;writegen.wasm;filein.wasm",
+        "mp4mx.wasm;avidmx.wasm;xviddec.wasm;fout.wasm;rfmp3.wasm;rfmpgvid.wasm;rfnalu.wasm;ffenc.wasm;writegen.wasm;fin.wasm",
         "http://bevara.ddns.net/test-signals/xvid/Big_Buck_Bunny_Trailer_400p.avi",
         null,
         done
@@ -251,16 +266,4 @@ describe('core-player', () => {
     }).timeout(60000);
   });
 
-  // describe('#rfamr', () => {
-  //   it('should decode ff-16b-1c-8000hz.amr"', (done) => {
-  //     create_test('audio',
-  //       "universal-audio",
-  //       "core-player.wasm",
-  //       "rfamr.wasm;ffdec.wasm",
-  //       "http://bevara.ddns.net/test-signals/ff-16b-1c-8000hz.amr",
-  //       "http://bevara.ddns.net/test-signals/out/amrff-16b-1c-44100hz.wav",
-  //       done
-  //     );
-  //   }).timeout(60000);
-  // })
 });

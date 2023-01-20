@@ -24,7 +24,7 @@ macro(add_filter FILTERNAME ENTRYFILES LINKFILES ENTRY_FN DEFINITIONS INCLUDES L
         target_include_directories(${FILTERNAME} PRIVATE ${INCLUDES})
 endmacro()
 
-add_filter(fileout
+add_filter(fout
         ${GPAC_LOCATION}/src/filters/out_file.c
         ""
         _fileout_register
@@ -32,7 +32,7 @@ add_filter(fileout
         ""
         "")
 
-add_filter(filein
+add_filter(fin
         ${GPAC_LOCATION}/src/filters/in_file.c
         ""
         _filein_register
@@ -1043,7 +1043,16 @@ add_filter(restamp
 
 SET(RESAMPLE_SRC
         ${GPAC_LOCATION}/src/filters/resample_audio.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/compositor/audio_mixer.c
         ${GPAC_LOCATION}/src/utils/constants.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
 )
 
 add_filter(resample

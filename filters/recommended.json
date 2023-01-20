@@ -25,23 +25,25 @@
 		"mp4":"video/mp4",
 		"mpg":"video/mpeg",
 		"avi":"video/x-msvideo",
-		"ogv":"video/ogg"
+		"ogv":"video/ogg",
+		"snd":"audio/basic",
+		"aifc":"audio/x-aiff"
 	},
 	"with":{
-		"jp2": "filein.wasm;fileout.wasm;pngenc.wasm;rfimg.wasm;writegen.wasm;j2kdec.wasm",
-		"j2k":"fileout.wasm;j2kdec.wasm;ffdmx.wasm;writegen.wasm;pngenc.wasm",
-		"ac3": "filein.wasm;fileout.wasm;writegen.wasm;rfac3.wasm;a52dec.wasm",
-		"amr": "filein.wasm;fileout.wasm;writegen.wasm;rfamr.wasm;ffdec.wasm",
-		"flac": "filein.wasm;fileout.wasm;writegen.wasm;rfflac.wasm;ffdec.wasm",
-		"opus": "filein.wasm;fileout.wasm;writegen.wasm;oggdmx.wasm;ffdec.wasm",
-		"wma": "filein.wasm;fileout.wasm;writegen.wasm;rfadts.wasm;ffdec.wasm",
-		"mp3":"filein.wasm;fileout.wasm;writegen.wasm;rfmp3.wasm;maddec.wasm",
-		"tif":"fileout.wasm;ffdec.wasm;ffdmx.wasm;writegen.wasm;ffsws.wasm;filein.wasm;pngenc.wasm",
-		"pbm":"fileout.wasm;ffdec.wasm;ffdmx.wasm;writegen.wasm;ffsws.wasm;filein.wasm;pngenc.wasm",
-		"pnm":"fileout.wasm;ffdec.wasm;ffdmx.wasm;writegen.wasm;ffsws.wasm;filein.wasm;pngenc.wasm",
-		"pcx":"fileout.wasm;ffdec.wasm;ffdmx.wasm;writegen.wasm;ffsws.wasm;pngenc.wasm",
-		"aiff":"fileout.wasm;ffdmx.wasm;writegen.wasm",
-		"aac":"faaddec.wasm;fileout.wasm;rfadts.wasm;writegen.wasm;filein.wasm",
-		"ogg":"vorbisdec.wasm;fileout.wasm;oggdmx.wasm;writegen.wasm;filein.wasm"
+		"jp2": "fin.wasm;fout.wasm;pngenc.wasm;rfimg.wasm;writegen.wasm;j2kdec.wasm",
+		"j2k":"fout.wasm;j2kdec.wasm;ffdmx.wasm;writegen.wasm;pngenc.wasm",
+		"ac3": "fin.wasm;fout.wasm;writegen.wasm;rfac3.wasm;a52dec.wasm",
+		"amr": "rfamr.wasm;writegen.wasm;resample.wasm;ffdec.wasm;rfamr.wasm;fin.wasm;fout.wasm",
+		"flac": "fin.wasm;fout.wasm;writegen.wasm;rfflac.wasm;ffdec.wasm",
+		"opus": "fin.wasm;fout.wasm;writegen.wasm;oggdmx.wasm;ffdec.wasm",
+		"wma": "fin.wasm;fout.wasm;writegen.wasm;rfadts.wasm;ffdec.wasm",
+		"mp3":"fin.wasm;fout.wasm;writegen.wasm;rfmp3.wasm;maddec.wasm",
+		"tif":"fout.wasm;ffdec.wasm;ffdmx.wasm;writegen.wasm;ffsws.wasm;fin.wasm;pngenc.wasm",
+		"pbm":"fout.wasm;ffdec.wasm;ffdmx.wasm;writegen.wasm;ffsws.wasm;fin.wasm;pngenc.wasm",
+		"pnm":"fout.wasm;ffdec.wasm;ffdmx.wasm;writegen.wasm;ffsws.wasm;fin.wasm;pngenc.wasm",
+		"pcx":"fout.wasm;ffdec.wasm;ffdmx.wasm;writegen.wasm;ffsws.wasm;pngenc.wasm",
+		"aiff":"fout.wasm;ffdmx.wasm;writegen.wasm",
+		"aac":"faaddec.wasm;fout.wasm;rfadts.wasm;writegen.wasm;fin.wasm",
+		"ogg":"vorbisdec.wasm;fout.wasm;oggdmx.wasm;writegen.wasm;fin.wasm"
 	}
 }
