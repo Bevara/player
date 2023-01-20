@@ -51,8 +51,7 @@ add_filter(nanojpeg
 SET(IMG_DEC_SRC
         ${GPAC_LOCATION}/src/filters/dec_img.c
         ${GPAC_LOCATION}/src/media_tools/img.c
-        )
-
+)
 
 if(DEBUG_MODE)
         SET(PNG_LIB
@@ -115,8 +114,6 @@ SET(WRITEGEN_SRC
         ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
-
-
 add_filter(writegen
         "${WRITEGEN_SRC}"
         ""
@@ -164,7 +161,6 @@ add_filter(jpgenc
         GPAC_HAS_JPEG
         ""
         "")
-
 
 SET(J2KDEC_LIB
         ${THIRD_PARTIES}/openjpeg/src/lib/openjp2
@@ -294,7 +290,7 @@ add_filter(openhevcdec
         "${OPENHEVCDEC_SRC}"
         ${THIRD_PARTIES_BINARIES}/openHEVC/libopenhevc/libopenhevc.a
         _ohevcdec_register
-        "-DGPAC_HAS_OPENHEVC -DGPAC_OPENHEVC_STATIC -DOPENHEVC_HAS_AVC_BASE" 
+        "-DGPAC_HAS_OPENHEVC -DGPAC_OPENHEVC_STATIC -DOPENHEVC_HAS_AVC_BASE"
         "${OPENHEVCDEC_INCLUDE}"
         "")
 
@@ -400,7 +396,6 @@ add_filter(ffdmx
         GPAC_HAS_FFMPEG
         "${FF_INCLUDE}"
         "")
-
 
 SET(FFRESCALE_SRC
         ${GPAC_LOCATION}/src/filters/ff_rescale.c
@@ -547,7 +542,7 @@ add_filter(vorbisdec
         "${VORBISDEC_INCLUDE}"
         "")
 
-        SET(VORBISDEC_SRC
+SET(VORBISDEC_SRC
         ${GPAC_LOCATION}/src/filters/dec_vorbis.c
 )
 
@@ -657,9 +652,10 @@ SET(RFMPGVID_SRC
         ${GPAC_LOCATION}/src/filters/reframe_mpgvid.c
         ${GPAC_LOCATION}/src/filter_core/filter.c
         ${GPAC_LOCATION}/src/filter_core/filter_pck.c
-        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
         ${GPAC_LOCATION}/src/filter_core/filter_props.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/list.c
@@ -785,8 +781,6 @@ add_filter(mp4mx
         ""
         "")
 
-    
-
 SET(RFNALU_SRC
         ${GPAC_LOCATION}/src/filters/reframe_nalu.c
         ${GPAC_LOCATION}/src/filter_core/filter.c
@@ -810,8 +804,128 @@ add_filter(rfnalu
         ""
         "")
 
-add_filter(compose
+SET(COMPOSE_SRC
         ${GPAC_LOCATION}/src/filters/compose.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/compositor/audio_input.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_layer_2d.c
+        ${GPAC_LOCATION}/src/compositor/audio_mixer.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_layer_3d.c
+        ${GPAC_LOCATION}/src/compositor/audio_render.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_layout.c
+        ${GPAC_LOCATION}/src/compositor/bindable.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_lighting.c
+        ${GPAC_LOCATION}/src/compositor/camera.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_mediacontrol.c
+        ${GPAC_LOCATION}/src/compositor/clock.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_mediasensor.c
+        ${GPAC_LOCATION}/src/compositor/compositor.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_path_layout.c
+        ${GPAC_LOCATION}/src/compositor/compositor_2d.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_sensors.c
+        ${GPAC_LOCATION}/src/compositor/compositor_3d.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_sound.c
+        ${GPAC_LOCATION}/src/compositor/compositor_node_init.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_text.c
+        ${GPAC_LOCATION}/src/compositor/drawable.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_textures.c
+        ${GPAC_LOCATION}/src/compositor/events.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_timesensor.c
+        ${GPAC_LOCATION}/src/compositor/font_engine.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_viewport.c
+        ${GPAC_LOCATION}/src/compositor/hardcoded_protos.c
+        ${GPAC_LOCATION}/src/compositor/navigate.c
+        ${GPAC_LOCATION}/src/compositor/hc_flash_shape.c
+        ${GPAC_LOCATION}/src/compositor/object_manager.c
+        ${GPAC_LOCATION}/src/compositor/media_object.c
+        ${GPAC_LOCATION}/src/compositor/offscreen_cache.c
+        ${GPAC_LOCATION}/src/compositor/mesh.c
+        ${GPAC_LOCATION}/src/compositor/scene.c
+        ${GPAC_LOCATION}/src/compositor/mesh_collide.c
+        ${GPAC_LOCATION}/src/compositor/scene_node_init.c
+        ${GPAC_LOCATION}/src/compositor/mesh_tesselate.c
+        ${GPAC_LOCATION}/src/compositor/scene_ns.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_animstream.c
+        ${GPAC_LOCATION}/src/compositor/svg_base.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_audio.c
+        ${GPAC_LOCATION}/src/compositor/svg_external.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_background.c
+        ${GPAC_LOCATION}/src/compositor/svg_filters.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_background2d.c
+        ${GPAC_LOCATION}/src/compositor/svg_font.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_bitmap.c
+        ${GPAC_LOCATION}/src/compositor/svg_geometry.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_composite.c
+        ${GPAC_LOCATION}/src/compositor/svg_grouping.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_form.c
+        ${GPAC_LOCATION}/src/compositor/svg_media.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_geometry_2d.c
+        ${GPAC_LOCATION}/src/compositor/svg_paint_servers.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_geometry_3d.c
+        ${GPAC_LOCATION}/src/compositor/svg_text.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_geometry_ifs2d.c
+        ${GPAC_LOCATION}/src/compositor/texturing.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_geometry_ils2d.c
+        ${GPAC_LOCATION}/src/compositor/texturing_gl.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_gradients.c
+        ${GPAC_LOCATION}/src/compositor/visual_manager.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_grouping.c
+        ${GPAC_LOCATION}/src/compositor/visual_manager_2d.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_grouping_2d.c
+        ${GPAC_LOCATION}/src/compositor/visual_manager_2d_draw.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_grouping_3d.c
+        ${GPAC_LOCATION}/src/compositor/visual_manager_3d.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_inline.c
+        ${GPAC_LOCATION}/src/compositor/visual_manager_3d_gl.c
+        ${GPAC_LOCATION}/src/compositor/mpeg4_inputsensor.c
+        ${GPAC_LOCATION}/src/compositor/x3d_geometry.c
+        ${GPAC_LOCATION}/src/scenegraph/base_scenegraph.c
+        ${GPAC_LOCATION}/src/scenegraph/mpeg4_valuator.c
+        ${GPAC_LOCATION}/src/scenegraph/vrml_js.c
+        ${GPAC_LOCATION}/src/scenegraph/commands.c
+        ${GPAC_LOCATION}/src/scenegraph/smil_anim.c
+        ${GPAC_LOCATION}/src/scenegraph/vrml_proto.c
+        ${GPAC_LOCATION}/src/scenegraph/dom_events.c
+        ${GPAC_LOCATION}/src/scenegraph/smil_timing.c
+        ${GPAC_LOCATION}/src/scenegraph/vrml_route.c
+        ${GPAC_LOCATION}/src/scenegraph/dom_js.c
+        ${GPAC_LOCATION}/src/scenegraph/svg_attributes.c
+        ${GPAC_LOCATION}/src/scenegraph/vrml_script.c
+        ${GPAC_LOCATION}/src/scenegraph/html5_media_js.c
+        ${GPAC_LOCATION}/src/scenegraph/svg_js.c
+        ${GPAC_LOCATION}/src/scenegraph/vrml_tools.c
+        ${GPAC_LOCATION}/src/scenegraph/html5_mse_js.c
+        ${GPAC_LOCATION}/src/scenegraph/svg_properties.c
+        ${GPAC_LOCATION}/src/scenegraph/x3d_nodes.c
+        ${GPAC_LOCATION}/src/scenegraph/mpeg4_animators.c
+        ${GPAC_LOCATION}/src/scenegraph/svg_types.c
+        ${GPAC_LOCATION}/src/scenegraph/xml_ns.c
+        ${GPAC_LOCATION}/src/scenegraph/mpeg4_nodes.c
+        ${GPAC_LOCATION}/src/scenegraph/vrml_interpolators.c
+        ${GPAC_LOCATION}/src/evg/ftgrays.c
+        ${GPAC_LOCATION}/src/evg/raster3d.c
+        ${GPAC_LOCATION}/src/evg/raster_565.c
+        ${GPAC_LOCATION}/src/evg/raster_argb.c
+        ${GPAC_LOCATION}/src/evg/raster_rgb.c
+        ${GPAC_LOCATION}/src/evg/raster_yuv.c
+        ${GPAC_LOCATION}/src/evg/stencil.c
+        ${GPAC_LOCATION}/src/evg/surface.c
+        ${GPAC_LOCATION}/src/utils/constants.c
+        ${GPAC_LOCATION}/src/utils/color.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/module.c
+        ${GPAC_LOCATION}/src/utils/path2d.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_config_init.c
+)
+
+add_filter(compose
+        "${COMPOSE_SRC}"
         ""
         _compose_filter_register
         ""
@@ -889,7 +1003,6 @@ add_filter(ufttxt
         ""
         ""
         "")
-
 
 add_filter(writeqcp
         ${GPAC_LOCATION}/src/filters/write_qcp.c
@@ -1078,7 +1191,6 @@ SET(RFTRUEHD_SRC
         ${GPAC_LOCATION}/src/utils/bitstream.c
 )
 
-
 add_filter(rftruehd
         "${RFTRUEHD_SRC}"
         ""
@@ -1086,8 +1198,8 @@ add_filter(rftruehd
         ""
         ""
         "")
- 
- SET(RFRAW_SRC
+
+SET(RFRAW_SRC
         ${GPAC_LOCATION}/src/filters/reframe_rawvid.c
         ${GPAC_LOCATION}/src/utils/constants.c
 )
@@ -1103,7 +1215,7 @@ add_filter(rfrawvid
 SET(RFPCM_SRC
         ${GPAC_LOCATION}/src/filters/reframe_rawpcm.c
         ${GPAC_LOCATION}/src/utils/constants.c
-        )
+)
 
 add_filter(rfpcm
         "${RFPCM_SRC}"
@@ -1135,7 +1247,7 @@ add_filter(rfmhas
         _mhas_dmx_register
         ""
         ""
-        "")        
+        "")
 
 add_filter(rflatm
         ${GPAC_LOCATION}/src/filters/reframe_latm.c
@@ -1144,7 +1256,7 @@ add_filter(rflatm
         ""
         ""
         "")
-       
+
 add_filter(rfh263
         ${GPAC_LOCATION}/src/filters/reframe_h263.c
         ""
@@ -1176,7 +1288,7 @@ add_filter(vout
         _vout_register
         ""
         ""
-        "")        
+        "")
 
 add_filter(m2tsmx
         ${GPAC_LOCATION}/src/filters/mux_ts.c
@@ -1184,7 +1296,7 @@ add_filter(m2tsmx
         _tsmux_register
         ""
         ""
-        "") 
+        "")
 
 add_filter(oggmx
         ${GPAC_LOCATION}/src/filters/mux_ogg.c
@@ -1192,7 +1304,7 @@ add_filter(oggmx
         _oggmux_register
         ""
         ""
-        "") 
+        "")
 
 add_filter(gsfmx
         ${GPAC_LOCATION}/src/filters/mux_gsf.c
@@ -1200,7 +1312,7 @@ add_filter(gsfmx
         _gsfmx_register
         ""
         ""
-        "") 
+        "")
 
 SET(RFSRT_SRC
         ${GPAC_LOCATION}/src/filters/load_text.c
@@ -1213,7 +1325,7 @@ add_filter(rfsrt
         _rfsrt_register
         ""
         ""
-        "") 
+        "")
 
 SET(VTT2TX3G_SRC
         ${GPAC_LOCATION}/src/filters/load_text.c
@@ -1294,7 +1406,6 @@ add_filter(inspect
         ""
         "")
 
-
 add_filter(hevcsplit
         ${GPAC_LOCATION}/src/filters/hevcsplit.c
         ""
@@ -1315,7 +1426,6 @@ SET(FLIST_SRC
         ${GPAC_LOCATION}/src/filters/filelist.c
         ${GPAC_LOCATION}/src/utils/utf.c
 )
-        
 
 add_filter(flist
         "${FLIST_SRC}"

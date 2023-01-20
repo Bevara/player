@@ -27,7 +27,8 @@
 		"avi":"video/x-msvideo",
 		"ogv":"video/ogg",
 		"snd":"audio/basic",
-		"aifc":"audio/x-aiff"
+		"aifc":"audio/x-aiff",
+		"aif":"audio/x-aiff"
 	},
 	"with":{
 		"jp2": "fin.wasm;fout.wasm;pngenc.wasm;rfimg.wasm;writegen.wasm;j2kdec.wasm",
