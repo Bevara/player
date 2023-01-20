@@ -706,6 +706,8 @@ SET(MP4DMX_SRC
         ${GPAC_LOCATION}/src/isomedia/iff.c
         ${GPAC_LOCATION}/src/media_tools/webvtt.c
         ${GPAC_LOCATION}/src/media_tools/isom_tools.c
+        ${GPAC_LOCATION}/src/media_tools/media_import.c
+        ${GPAC_LOCATION}/src/media_tools/av_parsers.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/constants.c
