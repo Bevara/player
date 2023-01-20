@@ -47,7 +47,6 @@
 		"cryptout.wasm",
 		"fileout.wasm",
 		"m2psdmx.wasm",
-		"oggdec.wasm",
 		"rfamr.wasm",
 		"rfqcp.wasm",
 		"ttml2vtt.wasm",
