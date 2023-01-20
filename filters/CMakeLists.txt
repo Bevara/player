@@ -918,10 +918,13 @@ SET(COMPOSE_SRC
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/color.c
         ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/math.c
         ${GPAC_LOCATION}/src/utils/module.c
         ${GPAC_LOCATION}/src/utils/path2d.c
+        ${GPAC_LOCATION}/src/utils/path2d_stroker.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
         ${GPAC_LOCATION}/src/utils/os_config_init.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
 add_filter(compose
@@ -1353,9 +1356,53 @@ add_filter(txtin
         ""
         "")
 
-add_filter(svgplay
+SET(SVG_LIBS
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libz.a
+)
+
+SET(SVGIN_SRC
         ${GPAC_LOCATION}/src/filters/load_svg.c
-        ""
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/compositor/audio_render.c
+        ${GPAC_LOCATION}/src/compositor/audio_mixer.c
+        ${GPAC_LOCATION}/src/compositor/compositor.c
+        ${GPAC_LOCATION}/src/compositor/compositor_2d.c
+        ${GPAC_LOCATION}/src/compositor/clock.c
+        ${GPAC_LOCATION}/src/compositor/object_manager.c
+        ${GPAC_LOCATION}/src/compositor/scene.c
+        ${GPAC_LOCATION}/src/compositor/events.c
+        ${GPAC_LOCATION}/src/compositor/compositor_node_init.c
+        ${GPAC_LOCATION}/src/scenegraph/base_scenegraph.c
+        ${GPAC_LOCATION}/src/scenegraph/dom_events.c
+        ${GPAC_LOCATION}/src/scenegraph/xml_ns.c
+        ${GPAC_LOCATION}/src/scenegraph/svg_types.c
+        ${GPAC_LOCATION}/src/scenegraph/svg_attributes.c
+        ${GPAC_LOCATION}/src/scenegraph/svg_properties.c
+        ${GPAC_LOCATION}/src/scenegraph/vrml_tools.c
+        ${GPAC_LOCATION}/src/scene_manager/scene_manager.c
+        ${GPAC_LOCATION}/src/scene_manager/loader_svg.c
+        ${GPAC_LOCATION}/src/utils/color.c
+        ${GPAC_LOCATION}/src/utils/constants.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/error.c
+        ${GPAC_LOCATION}/src/utils/xml_parser.c
+        ${GPAC_LOCATION}/src/utils/math.c
+        ${GPAC_LOCATION}/src/utils/gzio.c
+        ${GPAC_LOCATION}/src/utils/path2d.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
+        ${GPAC_LOCATION}/src/utils/os_file.c
+        ${GPAC_LOCATION}/src/utils/os_config_init.c
+)
+
+add_filter(svgplay
+        "${SVGIN_SRC}"
+        "${SVG_LIBS}"
         _svgin_register
         ""
         ""

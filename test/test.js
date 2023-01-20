@@ -114,6 +114,20 @@ describe('core-player', () => {
 
   });
 
+  describe('#svgplay', () => {
+    it('should decode 410.svg', (done) => {
+      create_test('img',
+        'universal-img',
+        "core-img.wasm",
+        "fin.wasm;svgplay.wasm;compose.wasm;pngenc.wasm;writegen.wasm;fout.wasm",
+        "http://bevara.ddns.net/test-signals/SVG/410.svg",
+        "http://bevara.ddns.net/test-signals/out/svg/410.png",
+        done
+      );
+    }).timeout(5000);
+  });
+
+
   describe('#maddec', () => {
     it('should decode ImagineDragons.mp3"', (done) => {
       create_test('audio',
