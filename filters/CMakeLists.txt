@@ -24,16 +24,42 @@ macro(add_filter FILTERNAME ENTRYFILES LINKFILES ENTRY_FN DEFINITIONS INCLUDES L
         target_include_directories(${FILTERNAME} PRIVATE ${INCLUDES})
 endmacro()
 
-add_filter(fout
+SET(FOUT_SRC
         ${GPAC_LOCATION}/src/filters/out_file.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
+)
+
+add_filter(fout
+        "${FOUT_SRC}"
         ""
         _fileout_register
         ""
         ""
         "")
 
-add_filter(fin
+SET(FIN_SRC
         ${GPAC_LOCATION}/src/filters/in_file.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_file.c
+)
+
+
+add_filter(fin
+        "${FIN_SRC}"
         ""
         _filein_register
         ""
@@ -50,7 +76,15 @@ add_filter(nanojpeg
 
 SET(IMG_DEC_SRC
         ${GPAC_LOCATION}/src/filters/dec_img.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
         ${GPAC_LOCATION}/src/media_tools/img.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
 )
 
 if(DEBUG_MODE)
@@ -88,8 +122,17 @@ add_filter(imgdec
 
 SET(RFIMG_SRC
         ${GPAC_LOCATION}/src/filters/reframe_img.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/media_tools/img.c
-        ${GPAC_LOCATION}/src/utils/bitstream.c)
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
+        )
 
 add_filter(rfimg
         "${RFIMG_SRC}"
@@ -107,6 +150,7 @@ SET(WRITEGEN_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_props.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_config_init.c
@@ -169,8 +213,16 @@ SET(J2KDEC_LIB
 
 SET(J2KDEC_SRC
         ${GPAC_LOCATION}/src/filters/dec_j2k.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
         ${GPAC_LOCATION}/src/utils/error.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
 )
 
 add_filter(j2kdec
@@ -188,7 +240,9 @@ SET(RFMP3_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_queue.c
         ${GPAC_LOCATION}/src/filter_core/filter_props.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/utf.c
@@ -203,8 +257,20 @@ add_filter(rfmp3
         ${GPAC_LOCATION}/include
         "")
 
-add_filter(maddec
+SET(MADDEC_SRC
         ${GPAC_LOCATION}/src/filters/dec_mad.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
+)
+
+add_filter(maddec
+        "${MADDEC_SRC}"
         ${THIRD_PARTIES_BINARIES}/libmad/.libs/libmad.a
         _maddec_register
         GPAC_HAS_MAD
@@ -213,8 +279,16 @@ add_filter(maddec
 
 SET(RFAC3_SRC
         ${GPAC_LOCATION}/src/filters/reframe_ac3.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
 )
 
 add_filter(rfac3
@@ -254,6 +328,14 @@ add_filter(faaddec
 
 SET(A52DEC_SRC
         ${GPAC_LOCATION}/src/filters/dec_ac52.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
 )
 
 SET(A52DEC_INCLUDE
@@ -298,6 +380,7 @@ SET(FFDEC_SRC
         ${GPAC_LOCATION}/src/filters/ff_dec.c
         ${GPAC_LOCATION}/src/filters/ff_common.c
         ${GPAC_LOCATION}/src/utils/alloc.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/error.c
@@ -473,6 +556,7 @@ SET(FFENC_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_pck.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/error.c
@@ -492,8 +576,21 @@ add_filter(ffenc
         "${FFENC_INCLUDE}"
         "")
 
-add_filter(rfflac
+SET(RFFLAC_SRC
         ${GPAC_LOCATION}/src/filters/reframe_flac.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
+)
+
+add_filter(rfflac
+        "${RFFLAC_SRC}"
         ""
         _flac_dmx_register
         ""
@@ -502,6 +599,12 @@ add_filter(rfflac
 
 SET(OGGDMX_SRC
         ${GPAC_LOCATION}/src/filters/dmx_ogg.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
         ${GPAC_LOCATION}/src/media_tools/gpac_ogg.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
         ${GPAC_LOCATION}/src/utils/list.c
@@ -509,6 +612,7 @@ SET(OGGDMX_SRC
         ${GPAC_LOCATION}/src/odf/descriptors.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/os_divers.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
 )
 
 add_filter(oggdmx
@@ -521,6 +625,15 @@ add_filter(oggdmx
 
 SET(VORBISDEC_SRC
         ${GPAC_LOCATION}/src/filters/dec_vorbis.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
 )
 
 SET(VORBISDEC_INCLUDE
@@ -553,6 +666,8 @@ SET(THEORADEC_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_queue.c
         ${GPAC_LOCATION}/src/filter_core/filter_props.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
@@ -584,7 +699,9 @@ SET(XVIDDEC_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_queue.c
         ${GPAC_LOCATION}/src/filter_core/filter_props.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
@@ -606,16 +723,43 @@ add_filter(xviddec
         "${XVIDDEC_INCLUDE}"
         "")
 
-add_filter(rfadts
+SET(RFADTS_SRC
         ${GPAC_LOCATION}/src/filters/reframe_adts.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
+)
+
+add_filter(rfadts
+        "${RFADTS_SRC}"
         ""
         _adts_dmx_register
         ""
         ""
         "")
 
-add_filter(rfamr
+SET(RFAMR_SRC
         ${GPAC_LOCATION}/src/filters/reframe_amr.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/os_file.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
+)
+
+add_filter(rfamr
+        "${RFAMR_SRC}"
         ""
         _amrdmx_register
         ""
@@ -657,6 +801,7 @@ SET(RFMPGVID_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/filter_core/filter_queue.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
@@ -788,6 +933,7 @@ SET(RFNALU_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_queue.c
         ${GPAC_LOCATION}/src/filter_core/filter_props.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/constants.c
@@ -953,10 +1099,17 @@ add_filter(httpin
 
 SET(AVIDMX_SRC
         ${GPAC_LOCATION}/src/filters/dmx_avi.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
         ${GPAC_LOCATION}/src/media_tools/avilib.c
         ${GPAC_LOCATION}/src/media_tools/media_import.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
         ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
 )
 
 add_filter(avidmx
@@ -1135,8 +1288,13 @@ add_filter(ufmhas
         ""
         "")
 
-add_filter(uflatm
+SET(UFLATM_SRC
         ${GPAC_LOCATION}/src/filters/rewrite_adts.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c
+)
+
+add_filter(uflatm
+        "${UFLATM_SRC}"
         ""
         _latm_mx_register
         ""
@@ -1217,6 +1375,7 @@ add_filter(rfrawvid
 
 SET(RFPCM_SRC
         ${GPAC_LOCATION}/src/filters/reframe_rawpcm.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/constants.c
 )
 
@@ -1228,8 +1387,13 @@ add_filter(rfpcm
         ""
         "")
 
-add_filter(rfqcp
+SET(RFQCP_SRC
         ${GPAC_LOCATION}/src/filters/reframe_qcp.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c
+)
+
+add_filter(rfqcp
+        "${RFQCP_SRC}"
         ""
         _qcpdmx_register
         ""
@@ -1252,16 +1416,26 @@ add_filter(rfmhas
         ""
         "")
 
-add_filter(rflatm
+SET(LATM_SRC
         ${GPAC_LOCATION}/src/filters/reframe_latm.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c
+)
+
+add_filter(rflatm
+        "${LATM_SRC}"
         ""
         _latm_dmx_register
         ""
         ""
         "")
 
-add_filter(rfh263
+SET(RFH263_SRC
         ${GPAC_LOCATION}/src/filters/reframe_h263.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c
+)
+
+add_filter(rfh263
+        "${RFH263_SRC}"
         ""
         _h263dmx_register
         ""
