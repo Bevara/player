@@ -59,6 +59,7 @@ SET(FIN_SRC
         ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/error.c
         ${GPAC_LOCATION}/src/utils/os_config_init.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
         ${GPAC_LOCATION}/src/utils/os_file.c
