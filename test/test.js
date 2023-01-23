@@ -250,6 +250,19 @@ describe('core-player', () => {
       );
     }).timeout(60000);
   });
+
+  describe('#ffdmx', () => {
+    it('should decode ff-16b-1c-44100hz.wma"', (done) => {
+      create_test('audio',
+        "universal-audio",
+        "core-audio.wasm",
+        "writegen.wasm;fin.wasm;fout.wasm;ffdec.wasm;ffdmx.wasm;resample.wasm",
+        "http://bevara.ddns.net/test-signals/ff-16b-1c-44100hz.wma",
+        "http://bevara.ddns.net/test-signals/out/wma/ff-16b-1c-44100hz.wav",
+        done
+      );
+    }).timeout(60000);
+  });
   
 
   describe('#theoradec', () => {
@@ -290,5 +303,7 @@ describe('core-player', () => {
       );
     }).timeout(60000);
   });
+
+  
 
 });
