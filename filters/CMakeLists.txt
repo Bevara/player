@@ -588,7 +588,7 @@ SET(FFENC_FLAGS
 add_filter(ffenc
         "${FFENC_SRC}"
         "${FFENC_LIB}"
-        _ffenc_register
+        "['_ffenc_register','_gf_error_to_string']"
         "${FFENC_FLAGS}"
         "${FFENC_INCLUDE}"
         "")
@@ -803,6 +803,7 @@ SET(M2PSDMX_SRC
         ${GPAC_LOCATION}/src/media_tools/mpeg2_ps.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
         ${GPAC_LOCATION}/src/media_tools/media_import.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
 add_filter(m2psdmx
