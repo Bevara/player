@@ -32,6 +32,7 @@ SET(FOUT_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_props.c
         ${GPAC_LOCATION}/src/filter_core/filter_pck.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_config_init.c
@@ -615,6 +616,7 @@ SET(FFENC_SRC
         ${GPAC_LOCATION}/src/utils/error.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
         ${GPAC_LOCATION}/src/utils/os_divers.c
+        ${GPAC_LOCATION}/src/utils/os_file.c
 )
 
 SET(FFENC_FLAGS
@@ -1801,6 +1803,7 @@ add_filter(nhmlr
 SET(M2TSDMX_SRC
         ${GPAC_LOCATION}/src/filters/dmx_m2ts.c
         ${GPAC_LOCATION}/src/media_tools/mpegts.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/error.c
         ${GPAC_LOCATION}/src/utils/list.c
 )
