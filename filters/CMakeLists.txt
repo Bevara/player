@@ -36,6 +36,7 @@ SET(FOUT_SRC
         ${GPAC_LOCATION}/src/utils/os_config_init.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
         ${GPAC_LOCATION}/src/utils/os_file.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
 add_filter(fout
@@ -59,6 +60,7 @@ SET(FIN_SRC
         ${GPAC_LOCATION}/src/utils/os_config_init.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
         ${GPAC_LOCATION}/src/utils/os_file.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
 
@@ -90,6 +92,7 @@ SET(IMG_DEC_SRC
         ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
 if(DEBUG_MODE)
@@ -138,7 +141,8 @@ SET(RFIMG_SRC
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
-        )
+        ${GPAC_LOCATION}/src/utils/os_divers.c
+)
 
 add_filter(rfimg
         "${RFIMG_SRC}"
@@ -185,6 +189,7 @@ SET(PNGENC_SRC
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
 SET(PNGENC_LIBS
@@ -202,8 +207,6 @@ add_filter(pngenc
 
 SET(JPGENC_SRC
         ${GPAC_LOCATION}/src/filters/enc_jpg.c
-        ${GPAC_LOCATION}/src/utils/os_thread.c
-        ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/filter_core/filter.c
         ${GPAC_LOCATION}/src/filter_core/filter_props.c
         ${GPAC_LOCATION}/src/filter_core/filter_queue.c
@@ -211,7 +214,10 @@ SET(JPGENC_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/filter_core/filter_pid.c
         ${GPAC_LOCATION}/src/utils/alloc.c
+        ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/constants.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
 )
 
 add_filter(jpgenc
@@ -240,6 +246,7 @@ SET(J2KDEC_SRC
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
 add_filter(j2kdec
@@ -288,6 +295,7 @@ SET(MADDEC_SRC
         ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
 add_filter(maddec
@@ -339,6 +347,7 @@ SET(FAAD_SRC
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
 SET(FAAD_INCLUDE
@@ -364,6 +373,7 @@ SET(A52DEC_SRC
         ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
 SET(A52DEC_INCLUDE
@@ -532,6 +542,7 @@ SET(FFRESCALE_SRC
         ${GPAC_LOCATION}/src/utils/error.c
         ${GPAC_LOCATION}/src/utils/path2d.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
 add_filter(ffsws
@@ -673,6 +684,7 @@ SET(VORBISDEC_SRC
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
 SET(VORBISDEC_INCLUDE
@@ -712,6 +724,7 @@ SET(THEORADEC_SRC
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
 SET(THEORADEC_INCLUDE
@@ -995,6 +1008,7 @@ SET(RFNALU_SRC
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
         ${GPAC_LOCATION}/src/odf/descriptors.c
 )
 
@@ -1173,6 +1187,7 @@ SET(AVIDMX_SRC
         ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
 add_filter(avidmx
@@ -1393,6 +1408,7 @@ SET(RESAMPLE_SRC
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
 add_filter(resample
@@ -1483,6 +1499,7 @@ add_filter(rfmhas
 SET(LATM_SRC
         ${GPAC_LOCATION}/src/filters/reframe_latm.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
+        ${GPAC_LOCATION}/src/media_tools/av_parsers.c
 )
 
 add_filter(rflatm
