@@ -54,6 +54,7 @@ SET(FIN_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_props.c
         ${GPAC_LOCATION}/src/filter_core/filter_pck.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_config_init.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
@@ -86,6 +87,7 @@ SET(IMG_DEC_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/filter_core/filter_pid.c
         ${GPAC_LOCATION}/src/media_tools/img.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
 )
@@ -132,6 +134,7 @@ SET(RFIMG_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_pck.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/media_tools/img.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
@@ -153,6 +156,7 @@ SET(WRITEGEN_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_props.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/list.c
@@ -177,9 +181,10 @@ SET(PNGENC_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_pck.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/filter_core/filter_pid.c
-        ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/constants.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
 )
 
 SET(PNGENC_LIBS
@@ -205,6 +210,7 @@ SET(JPGENC_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_pck.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/constants.c
 )
 
@@ -229,6 +235,7 @@ SET(J2KDEC_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_props.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/error.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/list.c
@@ -252,6 +259,7 @@ SET(RFMP3_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/filter_core/filter_pid.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/error.c
@@ -277,6 +285,7 @@ SET(MADDEC_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_props.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
 )
@@ -299,6 +308,7 @@ SET(RFAC3_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_pid.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
         ${GPAC_LOCATION}/src/odf/descriptors.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_config_init.c
@@ -323,6 +333,8 @@ SET(FAAD_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_pck.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
+        ${GPAC_LOCATION}/src/utils/error.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
@@ -349,6 +361,7 @@ SET(A52DEC_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_props.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
 )
@@ -480,6 +493,7 @@ SET(FFDMX_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_pck.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/error.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/constants.c
@@ -513,6 +527,7 @@ SET(FFRESCALE_SRC
         ${GPAC_LOCATION}/src/evg/raster_argb.c
         ${GPAC_LOCATION}/src/evg/raster_565.c
         ${GPAC_LOCATION}/src/evg/raster_yuv.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/color.c
         ${GPAC_LOCATION}/src/utils/error.c
         ${GPAC_LOCATION}/src/utils/path2d.c
@@ -573,6 +588,7 @@ SET(FFENC_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_pck.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/list.c
@@ -601,8 +617,10 @@ SET(RFFLAC_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_props.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/error.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
         ${GPAC_LOCATION}/src/utils/os_divers.c
 )
@@ -625,6 +643,7 @@ SET(OGGDMX_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_pid.c
         ${GPAC_LOCATION}/src/media_tools/gpac_ogg.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/odf/descriptors.c
@@ -649,6 +668,8 @@ SET(VORBISDEC_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_props.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
+        ${GPAC_LOCATION}/src/utils/error.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
@@ -685,6 +706,8 @@ SET(THEORADEC_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_props.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
+        ${GPAC_LOCATION}/src/utils/error.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/constants.c
@@ -719,6 +742,8 @@ SET(XVIDDEC_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/filter_core/filter_pid.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
+        ${GPAC_LOCATION}/src/utils/error.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/constants.c
@@ -750,6 +775,7 @@ SET(RFADTS_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/filter_core/filter_pid.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_config_init.c
@@ -773,6 +799,7 @@ SET(RFAMR_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_props.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_file.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
@@ -795,6 +822,7 @@ SET(M2PSDMX_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_props.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/error.c
@@ -823,6 +851,7 @@ SET(RFMPGVID_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/filter_core/filter_queue.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/list.c
@@ -926,6 +955,8 @@ SET(MP4MX_SRC
         ${GPAC_LOCATION}/src/isomedia/drm_sample.c
         ${GPAC_LOCATION}/src/isomedia/stbl_write.c
         ${GPAC_LOCATION}/src/isomedia/stbl_read.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
+        ${GPAC_LOCATION}/src/utils/error.c
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/list.c
@@ -958,6 +989,8 @@ SET(RFNALU_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/filter_core/filter_pid.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
+        ${GPAC_LOCATION}/src/utils/error.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/list.c
@@ -1084,6 +1117,7 @@ SET(COMPOSE_SRC
         ${GPAC_LOCATION}/src/evg/raster_yuv.c
         ${GPAC_LOCATION}/src/evg/stencil.c
         ${GPAC_LOCATION}/src/evg/surface.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/color.c
         ${GPAC_LOCATION}/src/utils/list.c
@@ -1136,6 +1170,7 @@ SET(AVIDMX_SRC
         ${GPAC_LOCATION}/src/media_tools/avilib.c
         ${GPAC_LOCATION}/src/media_tools/media_import.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
 )
@@ -1354,6 +1389,7 @@ SET(RESAMPLE_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/filter_core/filter_pid.c
         ${GPAC_LOCATION}/src/compositor/audio_mixer.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
@@ -1588,6 +1624,7 @@ SET(SVGIN_SRC
         ${GPAC_LOCATION}/src/scenegraph/vrml_tools.c
         ${GPAC_LOCATION}/src/scene_manager/scene_manager.c
         ${GPAC_LOCATION}/src/scene_manager/loader_svg.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/color.c
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/list.c
