@@ -824,6 +824,7 @@ SET(RFAMR_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/filter_core/filter_pid.c
         ${GPAC_LOCATION}/src/utils/alloc.c
+        ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_file.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
