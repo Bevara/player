@@ -177,6 +177,7 @@ SET(PNGENC_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_pid.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
         ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/constants.c
 )
 
 SET(PNGENC_LIBS
@@ -202,6 +203,7 @@ SET(JPGENC_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_pck.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/utils/constants.c
 )
 
 add_filter(jpgenc
@@ -250,9 +252,11 @@ SET(RFMP3_SRC
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/constants.c
+        ${GPAC_LOCATION}/src/utils/error.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/utf.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
 add_filter(rfmp3
@@ -295,6 +299,7 @@ SET(RFAC3_SRC
         ${GPAC_LOCATION}/src/odf/descriptors.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
 )
 
@@ -506,6 +511,7 @@ SET(FFRESCALE_SRC
         ${GPAC_LOCATION}/src/evg/raster_565.c
         ${GPAC_LOCATION}/src/evg/raster_yuv.c
         ${GPAC_LOCATION}/src/utils/color.c
+        ${GPAC_LOCATION}/src/utils/error.c
         ${GPAC_LOCATION}/src/utils/path2d.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
 )
@@ -595,6 +601,7 @@ SET(RFFLAC_SRC
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
 add_filter(rfflac
@@ -743,6 +750,7 @@ SET(RFADTS_SRC
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
 add_filter(rfadts
@@ -764,6 +772,7 @@ SET(RFAMR_SRC
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_file.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
 add_filter(rfamr
@@ -813,6 +822,7 @@ SET(RFMPGVID_SRC
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
 add_filter(rfmpgvid
