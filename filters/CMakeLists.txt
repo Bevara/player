@@ -279,6 +279,7 @@ SET(RFMP3_SRC
         ${GPAC_LOCATION}/src/utils/utf.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
         ${GPAC_LOCATION}/src/utils/os_divers.c
+        ${GPAC_LOCATION}/src/utils/os_file.c
 )
 
 add_filter(rfmp3
@@ -329,6 +330,7 @@ SET(RFAC3_SRC
         ${GPAC_LOCATION}/src/utils/os_config_init.c
         ${GPAC_LOCATION}/src/utils/os_divers.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_file.c
 )
 
 add_filter(rfac3
@@ -438,7 +440,6 @@ SET(FFDEC_SRC
         ${GPAC_LOCATION}/src/utils/error.c
         ${GPAC_LOCATION}/src/utils/os_divers.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
-        ${GPAC_LOCATION}/src/utils/os_file.c
 )
 
 SET(FF_INCLUDE
@@ -643,6 +644,7 @@ SET(RFFLAC_SRC
         ${GPAC_LOCATION}/src/utils/error.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
         ${GPAC_LOCATION}/src/utils/os_divers.c
+        ${GPAC_LOCATION}/src/utils/os_file.c
 )
 
 add_filter(rfflac
@@ -807,6 +809,7 @@ SET(RFADTS_SRC
         ${GPAC_LOCATION}/src/utils/os_config_init.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
         ${GPAC_LOCATION}/src/utils/os_divers.c
+        ${GPAC_LOCATION}/src/utils/os_file.c
 )
 
 add_filter(rfadts
@@ -849,15 +852,16 @@ SET(M2PSDMX_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_props.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/media_tools/mpeg2_ps.c
+        ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/media_tools/media_import.c
         ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/constants.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/error.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
         ${GPAC_LOCATION}/src/utils/os_divers.c
-        ${GPAC_LOCATION}/src/media_tools/mpeg2_ps.c
-        ${GPAC_LOCATION}/src/media_tools/av_parsers.c
-        ${GPAC_LOCATION}/src/media_tools/media_import.c
+        ${GPAC_LOCATION}/src/utils/os_file.c
         ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
@@ -1203,6 +1207,7 @@ SET(AVIDMX_SRC
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
         ${GPAC_LOCATION}/src/utils/os_divers.c
+        ${GPAC_LOCATION}/src/utils/os_file.c
 )
 
 add_filter(avidmx
