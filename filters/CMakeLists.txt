@@ -33,6 +33,7 @@ SET(FOUT_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_pck.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/os_config_init.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
         ${GPAC_LOCATION}/src/utils/os_file.c
 )
@@ -54,6 +55,7 @@ SET(FIN_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_pck.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/os_config_init.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
         ${GPAC_LOCATION}/src/utils/os_file.c
 )
@@ -299,6 +301,7 @@ SET(RFAC3_SRC
         ${GPAC_LOCATION}/src/odf/descriptors.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/os_config_init.c
         ${GPAC_LOCATION}/src/utils/os_divers.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
 )
@@ -749,6 +752,7 @@ SET(RFADTS_SRC
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/os_config_init.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
         ${GPAC_LOCATION}/src/utils/os_divers.c
 )
@@ -1107,8 +1111,13 @@ add_filter(aout
         ""
         "")
 
-add_filter(httpin
+SET(HTTPIN_SRC
         ${GPAC_LOCATION}/src/filters/in_http.c
+        ${GPAC_LOCATION}/src/utils/os_config_init.c
+)
+
+add_filter(httpin
+        "${HTTPIN_SRC}"
         ""
         _httpin_register
         ""
@@ -1819,8 +1828,13 @@ add_filter(dasher
         ""
         "")
 
-add_filter(bsrw
+SET(BSRW_SRC
         ${GPAC_LOCATION}/src/filters/bsrw.c
+        ${GPAC_LOCATION}/src/utils/os_config_init.c
+)
+
+add_filter(bsrw
+        "${BSRW_SRC}"
         ""
         _bsrw_register
         ""
