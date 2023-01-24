@@ -67,10 +67,12 @@ SET(FIN_SRC
         ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
+SET(FFIN_LIB
+)
 
 add_filter(fin
         "${FIN_SRC}"
-        ""
+        "${FFIN_LIB}"
         _filein_register
         ""
         ""
