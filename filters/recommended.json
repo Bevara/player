@@ -46,7 +46,6 @@
 		"pcx":"fout.wasm;ffdec.wasm;ffdmx.wasm;writegen.wasm;ffsws.wasm;pngenc.wasm",
 		"aiff":"fout.wasm;ffdmx.wasm;writegen.wasm",
 		"aac":"faaddec.wasm;fout.wasm;rfadts.wasm;writegen.wasm;fin.wasm",
-		"ogg":"vorbisdec.wasm;fout.wasm;oggdmx.wasm;writegen.wasm;fin.wasm",
-		"svg":"fin.wasm;svgplay.wasm;compose.wasm;pngenc.wasm;writegen.wasm;fout.wasm"
+		"ogg":"vorbisdec.wasm;fout.wasm;oggdmx.wasm;writegen.wasm;fin.wasm"
 	}
 }

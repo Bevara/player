@@ -958,8 +958,10 @@ SET(MP4DMX_SRC
         ${GPAC_LOCATION}/src/filters/isoffin_load.c
         ${GPAC_LOCATION}/src/filters/isoffin_read_ch.c
         ${GPAC_LOCATION}/src/filter_core/filter.c
-        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
         ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/isomedia/isom_read.c
         ${GPAC_LOCATION}/src/isomedia/isom_write.c
@@ -987,9 +989,12 @@ SET(MP4DMX_SRC
         ${GPAC_LOCATION}/src/media_tools/isom_tools.c
         ${GPAC_LOCATION}/src/media_tools/media_import.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
+        ${GPAC_LOCATION}/src/utils/error.c
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/constants.c
+        ${GPAC_LOCATION}/src/utils/os_config_init.c
         ${GPAC_LOCATION}/src/utils/os_file.c
         ${GPAC_LOCATION}/src/utils/os_divers.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
