@@ -522,10 +522,17 @@ SET(FFDMX_SRC
         ${GPAC_LOCATION}/src/utils/os_file.c
 )
 
+SET(FFDMX_LIB
+        ${FFDEC_LIB}
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libcompiler_rt.a
+)
+
 add_filter(ffdmx
         "${FFDMX_SRC}"
-        "${FFDEC_LIB}"
-        _ffdmx_register
+        "${FFDMX_LIB}"
+        "['_ffdmx_register','_sinf']"
         GPAC_HAS_FFMPEG
         "${FF_INCLUDE}"
         "")
@@ -597,6 +604,9 @@ SET(FFENC_LIB
         ${THIRD_PARTIES_BINARIES}/ffmpeg-enc/libswresample/libswresample.a
         ${THIRD_PARTIES_BINARIES}/ffmpeg-enc/libswscale/libswscale.a
         ${THIRD_PARTIES_BINARIES}/x264/libx264.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libcompiler_rt.a
 )
 
 SET(FFENC_SRC
