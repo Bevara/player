@@ -364,9 +364,15 @@ SET(FAAD_INCLUDE
         ${THIRD_PARTIES}/faad2-2.8.8/include
 )
 
+SET(FAAD_LIB
+        ${THIRD_PARTIES_BINARIES}/libfaad/libfaad/.libs/libfaad.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 add_filter(faaddec
         "${FAAD_SRC}"
-        ${THIRD_PARTIES_BINARIES}/libfaad/libfaad/.libs/libfaad.a
+        "${FAAD_LIB}"
         _faad_register
         GPAC_HAS_FAAD
         "${FAAD_INCLUDE}"
@@ -391,9 +397,15 @@ SET(A52DEC_INCLUDE
         ${THIRD_PARTIES}/a52dec-0.7.4/include
 )
 
+SET(A52DEC_LIB
+        ${THIRD_PARTIES_BINARIES}/liba52/liba52/.libs/liba52.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 add_filter(a52dec
         "${A52DEC_SRC}"
-        ${THIRD_PARTIES_BINARIES}/liba52/liba52/.libs/liba52.a
+        "${A52DEC_LIB}"
         _a52dec_register
         GPAC_HAS_LIBA52
         "${A52DEC_INCLUDE}"
@@ -1185,9 +1197,14 @@ SET(COMPOSE_SRC
         ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
+SET(COMPOSE_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 add_filter(compose
         "${COMPOSE_SRC}"
-        ""
+        "${COMPOSE_LIB}"
         _compose_filter_register
         ""
         ""
