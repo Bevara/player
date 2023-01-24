@@ -334,9 +334,14 @@ SET(RFAC3_SRC
         ${GPAC_LOCATION}/src/utils/os_file.c
 )
 
+SET(RFAC3_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 add_filter(rfac3
         "${RFAC3_SRC}"
-        ""
+        "${RFAC3_LIB}"
         _ac3dmx_register
         ""
         ${GPAC_LOCATION}/include
