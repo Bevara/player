@@ -283,9 +283,14 @@ SET(RFMP3_SRC
         ${GPAC_LOCATION}/src/utils/os_file.c
 )
 
+SET(RFMP3_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 add_filter(rfmp3
         "${RFMP3_SRC}"
-        ""
+        "${RFMP3_LIB}"
         _mp3_dmx_register
         ""
         ${GPAC_LOCATION}/include
@@ -852,9 +857,15 @@ SET(RFADTS_SRC
         ${GPAC_LOCATION}/src/utils/os_file.c
 )
 
+SET(RFADTS_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
+
 add_filter(rfadts
         "${RFADTS_SRC}"
-        ""
+        "${RFADTS_LIB}"
         _adts_dmx_register
         ""
         ""
