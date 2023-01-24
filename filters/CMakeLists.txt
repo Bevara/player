@@ -448,13 +448,20 @@ SET(FF_INCLUDE
         ${THIRD_PARTIES_BINARIES}/ffmpeg
 )
 
-SET(FFDEC_LIB
+SET(FF_LIB
         ${THIRD_PARTIES_BINARIES}/ffmpeg/libavcodec/libavcodec.a
         ${THIRD_PARTIES_BINARIES}/ffmpeg/libavutil/libavutil.a
         ${THIRD_PARTIES_BINARIES}/ffmpeg/libavformat/libavformat.a
         ${THIRD_PARTIES_BINARIES}/ffmpeg/libavfilter/libavfilter.a
         ${THIRD_PARTIES_BINARIES}/ffmpeg/libswresample/libswresample.a
         ${THIRD_PARTIES_BINARIES}/ffmpeg/libswscale/libswscale.a
+)
+
+
+SET(FFDEC_LIB
+        ${FF_LIB}
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
 )
 
 add_filter(ffdec
@@ -478,7 +485,7 @@ SET(FFBSF_SRC
 
 add_filter(ffbsf
         "${FFBSF_SRC}"
-        "${FFDEC_LIB}"
+        "${FF_LIB}"
         _ffbsf_register
         GPAC_HAS_FFMPEG
         "${FF_INCLUDE}"
@@ -497,7 +504,7 @@ SET(FFAVF_SRC
 
 add_filter(ffavf
         "${FFAVF_SRC}"
-        "${FFDEC_LIB}"
+        "${FF_LIB}"
         _ffavf_register
         GPAC_HAS_FFMPEG
         "${FF_INCLUDE}"
@@ -523,7 +530,7 @@ SET(FFDMX_SRC
 )
 
 SET(FFDMX_LIB
-        ${FFDEC_LIB}
+        ${FF_LIB}
         ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
         ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
         ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libcompiler_rt.a
@@ -564,7 +571,7 @@ SET(FFRESCALE_SRC
 
 add_filter(ffsws
         "${FFRESCALE_SRC}"
-        "${FFDEC_LIB}"
+        "${FF_LIB}"
         _ffsws_register
         GPAC_HAS_FFMPEG
         "${FF_INCLUDE}"
@@ -583,7 +590,7 @@ SET(FFMX_SRC
 
 add_filter(ffmx
         "${FFMX_SRC}"
-        "${FFDEC_LIB}"
+        "${FF_LIB}"
         _ffmx_register
         GPAC_HAS_FFMPEG
         "${FF_INCLUDE}"
