@@ -711,6 +711,8 @@ SET(VORBISDEC_INCLUDE
 SET(VORBISDEC_LIB
         ${THIRD_PARTIES_BINARIES}/vorbis/lib/libvorbis.a
         ${THIRD_PARTIES_BINARIES}/ogg/libogg.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
 )
 
 add_filter(vorbisdec
@@ -785,6 +787,8 @@ SET(XVIDDEC_INCLUDE
 
 SET(XVIDDEC_LIB
         ${THIRD_PARTIES_BINARIES}/xvidcore/libxvidcore.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
 )
 
 add_filter(xviddec
