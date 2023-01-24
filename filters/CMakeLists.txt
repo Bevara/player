@@ -431,9 +431,11 @@ SET(OPENHEVCDEC_INCLUDE
 
 SET(OPENHEVCDEC_SRC
         ${GPAC_LOCATION}/src/filters/dec_openhevc.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
         ${GPAC_LOCATION}/src/filter_core/filter_pid.c
         ${GPAC_LOCATION}/src/filter_core/filter_props.c
-        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
         ${GPAC_LOCATION}/src/filter_core/filter_queue.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/list.c

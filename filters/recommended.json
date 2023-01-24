@@ -29,7 +29,8 @@
 		"snd":"audio/basic",
 		"aifc":"audio/x-aiff",
 		"aif":"audio/x-aiff",
-		"svg":"image/svg+xml"
+		"svg":"image/svg+xml",
+		"dxf":"image/vnd.dxf"
 	},
 	"with":{
 		"jp2": "fin.wasm;fout.wasm;pngenc.wasm;rfimg.wasm;writegen.wasm;j2kdec.wasm",
