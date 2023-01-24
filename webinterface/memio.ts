@@ -57,11 +57,13 @@ class fileio {
     readonly SEEK_CUR = 1;
     readonly SEEK_END = 2;
 
+    print:any;
 
-    constructor(in_url, out_url, using_attribute, with_attribute) {
+    constructor(in_url, out_url, using_attribute, with_attribute, print) {
         this.in_url = in_url;
         this.out_url = out_url;
         location.using = using_attribute;
+        this.print = print;
         this._with_attribute = Array.isArray(with_attribute) ? with_attribute.map(x => scriptDirectory + x) : [];
         this.createIO();
     }
@@ -71,7 +73,7 @@ class fileio {
             const ioctx_id = this.module._gf_fileio_get_udta(fileio);
             const mem = this.io_ctxs[ioctx_id];
 
-            //console.log("reading from "+mem.p+" to "+ (mem.p+bytes));
+            this.print("Reading from "+mem.p+" to "+ (mem.p+bytes) +" of "+mem.buffer_u8.length +" bytes in total.");
             let remaining = mem.buffer_u8.length - mem.p;
 
             if (bytes > remaining) {
@@ -100,6 +102,8 @@ class fileio {
                 mem.buffer_u8 = new Uint8Array(new_size);
                 mem.buffer_u8.set(old_buffer);
             }
+            
+            this.print("Writing from "+mem.p+" to "+ (mem.p+bytes) +" of "+mem.buffer_u8.length +" bytes in total.");
 
             mem.buffer_u8.set(this.module.HEAPU8.slice(buffer, buffer + bytes), mem.p);
             mem.p += bytes;

@@ -18,6 +18,7 @@ class UniversalVideo extends HTMLVideoElement {
     with_attribute: string[];
     print_attribute: Element | null;
     error_attribute: Element | null;
+    out = "mp4";
 
     private _decodingPromise: Promise<string>;
 
@@ -25,9 +26,45 @@ class UniversalVideo extends HTMLVideoElement {
         return this._decodingPromise;
     }
 
+    private print(){
+        const self = this;
+        if (self.print_attribute) {
+            return function (t) {
+                function clear_text(text) {
+                    return text
+                        .replaceAll("[37m", '')
+                        .replaceAll("[0m", '');
+                }
+                (self.print_attribute as any).value += clear_text(t) + "\n";
+            };
+        } else {
+            return console.log.bind(console);
+        }
+    }
+
+    private printErr(){
+        const self = this;
+        if (self.error_attribute) {
+            return function (t) {
+                function clear_text(text) {
+                    return text
+                        .replaceAll("[37m", '')
+                        .replaceAll("[0m", '');
+                }
+
+                (self.error_attribute as any).value += clear_text(t) + "\n";
+            };
+        } else {
+            return console.warn.bind(console);
+        }
+    }
+
+
     connectedCallback() {
         const self = this;
         let args: any = {};
+        const print = this.print();
+        const printErr = this.printErr();
 
         for (var i = 0, atts = this.attributes, n = atts.length, arr = []; i < n; i++) {
             const nodeName = atts[i].nodeName;
@@ -35,41 +72,22 @@ class UniversalVideo extends HTMLVideoElement {
         }
 
         this._decodingPromise = new Promise(async (main_resolve, _main_reject) => {
-            this.io = new fileio(self.src, "out.mp4", this.using_attribute, this.with_attribute);
+            this.io = new fileio(self.src, "out." + this.out, this.using_attribute, this.with_attribute, this.print());
+            print("Downloading...");
             await this.io.startDownload();
+            print("Downloading complete.");
+            print("Building decoder...");
 
             new (Module as any)({
                 dynamicLibraries: this.io.with_attribute,
                 print: function () {
-                    if (self.print_attribute) {
-                        return function (t) {
-                            function clear_text(text) {
-                                return text
-                                    .replaceAll("[37m", '')
-                                    .replaceAll("[0m", '');
-                            }
-                            (self.print_attribute as any).value += clear_text(t) + "\n";
-                        };
-                    } else {
-                        return console.log.bind(console);
-                    }
+                    return print;
                 }(),
                 printErr: function () {
-                    if (self.error_attribute) {
-                        return function (t) {
-                            function clear_text(text) {
-                                return text
-                                    .replaceAll("[37m", '')
-                                    .replaceAll("[0m", '');
-                            }
-
-                            (self.error_attribute as any).value += clear_text(t) + "\n";
-                        };
-                    } else {
-                        return console.warn.bind(console);
-                    }
+                    return printErr;
                 }()
             }).then(module => {
+                print("Building complete.");
                 self.module = module;
                 self.io.module = module;
                 self.entry = self.module._constructor();
@@ -90,7 +108,9 @@ class UniversalVideo extends HTMLVideoElement {
                 self.module.stringToUTF8(json_args, ptr_args, len_args);
 
                 // Call set function and decode
+                print("Transcoding to "+ this.out +"...");
                 self.module._set(self.entry, ptr_args);
+                print("Transcoding complete.");
 
                 // Retrieve result
                 const props = [];
@@ -139,10 +159,13 @@ class UniversalVideo extends HTMLVideoElement {
             case 'printerr':
                 this.error_attribute = document.querySelector(this.getAttribute("printerr"));
                 break;
+            case 'out':
+                this.out = this.getAttribute("out");
+                break;
         }
     }
 
-    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr']; }
+    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out']; }
 }
 
 export { UniversalVideo };
