@@ -1606,6 +1606,7 @@ add_filter(rfh263
 SET(RFAV1_SRC
         ${GPAC_LOCATION}/src/filters/reframe_av1.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/error.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/list.c
