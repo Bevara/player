@@ -1,16 +1,11 @@
 //import {HEAPU8, asmLibraryArg, writeArrayToMemory, initRuntime, stackCheckInit, Module, wasmTable, wasmMemory, stringToUTF8, stackAlloc} from './player'
-import { Common } from "./common"
-import { Module } from "./core-coder.js"
-import { fileio } from "./memio"
+import { Module } from "./core-coder.js";
+import { fileio } from "./memio";
 
 class UniversalAudio extends HTMLAudioElement {
     using: string;
-    common: Common;
-    memory: Uint8Array;
-
     with: string;
 
-    instance: any;
     entry: any;
     module: any;
     io: fileio;
@@ -164,6 +159,10 @@ class UniversalAudio extends HTMLAudioElement {
     }
 
     static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out']; }
+}
+
+if (!customElements.get('universal-audio')) {
+    customElements.define('universal-audio', UniversalAudio, { extends: 'audio' });
 }
 
 export { UniversalAudio };

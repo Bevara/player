@@ -1,10 +1,70 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-    <head>
-        
-    </head>
-    <body >
-        <canvas id="canvas" is="universal-canvas" src="http://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2" using="core-canvas.wasm" with="j2kdec.wasm" controls  connections>
-    </body>
 
+<head>
+
+</head>
+
+<body class="home">
+   <div class="artplayer-app" style="width:800px;height:600px">
+      <canvas is="universal-canvas" src="http://bevara.ddns.net/test-signals/ogv/Big_Buck_Bunny_Trailer_400p.ogv"  class="art-video" id="canvas"
+      oncontextmenu="event.preventDefault()"></canvas>
+   </div>   
+   </div>
+</body>
+
+<script src="module.js"></script>
+<script src="universal-canvas.js"></script>
+<script src="artplayer.js"></script>
+<script>
+   var art = new Artplayer({
+    container: '.artplayer-app',
+    title: 'Bevara player test',
+    volume: 0.5,
+    isLive: false,
+    muted: false,
+    autoplay: false,
+    autoSize: true,
+    autoMini: true,
+    screenshot: true,
+    setting: true,
+    loop: true,
+    flip: true,
+    rotate: true,
+    playbackRate: true,
+    aspectRatio: true,
+    fullscreen: true,
+    fullscreenWeb: true,
+    subtitleOffset: true,
+    miniProgressBar: true,
+    localVideo: true,
+    localSubtitle: true,
+    networkMonitor: false,
+    mutex: true,
+    light: true,
+    backdrop: true,
+    theme: '#ffad00',
+    //lang: navigator.language.toLowerCase(),
+
+    contextmenu: [
+        {
+            html: 'Custom menu',
+            click: function (contextmenu) {
+                console.info('You clicked on the custom menu');
+                contextmenu.show = false;
+            },
+        },
+    ],
+    controls: [
+        {
+            position: 'right',
+            html: 'Control',
+            click: function () {
+                console.info('You clicked on the custom control');
+            },
+        },
+    ]
+});
+
+</script>
 </html>

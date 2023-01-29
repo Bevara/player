@@ -3,7 +3,7 @@
 		"image": "img is='universal-img' using='core-img.wasm' ",
 		"audio": "audio is='universal-audio' using='core-audio.wasm' ",
 		"video": "video is='universal-video' using='core-video.wasm' ",
-		"canvas": "canvas is='universal-canvas' using='core-canvas.wasm' "
+		"canvas": "canvas is='universal-canvas'"
 	},
 	"with": [
 		"a52dec.wasm",

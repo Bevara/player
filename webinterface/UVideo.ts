@@ -1,16 +1,10 @@
-//import {HEAPU8, asmLibraryArg, writeArrayToMemory, initRuntime, stackCheckInit, Module, wasmTable, wasmMemory, stringToUTF8, stackAlloc} from './player'
-import { Common } from "./common"
-import { Module, location } from "./core-coder.js"
-import { fileio } from "./memio"
+import { Module} from "./core-coder.js";
+import { fileio } from "./memio";
 
 class UniversalVideo extends HTMLVideoElement {
     using: string;
-    common: Common;
-    memory: Uint8Array;
-
     with: string;
 
-    instance: any;
     entry: any;
     module: any;
     io: fileio;
@@ -166,6 +160,10 @@ class UniversalVideo extends HTMLVideoElement {
     }
 
     static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out']; }
+}
+
+if (!customElements.get('universal-video')) {
+    customElements.define('universal-video', UniversalVideo, { extends: 'video' });
 }
 
 export { UniversalVideo };
