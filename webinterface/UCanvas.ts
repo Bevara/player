@@ -1,68 +1,5 @@
 import {Module, UTF8ToString} from './core-player.js';
 
-const modules_dynamicLibraries : string[] = [
-    'compose_filter.wasm',
-'in_file_filter.wasm',
-'out_file_filter.wasm',
-'out_audio_filter.wasm',
-'rewrite_adts_filter.wasm',
-'rewrite_mp4v_filter.wasm',
-'rewrite_nalu_filter.wasm',
-'rewrite_obu_filter.wasm',
-'tileagg_filter.wasm',
-'tssplit_filter.wasm',
-'vcrop_filter.wasm',
-'vflip_filter.wasm',
-'write_generic_filter.wasm',
-'write_nhml_filter.wasm',
-'write_nhnt_filter.wasm',
-'write_qcp_filter.wasm',
-'write_vtt_filter.wasm',
-'dec_vorbis_filter.wasm',
-'dec_mad_filter.wasm',
-'dec_theora_filter.wasm',
-'dec_a52_filter.wasm',
-'dec_faad_filter.wasm',
-'dec_img_filter.wasm',
-'dmx_ogg_filter.wasm',
-'dmx_ac3_filter.wasm',
-'dmx_av1_filter.wasm',
-'dmx_img_filter.wasm',
-'dmx_mp3_filter.wasm',
-'dmx_prores_filter.wasm',
-'dmx_rawvid_filter.wasm',
-'dmx_adts_filter.wasm',
-'dmx_flac_filter.wasm',
-'dmx_latm_filter.wasm',
-'dmx_mpgvid_filter.wasm',
-'dmx_qcp_filter.wasm',
-'dmx_amr_filter.wasm',
-'dmx_gsf_filter.wasm',
-'dmx_h263_filter.wasm',
-'dmx_m2ts_filter.wasm',
-'dmx_nalu_filter.wasm',
-'dmx_nhml_filter.wasm',
-'dmx_nhnt_filter.wasm',
-'dmx_rawpcm_filter.wasm',
-'dmx_saf_filter.wasm',
-'dmx_vobsub_filter.wasm',
-'enc_png_filter.wasm',
-'ff_common.wasm',
-'ff_dec_filter.wasm',
-'ff_dmx_filter.wasm',
-'ff_enc_filter.wasm',
-'ff_avf_filter.wasm',
-'ff_mx_filter.wasm',
-'ff_rescale_filter.wasm',
-'dec_qbmp_filter.wasm',
-'dec_pbm_filter.wasm',
-'dmx_dxf_filter.wasm',
-'svg_in_filter.wasm',
-
-"zen.wasm",
-    "mediainfo_gpac.wasm"
-    ];
-
 const modules_entryLibraries : string[] = [
     'compose_filter_register',
 'filein_register',
@@ -122,10 +59,6 @@ const modules_entryLibraries : string[] = [
 'svgin_register',
 
     ];
-
-export {modules_dynamicLibraries, modules_entryLibraries}
-
-
 
 const genericTracks = [
     {
