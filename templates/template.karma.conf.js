@@ -4,7 +4,7 @@ module.exports = function (config) {
   config.set({
     singleRun: true,
     frameworks: ['mocha', 'chai'],
-    files: [{ pattern: '@CMAKE_BINARY_DIR@/dist/universal-img.js', watched: false, included: true },
+    files: [{ pattern: '@CMAKE_BINARY_DIR@/dist/universal-tags.js', watched: false, included: true },
     { pattern: '@CMAKE_BINARY_DIR@/dist/*.wasm', watched: false, included: false, served: true, nocache: false },
       'test/**/*.js'],
     reporters: ['dots', 'junit'],
