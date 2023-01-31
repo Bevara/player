@@ -475,6 +475,7 @@ SET(FFDEC_SRC
         ${GPAC_LOCATION}/src/utils/error.c
         ${GPAC_LOCATION}/src/utils/os_divers.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_file.c
 )
 
 SET(FF_INCLUDE
