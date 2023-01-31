@@ -257,6 +257,7 @@ SET(J2KDEC_SRC
         ${GPAC_LOCATION}/src/utils/list.c
         ${GPAC_LOCATION}/src/utils/os_thread.c
         ${GPAC_LOCATION}/src/utils/os_divers.c
+        ${GPAC_LOCATION}/src/utils/os_file.c
 )
 
 add_filter(j2kdec
@@ -429,6 +430,11 @@ SET(OPENHEVCDEC_INCLUDE
         ${GPAC_LOCATION}/extra_lib/include
 )
 
+SET(OPENHEVCDEC_LIB
+        ${THIRD_PARTIES_BINARIES}/openHEVC/libopenhevc/libopenhevc.a
+)
+
+
 SET(OPENHEVCDEC_SRC
         ${GPAC_LOCATION}/src/filters/dec_openhevc.c
         ${GPAC_LOCATION}/src/filter_core/filter.c
@@ -439,15 +445,15 @@ SET(OPENHEVCDEC_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_queue.c
         ${GPAC_LOCATION}/src/utils/bitstream.c
         ${GPAC_LOCATION}/src/utils/list.c
-        ${GPAC_LOCATION}/src/utils/os_divers.c
-        ${GPAC_LOCATION}/src/utils/os_thread.c
         ${GPAC_LOCATION}/src/odf/descriptors.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
 )
 
 add_filter(openhevcdec
         "${OPENHEVCDEC_SRC}"
-        ${THIRD_PARTIES_BINARIES}/openHEVC/libopenhevc/libopenhevc.a
+        "${OPENHEVCDEC_LIB}"
         _ohevcdec_register
         "-DGPAC_HAS_OPENHEVC -DGPAC_OPENHEVC_STATIC -DOPENHEVC_HAS_AVC_BASE"
         "${OPENHEVCDEC_INCLUDE}"
