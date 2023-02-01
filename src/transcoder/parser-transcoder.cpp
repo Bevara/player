@@ -1,7 +1,6 @@
 #include "rapidjson/document.h"
 
 #include <emscripten/emscripten.h>
-#include <emscripten/fetch.h>
 #include <rapidjson/stringbuffer.h>
 #include <rapidjson/writer.h>
 
