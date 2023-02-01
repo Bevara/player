@@ -29,6 +29,7 @@ target_include_directories(jxl-coder PRIVATE ${JXL_CODER_INCLUDES})
 
 target_link_libraries(jxl-coder
   libgpac_static.a
-  ${THIRD_PARTIES_BUILD}/libjxl/lib/libjxl_dec.a
-  ${THIRD_PARTIES_BUILD}/higway/libhwy.a
+  ${THIRD_PARTIES_BUILD}/libjxl/lib/libjxl.a
+  ${THIRD_PARTIES_BUILD}/libjxl/third_party/highway/libhwy.a
+  ${THIRD_PARTIES_BUILD}/libjxl/third_party/brotli/libbrotlidec-static.a
 )

@@ -5,12 +5,10 @@
 extern "C" {  
 #endif
 
-#include "jxl/decode.h"
-
 typedef struct _Entry
 {
   unsigned int version;
-  JxlDecoder* decoder;
+  void* decoder;
 } Entry;
 
 

@@ -4,13 +4,14 @@
 #include <emscripten/emscripten.h>
 #include "jxl-coder.h"
 
+#include <jxl/decode.h>
 
 Entry *EMSCRIPTEN_KEEPALIVE constructor()
 {
-
+    JxlMemoryManager manager;
     Entry *entry = malloc(sizeof(Entry));
     entry->version = JxlDecoderVersion();
-    entry->decoder = JxlDecoderCreate(NULL);
+    entry->decoder = JxlDecoderCreate(&manager);
     return entry;
 }
 
@@ -19,7 +20,7 @@ int EMSCRIPTEN_KEEPALIVE set(Entry *entry, const char *attrs)
 
     parse_set_session(entry, attrs);
 
-    JxlDecoderStatus status = JxlDecoderProcessInput(dec);
+    //JxlDecoderStatus status = JxlDecoderProcessInput(entry->decoder);
     /*if (status == JXL_DEC_ERROR) {
       fprintf(stderr, "Failed to decode image\n");
       return false;
