@@ -23,7 +23,7 @@ int EMSCRIPTEN_KEEPALIVE set(Entry *entry, const char *attrs)
 
 const char *EMSCRIPTEN_KEEPALIVE get(Entry *entry, const char *attrs)
 {
-    return 0;
+    return "{}";
 }
 
 EMSCRIPTEN_KEEPALIVE void destructor(Entry *entry)

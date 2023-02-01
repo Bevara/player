@@ -16,7 +16,7 @@ add_executable(jxl-coder ${JXL_CODER_SRC})
 
 
 SET(EXTERNAL_FN
-  
+  "['_gf_fileio_new','_gf_fileio_url']"
 )
 
 set_target_properties( jxl-coder
@@ -25,3 +25,7 @@ set_target_properties( jxl-coder
                             )
 
 target_include_directories(jxl-coder PRIVATE ${JXL_CODER_INCLUDES})
+
+target_link_libraries(jxl-coder
+  libgpac_static.a
+)
