@@ -94,7 +94,6 @@
 		"mp4mx.wasm",
 		"probe.wasm",
 		"rflatm.wasm",
-		"sdl_out.wasm",
 		"tx3g2vtt.wasm",
 		"vobsubdmx.wasm",
 		"compose.wasm",
