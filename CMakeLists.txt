@@ -32,7 +32,7 @@ include_directories(include
 
 link_directories(${CMAKE_BINARY_DIR}/third_parties/gpac/bin/gcc)
 
-#add_subdirectory(filters)
+add_subdirectory(filters)
 add_subdirectory(src)
 
 list(APPEND WASM_FILES ${CMAKE_BINARY_DIR}/core-img.wasm ${CMAKE_BINARY_DIR}/core-audio.wasm ${CMAKE_BINARY_DIR}/core-video.wasm ${CMAKE_BINARY_DIR}/core-canvas.wasm)
