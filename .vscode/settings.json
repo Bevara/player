@@ -48,7 +48,8 @@
         "tools.h": "c",
         "*.in": "cpp",
         "filter_session.h": "c",
-        "terminal.h": "c"
+        "terminal.h": "c",
+        "decode.h": "c"
     },
     "C_Cpp.errorSquiggles": "Enabled"
 }

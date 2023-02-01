@@ -1,15 +1,16 @@
-set(THIRD_PARTIES_SRC ${CMAKE_SOURCE_DIR}/third_parties/libjxl)
-set(THIRD_PARTIES_BUILD ${CMAKE_BINARY_DIR}/third_parties/libjxl)
+set(THIRD_PARTIES_SRC ${CMAKE_SOURCE_DIR}/third_parties)
+set(THIRD_PARTIES_BUILD ${CMAKE_BINARY_DIR}/third_parties)
 
 
 SET(JXL_CODER_INCLUDES
-  ${THIRD_PARTIES_SRC}/lib/include
-  ${THIRD_PARTIES_BUILD}/lib/include
+  ${THIRD_PARTIES_SRC}/libjxl/lib/include
+  ${THIRD_PARTIES_BUILD}/libjxl/lib/include
 )
 
 
 SET(JXL_CODER_SRC
   ${CMAKE_SOURCE_DIR}/src/jxl-coder/jxl-coder.c
+  ${CMAKE_SOURCE_DIR}/src/jxl-coder/parser-jxl-coder.cpp
 )
 
 add_executable(jxl-coder ${JXL_CODER_SRC})
@@ -28,4 +29,6 @@ target_include_directories(jxl-coder PRIVATE ${JXL_CODER_INCLUDES})
 
 target_link_libraries(jxl-coder
   libgpac_static.a
+  ${THIRD_PARTIES_BUILD}/libjxl/lib/libjxl_dec.a
+  ${THIRD_PARTIES_BUILD}/higway/libhwy.a
 )

@@ -775,7 +775,7 @@ var Module = (() => {
       // include: runtime_init_table.js
       // In RELOCATABLE mode we create the table in JS.
       var wasmTable = new WebAssembly.Table({
-        'initial': 78,
+        'initial': 92,
         'element': 'anyfunc'
       });
 
