@@ -31,5 +31,6 @@ target_link_libraries(jxl-coder
   libgpac_static.a
   ${THIRD_PARTIES_BUILD}/libjxl/lib/libjxl.a
   ${THIRD_PARTIES_BUILD}/libjxl/third_party/highway/libhwy.a
-  ${THIRD_PARTIES_BUILD}/libjxl/third_party/brotli/libbrotlidec-static.a
+  ${THIRD_PARTIES_BUILD}/brotli/libbrotlidec.a
+  ${THIRD_PARTIES_BUILD}/brotli/libbrotlicommon.a
 )

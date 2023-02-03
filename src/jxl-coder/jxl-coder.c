@@ -20,7 +20,7 @@ int EMSCRIPTEN_KEEPALIVE set(Entry *entry, const char *attrs)
 
     parse_set_session(entry, attrs);
 
-    //JxlDecoderStatus status = JxlDecoderProcessInput(entry->decoder);
+    JxlDecoderStatus status = JxlDecoderProcessInput(entry->decoder);
     /*if (status == JXL_DEC_ERROR) {
       fprintf(stderr, "Failed to decode image\n");
       return false;
