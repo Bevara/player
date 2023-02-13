@@ -60,7 +60,8 @@ describe('core-player', () => {
                   "imgdec.wasm;fin.wasm;fout.wasm;pngenc.wasm;rfimg.wasm;writegen.wasm",
                   "http://bevara.ddns.net/test-signals/Freedom.jpg",
                   "http://bevara.ddns.net/test-signals/Freedom.png",
-                  done
+                  done,
+                  "png"
                   );
     }).timeout(5000);
     
@@ -83,7 +84,8 @@ describe('core-player', () => {
                   "a52dec.wasm;ffenc.wasm;inspect.wasm;nhmlw.wasm;restamp.wasm;rfmpgvid.wasm;tileagg.wasm;ufmhas.wasm;vtt2tx3g.wasm;aout.wasm;ffmx.wasm;j2kdec.wasm;nhntr.wasm;rewind.wasm;rfnalu.wasm;tilesplit.wasm;ufnalu.wasm;vttdec.wasm;avidmx.wasm;ffsws.wasm;jpgenc.wasm;nhntw.wasm;rfac3.wasm;rfpcm.wasm;tssplit.wasm;ufobu.wasm;writegen.wasm;bifsdec.wasm;cryptin.wasm;fin.wasm;lsrdec.wasm;odfdec.wasm;rfadts.wasm;rfprores.wasm;ttml2srt.wasm;ufttxt.wasm;writeqcp.wasm;bsagg.wasm;cryptout.wasm;fout.wasm;m2psdmx.wasm;rfamr.wasm;rfqcp.wasm;ttml2vtt.wasm;ufvc1.wasm;writeuf.wasm;bsrw.wasm;dasher.wasm;flist.wasm;m2tsdmx.wasm;oggdmx.wasm;rfav1.wasm;rfrawvid.wasm;ttmldec.wasm;ufvtt.wasm;xviddec.wasm;bssplit.wasm;dashin.wasm;gsfdmx.wasm;m2tsmx.wasm;oggmx.wasm;rfflac.wasm;rfsrt.wasm;ttxtdec.wasm;unframer.wasm;btplay.wasm;faaddec.wasm;gsfmx.wasm;maddec.wasm;rfh263.wasm;rftruehd.wasm;tx3g2srt.wasm;vcrop.wasm;cdcrypt.wasm;ffavf.wasm;hevcmerge.wasm;mp4dmx.wasm;pngenc.wasm;rfimg.wasm;safdmx.wasm;tx3g2ttml.wasm;vflip.wasm;cecrypt.wasm;ffbsf.wasm;hevcsplit.wasm;mp4mx.wasm;probe.wasm;rflatm.wasm;tx3g2vtt.wasm;vobsubdmx.wasm;compose.wasm;ffdec.wasm;httpin.wasm;nanojpeg.wasm;reframer.wasm;rfmhas.wasm;svgplay.wasm;txtin.wasm;vorbisdec.wasm;ffdmx.wasm;imgdec.wasm;nhmlr.wasm;resample.wasm;rfmp3.wasm;theoradec.wasm;uflatm.wasm;vout.wasm",
                   "http://bevara.ddns.net/test-signals/Freedom.jpg",
                   "http://bevara.ddns.net/test-signals/Freedom.png",
-                  done
+                  done,
+                  "png"
                   );
     }).timeout(60000);
   });
@@ -96,7 +98,8 @@ describe('core-player', () => {
         "fin.wasm;fout.wasm;pngenc.wasm;rfimg.wasm;writegen.wasm;j2kdec.wasm",
         "http://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2",
         "http://bevara.ddns.net/test-signals/out/j2k/Cevennes2.png",
-        done
+        done,
+        "png"
       );
     }).timeout(5000);
 
@@ -107,7 +110,8 @@ describe('core-player', () => {
         "fout.wasm;j2kdec.wasm;ffdmx.wasm;writegen.wasm;pngenc.wasm",
         "http://bevara.ddns.net/test-signals/j2k/Bretagne1.j2k",
         "http://bevara.ddns.net/test-signals/out/j2k/Bretagne1.png",
-        done
+        done,
+        "png"
       );
     }).timeout(5000);
 
@@ -119,7 +123,8 @@ describe('core-player', () => {
         "fin.wasm;fout.wasm;pngenc.wasm;rfimg.wasm;writegen.wasm;j2kdec.wasm",
         "http://bevara.ddns.net/test-signals/out/j2k/Cevennes2.jp2.bvr",
         "http://bevara.ddns.net/test-signals/out/j2k/Cevennes2.png",
-        done
+        done,
+        "png"
       );
     }).timeout(5000);
 
@@ -133,7 +138,8 @@ describe('core-player', () => {
         "fin.wasm;svgplay.wasm;compose.wasm;pngenc.wasm;writegen.wasm;fout.wasm",
         "http://bevara.ddns.net/test-signals/SVG/410.svg",
         "http://bevara.ddns.net/test-signals/out/svg/410.png",
-        done
+        done,
+        "png"
       );
     }).timeout(5000);
   });
