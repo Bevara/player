@@ -67,12 +67,14 @@ SET(FIN_SRC
         ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
-SET(FFIN_LIB
+SET(FIN_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
 )
 
 add_filter(fin
         "${FIN_SRC}"
-        "${FFIN_LIB}"
+        "${FIN_LIB}"
         _filein_register
         ""
         ""
@@ -178,9 +180,14 @@ SET(WRITEGEN_SRC
         ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
+SET(WRITEGEN_LIBS
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 add_filter(writegen
         "${WRITEGEN_SRC}"
-        ""
+        "${WRITEGEN_LIBS}"
         _writegen_register
         ""
         ""
@@ -204,6 +211,8 @@ SET(PNGENC_SRC
 SET(PNGENC_LIBS
         ${PNG_LIB}
         ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libz.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
 )
 
 add_filter(pngenc
@@ -237,9 +246,15 @@ add_filter(jpgenc
         ""
         "")
 
-SET(J2KDEC_LIB
+SET(J2KDEC_INC
         ${THIRD_PARTIES}/openjpeg/src/lib/openjp2
         ${THIRD_PARTIES_BINARIES}/openjpeg/src/lib/openjp2
+)
+
+SET(J2KDEC_LIB
+        ${THIRD_PARTIES_BINARIES}/openjpeg/bin/libopenjp2.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
 )
 
 SET(J2KDEC_SRC
@@ -262,10 +277,10 @@ SET(J2KDEC_SRC
 
 add_filter(j2kdec
         "${J2KDEC_SRC}"
-        ${THIRD_PARTIES_BINARIES}/openjpeg/bin/libopenjp2.a
+        "${J2KDEC_LIB}"
         _j2kdec_register
         GPAC_HAS_JP2
-        "${J2KDEC_LIB}"
+        "${J2KDEC_INC}"
         "")
 
 SET(RFMP3_SRC
@@ -1489,6 +1504,12 @@ add_filter(restamp
         ""
         "")
 
+SET(RESAMPLE_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
+
 SET(RESAMPLE_SRC
         ${GPAC_LOCATION}/src/filters/resample_audio.c
         ${GPAC_LOCATION}/src/filter_core/filter.c
@@ -1507,7 +1528,7 @@ SET(RESAMPLE_SRC
 
 add_filter(resample
         "${RESAMPLE_SRC}"
-        ""
+        "${RESAMPLE_LIB}"
         _resample_register
         ""
         ""
