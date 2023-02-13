@@ -1037,6 +1037,11 @@ add_filter(mp4dmx
         ""
         "")
 
+SET(MP4MX_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 SET(MP4MX_SRC
         ${GPAC_LOCATION}/src/filters/mux_isom.c
         ${GPAC_LOCATION}/src/filter_core/filter.c
@@ -1089,7 +1094,7 @@ SET(MP4MX_SRC
 
 add_filter(mp4mx
         "${MP4MX_SRC}"
-        ""
+        "${MP4MX_LIB}"
         _mp4_mux_register
         ""
         ""
