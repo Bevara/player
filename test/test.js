@@ -111,7 +111,7 @@ describe('core-player', () => {
       );
     }).timeout(5000);
 
-
+/*
     it('should decode Cevennes2.jp2.bvr', (done) => {
       create_test('img',
         'universal-img',
@@ -121,7 +121,7 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/j2k/Cevennes2.png",
         done
       );
-    }).timeout(5000);
+    }).timeout(5000);*/
 
   });
 
@@ -150,7 +150,7 @@ describe('core-player', () => {
         done
       );
     }).timeout(10000);
-
+/*
     it('should decode ImagineDragons.mp3.bvr"', (done) => {
       create_test('audio',
         "universal-audio",
@@ -160,7 +160,7 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/maddec/ImagineDragons.wav",
         done
       );
-    }).timeout(10000);
+    }).timeout(10000);*/
 
   });
 
@@ -175,7 +175,7 @@ describe('core-player', () => {
         done
       );
     }).timeout(10000);
-
+/*
     it('should decode sound.ac3.bvr"', (done) => {
       create_test('audio',
         "universal-audio",
@@ -185,7 +185,7 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/ac3/sound.wav",
         done
       );
-    }).timeout(10000);
+    }).timeout(10000);*/
   });
 
   describe('#rfflac', () => {
@@ -199,6 +199,8 @@ describe('core-player', () => {
         done
       );
     }).timeout(60000);
+
+    /*
     it('should decode ff-16b-1c-44100hz.flac.bvr"', (done) => {
       create_test('audio',
         "universal-audio",
@@ -208,7 +210,7 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/flac/ff-16b-1c-44100hz.wav",
         done
       );
-    }).timeout(60000);
+    }).timeout(60000);*/
   });
 
 

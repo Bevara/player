@@ -38,8 +38,7 @@ var Module = (() => {
 
       Object.defineProperty(Module, "filter_entries", { configurable: true, get: function () { return filter_entries } });
       Object.defineProperty(Module, "module_entries", { configurable: true, get: function () { return module_entries } });
-
-      ["_saveSetjmp", "_stdout", "_stderr", "_stdin", "_hypot", "_pthread_mutexattr_init", "_log10f", "_cosf", "_cbrt", "_exp2", "_sinf", "_atanf", "_atan2f", "_log2f", "_snprintf", "_atoi", "_access", "_strtod", "_strspn", "_strncat", "_strerror_r", "_ldexpf", "_gf_m4a_write_config_bs", "_gf_fgetc", "_gf_bs_get_content", "_gf_bs_align", "_gf_m4a_get_profile", "_memchr", "_gettimeofday", "_tolower", "_strrchr", "_sscanf", "_gf_bs_seek", "_gf_bs_from_file", "_gf_bs_write_data", "_gf_bs_reassign_buffer", "_gf_fopen", "_gf_log_get_tool_level", "_gf_4cc_to_str", "_gf_filter_pck_get_interlaced", "_gf_filter_pid_set_udta", "_gf_filter_pid_set_property_dyn", "_gf_bs_skip_bytes", "_gf_bs_write_u16_le", "_gf_filter_pck_set_roll_info", "_gf_filter_pid_set_property_str", "_gf_bs_write_u32_le", "_gf_itags_get_name", "_gf_filter_pck_set_corrupted", "_gf_filter_pck_set_dts", "_gf_itags_find_by_id3tag", "_gf_bs_read_u16_le", "_gf_bs_read_u32_le", "_gf_bs_read_data", "_gf_odf_ac3_cfg_write", "_gf_feof", "_gf_bs_read_u16", "_gf_bs_read_u32", "_gf_bs_read_u8", "_gf_filter_pid_set_name", "_gf_opts_get_int", "_gf_ftell", "_gf_filter_pck_get_byte_offset", "_gf_filter_pid_get_property_str", "_gf_sys_is_test_mode", "_gf_filter_pid_would_block", "_gf_filter_post_process_task", "_gf_filter_pck_new_shared", "_gf_filter_pid_set_info", "_gf_fileio_get_stats", "_gf_fileio_check", "_gf_filter_pid_raw_new", "_gf_fread", "_gf_fseek", "_gf_fsize", "_gf_fileio_read_mode", "_my_str_lwr", "_strncasecmp", "_strstr", "_strcspn", "_strcasecmp", "_deflate", "_deflateInit2_", "_crc32", "_deflateEnd", "_free", "_emscripten_stack_get_end", "_emscripten_stack_set_limits", "_gf_free", "_gf_fwrite", "_gf_malloc", "_gf_realloc", "_gf_pixel_get_size_info", "_gf_file_ext_start", "_gf_filter_reporting_enabled", "_gf_file_exists", "_gf_fclose", "_gf_fopen_ex", "_gf_fileio_from_url", "_gf_fileio_open_url", "_gf_fileio_write_mode", "_gf_fileio_translate_url", "_gf_filter_pck_merge_properties", "_gf_filter_pck_expand", "_gf_filter_pck_discard", "_gf_filter_pid_caps_query", "_gf_filter_override_caps", "_gf_filter_pck_truncate", "_gf_filter_pid_send_event", "_gf_filter_pid_set_eos", "_gf_filter_pid_init_play_event", "_gf_log", "_gf_log_lt", "_emscripten_longjmp", "_gf_log_tool_level_on", "_gf_filter_pid_drop_packet", "_gf_filter_pck_get_frame_interface", "_gf_filter_pid_is_eos", "___threwValue", "___THREW__", "_logs_mx", "_pthread_mutex_unlock", "_pthread_mutex_lock", "_pthread_self", "_sprintf", "_vfprintf", "_fprintf", "_bsearch", "_frexp", "_exp2f", "_llrint", "_fwrite", "_cos", "_cosh", "_acos", "_sin", "_sinh", "_asin", "_tan", "_tanh", "_atan", "_exp", "_log", "_fabs", "_strncmp", "_strdup", "_gf_filter_pck_get_timescale", "_gf_filter_pck_get_cts", "_gf_filter_pck_get_duration", "_gf_fileio_url", "_gf_fileio_new", "_gf_fileio_set_stats_u32", "_ldexp", "_pthread_mutex_destroy", "_pthread_mutex_init", "_posix_memalign", "_pow", "_vsnprintf", "_getenv", "_strcmp", "_strlen", "_strcpy", "_strcat", "_strncpy", "_strchr", "_memset", "_memcpy", "_memmove", "_memalign", "_memcmp", "_calloc", "_realloc", "_gf_url_concatenate", "_gf_strdup", "_gf_fileio_get_udta", "_gf_bs_new", "_gf_bs_available", "_gf_bs_read_int", "_gf_bs_get_position", "_gf_bs_del", "_gf_filter_get_udta", "_gf_filter_pid_get_packet", "_gf_filter_pck_get_data", "_gf_filter_pid_set_property", "_gf_filter_pck_new_alloc", "_gf_filter_pck_send", "_gf_filter_pid_check_caps", "_gf_filter_pid_get_property", "_gf_filter_pid_new", "_gf_filter_pid_copy_properties", "_gf_filter_set_name", "_gf_filter_pck_set_dependency_flags", "_gf_filter_pid_set_framing_mode", "_gf_filter_pck_new_ref", "_gf_filter_pck_set_cts", "_gf_filter_pck_set_sap", "_gf_filter_pck_set_duration", "_gf_filter_pck_get_property", "_gf_filter_pck_set_byte_offset", "_gf_filter_pck_set_framing", "_gf_crc_32", "_gf_bs_read_long_int", "_gf_bs_read_u24", "_gf_filter_pck_get_dependency_flags", "_gf_filter_pck_get_framing", "_gf_filter_pck_set_seek_flag", "_gf_filter_pck_get_seek_flag", "_fflush", "_siprintf", "_gf_opts_get_bool", "_gf_bs_mark_overflow", "_gf_bs_is_overflow", "_gf_fflush", "_evg_fill_run", "_evg_grey_fill_const_a", "_evg_grey_fill_const", "_evg_grey_fill_var", "_evg_grey_fill_single", "_gf_filter_renegociate_output_task", "_gf_pixel_fmt_parse", "_gf_pixel_fmt_name", "_gf_pixel_fmt_all_names", "_gf_audio_fmt_parse", "_gf_audio_fmt_name", "_gf_audio_fmt_all_names", "_gf_cicp_parse_color_primaries", "_gf_cicp_color_primaries_name", "_gf_cicp_color_primaries_all_names", "_gf_cicp_parse_color_transfer", "_gf_cicp_color_transfer_name", "_gf_cicp_color_matrix_name", "_gf_cicp_color_transfer_all_names", "_gf_cicp_parse_color_matrix", "_gf_cicp_color_matrix_all_names", "_isatty", "_fputs", "_gf_filter_pid_reconfigure_task", "_gf_filter_pid_reconfigure_task_discard", "_gf_filter_pid_remove", "_strtol", "_gf_filter_pid_disconnect_task", "_gf_filter_pid_detach_task", "_tmpfile", "_ftello", "_fseeko", "_fread", "_fclose", "_gf_filter_has_out_caps", "_gf_sys_clock_high_res", "_roundf", "_round", "___small_sprintf", "_lrintf", "_qsort", "_abs", "_srand", "_rand", "_testSetjmp", "___multi3", "_gmtime_r", "_isalnum", "_opendir", "_mkdir", "_atan2", "_fiprintf", "___wasm_apply_data_relocs", "_constructor", "_set", "_get", "_destructor", "_orig$gf_sys_clock_high_res", "_orig$gf_fsize", "_orig$gf_ftell", "_orig$ftello", "_orig$gf_fseek", "_orig$fseeko", "_orig$gf_bs_reassign_buffer", "_orig$gf_bs_new", "_orig$gf_bs_seek", "_orig$gf_bs_read_long_int", "_orig$gf_bs_available", "_orig$gf_bs_skip_bytes", "_orig$gf_bs_get_position", "_orig$gf_filter_pck_set_dts", "_orig$gf_filter_pck_set_cts", "_orig$gf_filter_pck_get_cts", "_orig$gf_filter_pck_set_byte_offset", "_orig$gf_filter_pck_get_byte_offset", "_orig$llrint", "_orig$__multi3", "onRuntimeInitialized"].forEach((prop) => {
+      ["_memchr", "_gettimeofday", "_tolower", "_strrchr", "_sscanf", "_my_str_lwr", "_strncasecmp", "_strstr", "_strcspn", "_strcasecmp", "_free", "_emscripten_stack_get_end", "_emscripten_stack_set_limits", "_stdin", "_gf_log", "_gf_log_lt", "_emscripten_longjmp", "_gf_log_tool_level_on", "___threwValue", "___THREW__", "_stdout", "_logs_mx", "_stderr", "_pthread_mutex_unlock", "_pthread_mutex_lock", "_pthread_self", "_sprintf", "_vfprintf", "_fprintf", "_bsearch", "_frexp", "_exp2f", "_llrint", "_fwrite", "_cos", "_cosh", "_acos", "_sin", "_sinh", "_asin", "_tan", "_tanh", "_atan", "_exp", "_log", "_fabs", "_strncmp", "_strdup", "_ldexp", "_pthread_mutex_destroy", "_pthread_mutex_init", "_posix_memalign", "_pow", "_vsnprintf", "_getenv", "_strcmp", "_strlen", "_strcpy", "_strcat", "_strncpy", "_strchr", "_memset", "_memcpy", "_memmove", "_memalign", "_memcmp", "_calloc", "_realloc", "_fflush", "_siprintf", "_isatty", "_fputs", "_strtol", "_tmpfile", "_ftello", "_fseeko", "_fread", "_fclose", "_roundf", "_round", "___small_sprintf", "_lrintf", "_qsort", "_testSetjmp", "___multi3", "_gmtime_r", "_isalnum", "_opendir", "_mkdir", "_fiprintf", "_fputc", "_memrchr", "_atol", "_saveSetjmp", "___floatunsitf", "___floatsitf", "___trunctfdf2", "___extenddftf2", "___trunctfsf2", "___multf3", "___divtf3", "_gf_file_exists", "_gf_fileio_read_mode", "_gf_fileio_get_stats", "_gf_fileio_check", "_gf_fileio_from_url", "_gf_fileio_open_url", "_gf_fileio_write_mode", "_gf_fileio_translate_url", "_gf_fileio_url", "_gf_fileio_new", "_gf_fileio_set_stats_u32", "_gf_fileio_get_udta", "_gf_url_concatenate", "___wasm_apply_data_relocs", "_constructor", "_set", "_get", "_destructor", "_orig$ftello", "_orig$fseeko", "_orig$llrint", "_orig$__trunctfsf2", "_orig$__multf3", "_orig$__divtf3", "_orig$__trunctfdf2", "_orig$__multi3", "onRuntimeInitialized"].forEach((prop) => {
         if (!Object.getOwnPropertyDescriptor(Module['ready'], prop)) {
           Object.defineProperty(Module['ready'], prop, {
             get: () => abort('You are getting ' + prop + ' on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js'),
@@ -756,7 +755,12 @@ var Module = (() => {
       } else {
         wasmMemory = new WebAssembly.Memory({
           'initial': INITIAL_MEMORY / 65536,
-          'maximum': INITIAL_MEMORY / 65536
+          // In theory we should not need to emit the maximum if we want "unlimited"
+          // or 4GB of memory, but VMs error on that atm, see
+          // https://github.com/emscripten-core/emscripten/issues/14130
+          // And in the pthreads case we definitely need to emit a maximum. So
+          // always emit one.
+          'maximum': 2147483648 / 65536
         });
       }
 
@@ -1544,7 +1548,7 @@ var Module = (() => {
         }
       }
 
-      var ___heap_base = 204144;
+      var ___heap_base = 196576;
 
       function zeroMemory(address, size) {
         HEAPU8.fill(0, address, address + size);
@@ -2235,11 +2239,11 @@ var Module = (() => {
 
       var ___memory_base = new WebAssembly.Global({ 'value': 'i32', 'mutable': false }, 1024);
 
-      var ___stack_high = 204144;
+      var ___stack_high = 196576;
 
-      var ___stack_low = 138608;
+      var ___stack_low = 131040;
 
-      var ___stack_pointer = new WebAssembly.Global({ 'value': 'i32', 'mutable': true }, 204144);
+      var ___stack_pointer = new WebAssembly.Global({ 'value': 'i32', 'mutable': true }, 196576);
 
       var PATH = {
         isAbs: (path) => path.charAt(0) === '/', splitPath: (filename) => {
@@ -2762,6 +2766,13 @@ var Module = (() => {
           }, write: function (stream, buffer, offset, length, position, canOwn) {
             // The data buffer should be a typed array view
             assert(!(buffer instanceof ArrayBuffer));
+            // If the buffer is located in main memory (HEAP), and if
+            // memory can grow, we can't hold on to references of the
+            // memory buffer, as they may get invalidated. That means we
+            // need to do copy its contents.
+            if (buffer.buffer === HEAP8.buffer) {
+              canOwn = false;
+            }
 
             if (!length) return 0;
             var node = stream.node;
@@ -5220,16 +5231,77 @@ var Module = (() => {
       _emscripten_memcpy_big.sig = 'vppp';
 
       function getHeapMax() {
-        return HEAPU8.length;
+        // Stay one Wasm page short of 4GB: while e.g. Chrome is able to allocate
+        // full 4GB Wasm memories, the size will wrap back to 0 bytes in Wasm side
+        // for any code that deals with heap sizes, which would require special
+        // casing all heap size related code to treat 0 specially.
+        return 2147483648;
       }
 
-      function abortOnCannotGrowMemory(requestedSize) {
-        abort('Cannot enlarge memory arrays to size ' + requestedSize + ' bytes (OOM). Either (1) compile with -sINITIAL_MEMORY=X with X higher than the current value ' + HEAP8.length + ', (2) compile with -sALLOW_MEMORY_GROWTH which allows increasing the size at runtime, or (3) if you want malloc to return NULL (0) instead of this abort, compile with -sABORTING_MALLOC=0');
+      function emscripten_realloc_buffer(size) {
+        try {
+          // round size grow request up to wasm page size (fixed 64KB per spec)
+          wasmMemory.grow((size - buffer.byteLength + 65535) >>> 16); // .grow() takes a delta compared to the previous size
+          updateGlobalBufferAndViews(wasmMemory.buffer);
+          return 1 /*success*/;
+        } catch (e) {
+          err('emscripten_realloc_buffer: Attempted to grow heap from ' + buffer.byteLength + ' bytes to ' + size + ' bytes, but got error: ' + e);
+        }
+        // implicit 0 return to save code size (caller will cast "undefined" into 0
+        // anyhow)
       }
       function _emscripten_resize_heap(requestedSize) {
         var oldSize = HEAPU8.length;
         requestedSize = requestedSize >>> 0;
-        abortOnCannotGrowMemory(requestedSize);
+        // With multithreaded builds, races can happen (another thread might increase the size
+        // in between), so return a failure, and let the caller retry.
+        assert(requestedSize > oldSize);
+
+        // Memory resize rules:
+        // 1.  Always increase heap size to at least the requested size, rounded up
+        //     to next page multiple.
+        // 2a. If MEMORY_GROWTH_LINEAR_STEP == -1, excessively resize the heap
+        //     geometrically: increase the heap size according to
+        //     MEMORY_GROWTH_GEOMETRIC_STEP factor (default +20%), At most
+        //     overreserve by MEMORY_GROWTH_GEOMETRIC_CAP bytes (default 96MB).
+        // 2b. If MEMORY_GROWTH_LINEAR_STEP != -1, excessively resize the heap
+        //     linearly: increase the heap size by at least
+        //     MEMORY_GROWTH_LINEAR_STEP bytes.
+        // 3.  Max size for the heap is capped at 2048MB-WASM_PAGE_SIZE, or by
+        //     MAXIMUM_MEMORY, or by ASAN limit, depending on which is smallest
+        // 4.  If we were unable to allocate as much memory, it may be due to
+        //     over-eager decision to excessively reserve due to (3) above.
+        //     Hence if an allocation fails, cut down on the amount of excess
+        //     growth, in an attempt to succeed to perform a smaller allocation.
+
+        // A limit is set for how much we can grow. We should not exceed that
+        // (the wasm binary specifies it, so if we tried, we'd fail anyhow).
+        var maxHeapSize = getHeapMax();
+        if (requestedSize > maxHeapSize) {
+          err('Cannot enlarge memory, asked to go up to ' + requestedSize + ' bytes, but the limit is ' + maxHeapSize + ' bytes!');
+          return false;
+        }
+
+        let alignUp = (x, multiple) => x + (multiple - x % multiple) % multiple;
+
+        // Loop through potential heap size increases. If we attempt a too eager
+        // reservation that fails, cut down on the attempted size and reserve a
+        // smaller bump instead. (max 3 times, chosen somewhat arbitrarily)
+        for (var cutDown = 1; cutDown <= 4; cutDown *= 2) {
+          var overGrownHeapSize = oldSize * (1 + 0.2 / cutDown); // ensure geometric growth
+          // but limit overreserving (default to capping at +96MB overgrowth at most)
+          overGrownHeapSize = Math.min(overGrownHeapSize, requestedSize + 100663296);
+
+          var newSize = Math.min(maxHeapSize, alignUp(Math.max(requestedSize, overGrownHeapSize), 65536));
+
+          var replacement = emscripten_realloc_buffer(newSize);
+          if (replacement) {
+
+            return true;
+          }
+        }
+        err('Failed to grow the heap from ' + oldSize + ' bytes to ' + newSize + ' bytes, not enough memory!');
+        return false;
       }
       _emscripten_resize_heap.sig = 'ip';
 
@@ -5690,7 +5762,6 @@ var Module = (() => {
         "fd_write": _fd_write,
         "memory": wasmMemory,
         "sem_timedwait": _sem_timedwait,
-        "sem_timedwait": _sem_timedwait,
         "getTempRet0": _getTempRet0
       };
       var asm = createWasm();
@@ -5743,13 +5814,7 @@ var Module = (() => {
       var _memmove = Module["_memmove"] = createExportWrapper("memmove");
 
       /** @type {function(...*):?} */
-      var _gf_sys_clock_high_res = Module["_gf_sys_clock_high_res"] = createExportWrapper("gf_sys_clock_high_res");
-
-      /** @type {function(...*):?} */
       var _my_str_lwr = Module["_my_str_lwr"] = createExportWrapper("my_str_lwr");
-
-      /** @type {function(...*):?} */
-      var _gf_sys_is_test_mode = Module["_gf_sys_is_test_mode"] = createExportWrapper("gf_sys_is_test_mode");
 
       /** @type {function(...*):?} */
       var _gf_fileio_from_url = Module["_gf_fileio_from_url"] = createExportWrapper("gf_fileio_from_url");
@@ -5759,9 +5824,6 @@ var Module = (() => {
 
       /** @type {function(...*):?} */
       var _gf_file_exists = Module["_gf_file_exists"] = createExportWrapper("gf_file_exists");
-
-      /** @type {function(...*):?} */
-      var _gf_fopen_ex = Module["_gf_fopen_ex"] = createExportWrapper("gf_fopen_ex");
 
       /** @type {function(...*):?} */
       var _gf_fileio_read_mode = Module["_gf_fileio_read_mode"] = createExportWrapper("gf_fileio_read_mode");
@@ -5815,19 +5877,7 @@ var Module = (() => {
       var _gettimeofday = Module["_gettimeofday"] = createExportWrapper("gettimeofday");
 
       /** @type {function(...*):?} */
-      var _srand = Module["_srand"] = createExportWrapper("srand");
-
-      /** @type {function(...*):?} */
-      var _rand = Module["_rand"] = createExportWrapper("rand");
-
-      /** @type {function(...*):?} */
       var _tolower = Module["_tolower"] = createExportWrapper("tolower");
-
-      /** @type {function(...*):?} */
-      var _gf_fclose = Module["_gf_fclose"] = createExportWrapper("gf_fclose");
-
-      /** @type {function(...*):?} */
-      var _gf_fopen = Module["_gf_fopen"] = createExportWrapper("gf_fopen");
 
       /** @type {function(...*):?} */
       var _strchr = Module["_strchr"] = createExportWrapper("strchr");
@@ -5839,15 +5889,6 @@ var Module = (() => {
       var _strcasecmp = Module["_strcasecmp"] = createExportWrapper("strcasecmp");
 
       /** @type {function(...*):?} */
-      var _atoi = Module["_atoi"] = createExportWrapper("atoi");
-
-      /** @type {function(...*):?} */
-      var _gf_opts_get_bool = Module["_gf_opts_get_bool"] = createExportWrapper("gf_opts_get_bool");
-
-      /** @type {function(...*):?} */
-      var _gf_realloc = Module["_gf_realloc"] = createExportWrapper("gf_realloc");
-
-      /** @type {function(...*):?} */
       var _strncmp = Module["_strncmp"] = createExportWrapper("strncmp");
 
       /** @type {function(...*):?} */
@@ -5857,37 +5898,19 @@ var Module = (() => {
       var _sprintf = Module["_sprintf"] = createExportWrapper("sprintf");
 
       /** @type {function(...*):?} */
-      var _gf_strdup = Module["_gf_strdup"] = createExportWrapper("gf_strdup");
-
-      /** @type {function(...*):?} */
-      var _gf_free = Module["_gf_free"] = createExportWrapper("gf_free");
-
-      /** @type {function(...*):?} */
       var _strncasecmp = Module["_strncasecmp"] = createExportWrapper("strncasecmp");
 
       /** @type {function(...*):?} */
       var _isalnum = Module["_isalnum"] = createExportWrapper("isalnum");
 
       /** @type {function(...*):?} */
-      var _gf_fsize = Module["_gf_fsize"] = createExportWrapper("gf_fsize");
-
-      /** @type {function(...*):?} */
-      var _gf_malloc = Module["_gf_malloc"] = createExportWrapper("gf_malloc");
-
-      /** @type {function(...*):?} */
-      var _gf_fread = Module["_gf_fread"] = createExportWrapper("gf_fread");
-
-      /** @type {function(...*):?} */
       var _fflush = Module["_fflush"] = createExportWrapper("fflush");
 
       /** @type {function(...*):?} */
+      var _fputc = Module["_fputc"] = createExportWrapper("fputc");
+
+      /** @type {function(...*):?} */
       var _strstr = Module["_strstr"] = createExportWrapper("strstr");
-
-      /** @type {function(...*):?} */
-      var _access = Module["_access"] = createExportWrapper("access");
-
-      /** @type {function(...*):?} */
-      var _snprintf = Module["_snprintf"] = createExportWrapper("snprintf");
 
       /** @type {function(...*):?} */
       var _tmpfile = Module["_tmpfile"] = createExportWrapper("tmpfile");
@@ -5899,13 +5922,7 @@ var Module = (() => {
       var _gf_fileio_get_stats = Module["_gf_fileio_get_stats"] = createExportWrapper("gf_fileio_get_stats");
 
       /** @type {function(...*):?} */
-      var _gf_ftell = Module["_gf_ftell"] = createExportWrapper("gf_ftell");
-
-      /** @type {function(...*):?} */
       var _ftello = Module["_ftello"] = createExportWrapper("ftello");
-
-      /** @type {function(...*):?} */
-      var _gf_fseek = Module["_gf_fseek"] = createExportWrapper("gf_fseek");
 
       /** @type {function(...*):?} */
       var _fseeko = Module["_fseeko"] = createExportWrapper("fseeko");
@@ -5914,19 +5931,10 @@ var Module = (() => {
       var _fclose = Module["_fclose"] = createExportWrapper("fclose");
 
       /** @type {function(...*):?} */
-      var _gf_fwrite = Module["_gf_fwrite"] = createExportWrapper("gf_fwrite");
-
-      /** @type {function(...*):?} */
       var _fwrite = Module["_fwrite"] = createExportWrapper("fwrite");
 
       /** @type {function(...*):?} */
-      var _strerror_r = Module["_strerror_r"] = createExportWrapper("strerror_r");
-
-      /** @type {function(...*):?} */
       var _fread = Module["_fread"] = createExportWrapper("fread");
-
-      /** @type {function(...*):?} */
-      var _gf_fgetc = Module["_gf_fgetc"] = createExportWrapper("gf_fgetc");
 
       /** @type {function(...*):?} */
       var _fputs = Module["_fputs"] = createExportWrapper("fputs");
@@ -5935,148 +5943,7 @@ var Module = (() => {
       var _vfprintf = Module["_vfprintf"] = createExportWrapper("vfprintf");
 
       /** @type {function(...*):?} */
-      var _gf_fflush = Module["_gf_fflush"] = createExportWrapper("gf_fflush");
-
-      /** @type {function(...*):?} */
-      var _gf_feof = Module["_gf_feof"] = createExportWrapper("gf_feof");
-
-      /** @type {function(...*):?} */
-      var _gf_file_ext_start = Module["_gf_file_ext_start"] = createExportWrapper("gf_file_ext_start");
-
-      /** @type {function(...*):?} */
-      var _gf_bs_reassign_buffer = Module["_gf_bs_reassign_buffer"] = createExportWrapper("gf_bs_reassign_buffer");
-
-      /** @type {function(...*):?} */
-      var _gf_bs_new = Module["_gf_bs_new"] = createExportWrapper("gf_bs_new");
-
-      /** @type {function(...*):?} */
-      var _gf_bs_from_file = Module["_gf_bs_from_file"] = createExportWrapper("gf_bs_from_file");
-
-      /** @type {function(...*):?} */
-      var _gf_bs_del = Module["_gf_bs_del"] = createExportWrapper("gf_bs_del");
-
-      /** @type {function(...*):?} */
-      var _gf_bs_seek = Module["_gf_bs_seek"] = createExportWrapper("gf_bs_seek");
-
-      /** @type {function(...*):?} */
-      var _gf_bs_read_int = Module["_gf_bs_read_int"] = createExportWrapper("gf_bs_read_int");
-
-      /** @type {function(...*):?} */
-      var _gf_bs_read_u8 = Module["_gf_bs_read_u8"] = createExportWrapper("gf_bs_read_u8");
-
-      /** @type {function(...*):?} */
-      var _gf_bs_read_u16 = Module["_gf_bs_read_u16"] = createExportWrapper("gf_bs_read_u16");
-
-      /** @type {function(...*):?} */
-      var _gf_bs_read_u24 = Module["_gf_bs_read_u24"] = createExportWrapper("gf_bs_read_u24");
-
-      /** @type {function(...*):?} */
-      var _gf_bs_read_u32 = Module["_gf_bs_read_u32"] = createExportWrapper("gf_bs_read_u32");
-
-      /** @type {function(...*):?} */
-      var _gf_bs_read_long_int = Module["_gf_bs_read_long_int"] = createExportWrapper("gf_bs_read_long_int");
-
-      /** @type {function(...*):?} */
-      var _gf_bs_available = Module["_gf_bs_available"] = createExportWrapper("gf_bs_available");
-
-      /** @type {function(...*):?} */
-      var _gf_bs_read_data = Module["_gf_bs_read_data"] = createExportWrapper("gf_bs_read_data");
-
-      /** @type {function(...*):?} */
-      var _gf_bs_write_data = Module["_gf_bs_write_data"] = createExportWrapper("gf_bs_write_data");
-
-      /** @type {function(...*):?} */
-      var _gf_bs_align = Module["_gf_bs_align"] = createExportWrapper("gf_bs_align");
-
-      /** @type {function(...*):?} */
-      var _gf_bs_get_content = Module["_gf_bs_get_content"] = createExportWrapper("gf_bs_get_content");
-
-      /** @type {function(...*):?} */
-      var _gf_bs_skip_bytes = Module["_gf_bs_skip_bytes"] = createExportWrapper("gf_bs_skip_bytes");
-
-      /** @type {function(...*):?} */
-      var _gf_bs_get_position = Module["_gf_bs_get_position"] = createExportWrapper("gf_bs_get_position");
-
-      /** @type {function(...*):?} */
-      var _gf_bs_read_u32_le = Module["_gf_bs_read_u32_le"] = createExportWrapper("gf_bs_read_u32_le");
-
-      /** @type {function(...*):?} */
-      var _gf_bs_read_u16_le = Module["_gf_bs_read_u16_le"] = createExportWrapper("gf_bs_read_u16_le");
-
-      /** @type {function(...*):?} */
-      var _gf_bs_write_u32_le = Module["_gf_bs_write_u32_le"] = createExportWrapper("gf_bs_write_u32_le");
-
-      /** @type {function(...*):?} */
-      var _gf_bs_write_u16_le = Module["_gf_bs_write_u16_le"] = createExportWrapper("gf_bs_write_u16_le");
-
-      /** @type {function(...*):?} */
-      var _gf_bs_mark_overflow = Module["_gf_bs_mark_overflow"] = createExportWrapper("gf_bs_mark_overflow");
-
-      /** @type {function(...*):?} */
-      var _gf_bs_is_overflow = Module["_gf_bs_is_overflow"] = createExportWrapper("gf_bs_is_overflow");
-
-      /** @type {function(...*):?} */
-      var _gf_audio_fmt_parse = Module["_gf_audio_fmt_parse"] = createExportWrapper("gf_audio_fmt_parse");
-
-      /** @type {function(...*):?} */
-      var _gf_audio_fmt_name = Module["_gf_audio_fmt_name"] = createExportWrapper("gf_audio_fmt_name");
-
-      /** @type {function(...*):?} */
-      var _gf_audio_fmt_all_names = Module["_gf_audio_fmt_all_names"] = createExportWrapper("gf_audio_fmt_all_names");
-
-      /** @type {function(...*):?} */
-      var _gf_pixel_fmt_parse = Module["_gf_pixel_fmt_parse"] = createExportWrapper("gf_pixel_fmt_parse");
-
-      /** @type {function(...*):?} */
-      var _gf_pixel_fmt_name = Module["_gf_pixel_fmt_name"] = createExportWrapper("gf_pixel_fmt_name");
-
-      /** @type {function(...*):?} */
-      var _gf_pixel_fmt_all_names = Module["_gf_pixel_fmt_all_names"] = createExportWrapper("gf_pixel_fmt_all_names");
-
-      /** @type {function(...*):?} */
-      var _gf_pixel_get_size_info = Module["_gf_pixel_get_size_info"] = createExportWrapper("gf_pixel_get_size_info");
-
-      /** @type {function(...*):?} */
-      var _gf_itags_find_by_id3tag = Module["_gf_itags_find_by_id3tag"] = createExportWrapper("gf_itags_find_by_id3tag");
-
-      /** @type {function(...*):?} */
-      var _gf_itags_get_name = Module["_gf_itags_get_name"] = createExportWrapper("gf_itags_get_name");
-
-      /** @type {function(...*):?} */
-      var _gf_cicp_parse_color_primaries = Module["_gf_cicp_parse_color_primaries"] = createExportWrapper("gf_cicp_parse_color_primaries");
-
-      /** @type {function(...*):?} */
-      var _gf_cicp_color_primaries_name = Module["_gf_cicp_color_primaries_name"] = createExportWrapper("gf_cicp_color_primaries_name");
-
-      /** @type {function(...*):?} */
-      var _gf_cicp_color_primaries_all_names = Module["_gf_cicp_color_primaries_all_names"] = createExportWrapper("gf_cicp_color_primaries_all_names");
-
-      /** @type {function(...*):?} */
-      var _gf_cicp_parse_color_transfer = Module["_gf_cicp_parse_color_transfer"] = createExportWrapper("gf_cicp_parse_color_transfer");
-
-      /** @type {function(...*):?} */
-      var _gf_cicp_color_transfer_name = Module["_gf_cicp_color_transfer_name"] = createExportWrapper("gf_cicp_color_transfer_name");
-
-      /** @type {function(...*):?} */
-      var _gf_cicp_color_transfer_all_names = Module["_gf_cicp_color_transfer_all_names"] = createExportWrapper("gf_cicp_color_transfer_all_names");
-
-      /** @type {function(...*):?} */
-      var _gf_cicp_parse_color_matrix = Module["_gf_cicp_parse_color_matrix"] = createExportWrapper("gf_cicp_parse_color_matrix");
-
-      /** @type {function(...*):?} */
-      var _gf_cicp_color_matrix_name = Module["_gf_cicp_color_matrix_name"] = createExportWrapper("gf_cicp_color_matrix_name");
-
-      /** @type {function(...*):?} */
-      var _gf_cicp_color_matrix_all_names = Module["_gf_cicp_color_matrix_all_names"] = createExportWrapper("gf_cicp_color_matrix_all_names");
-
-      /** @type {function(...*):?} */
-      var _gf_4cc_to_str = Module["_gf_4cc_to_str"] = createExportWrapper("gf_4cc_to_str");
-
-      /** @type {function(...*):?} */
-      var _gf_log_get_tool_level = Module["_gf_log_get_tool_level"] = createExportWrapper("gf_log_get_tool_level");
-
-      /** @type {function(...*):?} */
-      var _gf_crc_32 = Module["_gf_crc_32"] = createExportWrapper("gf_crc_32");
+      var _atol = Module["_atol"] = createExportWrapper("atol");
 
       /** @type {function(...*):?} */
       var _calloc = Module["_calloc"] = createExportWrapper("calloc");
@@ -6100,9 +5967,6 @@ var Module = (() => {
       var _pthread_self = Module["_pthread_self"] = createExportWrapper("pthread_self");
 
       /** @type {function(...*):?} */
-      var _pthread_mutexattr_init = Module["_pthread_mutexattr_init"] = createExportWrapper("pthread_mutexattr_init");
-
-      /** @type {function(...*):?} */
       var _pthread_mutex_init = Module["_pthread_mutex_init"] = createExportWrapper("pthread_mutex_init");
 
       /** @type {function(...*):?} */
@@ -6118,210 +5982,6 @@ var Module = (() => {
       var _getenv = Module["_getenv"] = createExportWrapper("getenv");
 
       /** @type {function(...*):?} */
-      var _gf_opts_get_int = Module["_gf_opts_get_int"] = createExportWrapper("gf_opts_get_int");
-
-      /** @type {function(...*):?} */
-      var _gf_odf_ac3_cfg_write = Module["_gf_odf_ac3_cfg_write"] = createExportWrapper("gf_odf_ac3_cfg_write");
-
-      /** @type {function(...*):?} */
-      var _gf_m4a_get_profile = Module["_gf_m4a_get_profile"] = createExportWrapper("gf_m4a_get_profile");
-
-      /** @type {function(...*):?} */
-      var _gf_m4a_write_config_bs = Module["_gf_m4a_write_config_bs"] = createExportWrapper("gf_m4a_write_config_bs");
-
-      /** @type {function(...*):?} */
-      var _evg_grey_fill_single = Module["_evg_grey_fill_single"] = createExportWrapper("evg_grey_fill_single");
-
-      /** @type {function(...*):?} */
-      var _evg_grey_fill_const = Module["_evg_grey_fill_const"] = createExportWrapper("evg_grey_fill_const");
-
-      /** @type {function(...*):?} */
-      var _evg_grey_fill_const_a = Module["_evg_grey_fill_const_a"] = createExportWrapper("evg_grey_fill_const_a");
-
-      /** @type {function(...*):?} */
-      var _evg_grey_fill_var = Module["_evg_grey_fill_var"] = createExportWrapper("evg_grey_fill_var");
-
-      /** @type {function(...*):?} */
-      var _evg_fill_run = Module["_evg_fill_run"] = createExportWrapper("evg_fill_run");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_merge_properties = Module["_gf_filter_pck_merge_properties"] = createExportWrapper("gf_filter_pck_merge_properties");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_new_alloc = Module["_gf_filter_pck_new_alloc"] = createExportWrapper("gf_filter_pck_new_alloc");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_discard = Module["_gf_filter_pck_discard"] = createExportWrapper("gf_filter_pck_discard");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_new_ref = Module["_gf_filter_pck_new_ref"] = createExportWrapper("gf_filter_pck_new_ref");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_new_shared = Module["_gf_filter_pck_new_shared"] = createExportWrapper("gf_filter_pck_new_shared");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_send = Module["_gf_filter_pck_send"] = createExportWrapper("gf_filter_pck_send");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_get_data = Module["_gf_filter_pck_get_data"] = createExportWrapper("gf_filter_pck_get_data");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_get_property = Module["_gf_filter_pck_get_property"] = createExportWrapper("gf_filter_pck_get_property");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_set_framing = Module["_gf_filter_pck_set_framing"] = createExportWrapper("gf_filter_pck_set_framing");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_get_framing = Module["_gf_filter_pck_get_framing"] = createExportWrapper("gf_filter_pck_get_framing");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_set_dts = Module["_gf_filter_pck_set_dts"] = createExportWrapper("gf_filter_pck_set_dts");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_set_cts = Module["_gf_filter_pck_set_cts"] = createExportWrapper("gf_filter_pck_set_cts");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_get_cts = Module["_gf_filter_pck_get_cts"] = createExportWrapper("gf_filter_pck_get_cts");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_get_timescale = Module["_gf_filter_pck_get_timescale"] = createExportWrapper("gf_filter_pck_get_timescale");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_set_sap = Module["_gf_filter_pck_set_sap"] = createExportWrapper("gf_filter_pck_set_sap");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_set_roll_info = Module["_gf_filter_pck_set_roll_info"] = createExportWrapper("gf_filter_pck_set_roll_info");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_get_interlaced = Module["_gf_filter_pck_get_interlaced"] = createExportWrapper("gf_filter_pck_get_interlaced");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_set_corrupted = Module["_gf_filter_pck_set_corrupted"] = createExportWrapper("gf_filter_pck_set_corrupted");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_set_duration = Module["_gf_filter_pck_set_duration"] = createExportWrapper("gf_filter_pck_set_duration");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_get_duration = Module["_gf_filter_pck_get_duration"] = createExportWrapper("gf_filter_pck_get_duration");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_set_seek_flag = Module["_gf_filter_pck_set_seek_flag"] = createExportWrapper("gf_filter_pck_set_seek_flag");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_get_seek_flag = Module["_gf_filter_pck_get_seek_flag"] = createExportWrapper("gf_filter_pck_get_seek_flag");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_set_dependency_flags = Module["_gf_filter_pck_set_dependency_flags"] = createExportWrapper("gf_filter_pck_set_dependency_flags");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_get_dependency_flags = Module["_gf_filter_pck_get_dependency_flags"] = createExportWrapper("gf_filter_pck_get_dependency_flags");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_set_byte_offset = Module["_gf_filter_pck_set_byte_offset"] = createExportWrapper("gf_filter_pck_set_byte_offset");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_get_byte_offset = Module["_gf_filter_pck_get_byte_offset"] = createExportWrapper("gf_filter_pck_get_byte_offset");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_get_frame_interface = Module["_gf_filter_pck_get_frame_interface"] = createExportWrapper("gf_filter_pck_get_frame_interface");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_expand = Module["_gf_filter_pck_expand"] = createExportWrapper("gf_filter_pck_expand");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pck_truncate = Module["_gf_filter_pck_truncate"] = createExportWrapper("gf_filter_pck_truncate");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pid_would_block = Module["_gf_filter_pid_would_block"] = createExportWrapper("gf_filter_pid_would_block");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pid_reconfigure_task = Module["_gf_filter_pid_reconfigure_task"] = createExportWrapper("gf_filter_pid_reconfigure_task");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pid_set_eos = Module["_gf_filter_pid_set_eos"] = createExportWrapper("gf_filter_pid_set_eos");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pid_remove = Module["_gf_filter_pid_remove"] = createExportWrapper("gf_filter_pid_remove");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pid_send_event = Module["_gf_filter_pid_send_event"] = createExportWrapper("gf_filter_pid_send_event");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pid_reconfigure_task_discard = Module["_gf_filter_pid_reconfigure_task_discard"] = createExportWrapper("gf_filter_pid_reconfigure_task_discard");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pid_get_packet = Module["_gf_filter_pid_get_packet"] = createExportWrapper("gf_filter_pid_get_packet");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pid_drop_packet = Module["_gf_filter_pid_drop_packet"] = createExportWrapper("gf_filter_pid_drop_packet");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pid_disconnect_task = Module["_gf_filter_pid_disconnect_task"] = createExportWrapper("gf_filter_pid_disconnect_task");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pid_detach_task = Module["_gf_filter_pid_detach_task"] = createExportWrapper("gf_filter_pid_detach_task");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pid_set_name = Module["_gf_filter_pid_set_name"] = createExportWrapper("gf_filter_pid_set_name");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pid_set_udta = Module["_gf_filter_pid_set_udta"] = createExportWrapper("gf_filter_pid_set_udta");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_has_out_caps = Module["_gf_filter_has_out_caps"] = createExportWrapper("gf_filter_has_out_caps");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pid_check_caps = Module["_gf_filter_pid_check_caps"] = createExportWrapper("gf_filter_pid_check_caps");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pid_get_property = Module["_gf_filter_pid_get_property"] = createExportWrapper("gf_filter_pid_get_property");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pid_set_property = Module["_gf_filter_pid_set_property"] = createExportWrapper("gf_filter_pid_set_property");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pid_set_property_dyn = Module["_gf_filter_pid_set_property_dyn"] = createExportWrapper("gf_filter_pid_set_property_dyn");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pid_set_framing_mode = Module["_gf_filter_pid_set_framing_mode"] = createExportWrapper("gf_filter_pid_set_framing_mode");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pid_new = Module["_gf_filter_pid_new"] = createExportWrapper("gf_filter_pid_new");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pid_copy_properties = Module["_gf_filter_pid_copy_properties"] = createExportWrapper("gf_filter_pid_copy_properties");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pid_get_property_str = Module["_gf_filter_pid_get_property_str"] = createExportWrapper("gf_filter_pid_get_property_str");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pid_set_property_str = Module["_gf_filter_pid_set_property_str"] = createExportWrapper("gf_filter_pid_set_property_str");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pid_set_info = Module["_gf_filter_pid_set_info"] = createExportWrapper("gf_filter_pid_set_info");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pid_is_eos = Module["_gf_filter_pid_is_eos"] = createExportWrapper("gf_filter_pid_is_eos");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pid_caps_query = Module["_gf_filter_pid_caps_query"] = createExportWrapper("gf_filter_pid_caps_query");
-
-      /** @type {function(...*):?} */
-      var _crc32 = Module["_crc32"] = createExportWrapper("crc32");
-
-      /** @type {function(...*):?} */
-      var _deflateInit2_ = Module["_deflateInit2_"] = createExportWrapper("deflateInit2_");
-
-      /** @type {function(...*):?} */
-      var _deflate = Module["_deflate"] = createExportWrapper("deflate");
-
-      /** @type {function(...*):?} */
-      var _deflateEnd = Module["_deflateEnd"] = createExportWrapper("deflateEnd");
-
-      /** @type {function(...*):?} */
-      var _strncat = Module["_strncat"] = createExportWrapper("strncat");
-
-      /** @type {function(...*):?} */
       var _cos = Module["_cos"] = createExportWrapper("cos");
 
       /** @type {function(...*):?} */
@@ -6331,9 +5991,6 @@ var Module = (() => {
       var _tan = Module["_tan"] = createExportWrapper("tan");
 
       /** @type {function(...*):?} */
-      var _atan2 = Module["_atan2"] = createExportWrapper("atan2");
-
-      /** @type {function(...*):?} */
       var _atan = Module["_atan"] = createExportWrapper("atan");
 
       /** @type {function(...*):?} */
@@ -6341,12 +5998,6 @@ var Module = (() => {
 
       /** @type {function(...*):?} */
       var _acos = Module["_acos"] = createExportWrapper("acos");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_post_process_task = Module["_gf_filter_post_process_task"] = createExportWrapper("gf_filter_post_process_task");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_renegociate_output_task = Module["_gf_filter_renegociate_output_task"] = createExportWrapper("gf_filter_renegociate_output_task");
 
       /** @type {function(...*):?} */
       var _asin = Module["_asin"] = createExportWrapper("asin");
@@ -6364,49 +6015,13 @@ var Module = (() => {
       var _qsort = Module["_qsort"] = createExportWrapper("qsort");
 
       /** @type {function(...*):?} */
-      var _gf_filter_get_udta = Module["_gf_filter_get_udta"] = createExportWrapper("gf_filter_get_udta");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_set_name = Module["_gf_filter_set_name"] = createExportWrapper("gf_filter_set_name");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_override_caps = Module["_gf_filter_override_caps"] = createExportWrapper("gf_filter_override_caps");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pid_init_play_event = Module["_gf_filter_pid_init_play_event"] = createExportWrapper("gf_filter_pid_init_play_event");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_pid_raw_new = Module["_gf_filter_pid_raw_new"] = createExportWrapper("gf_filter_pid_raw_new");
-
-      /** @type {function(...*):?} */
-      var _gf_filter_reporting_enabled = Module["_gf_filter_reporting_enabled"] = createExportWrapper("gf_filter_reporting_enabled");
-
-      /** @type {function(...*):?} */
-      var _abs = Module["_abs"] = createExportWrapper("abs");
-
-      /** @type {function(...*):?} */
       var _memset = Module["_memset"] = createExportWrapper("memset");
 
       /** @type {function(...*):?} */
       var _fabs = Module["_fabs"] = createExportWrapper("fabs");
 
       /** @type {function(...*):?} */
-      var _atan2f = Module["_atan2f"] = createExportWrapper("atan2f");
-
-      /** @type {function(...*):?} */
-      var _atanf = Module["_atanf"] = createExportWrapper("atanf");
-
-      /** @type {function(...*):?} */
-      var _strtod = Module["_strtod"] = createExportWrapper("strtod");
-
-      /** @type {function(...*):?} */
       var _bsearch = Module["_bsearch"] = createExportWrapper("bsearch");
-
-      /** @type {function(...*):?} */
-      var _cbrt = Module["_cbrt"] = createExportWrapper("cbrt");
-
-      /** @type {function(...*):?} */
-      var _cosf = Module["_cosf"] = createExportWrapper("cosf");
 
       /** @type {function(...*):?} */
       var _cosh = Module["_cosh"] = createExportWrapper("cosh");
@@ -6421,9 +6036,6 @@ var Module = (() => {
       var _exp = Module["_exp"] = createExportWrapper("exp");
 
       /** @type {function(...*):?} */
-      var _exp2 = Module["_exp2"] = createExportWrapper("exp2");
-
-      /** @type {function(...*):?} */
       var _exp2f = Module["_exp2f"] = createExportWrapper("exp2f");
 
       /** @type {function(...*):?} */
@@ -6433,40 +6045,25 @@ var Module = (() => {
       var _frexp = Module["_frexp"] = createExportWrapper("frexp");
 
       /** @type {function(...*):?} */
-      var _hypot = Module["_hypot"] = createExportWrapper("hypot");
-
-      /** @type {function(...*):?} */
-      var _strspn = Module["_strspn"] = createExportWrapper("strspn");
-
-      /** @type {function(...*):?} */
       var _isatty = Module["_isatty"] = createExportWrapper("isatty");
 
       /** @type {function(...*):?} */
       var _ldexp = Module["_ldexp"] = createExportWrapper("ldexp");
 
       /** @type {function(...*):?} */
-      var _ldexpf = Module["_ldexpf"] = createExportWrapper("ldexpf");
-
-      /** @type {function(...*):?} */
       var _llrint = Module["_llrint"] = createExportWrapper("llrint");
 
       /** @type {function(...*):?} */
-      var _log10f = Module["_log10f"] = createExportWrapper("log10f");
-
-      /** @type {function(...*):?} */
-      var _log2f = Module["_log2f"] = createExportWrapper("log2f");
-
-      /** @type {function(...*):?} */
       var _lrintf = Module["_lrintf"] = createExportWrapper("lrintf");
+
+      /** @type {function(...*):?} */
+      var _memrchr = Module["_memrchr"] = createExportWrapper("memrchr");
 
       /** @type {function(...*):?} */
       var _round = Module["_round"] = createExportWrapper("round");
 
       /** @type {function(...*):?} */
       var _roundf = Module["_roundf"] = createExportWrapper("roundf");
-
-      /** @type {function(...*):?} */
-      var _sinf = Module["_sinf"] = createExportWrapper("sinf");
 
       /** @type {function(...*):?} */
       var _sinh = Module["_sinh"] = createExportWrapper("sinh");
@@ -6479,6 +6076,27 @@ var Module = (() => {
 
       /** @type {function(...*):?} */
       var _strcspn = Module["_strcspn"] = createExportWrapper("strcspn");
+
+      /** @type {function(...*):?} */
+      var ___trunctfsf2 = Module["___trunctfsf2"] = createExportWrapper("__trunctfsf2");
+
+      /** @type {function(...*):?} */
+      var ___floatsitf = Module["___floatsitf"] = createExportWrapper("__floatsitf");
+
+      /** @type {function(...*):?} */
+      var ___multf3 = Module["___multf3"] = createExportWrapper("__multf3");
+
+      /** @type {function(...*):?} */
+      var ___extenddftf2 = Module["___extenddftf2"] = createExportWrapper("__extenddftf2");
+
+      /** @type {function(...*):?} */
+      var ___floatunsitf = Module["___floatunsitf"] = createExportWrapper("__floatunsitf");
+
+      /** @type {function(...*):?} */
+      var ___divtf3 = Module["___divtf3"] = createExportWrapper("__divtf3");
+
+      /** @type {function(...*):?} */
+      var ___trunctfdf2 = Module["___trunctfdf2"] = createExportWrapper("__trunctfdf2");
 
       /** @type {function(...*):?} */
       var ___multi3 = Module["___multi3"] = createExportWrapper("__multi3");
@@ -6551,71 +6169,35 @@ var Module = (() => {
       var dynCall_jiji = Module["dynCall_jiji"] = createExportWrapper("dynCall_jiji");
 
       /** @type {function(...*):?} */
-      var _orig$gf_sys_clock_high_res = Module["_orig$gf_sys_clock_high_res"] = createExportWrapper("orig$gf_sys_clock_high_res");
-
-      /** @type {function(...*):?} */
-      var _orig$gf_fsize = Module["_orig$gf_fsize"] = createExportWrapper("orig$gf_fsize");
-
-      /** @type {function(...*):?} */
-      var _orig$gf_ftell = Module["_orig$gf_ftell"] = createExportWrapper("orig$gf_ftell");
-
-      /** @type {function(...*):?} */
       var _orig$ftello = Module["_orig$ftello"] = createExportWrapper("orig$ftello");
-
-      /** @type {function(...*):?} */
-      var _orig$gf_fseek = Module["_orig$gf_fseek"] = createExportWrapper("orig$gf_fseek");
 
       /** @type {function(...*):?} */
       var _orig$fseeko = Module["_orig$fseeko"] = createExportWrapper("orig$fseeko");
 
       /** @type {function(...*):?} */
-      var _orig$gf_bs_reassign_buffer = Module["_orig$gf_bs_reassign_buffer"] = createExportWrapper("orig$gf_bs_reassign_buffer");
-
-      /** @type {function(...*):?} */
-      var _orig$gf_bs_new = Module["_orig$gf_bs_new"] = createExportWrapper("orig$gf_bs_new");
-
-      /** @type {function(...*):?} */
-      var _orig$gf_bs_seek = Module["_orig$gf_bs_seek"] = createExportWrapper("orig$gf_bs_seek");
-
-      /** @type {function(...*):?} */
-      var _orig$gf_bs_read_long_int = Module["_orig$gf_bs_read_long_int"] = createExportWrapper("orig$gf_bs_read_long_int");
-
-      /** @type {function(...*):?} */
-      var _orig$gf_bs_available = Module["_orig$gf_bs_available"] = createExportWrapper("orig$gf_bs_available");
-
-      /** @type {function(...*):?} */
-      var _orig$gf_bs_skip_bytes = Module["_orig$gf_bs_skip_bytes"] = createExportWrapper("orig$gf_bs_skip_bytes");
-
-      /** @type {function(...*):?} */
-      var _orig$gf_bs_get_position = Module["_orig$gf_bs_get_position"] = createExportWrapper("orig$gf_bs_get_position");
-
-      /** @type {function(...*):?} */
-      var _orig$gf_filter_pck_set_dts = Module["_orig$gf_filter_pck_set_dts"] = createExportWrapper("orig$gf_filter_pck_set_dts");
-
-      /** @type {function(...*):?} */
-      var _orig$gf_filter_pck_set_cts = Module["_orig$gf_filter_pck_set_cts"] = createExportWrapper("orig$gf_filter_pck_set_cts");
-
-      /** @type {function(...*):?} */
-      var _orig$gf_filter_pck_get_cts = Module["_orig$gf_filter_pck_get_cts"] = createExportWrapper("orig$gf_filter_pck_get_cts");
-
-      /** @type {function(...*):?} */
-      var _orig$gf_filter_pck_set_byte_offset = Module["_orig$gf_filter_pck_set_byte_offset"] = createExportWrapper("orig$gf_filter_pck_set_byte_offset");
-
-      /** @type {function(...*):?} */
-      var _orig$gf_filter_pck_get_byte_offset = Module["_orig$gf_filter_pck_get_byte_offset"] = createExportWrapper("orig$gf_filter_pck_get_byte_offset");
-
-      /** @type {function(...*):?} */
       var _orig$llrint = Module["_orig$llrint"] = createExportWrapper("orig$llrint");
+
+      /** @type {function(...*):?} */
+      var _orig$__trunctfsf2 = Module["_orig$__trunctfsf2"] = createExportWrapper("orig$__trunctfsf2");
+
+      /** @type {function(...*):?} */
+      var _orig$__multf3 = Module["_orig$__multf3"] = createExportWrapper("orig$__multf3");
+
+      /** @type {function(...*):?} */
+      var _orig$__divtf3 = Module["_orig$__divtf3"] = createExportWrapper("orig$__divtf3");
+
+      /** @type {function(...*):?} */
+      var _orig$__trunctfdf2 = Module["_orig$__trunctfdf2"] = createExportWrapper("orig$__trunctfdf2");
 
       /** @type {function(...*):?} */
       var _orig$__multi3 = Module["_orig$__multi3"] = createExportWrapper("orig$__multi3");
 
-      var _stderr = Module['_stderr'] = 126152;
-      var _logs_mx = Module['_logs_mx'] = 126672;
-      var _stdin = Module['_stdin'] = 126304;
-      var _stdout = Module['_stdout'] = 126456;
-      var ___THREW__ = Module['___THREW__'] = 138592;
-      var ___threwValue = Module['___threwValue'] = 138596;
+      var _stderr = Module['_stderr'] = 118592;
+      var _logs_mx = Module['_logs_mx'] = 119104;
+      var _stdin = Module['_stdin'] = 118744;
+      var _stdout = Module['_stdout'] = 118896;
+      var ___THREW__ = Module['___THREW__'] = 131024;
+      var ___threwValue = Module['___threwValue'] = 131028;
 
 
 
@@ -6667,7 +6249,6 @@ var Module = (() => {
         'stringToNewUTF8',
         'exitJS',
         'getHeapMax',
-        'abortOnCannotGrowMemory',
         'emscripten_realloc_buffer',
         'ENV',
         'ERRNO_CODES',
@@ -6877,7 +6458,6 @@ var Module = (() => {
       unexportedRuntimeSymbols.forEach(unexportedRuntimeSymbol);
       var missingLibrarySymbols = [
         'stringToNewUTF8',
-        'emscripten_realloc_buffer',
         'inetPton4',
         'inetNtop4',
         'inetPton6',
@@ -7055,7 +6635,7 @@ var Module = (() => {
         // This is normally called automatically during __wasm_call_ctors but need to
         // get these values before even running any of the ctors so we call it redundantly
         // here.
-        _emscripten_stack_set_limits(204144, 138608);
+        _emscripten_stack_set_limits(196576, 131040);
         // TODO(sbc): Move writeStackCookie to native to to avoid this.
         writeStackCookie();
       }
