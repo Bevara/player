@@ -721,9 +721,14 @@ SET(RFFLAC_SRC
         ${GPAC_LOCATION}/src/utils/os_file.c
 )
 
+SET(RFFLAC_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 add_filter(rfflac
         "${RFFLAC_SRC}"
-        ""
+        "${RFFLAC_LIB}"
         _flac_dmx_register
         ""
         ""
@@ -1124,9 +1129,14 @@ SET(RFNALU_SRC
         ${GPAC_LOCATION}/src/odf/descriptors.c
 )
 
+SET(RFNALU_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 add_filter(rfnalu
         "${RFNALU_SRC}"
-        ""
+        "${RFNALU_LIB}"
         _naludmx_register
         ""
         ""
@@ -1613,9 +1623,14 @@ add_filter(rfprores
         ""
         "")
 
+SET(RFMHAS_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 add_filter(rfmhas
         ${GPAC_LOCATION}/src/filters/reframe_mhas.c
-        ""
+         "${RFMHAS_LIB}"
         _mhas_dmx_register
         ""
         ""
@@ -1920,9 +1935,15 @@ add_filter(m2tsdmx
         ""
         "")
 
+SET(GSFDMX_LIB
+        ${FF_LIB}
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 add_filter(gsfdmx
         ${GPAC_LOCATION}/src/filters/dmx_gsf.c
-        ""
+        "${GSFDMX_LIB}"
         _gsfdmx_register
         ""
         ""
