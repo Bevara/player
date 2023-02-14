@@ -1313,9 +1313,14 @@ SET(HTTPIN_SRC
         ${GPAC_LOCATION}/src/utils/os_config_init.c
 )
 
+SET(HTTPIN_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 add_filter(httpin
         "${HTTPIN_SRC}"
-        ""
+        "${HTTPIN_LIB}"
         _httpin_register
         ""
         ""
@@ -1395,9 +1400,14 @@ add_filter(ufttxt
         ""
         "")
 
+SET(WRITEQCP_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 add_filter(writeqcp
         ${GPAC_LOCATION}/src/filters/write_qcp.c
-        ""
+        "${WRITEQCP_LIB}"
         _qcpmx_register
         ""
         ""
@@ -1635,9 +1645,14 @@ SET(RFQCP_SRC
         ${GPAC_LOCATION}/src/utils/bitstream.c
 )
 
+SET(RFQCP_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 add_filter(rfqcp
         "${RFQCP_SRC}"
-        ""
+        "${RFQCP_LIB}"
         _qcpdmx_register
         ""
         ""
@@ -1741,6 +1756,12 @@ add_filter(gsfmx
         ""
         "")
 
+ SET(RFSRT_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
+
 SET(RFSRT_SRC
         ${GPAC_LOCATION}/src/filters/load_text.c
         ${GPAC_LOCATION}/src/utils/utf.c
@@ -1748,7 +1769,7 @@ SET(RFSRT_SRC
 
 add_filter(rfsrt
         "${RFSRT_SRC}"
-        ""
+        "${RFSRT_LIB}"
         _rfsrt_register
         ""
         ""
@@ -1759,13 +1780,23 @@ SET(VTT2TX3G_SRC
         ${GPAC_LOCATION}/src/utils/utf.c
 )
 
+SET(VTT2TX3G_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 add_filter(vtt2tx3g
         "${VTT2TX3G_SRC}"
-        ""
+        "${VTT2TX3G_LIB}"
         _vtt2tx3g_register
         ""
         ""
         "")
+
+SET(TXTIN_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
 
 SET(TXTIN_SRC
         ${GPAC_LOCATION}/src/filters/load_text.c
@@ -1774,7 +1805,7 @@ SET(TXTIN_SRC
 
 add_filter(txtin
         "${TXTIN_SRC}"
-        ""
+        "${TXTIN_LIB}"
         _txtin_register
         ""
         ""
@@ -1835,6 +1866,11 @@ add_filter(svgplay
         ""
         "")
 
+SET(BTPLAY_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 SET(BTPLAY_SRC
         ${GPAC_LOCATION}/src/filters/load_bt_xmt.c
         ${GPAC_LOCATION}/src/utils/utf.c
@@ -1842,7 +1878,7 @@ SET(BTPLAY_SRC
 
 add_filter(btplay
         "${BTPLAY_SRC}"
-        ""
+        "${BTPLAY_LIB}"
         _ctxload_register
         ""
         ""
@@ -1861,9 +1897,14 @@ add_filter(cryptin
         ""
         "")
 
+SET(CRYPTOUT_LIBS
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 add_filter(cryptout
         ${GPAC_LOCATION}/src/filters/io_fcryp.c
-        ""
+        "${CRYPTOUT_LIBS}"
         _cryptfout_register
         ""
         ""
@@ -1989,9 +2030,14 @@ add_filter(gsfdmx
         ""
         "")
 
+SET(DASHIN_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 add_filter(dashin
         ${GPAC_LOCATION}/src/filters/dmx_dash.c
-        ""
+        "${DASHIN_LIB}"
         _dashdmx_register
         ""
         ""
