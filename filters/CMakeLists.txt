@@ -643,9 +643,15 @@ SET(FFMX_SRC
         ${GPAC_LOCATION}/src/filter_core/filter_session.c
 )
 
+SET(FFMX_LIB
+        ${FF_LIB}
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 add_filter(ffmx
         "${FFMX_SRC}"
-        "${FF_LIB}"
+        "${FFMX_LIB}"
         _ffmx_register
         GPAC_HAS_FFMPEG
         "${FF_INCLUDE}"
@@ -754,9 +760,14 @@ SET(OGGDMX_SRC
         ${GPAC_LOCATION}/src/utils/os_file.c
 )
 
+SET(OGGDMX_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 add_filter(oggdmx
         "${OGGDMX_SRC}"
-        ""
+        "${OGGDMX_LIB}"
         _oggdmx_register
         ""
         ""
@@ -1754,6 +1765,8 @@ add_filter(txtin
 
 SET(SVG_LIBS
         ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libz.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
 )
 
 SET(SVGIN_SRC
