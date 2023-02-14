@@ -970,9 +970,14 @@ SET(M2PSDMX_SRC
         ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
+SET(M2PSDMX_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 add_filter(m2psdmx
         "${M2PSDMX_SRC}"
-        ""
+        "${M2PSDMX_LIB}"
         _m2psdmx_register
         ""
         ""
@@ -1316,6 +1321,13 @@ add_filter(httpin
         ""
         "")
 
+
+SET(AVIDMX_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
+
 SET(AVIDMX_SRC
         ${GPAC_LOCATION}/src/filters/dmx_avi.c
         ${GPAC_LOCATION}/src/filter_core/filter.c
@@ -1337,7 +1349,7 @@ SET(AVIDMX_SRC
 
 add_filter(avidmx
         "${AVIDMX_SRC}"
-        ""
+        "${AVIDMX_LIB}"
         _avidmx_register
         ""
         ""
@@ -1942,6 +1954,11 @@ add_filter(nhmlr
         ""
         "")
 
+SET(M2TSDMX_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 SET(M2TSDMX_SRC
         ${GPAC_LOCATION}/src/filters/dmx_m2ts.c
         ${GPAC_LOCATION}/src/media_tools/mpegts.c
@@ -1952,7 +1969,7 @@ SET(M2TSDMX_SRC
 
 add_filter(m2tsdmx
         "${M2TSDMX_SRC}"
-        ""
+        "${M2TSDMX_LIB}"
         _m2tsdmx_register
         ""
         ""
