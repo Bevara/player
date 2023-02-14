@@ -936,9 +936,14 @@ SET(RFAMR_SRC
         ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
+SET(RFAMR_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 add_filter(rfamr
         "${RFAMR_SRC}"
-        ""
+        "${RFAMR_LIB}"
         _amrdmx_register
         ""
         ""
@@ -1831,9 +1836,14 @@ add_filter(btplay
         ""
         "")
 
+SET(CRYPTIN_LIBS
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 add_filter(cryptin
         ${GPAC_LOCATION}/src/filters/io_fcryp.c
-        ""
+        "${CRYPTIN_LIBS}"
         _cryptfin_register
         ""
         ""
