@@ -510,13 +510,13 @@ SET(FF_LIB
         ${THIRD_PARTIES_BINARIES}/ffmpeg/libavfilter/libavfilter.a
         ${THIRD_PARTIES_BINARIES}/ffmpeg/libswresample/libswresample.a
         ${THIRD_PARTIES_BINARIES}/ffmpeg/libswscale/libswscale.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
 )
 
 
 SET(FFDEC_LIB
         ${FF_LIB}
-        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
-        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
 )
 
 add_filter(ffdec
