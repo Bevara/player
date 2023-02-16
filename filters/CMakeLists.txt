@@ -1620,9 +1620,14 @@ SET(RFTRUEHD_SRC
         ${GPAC_LOCATION}/src/utils/bitstream.c
 )
 
+SET(RFTRUEHD_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 add_filter(rftruehd
         "${RFTRUEHD_SRC}"
-        ""
+        "${RFTRUEHD_LIB}"
         _truehd_register
         ""
         ""
@@ -1712,9 +1717,15 @@ SET(LATM_SRC
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
 )
 
+SET(LATM_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
+
 add_filter(rflatm
         "${LATM_SRC}"
-        ""
+        "${LATM_LIB}"
         _latm_dmx_register
         ""
         ""
@@ -1743,9 +1754,15 @@ SET(RFAV1_SRC
         ${GPAC_LOCATION}/src/odf/descriptors.c
 )
 
+SET(RFAV1_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
+
 add_filter(rfav1
         "${RFAV1_SRC}"
-        ""
+        "${RFAV1_LIB}"
         _av1dmx_register
         ""
         ""
