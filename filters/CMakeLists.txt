@@ -1653,9 +1653,15 @@ SET(RFPCM_SRC
         ${GPAC_LOCATION}/src/utils/constants.c
 )
 
+SET(RFPCM_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
+
 add_filter(rfpcm
         "${RFPCM_SRC}"
-        ""
+        "${RFPCM_LIB}"
         _pcmreframe_register
         ""
         ""
@@ -2148,9 +2154,14 @@ SET(BSRW_SRC
         ${GPAC_LOCATION}/src/utils/os_config_init.c
 )
 
+SET(BSRW_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 add_filter(bsrw
         "${BSRW_SRC}"
-        ""
+        "${BSRW_LIB}"
         _bsrw_register
         ""
         ""
