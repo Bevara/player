@@ -121,6 +121,8 @@ endif()
 
 SET(JPEG_LIB
         ${THIRD_PARTIES_BINARIES}/libjpeg/.libs/libjpeg.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
 )
 
 SET(IMG_FLAGS
@@ -847,6 +849,8 @@ SET(THEORADEC_INCLUDE
 SET(THEORADEC_LIB
         ${THIRD_PARTIES_BINARIES}/theora/lib/.libs/libtheora.a
         ${THIRD_PARTIES_BINARIES}/ogg/libogg.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
 )
 
 add_filter(theoradec
@@ -1006,9 +1010,14 @@ SET(RFMPGVID_SRC
         ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
+SET(RFMPGVID_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 add_filter(rfmpgvid
         "${RFMPGVID_SRC}"
-        ""
+        "${RFMPGVID_LIB}"
         _mpgviddmx_register
         ""
         ""
@@ -1624,9 +1633,15 @@ SET(RFRAW_SRC
         ${GPAC_LOCATION}/src/utils/constants.c
 )
 
+SET(RFRAW_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
+
 add_filter(rfrawvid
         "${RFRAW_SRC}"
-        ""
+        "${RFRAW_LIB}"
         _rawvidreframe_register
         ""
         ""
@@ -1969,9 +1984,14 @@ add_filter(cecrypt
         ""
         "")
 
+SET(VOBSUBDMX_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 add_filter(vobsubdmx
         ${GPAC_LOCATION}/src/filters/dmx_vobsub.c
-        ""
+        "${VOBSUBDMX_LIB}"
         _vobsubdmx_register
         ""
         ""
