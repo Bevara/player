@@ -336,9 +336,15 @@ SET(MADDEC_SRC
         ${GPAC_LOCATION}/src/utils/os_divers.c
 )
 
+SET(MADDEC_LIB
+        ${THIRD_PARTIES_BINARIES}/libmad/.libs/libmad.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 add_filter(maddec
         "${MADDEC_SRC}"
-        ${THIRD_PARTIES_BINARIES}/libmad/.libs/libmad.a
+        "${MADDEC_LIB}"        
         _maddec_register
         GPAC_HAS_MAD
         ${THIRD_PARTIES_BINARIES}/libmad
