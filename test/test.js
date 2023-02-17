@@ -11,7 +11,7 @@ function create_test(tag, extension, using_attribute, with_atribute, test_file, 
     }
 
     if (useCache){
-      img.setAttribute("use-cache");
+      img.setAttribute("use-cache","");
     }
 
     document.body.appendChild(img);
