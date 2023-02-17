@@ -13,6 +13,8 @@ class UniversalVideo extends HTMLVideoElement {
     print_attribute: Element | null;
     error_attribute: Element | null;
     out = "mp4";
+    useCache = false;
+    cache = null;
 
     private _decodingPromise: Promise<string>;
 
@@ -53,12 +55,29 @@ class UniversalVideo extends HTMLVideoElement {
         }
     }
 
-    dataURLToSrc(self, blob) {
-        self.srcset = URL.createObjectURL(blob);
+    dataURLToSrc(self, blob, cached) {
+        if (self.useCache && self.cache && !cached){
+            self.cache.put(self.src, new Response(blob));
+        }
+
+        self.src = URL.createObjectURL(blob);
     }
 
     async universal_decode(self, args): Promise<string> {
         return new Promise(async (main_resolve, _main_reject) => {
+            if (self.useCache) {
+                try {
+                  self.cache = self.cache || await caches.open('universal-video');
+                } catch (e) {}
+                const cached = self.cache && await self.cache.match(self.src);
+                if (cached) {
+                  const cachedData = await cached.blob();
+                  this.dataURLToSrc(self, cachedData, true);
+                  main_resolve(self.srcset);
+                  return;
+                }
+            }
+
             const print = this.print();
             const printErr = this.printErr();
 
@@ -119,7 +138,7 @@ class UniversalVideo extends HTMLVideoElement {
                 const json_res = self.module.UTF8ToString(ptr_data);
                 const json_res_parsed = JSON.parse(json_res);
 
-                this.dataURLToSrc(self, new Blob([buffer_out.buffer_u8], { type: "video/mp4"}));
+                this.dataURLToSrc(self, new Blob([buffer_out.buffer_u8], { type: "video/mp4" }), false);
                 self.load();
                 main_resolve(self.src);
             });
@@ -162,10 +181,13 @@ class UniversalVideo extends HTMLVideoElement {
             case 'out':
                 this.out = this.getAttribute("out");
                 break;
+            case 'use-cache':
+                this.useCache = true;
+                break;
         }
     }
 
-    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out']; }
+    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache']; }
 }
 
 if (!customElements.get('universal-video')) {

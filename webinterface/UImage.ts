@@ -17,6 +17,8 @@ class UniversalImage extends HTMLImageElement {
     print_attribute: Element | null;
     error_attribute: Element | null;
     out = "png";
+    useCache = false;
+    cache = null;
 
     private _decodingPromise: Promise<string>;
 
@@ -57,13 +59,30 @@ class UniversalImage extends HTMLImageElement {
         }
     }
 
-    dataURLToSrc(self, blob) {
+    dataURLToSrc(self, blob, cached) {
+        if (self.useCache && self.cache && !cached){
+            self.cache.put(self.src, new Response(blob));
+        }
+
         self.srcset = URL.createObjectURL(blob);
     }
 
 
     async universal_decode(self, args): Promise<string>{
         return new Promise(async (main_resolve, _main_reject) => {
+            if (self.useCache) {
+                try {
+                  self.cache = self.cache || await caches.open('universal-img');
+                } catch (e) {}
+                const cachedImg = self.cache && await self.cache.match(self.src);
+                if (cachedImg) {
+                  const cachedImgData = await cachedImg.blob();
+                  this.dataURLToSrc(self, cachedImgData, true);
+                  main_resolve(self.srcset);
+                  return;
+                }
+            }
+
             const print = this.print();
             const printErr = this.printErr();
 
@@ -122,7 +141,7 @@ class UniversalImage extends HTMLImageElement {
                 const json_res = self.module.UTF8ToString(ptr_data);
                 const json_res_parsed = JSON.parse(json_res);
 
-                this.dataURLToSrc(self, new Blob([buffer_out.buffer_u8], { type: "image/"+this.out}));
+                this.dataURLToSrc(self, new Blob([buffer_out.buffer_u8], { type: "image/"+this.out}), false);
                 main_resolve(self.srcset);
             });
         });
@@ -165,10 +184,13 @@ class UniversalImage extends HTMLImageElement {
             case 'out':
                 this.out = this.getAttribute("out");
                 break;
+            case 'use-cache':
+                this.useCache = true;
+                break;
         }
     }
 
-    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out']; }
+    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache']; }
 }
 
 if (!customElements.get('universal-img')) {
