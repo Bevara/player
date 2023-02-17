@@ -141,8 +141,17 @@ class UniversalImage extends HTMLImageElement {
                 const json_res = self.module.UTF8ToString(ptr_data);
                 const json_res_parsed = JSON.parse(json_res);
 
-                this.dataURLToSrc(self, new Blob([buffer_out.buffer_u8], { type: "image/"+this.out}), false);
-                main_resolve(self.srcset);
+                if (self.out == "rgba"){
+                    const canvas = document.createElement('canvas');
+                    const imgData = new ImageData(new Uint8ClampedArray(buffer_out.buffer_u8), 0, 0);
+                    canvas.getContext('2d').putImageData(imgData, 0, 0);
+                    canvas.toBlob(blob => {
+                        this.dataURLToSrc(self, blob, false);
+                    });
+                }else{
+                    this.dataURLToSrc(self, new Blob([buffer_out.buffer_u8], { type: "image/"+this.out}), false);
+                    main_resolve(self.srcset);
+                }
             });
         });
     }

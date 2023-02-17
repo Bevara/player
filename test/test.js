@@ -379,6 +379,31 @@ describe('core-player', () => {
         false
       );
     }).timeout(60000);
+
+    it('should handle cache centaur_2.mpg"', (done) => {
+      create_test('video',
+        "universal-video",
+        "core-video.wasm",
+        "fout.wasm;m2psdmx.wasm;rfmpgvid.wasm;ffdec.wasm;mp4mx.wasm;rfnalu.wasm;ffenc.wasm;fin.wasm",
+        "http://bevara.ddns.net/test-signals/mpeg1/centaur_2.mpg",
+        null,
+        done,
+        "mp4",
+        true
+      );
+
+      create_test('video',
+        "universal-video",
+        "core-video.wasm",
+        "fout.wasm;m2psdmx.wasm;rfmpgvid.wasm;ffdec.wasm;mp4mx.wasm;rfnalu.wasm;ffenc.wasm;fin.wasm",
+        "http://bevara.ddns.net/test-signals/mpeg1/centaur_2.mpg",
+        null,
+        done,
+        "mp4",
+        true
+      );
+    }).timeout(60000);
+
   });
 
   describe('#xvid', () => {
@@ -392,29 +417,6 @@ describe('core-player', () => {
         done,
         "mp4",
         false
-      );
-    }).timeout(60000);
-
-    it('should handle cache with Big_Buck_Bunny_Trailer_400p.avi"', (done) => {
-      create_test('video',
-        "universal-video",
-        "core-video.wasm",
-        "mp4mx.wasm;avidmx.wasm;xviddec.wasm;fout.wasm;rfmp3.wasm;rfmpgvid.wasm;rfnalu.wasm;ffenc.wasm;writegen.wasm;fin.wasm",
-        "http://bevara.ddns.net/test-signals/xvid/Big_Buck_Bunny_Trailer_400p.avi",
-        null,
-        done,
-        "mp4",
-        true
-      );
-      create_test('video',
-        "universal-video",
-        "core-video.wasm",
-        "mp4mx.wasm;avidmx.wasm;xviddec.wasm;fout.wasm;rfmp3.wasm;rfmpgvid.wasm;rfnalu.wasm;ffenc.wasm;writegen.wasm;fin.wasm",
-        "http://bevara.ddns.net/test-signals/xvid/Big_Buck_Bunny_Trailer_400p.avi",
-        null,
-        done,
-        "mp4",
-        true
       );
     }).timeout(60000);
   });
