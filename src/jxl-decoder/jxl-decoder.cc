@@ -9,97 +9,117 @@
 #include <memory>
 #include <vector>
 
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "jxl/decode.h"
-#include "jxl/decode_cxx.h"
-#include "jxl/thread_parallel_runner_cxx.h"
+//#include "jxl/decode_cxx.h"
+//#include "jxl/thread_parallel_runner_cxx.h"
 
-extern "C" {
+#ifdef __cplusplus
+extern "C" {  
+#endif
 
+#ifdef __cplusplus
 namespace {
+#endif
 
-struct DecoderInstancePrivate {
+typedef struct  {
   // Due to "Standard Layout" rules it is guaranteed that address of the entity
   // and its first non-static member are the same.
   DecoderInstance info;
 
-  size_t pixels_size = 0;
-  bool want_sdr;
+  size_t pixels_size;// = 0;
+  uint32_t want_sdr;
   uint32_t display_nits;
   JxlPixelFormat format;
-  JxlDecoderPtr decoder;
-  JxlThreadParallelRunnerPtr thread_pool;
+  //JxlDecoderPtr decoder;
+  JxlDecoder* decoder;
+  //JxlThreadParallelRunnerPtr thread_pool;
 
   std::vector<uint8_t> tail;
-};
+}DecoderInstancePrivate;
 
+#ifdef __cplusplus
 }  // namespace
+#endif
 
-DecoderInstance* jxlCreateInstance(bool want_sdr, uint32_t display_nits) {
-  DecoderInstancePrivate* self = new DecoderInstancePrivate();
+DecoderInstance* jxlCreateInstance(uint32_t want_sdr, uint32_t display_nits) {
+  //DecoderInstancePrivate* self = new DecoderInstancePrivate();
+  DecoderInstancePrivate* self = (DecoderInstancePrivate*) malloc(sizeof(DecoderInstancePrivate));
 
   if (!self) {
-    return nullptr;
+    return 0;
   }
 
   self->want_sdr = want_sdr;
   self->display_nits = display_nits;
   JxlDataType storageFormat = want_sdr ? JXL_TYPE_UINT8 : JXL_TYPE_UINT16;
-  self->format = {4, storageFormat, JXL_NATIVE_ENDIAN, 0};
-  self->decoder = JxlDecoderMake(nullptr);
+  //self->format = {4, storageFormat, JXL_NATIVE_ENDIAN, 0};
+  self->format.num_channels = 4;
+  self->format.data_type = storageFormat;
+  self->format.endianness = JXL_NATIVE_ENDIAN;
+  self->format.align = 0;
+  //, storageFormat, JXL_NATIVE_ENDIAN, 0};
+  //self->decoder = JxlDecoderMake(nullptr);
+  self->decoder = JxlDecoderCreate(0);
 
-  JxlDecoder* dec = self->decoder.get();
+  //JxlDecoder* dec = self->decoder.get();
+  JxlDecoder* dec = self->decoder;
 
-  auto report_error = [&](uint32_t code, const char* text) {
+/*  auto report_error = [&](uint32_t code, const char* text) {
     fprintf(stderr, "%s\n", text);
     delete self;
     return reinterpret_cast<DecoderInstance*>(code);
-  };
+  };*/
 
-  self->thread_pool = JxlThreadParallelRunnerMake(nullptr, 4);
-  void* runner = self->thread_pool.get();
+  //self->thread_pool = JxlThreadParallelRunnerMake(nullptr, 4);
+  //void* runner = self->thread_pool.get();
 
-  auto status =
+  /*auto status =
       JxlDecoderSetParallelRunner(dec, JxlThreadParallelRunner, runner);
 
   if (status != JXL_DEC_SUCCESS) {
     return report_error(1, "JxlDecoderSetParallelRunner failed");
-  }
+  }*/
 
-  status = JxlDecoderSubscribeEvents(
+  JxlDecoderStatus status = JxlDecoderSubscribeEvents(
       dec, JXL_DEC_BASIC_INFO | JXL_DEC_COLOR_ENCODING | JXL_DEC_FULL_IMAGE |
                JXL_DEC_FRAME_PROGRESSION);
   if (JXL_DEC_SUCCESS != status) {
-    return report_error(2, "JxlDecoderSubscribeEvents failed");
+    printf( "JxlDecoderSubscribeEvents failed");
   }
 
   status = JxlDecoderSetProgressiveDetail(dec, kPasses);
   if (JXL_DEC_SUCCESS != status) {
-    return report_error(3, "JxlDecoderSetProgressiveDetail failed");
+    printf("JxlDecoderSetProgressiveDetail failed");
   }
   return &self->info;
 }
 
 void jxlDestroyInstance(DecoderInstance* instance) {
-  if (instance == nullptr) return;
-  DecoderInstancePrivate* self =
-      reinterpret_cast<DecoderInstancePrivate*>(instance);
+  if (instance == 0) return;
+ /* DecoderInstancePrivate* self =
+      reinterpret_cast<DecoderInstancePrivate*>(instance);*/
   if (instance->pixels) {
     free(instance->pixels);
   }
-  delete self;
+  //delete self;
 }
 
 uint32_t jxlProcessInput(DecoderInstance* instance, const uint8_t* input,
                          size_t input_size) {
-  if (instance == nullptr) return static_cast<uint32_t>(-1);
-  DecoderInstancePrivate* self =
-      reinterpret_cast<DecoderInstancePrivate*>(instance);
-  JxlDecoder* dec = self->decoder.get();
+  if (instance == 0) return -1;
+  /*DecoderInstancePrivate* self =
+      reinterpret_cast<DecoderInstancePrivate*>(instance);*/
+  DecoderInstancePrivate* self = (DecoderInstancePrivate*) instance;
+  //JxlDecoder* dec = self->decoder.get();
+  JxlDecoder* dec = self->decoder;
 
-  auto report_error = [&](int code, const char* text) {
+  /*auto report_error = [&](int code, const char* text) {
     fprintf(stderr, "%s\n", text);
     return static_cast<uint32_t>(code);
-  };
+  };*/
 
   std::vector<uint8_t>& tail = self->tail;
   if (!tail.empty()) {
@@ -109,9 +129,10 @@ uint32_t jxlProcessInput(DecoderInstance* instance, const uint8_t* input,
     input_size = tail.size();
   }
 
-  auto status = JxlDecoderSetInput(dec, input, input_size);
+  JxlDecoderStatus status = JxlDecoderSetInput(dec, input, input_size);
   if (JXL_DEC_SUCCESS != status) {
-    return report_error(-2, "JxlDecoderSetInput failed");
+    printf("JxlDecoderSetInput failed");
+    return -1;
   }
 
   auto release_input = [&]() {
@@ -149,7 +170,8 @@ uint32_t jxlProcessInput(DecoderInstance* instance, const uint8_t* input,
       status = JxlDecoderGetBasicInfo(dec, &info);
       if (status != JXL_DEC_SUCCESS) {
         release_input();
-        return report_error(-4, "JxlDecoderGetBasicInfo failed");
+        printf( "JxlDecoderGetBasicInfo failed");
+        return -1;
       }
       instance->width = info.xsize;
       instance->height = info.ysize;
@@ -157,23 +179,27 @@ uint32_t jxlProcessInput(DecoderInstance* instance, const uint8_t* input,
           JxlDecoderImageOutBufferSize(dec, &self->format, &self->pixels_size);
       if (status != JXL_DEC_SUCCESS) {
         release_input();
-        return report_error(-6, "JxlDecoderImageOutBufferSize failed");
+        printf("JxlDecoderImageOutBufferSize failed");
+        return -1;
       }
       if (instance->pixels) {
         release_input();
-        return report_error(-7, "Tried to realloc pixels");
+        printf("Tried to realloc pixels");
+        return -1;
       }
       instance->pixels = reinterpret_cast<uint8_t*>(malloc(self->pixels_size));
     } else if (JXL_DEC_NEED_IMAGE_OUT_BUFFER == status) {
       if (!self->info.pixels) {
         release_input();
-        return report_error(-8, "Out buffer not allocated");
+        printf("Out buffer not allocated");
+        return -1;
       }
       status = JxlDecoderSetImageOutBuffer(dec, &self->format, instance->pixels,
                                            self->pixels_size);
       if (status != JXL_DEC_SUCCESS) {
         release_input();
-        return report_error(-9, "JxlDecoderSetImageOutBuffer failed");
+        printf("JxlDecoderSetImageOutBuffer failed");
+        return -1;
       }
     } else if (JXL_DEC_COLOR_ENCODING == status) {
       JxlColorEncoding color_encoding;
@@ -188,11 +214,13 @@ uint32_t jxlProcessInput(DecoderInstance* instance, const uint8_t* input,
       status = JxlDecoderSetPreferredColorProfile(dec, &color_encoding);
       if (status != JXL_DEC_SUCCESS) {
         release_input();
-        return report_error(-5, "JxlDecoderSetPreferredColorProfile failed");
+        printf("JxlDecoderSetPreferredColorProfile failed");
+        return -1;
       }
     } else {
       release_input();
-      return report_error(-3, "Unexpected decoder status");
+      printf("Unexpected decoder status");
+      return -1;
     }
   }
 
@@ -204,7 +232,8 @@ uint32_t jxlFlush(DecoderInstance* instance) {
   if (instance == nullptr) return static_cast<uint32_t>(-1);
   DecoderInstancePrivate* self =
       reinterpret_cast<DecoderInstancePrivate*>(instance);
-  JxlDecoder* dec = self->decoder.get();
+  //JxlDecoder* dec = self->decoder.get();
+  JxlDecoder* dec = self->decoder;
 
   auto report_error = [&](int code, const char* text) {
     fprintf(stderr, "%s\n", text);
@@ -224,4 +253,6 @@ uint32_t jxlFlush(DecoderInstance* instance) {
   return 0;
 }
 
-}  // extern "C"
+#ifdef __cplusplus
+}
+#endif

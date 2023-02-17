@@ -9,12 +9,14 @@
 #include <stddef.h>
 #include <stdint.h>
 
-extern "C" {
+#ifdef __cplusplus
+extern "C" {  
+#endif
 
 typedef struct DecoderInstance {
-  uint32_t width = 0;
-  uint32_t height = 0;
-  uint8_t* pixels = nullptr;
+  uint32_t width;// = 0;
+  uint32_t height;// = 0;
+  uint8_t* pixels;// = nullptr;
 
   // The rest is opaque.
 } DecoderInstance;
@@ -27,7 +29,7 @@ typedef struct DecoderInstance {
     3 - JxlDecoderSetProgressiveDetail failed
     >=4 - OK
  */
-DecoderInstance* jxlCreateInstance(bool want_sdr, uint32_t display_nits);
+DecoderInstance* jxlCreateInstance(uint32_t want_sdr, uint32_t display_nits);
 
 void jxlDestroyInstance(DecoderInstance* instance);
 
@@ -43,6 +45,9 @@ uint32_t jxlProcessInput(DecoderInstance* instance, const uint8_t* input,
 
 uint32_t jxlFlush(DecoderInstance* instance);
 
-}  // extern "C"
+#ifdef __cplusplus
+}
+#endif
+
 
 #endif  // TOOLS_WASM_DEMO_JXL_DECODER_H_

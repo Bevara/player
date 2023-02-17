@@ -21,7 +21,7 @@ class UniversalAudio extends HTMLAudioElement {
         return this._decodingPromise;
     }
 
-    private print(){
+    private print() {
         const self = this;
         if (self.print_attribute) {
             return function (t) {
@@ -37,7 +37,7 @@ class UniversalAudio extends HTMLAudioElement {
         }
     }
 
-    private printErr(){
+    private printErr() {
         const self = this;
         if (self.error_attribute) {
             return function (t) {
@@ -53,20 +53,17 @@ class UniversalAudio extends HTMLAudioElement {
             return console.warn.bind(console);
         }
     }
+    
+    dataURLToSrc(self, blob) {
+        self.srcset = URL.createObjectURL(blob);
+    }
 
-    connectedCallback() {
-        const self = this;
-        let args: any = {};
-        const print = this.print();
-        const printErr = this.printErr();
+    async universal_decode(self, args): Promise<string> {
+        return new Promise(async (main_resolve, _main_reject) => {
+            const print = this.print();
+            const printErr = this.printErr();
 
-        for (var i = 0, atts = this.attributes, n = atts.length, arr = []; i < n; i++) {
-            const nodeName = atts[i].nodeName;
-            args[nodeName] = atts[i].nodeValue;
-        }
-
-        this._decodingPromise = new Promise(async (main_resolve, _main_reject) => {
-            this.io = new fileio(self.src, "out."+this.out, this.using_attribute, this.with_attribute, this.print());
+            this.io = new fileio(self.src, "out." + this.out, this.using_attribute, this.with_attribute, this.print());
             print("Downloading...");
             await this.io.startDownload();
             print("Downloading complete.");
@@ -101,7 +98,7 @@ class UniversalAudio extends HTMLAudioElement {
                 self.module.stringToUTF8(json_args, ptr_args, len_args);
 
                 // Call set function and decode
-                print("Transcoding to "+ this.out +"...");
+                print("Transcoding to " + this.out + "...");
                 self.module._set(self.entry, ptr_args);
                 print("Transcoding complete.");
 
@@ -122,18 +119,28 @@ class UniversalAudio extends HTMLAudioElement {
                 const json_res = self.module.UTF8ToString(ptr_data);
                 const json_res_parsed = JSON.parse(json_res);
 
-                const blob = new Blob([buffer_out.buffer_u8], { type: "audio/wave" });
-                self.src = URL.createObjectURL(blob);
+                this.dataURLToSrc(self, new Blob([buffer_out.buffer_u8], { type: "audio/wave"}));
                 self.load();
                 main_resolve(self.src);
             });
         });
     }
 
+    connectedCallback() {
+        let args: any = {};
 
+        for (var i = 0, atts = this.attributes, n = atts.length, arr = []; i < n; i++) {
+            const nodeName = atts[i].nodeName;
+            args[nodeName] = atts[i].nodeValue;
+        }
+
+        this._decodingPromise = this.universal_decode(this, args);
+    }
+
+/*
     disconnectedCallback() {
 
-    }
+    }*/
 
     attributeChangedCallback(name: string, oldValue: string, newValue: string) {
         if (oldValue === newValue) return;

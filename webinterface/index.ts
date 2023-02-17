@@ -17,9 +17,15 @@ if (!customElements.get('universal-video')) {
     customElements.define('universal-video', UniversalVideo, { extends: 'video' });
 }
 
-
 import {UniversalCanvas} from "./UCanvas";
 
 if (!customElements.get('universal-canvas')) {
     customElements.define('universal-canvas', UniversalCanvas, {extends: 'canvas' });
 }
+
+import {UniversalImageJXL} from "./UImageJXL";
+
+if (!customElements.get('universal-jxl')) {
+    customElements.define('universal-jxl', UniversalImageJXL, {extends: 'img' });
+}
+

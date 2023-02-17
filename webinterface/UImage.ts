@@ -18,7 +18,7 @@ class UniversalImage extends HTMLImageElement {
     error_attribute: Element | null;
     out = "png";
 
-    private _decodingPromise: Promise<String>;
+    private _decodingPromise: Promise<string>;
 
     get decodingPromise() {
         return this._decodingPromise;
@@ -57,19 +57,16 @@ class UniversalImage extends HTMLImageElement {
         }
     }
 
+    dataURLToSrc(self, blob) {
+        self.srcset = URL.createObjectURL(blob);
+    }
 
-    connectedCallback() {
-        const self = this;
-        let args: any = {};
-        const print = this.print();
-        const printErr = this.printErr();
 
-        for (var i = 0, atts = this.attributes, n = atts.length, arr = []; i < n; i++) {
-            const nodeName = atts[i].nodeName;
-            args[nodeName] = atts[i].nodeValue;
-        }
+    async universal_decode(self, args): Promise<string>{
+        return new Promise(async (main_resolve, _main_reject) => {
+            const print = this.print();
+            const printErr = this.printErr();
 
-        this._decodingPromise = new Promise(async (main_resolve, _main_reject) => {
             this.io = new fileio(self.src, "out."+this.out, this.using_attribute, this.with_attribute, this.print());
             print("Downloading...");
             await this.io.startDownload();
@@ -125,11 +122,23 @@ class UniversalImage extends HTMLImageElement {
                 const json_res = self.module.UTF8ToString(ptr_data);
                 const json_res_parsed = JSON.parse(json_res);
 
-                const blob = new Blob([buffer_out.buffer_u8]);
-                self.srcset = URL.createObjectURL(blob);
+                this.dataURLToSrc(self, new Blob([buffer_out.buffer_u8], { type: "image/"+this.out}));
                 main_resolve(self.srcset);
             });
         });
+    }
+
+
+    connectedCallback() {
+        let args: any = {};
+
+
+        for (var i = 0, atts = this.attributes, n = atts.length, arr = []; i < n; i++) {
+            const nodeName = atts[i].nodeName;
+            args[nodeName] = atts[i].nodeValue;
+        }
+
+        this._decodingPromise = this.universal_decode(this, args);
     }
     /*
         disconnectedCallback() {
