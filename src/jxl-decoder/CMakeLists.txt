@@ -9,7 +9,7 @@ SET(JXL_DECODER_INCLUDES
 
 
 SET(JXL_DECODER_SRC
-  ${CMAKE_SOURCE_DIR}/src/jxl-decoder/jxl-decoder.cc
+  ${CMAKE_SOURCE_DIR}/src/jxl-decoder/jxl-decoder.c
 )
 
 add_executable(jxl-decoder ${JXL_DECODER_SRC})

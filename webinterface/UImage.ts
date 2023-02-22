@@ -143,13 +143,17 @@ class UniversalImage extends HTMLImageElement {
 
                 if (self.out == "rgba"){
                     const canvas = document.createElement('canvas');
-                    const imgData = new ImageData(new Uint8ClampedArray(buffer_out.buffer_u8), 0, 0);
+                    canvas.width = 1024;
+                    canvas.height = 1280;
+                    const bufferu8 = buffer_out.HEAPU8;
+                    console.log(bufferu8.length);
+                    const imgData = new ImageData(new Uint8ClampedArray(bufferu8), canvas.width, canvas.height );
                     canvas.getContext('2d').putImageData(imgData, 0, 0);
                     canvas.toBlob(blob => {
                         this.dataURLToSrc(self, blob, false);
                     });
                 }else{
-                    this.dataURLToSrc(self, new Blob([buffer_out.buffer_u8], { type: "image/"+this.out}), false);
+                    this.dataURLToSrc(self, new Blob([buffer_out.HEAPU8], { type: "image/"+this.out}), false);
                     main_resolve(self.srcset);
                 }
             });

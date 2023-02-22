@@ -112,6 +112,8 @@
 		"rfmp3.wasm",
 		"theoradec.wasm",
 		"uflatm.wasm",
-		"vout.wasm"
+		"vout.wasm",
+		"rfjxl.wasm",
+		"jxldec.wasm"
 	]
 }

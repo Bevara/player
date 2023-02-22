@@ -31,11 +31,14 @@ class UniversalImageJXL extends HTMLImageElement {
 
     async process(res, img) {
         let module, decoder, buffer, reader, timer;
-        const bufferSize = 256 * 1024;
-
-        function readChunk() {
+        //const bufferSize = 256 * 1024;
+        const buffer_in = await res.arrayBuffer();
+        const buffer_u8 = new Uint8Array(buffer_in);
+        const bufferSize = buffer_u8.length;
+        
+        /*function readChunk() {
             reader.read().then(onChunk, onError);
-        }
+        }*/
 
         function onChunk(chunk) {
             if (chunk.done) {
@@ -43,16 +46,16 @@ class UniversalImageJXL extends HTMLImageElement {
                 return;
             }
             let offset = 0;
-            while (offset < chunk.value.length) {
-                let delta = chunk.value.length - offset;
+            while (offset < chunk.length) {
+                let delta = chunk.length - offset;
                 if (delta > bufferSize)
                     delta = bufferSize;
-                module.HEAP8.set(chunk.value.slice(offset, offset + delta), buffer);
+                module.HEAP8.set(chunk.slice(offset, offset + delta), buffer);
                 offset += delta;
                 if (!processChunk(delta))
                     onError('Processing error');
             }
-            setTimeout(readChunk, 0);
+            //setTimeout(readChunk, 0);
         }
 
         function processChunk(chunkLen) {
@@ -113,9 +116,10 @@ class UniversalImageJXL extends HTMLImageElement {
         decoder = module._jxlCreateInstance(true, 100);
         if (decoder < 4)
             return onError('Cannot create decoder');
+          
         buffer = module._malloc(bufferSize);
-        reader = res.body.getReader();
-        readChunk();
+        //reader = res.body.getReader();
+        onChunk(buffer_u8);
     }
 
     async connectedCallback() {

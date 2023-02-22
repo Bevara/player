@@ -32,6 +32,15 @@ class buffer {
     size() {
         return this.buffer_u8.length;
     }
+
+    get HEAPU8(){
+        return new Uint8Array(this.buffer_u8.buffer);
+    }
+
+    get HEAP32(){
+        return new Int32Array(this.buffer_u8.buffer);
+    }
+
 }
 
 class fileio {

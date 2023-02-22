@@ -2200,5 +2200,74 @@ add_filter(bsagg
         ""
         "")
 
+SET(JXLDEC_SRC
+        ${CMAKE_SOURCE_DIR}/filters/jxl/dec_jxl.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
+        ${GPAC_LOCATION}/src/utils/constants.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
+)
+
+SET(JXLDEC_LIB
+        ${THIRD_PARTIES_BINARIES}/libjxl/lib/libjxl.a
+        ${THIRD_PARTIES_BINARIES}/libjxl/third_party/highway/libhwy.a
+        ${THIRD_PARTIES_BINARIES}/brotli/libbrotlidec.a
+        ${THIRD_PARTIES_BINARIES}/brotli/libbrotlicommon.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc++.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc++abi.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
+SET(JXLDEC_INC
+        ${THIRD_PARTIES}/libjxl/lib/include
+        ${THIRD_PARTIES_BINARIES}/libjxl/lib/include
+)
+
+add_filter(jxldec
+        "${JXLDEC_SRC}"
+        "${JXLDEC_LIB}"
+        _jxldec_register
+        ""
+        "${JXLDEC_INC}"
+        "")
+
+SET(RFJXL_SRC
+        ${CMAKE_SOURCE_DIR}/filters/jxl/reframe_jxl.c
+        ${GPAC_LOCATION}/src/filter_core/filter.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
+        ${GPAC_LOCATION}/src/filter_core/filter_props.c
+        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
+        ${GPAC_LOCATION}/src/filter_core/filter_session.c
+        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c
+        ${GPAC_LOCATION}/src/utils/alloc.c
+        ${GPAC_LOCATION}/src/utils/constants.c
+        ${GPAC_LOCATION}/src/utils/list.c
+        ${GPAC_LOCATION}/src/utils/os_thread.c
+        ${GPAC_LOCATION}/src/utils/os_divers.c
+)
+
+SET(RFJXL_LIB
+        ${THIRD_PARTIES_BINARIES}/libjxl/lib/libjxl.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
+add_filter(rfjxl
+        "${RFJXL_SRC}"
+        "${RFJXL_LIB}"
+        _jxl_reframe_register
+        ""
+        "${JXLDEC_INC}"
+        "")
+
 # Should always be at the end of this file
 set(WASM_FILES ${WASM_FILES} PARENT_SCOPE)

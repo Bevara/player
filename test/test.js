@@ -164,6 +164,21 @@ describe('core-player', () => {
 
   });
 
+  describe('#jxldec', () => {
+  it('should decode test.jxl', (done) => {
+        create_test('img',
+          'universal-img',
+          "core-img.wasm",
+          "rfjxl.wasm;jxldec.wasm;fin.wasm;fout.wasm;pngenc.wasm;writegen.wasm",
+          "http://bevara.ddns.net/test-signals/JXL/test.jxl",
+          "http://bevara.ddns.net/test-signals/out/jxl/test.png",
+          done,
+          "png",
+          false
+        );
+      }).timeout(5000);
+  });
+
   describe('#svgplay', () => {
     it('should decode 410.svg', (done) => {
       create_test('img',
