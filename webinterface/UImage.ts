@@ -16,7 +16,7 @@ class UniversalImage extends HTMLImageElement {
     with_attribute: string[];
     print_attribute: Element | null;
     error_attribute: Element | null;
-    out = "png";
+    out = "rgba";
     useCache = false;
     cache = null;
 
@@ -128,6 +128,11 @@ class UniversalImage extends HTMLImageElement {
                 const props = [];
                 if (self.hasAttribute("connections")) {
                     props.push("connections");
+                }
+
+                if (self.out == "rgba" || self.out == "rgb"){
+                    props.push("width");
+                    props.push("height");
                 }
 
                 const get_args = JSON.stringify(props);
