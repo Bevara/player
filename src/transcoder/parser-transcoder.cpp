@@ -88,15 +88,25 @@ extern "C" const char *parse_get_session(Entry *entry, const char *json)
     }
     else if (strcmp(property, "width") == 0)
     {
+      u32 width = 0;
       GF_FilterPid* ipid = gf_filter_get_ipid(entry->dst, 0);
-      const GF_PropertyValue * p = gf_filter_pid_get_property(ipid, GF_PROP_PID_WIDTH);
-      out.AddMember(Value("width"), Value(p->value.uint), out.GetAllocator());
+      if (ipid){
+        const GF_PropertyValue * p = gf_filter_pid_get_property(ipid, GF_PROP_PID_WIDTH);
+        width = p->value.uint;
+      }
+
+      out.AddMember(Value("width"), Value(width), out.GetAllocator());
     }
     else if (strcmp(property, "height") == 0)
     {
+      u32 height = 0;
       GF_FilterPid* ipid = gf_filter_get_ipid(entry->dst, 0);
-      const GF_PropertyValue * p = gf_filter_pid_get_property(ipid, GF_PROP_PID_HEIGHT);
-      out.AddMember(Value("height"), Value(p->value.uint), out.GetAllocator());
+      if (ipid){
+        const GF_PropertyValue * p = gf_filter_pid_get_property(ipid, GF_PROP_PID_HEIGHT);
+        height = p->value.uint;
+      }
+
+      out.AddMember(Value("height"), Value(height), out.GetAllocator());
     }
   }
 
