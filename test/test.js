@@ -98,7 +98,7 @@ describe('core-player', () => {
   });
   
   describe('#j2kdec', () => {
-    it('should decode Cevennes2.jp2', (done) => {
+    it('should transcode Cevennes2.jp2 to png', (done) => {
       create_test('img',
         'universal-img',
         "core-img.wasm",
@@ -107,6 +107,19 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/j2k/Cevennes2.png",
         done,
         "png",
+        false
+      );
+    }).timeout(5000);
+
+    it('should transcode Cevennes2.jp2 to canvas', (done) => {
+      create_test('img',
+        'universal-img',
+        "core-img.wasm",
+        "fin.wasm;fout.wasm;rfimg.wasm;writegen.wasm;j2kdec.wasm",
+        "http://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2",
+        "http://bevara.ddns.net/test-signals/out/j2k/cevennes2_canvas.png",
+        done,
+        "rgb",
         false
       );
     }).timeout(5000);

@@ -35,6 +35,7 @@
 	"with":{
 		"jp2": "fin.wasm;fout.wasm;pngenc.wasm;rfimg.wasm;writegen.wasm;j2kdec.wasm",
 		"j2k":"fout.wasm;j2kdec.wasm;ffdmx.wasm;writegen.wasm;pngenc.wasm",
+		"jxl":"rfjxl.wasm;jxldec.wasm;fin.wasm;fout.wasm;pngenc.wasm;writegen.wasm",
 		"ac3": "fin.wasm;fout.wasm;writegen.wasm;rfac3.wasm;a52dec.wasm",
 		"amr": "rfamr.wasm;writegen.wasm;resample.wasm;ffdec.wasm;rfamr.wasm;fin.wasm;fout.wasm",
 		"flac": "fin.wasm;fout.wasm;writegen.wasm;rfflac.wasm;ffdec.wasm",

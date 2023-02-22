@@ -16,7 +16,7 @@ class UniversalImage extends HTMLImageElement {
     with_attribute: string[];
     print_attribute: Element | null;
     error_attribute: Element | null;
-    out = "rgb";
+    out = "png";
     useCache = false;
     cache = null;
 
@@ -154,6 +154,7 @@ class UniversalImage extends HTMLImageElement {
                     canvas.getContext('2d').putImageData(imgData, 0, 0);
                     canvas.toBlob(blob => {
                         this.dataURLToSrc(self, blob, false);
+                        main_resolve(self.srcset);
                     });
                 } else if (self.out == "rgb"){
                     const canvas = document.createElement('canvas');
@@ -176,6 +177,7 @@ class UniversalImage extends HTMLImageElement {
 
                     canvas.toBlob(blob => {
                         this.dataURLToSrc(self, blob, false);
+                        main_resolve(self.srcset);
                     });
                 }else {
                     this.dataURLToSrc(self, new Blob([buffer_out.HEAPU8], { type: "image/"+this.out}), false);

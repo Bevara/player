@@ -3,7 +3,7 @@ import {UniversalImage} from "./UImage";
 if (!customElements.get('universal-img')) {
     customElements.define('universal-img', UniversalImage, { extends: 'img' });
 }
-/*
+
 import {UniversalAudio} from "./UAudio";
 
 if (!customElements.get('universal-audio')) {
@@ -21,7 +21,7 @@ import {UniversalCanvas} from "./UCanvas";
 
 if (!customElements.get('universal-canvas')) {
     customElements.define('universal-canvas', UniversalCanvas, {extends: 'canvas' });
-}*/
+}
 /*
 import {UniversalImageJXL} from "./UImageJXL";
 
