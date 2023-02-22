@@ -22,6 +22,8 @@ typedef struct
 typedef struct _Entry
 {
   GF_FilterSession *session;
+  GF_Filter* src;
+  GF_Filter* dst;
 } Entry;
 
 void parse_set_session(Entry* entry, const char *json);

@@ -148,11 +148,11 @@ class UniversalImage extends HTMLImageElement {
 
                 if (self.out == "rgba"){
                     const canvas = document.createElement('canvas');
-                    canvas.width = 1024;
-                    canvas.height = 1280;
+                    canvas.width = json_res_parsed.width;
+                    canvas.height = json_res_parsed.height;
                     const bufferu8 = buffer_out.HEAPU8;
                     console.log(bufferu8.length);
-                    const imgData = new ImageData(new Uint8ClampedArray(bufferu8), canvas.width, canvas.height );
+                    const imgData = new ImageData(new Uint8ClampedArray(bufferu8), json_res_parsed.width, json_res_parsed.height );
                     canvas.getContext('2d').putImageData(imgData, 0, 0);
                     canvas.toBlob(blob => {
                         this.dataURLToSrc(self, blob, false);

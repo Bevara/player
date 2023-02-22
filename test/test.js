@@ -165,7 +165,7 @@ describe('core-player', () => {
   });
 
   describe('#jxldec', () => {
-  it('should decode test.jxl', (done) => {
+  it('should decode test.jxl to png', (done) => {
         create_test('img',
           'universal-img',
           "core-img.wasm",
@@ -174,6 +174,19 @@ describe('core-player', () => {
           "http://bevara.ddns.net/test-signals/out/jxl/test.png",
           done,
           "png",
+          false
+        );
+      }).timeout(5000);
+
+      it('should decode test.jxl to canvas', (done) => {
+        create_test('img',
+          'universal-img',
+          "core-img.wasm",
+          "rfjxl.wasm;jxldec.wasm;fin.wasm;fout.wasm;writegen.wasm",
+          "http://bevara.ddns.net/test-signals/JXL/test.jxl",
+          "http://bevara.ddns.net/test-signals/out/jxl/canvas.png",
+          done,
+          "rgba",
           false
         );
       }).timeout(5000);

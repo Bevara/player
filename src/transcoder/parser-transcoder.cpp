@@ -30,7 +30,7 @@ extern "C" void parse_set_session(Entry *entry, const char *json)
     assert(document["io_in"].IsString());
     const char *io_in = document["io_in"].GetString();
 
-    gf_fs_load_source(entry->session, io_in, NULL, NULL, &err);
+    entry->src = gf_fs_load_source(entry->session, io_in, NULL, NULL, &err);
     if (err)
     {
       fprintf(stderr, "session error %s\n", gf_error_to_string(err));
@@ -56,7 +56,7 @@ extern "C" void parse_set_session(Entry *entry, const char *json)
     assert(document["io_out"].IsString());
     const char *io_out = document["io_out"].GetString();
 
-    gf_fs_load_destination(entry->session, io_out, NULL, NULL, &err);
+    entry->dst = gf_fs_load_destination(entry->session, io_out, NULL, NULL, &err);
     if (err)
     {
       fprintf(stderr, "session error %s\n", gf_error_to_string(err));
@@ -85,6 +85,18 @@ extern "C" const char *parse_get_session(Entry *entry, const char *json)
     if (strcmp(property, "connections") == 0)
     {
       gf_fs_print_connections(entry->session);
+    }
+    else if (strcmp(property, "width") == 0)
+    {
+      GF_FilterPid* ipid = gf_filter_get_ipid(entry->dst, 0);
+      const GF_PropertyValue * p = gf_filter_pid_get_property(ipid, GF_PROP_PID_WIDTH);
+      out.AddMember(Value("width"), Value(p->value.uint), out.GetAllocator());
+    }
+    else if (strcmp(property, "height") == 0)
+    {
+      GF_FilterPid* ipid = gf_filter_get_ipid(entry->dst, 0);
+      const GF_PropertyValue * p = gf_filter_pid_get_property(ipid, GF_PROP_PID_HEIGHT);
+      out.AddMember(Value("height"), Value(p->value.uint), out.GetAllocator());
     }
   }
 
