@@ -14,6 +14,7 @@ class UniversalVideo extends HTMLVideoElement {
     error_attribute: Element | null;
     out = "mp4";
     useCache = false;
+    printProgess = false;
     cache = null;
 
     private _decodingPromise: Promise<string>;
@@ -81,7 +82,7 @@ class UniversalVideo extends HTMLVideoElement {
             const print = this.print();
             const printErr = this.printErr();
 
-            this.io = new fileio(self.src, "out." + this.out, this.using_attribute, this.with_attribute, this.print());
+            this.io = new fileio(self.src, "out." + this.out, this.using_attribute, this.with_attribute, this.print(),this.printProgess);
             print("Downloading...");
             await this.io.startDownload();
             print("Downloading complete.");
@@ -183,6 +184,9 @@ class UniversalVideo extends HTMLVideoElement {
                 break;
             case 'use-cache':
                 this.useCache = true;
+                break;
+            case 'progress':
+                this.printProgess = true;
                 break;
         }
     }

@@ -18,6 +18,7 @@ class UniversalImage extends HTMLImageElement {
     error_attribute: Element | null;
     out = "png";
     useCache = false;
+    printProgess = false;
     cache = null;
 
     private _decodingPromise: Promise<string>;
@@ -86,7 +87,7 @@ class UniversalImage extends HTMLImageElement {
             const print = this.print();
             const printErr = this.printErr();
 
-            this.io = new fileio(self.src, "out."+this.out, this.using_attribute, this.with_attribute, this.print());
+            this.io = new fileio(self.src, "out."+this.out, this.using_attribute, this.with_attribute, this.print(),this.printProgess);
             print("Downloading...");
             await this.io.startDownload();
             print("Downloading complete.");
@@ -227,10 +228,13 @@ class UniversalImage extends HTMLImageElement {
             case 'use-cache':
                 this.useCache = true;
                 break;
+            case 'progress':
+                this.printProgess = true;
+                break;
         }
     }
 
-    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache']; }
+    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress']; }
 }
 
 if (!customElements.get('universal-img')) {

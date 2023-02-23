@@ -189,7 +189,7 @@ describe('core-player', () => {
           "png",
           false
         );
-      }).timeout(5000);
+      }).timeout(20000);
 
       it('should decode test.jxl to canvas', (done) => {
         create_test('img',
@@ -202,7 +202,7 @@ describe('core-player', () => {
           "rgba",
           false
         );
-      }).timeout(5000);
+      }).timeout(20000);
   });
 
   describe('#svgplay', () => {

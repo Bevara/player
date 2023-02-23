@@ -15,6 +15,7 @@ class UniversalAudio extends HTMLAudioElement {
     error_attribute: Element | null;
     out = "wav";
     useCache = false;
+    printProgess = false;
     cache = null;
 
     private _decodingPromise: Promise<string>;
@@ -57,7 +58,7 @@ class UniversalAudio extends HTMLAudioElement {
     }
 
     dataURLToSrc(self, blob, cached) {
-        if (self.useCache && self.cache && !cached){
+        if (self.useCache && self.cache && !cached) {
             self.cache.put(self.src, new Response(blob));
         }
 
@@ -68,21 +69,21 @@ class UniversalAudio extends HTMLAudioElement {
         return new Promise(async (main_resolve, _main_reject) => {
             if (self.useCache) {
                 try {
-                  self.cache = self.cache || await caches.open('universal-audio');
-                } catch (e) {}
+                    self.cache = self.cache || await caches.open('universal-audio');
+                } catch (e) { }
                 const cachedImg = self.cache && await self.cache.match(self.src);
                 if (cachedImg) {
-                  const cachedImgData = await cachedImg.blob();
-                  this.dataURLToSrc(self, cachedImgData, true);
-                  main_resolve(self.srcset);
-                  return;
+                    const cachedImgData = await cachedImg.blob();
+                    this.dataURLToSrc(self, cachedImgData, true);
+                    main_resolve(self.srcset);
+                    return;
                 }
             }
 
             const print = this.print();
             const printErr = this.printErr();
 
-            this.io = new fileio(self.src, "out." + this.out, this.using_attribute, this.with_attribute, this.print());
+            this.io = new fileio(self.src, "out." + this.out, this.using_attribute, this.with_attribute, this.print(),this.printProgess);
             print("Downloading...");
             await this.io.startDownload();
             print("Downloading complete.");
@@ -183,6 +184,9 @@ class UniversalAudio extends HTMLAudioElement {
                 break;
             case 'use-cache':
                 this.useCache = true;
+                break;
+            case 'progress':
+                this.printProgess = true;
                 break;
         }
     }

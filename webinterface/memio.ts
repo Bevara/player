@@ -67,12 +67,14 @@ class fileio {
     readonly SEEK_END = 2;
 
     print:any;
+    print_progress:boolean;
 
-    constructor(in_url, out_url, using_attribute, with_attribute, print) {
+    constructor(in_url, out_url, using_attribute, with_attribute, print, print_progress) {
         this.in_url = in_url;
         this.out_url = out_url;
         location.using = using_attribute;
         this.print = print;
+        this.print_progress = print_progress;
         this._with_attribute = Array.isArray(with_attribute) ? with_attribute.map(x => scriptDirectory + x) : [];
         this.createIO();
     }
