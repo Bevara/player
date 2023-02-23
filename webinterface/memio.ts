@@ -83,8 +83,10 @@ class fileio {
         this.read = function (fileio, buffer, bytes) {
             const ioctx_id = this.module._gf_fileio_get_udta(fileio);
             const mem = this.io_ctxs[ioctx_id];
-
-            this.print("Reading from "+mem.p+" to "+ (mem.p+bytes) +" of "+mem.buffer_u8.length +" bytes in total.");
+            if (this.print_progress){
+                this.print("Reading from "+mem.p+" to "+ (mem.p+bytes) +" of "+mem.buffer_u8.length +" bytes in total.");
+            }
+            
             let remaining = mem.buffer_u8.length - mem.p;
 
             if (bytes > remaining) {
@@ -114,7 +116,9 @@ class fileio {
                 mem.buffer_u8.set(old_buffer);
             }
             
-            this.print("Writing from "+mem.p+" to "+ (mem.p+bytes) +" of "+mem.buffer_u8.length +" bytes in total.");
+            if (this.print_progress){
+                this.print("Writing from "+mem.p+" to "+ (mem.p+bytes) +" of "+mem.buffer_u8.length +" bytes in total.");
+            }
 
             mem.buffer_u8.set(this.module.HEAPU8.slice(buffer, buffer + bytes), mem.p);
             mem.p += bytes;
