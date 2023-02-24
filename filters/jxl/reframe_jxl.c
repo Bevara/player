@@ -123,13 +123,6 @@ GF_Err rfjxl_process(GF_Filter *filter)
 	u32 i, j, irow, in_stride, out_stride;
 	GF_BitStream *bs;
 
-	const char *ext, *mime;
-	const GF_PropertyValue *prop;
-	prop = gf_filter_pid_get_property(ctx->ipid, GF_PROP_PID_FILE_EXT);
-	ext = (prop && prop->value.string) ? prop->value.string : "";
-	prop = gf_filter_pid_get_property(ctx->ipid, GF_PROP_PID_MIME);
-	mime = (prop && prop->value.string) ? prop->value.string : "";
-
 	pck = gf_filter_pid_get_packet(ctx->ipid);
 	if (!pck)
 	{
@@ -146,7 +139,6 @@ GF_Err rfjxl_process(GF_Filter *filter)
 
 	if (!ctx->opid || !ctx->codec_id)
 	{
-		const char *ext, *mime;
 		const GF_PropertyValue *prop;
 		u32 codecid = 0;
 
@@ -223,9 +215,6 @@ GF_Err rfjxl_process(GF_Filter *filter)
 
 		gf_filter_pid_set_property(ctx->opid, GF_PROP_PID_NB_FRAMES, &PROP_UINT(1));
 		gf_filter_pid_set_property(ctx->opid, GF_PROP_PID_PLAYBACK_MODE, &PROP_UINT(GF_PLAYBACK_MODE_FASTFORWARD));
-
-		if (ext || mime)
-			gf_filter_pid_set_property(ctx->opid, GF_PROP_PID_CAN_DATAREF, & PROP_BOOL(GF_TRUE ) );
 
 		JxlDecoderReleaseInput(decoder);
 		JxlDecoderDestroy(decoder);
