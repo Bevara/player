@@ -108,7 +108,7 @@ class UniversalVideo extends HTMLVideoElement {
                 args["enc"] = "enc:c=avc";
 
                 // Set input filters
-                args["filters"] = self.module.filter_entries.map(entry => self.module["_" + entry](0));
+                args["filters"] = self.module.filter_entries.map(entry => self.module[entry](0));
 
 
                 // Convert json to string buffer

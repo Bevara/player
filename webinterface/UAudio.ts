@@ -107,7 +107,7 @@ class UniversalAudio extends HTMLAudioElement {
                 args["io_out"] = buffer_out.file_io;
 
                 // Set input filters
-                args["filters"] = self.module.filter_entries.map(entry => self.module["_" + entry](0));
+                args["filters"] = self.module.filter_entries.map(entry => self.module[entry](0));
 
 
 
