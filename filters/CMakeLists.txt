@@ -112,7 +112,6 @@ SET(IMG_DEC_SRC
 if(DEBUG_MODE)
         SET(PNG_LIB
                 ${THIRD_PARTIES_BINARIES}/libpng/libpng16d.a
-                ${THIRD_PARTIES_BINARIES}/libpng/libpng16.a
         )
 else()
         SET(PNG_LIB
