@@ -5259,7 +5259,7 @@ var Module = (() => {
         // full 4GB Wasm memories, the size will wrap back to 0 bytes in Wasm side
         // for any code that deals with heap sizes, which would require special
         // casing all heap size related code to treat 0 specially.
-        return 2147483648;
+        return 2147483648 * 10;
       }
 
       function emscripten_realloc_buffer(size) {

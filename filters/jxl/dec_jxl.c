@@ -45,6 +45,7 @@ static GF_Err jxldec_configure_pid(GF_Filter *filter, GF_FilterPid *pid, Bool is
     // copy properties at init or reconfig
     gf_filter_pid_copy_properties(ctx->opid, ctx->ipid);
     gf_filter_pid_set_property(ctx->opid, GF_PROP_PID_CODECID, &PROP_UINT(GF_CODECID_RAW));
+    gf_filter_pid_set_property(ctx->opid, GF_PROP_PID_PIXFMT, &PROP_UINT(GF_PIXEL_RGBA));
 
     return GF_OK;
 }
@@ -87,8 +88,7 @@ static GF_Err jxldec_process(GF_Filter *filter)
     JxlDecoder *decoder = JxlDecoderCreate(0);
 
     JxlDecoderStatus status = JxlDecoderSubscribeEvents(
-        decoder, JXL_DEC_COLOR_ENCODING | JXL_DEC_FULL_IMAGE |
-                          JXL_DEC_FRAME_PROGRESSION);
+        decoder, JXL_DEC_COLOR_ENCODING | JXL_DEC_FULL_IMAGE);
     if (JXL_DEC_SUCCESS != status)
     {
         GF_LOG(GF_LOG_ERROR, GF_LOG_CODEC, ("[JXL OUTPUT MESSAGE]: JxlDecoderSubscribeEvents failed\n"));
@@ -120,12 +120,6 @@ static GF_Err jxldec_process(GF_Filter *filter)
             JxlDecoderReleaseInput(decoder);
             JxlDecoderDestroy(decoder);
             return GF_OK; // ¯\_(ツ)_/¯
-        }
-        else if (JXL_DEC_FRAME_PROGRESSION == status)
-        {
-            JxlDecoderReleaseInput(decoder);
-            JxlDecoderDestroy(decoder);
-            return GF_OK; // ready to flush; client will decide whether it is necessary
         }
         else if (JXL_DEC_NEED_MORE_INPUT == status)
         {

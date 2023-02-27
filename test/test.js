@@ -191,6 +191,48 @@ describe('core-player', () => {
         );
       }).timeout(20000);
 
+      it('should decode test2.jxl to png', (done) => {
+        create_test('img',
+          'universal-img',
+          "core-img.wasm",
+          "rfjxl.wasm;jxldec.wasm;fin.wasm;fout.wasm;pngenc.wasm;writegen.wasm",
+          "http://bevara.ddns.net/test-signals/JXL/test2.jxl",
+          "http://bevara.ddns.net/test-signals/out/jxl/test2.png",
+          done,
+          "png",
+          false
+        );
+      }).timeout(20000);
+
+      it('should decode test3.jxl to png', (done) => {
+        create_test('img',
+          'universal-img',
+          "core-img.wasm",
+          "rfjxl.wasm;jxldec.wasm;fin.wasm;fout.wasm;pngenc.wasm;writegen.wasm",
+          "http://bevara.ddns.net/test-signals/JXL/test3.jxl",
+          "http://bevara.ddns.net/test-signals/out/jxl/test3.png",
+          done,
+          "png",
+          false
+        );
+      }).timeout(20000);
+
+      it('should decode red-room.jxl to png', (done) => {
+        create_test('img',
+          'universal-img',
+          "core-img.wasm",
+          "rfjxl.wasm;jxldec.wasm;fin.wasm;fout.wasm;pngenc.wasm;writegen.wasm",
+          "http://bevara.ddns.net/test-signals/JXL/red-room.jxl",
+          "http://bevara.ddns.net/test-signals/out/jxl/red-room.png",
+          done,
+          "png",
+          false
+        );
+      }).timeout(20000);
+
+
+
+
       it('should decode test.jxl to canvas', (done) => {
         create_test('img',
           'universal-img',

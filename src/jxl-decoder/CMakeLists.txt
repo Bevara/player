@@ -30,6 +30,6 @@ target_link_libraries(jxl-decoder
   libgpac_static.a
   ${THIRD_PARTIES_BUILD}/libjxl/lib/libjxl.a
   ${THIRD_PARTIES_BUILD}/libjxl/third_party/highway/libhwy.a
-  ${THIRD_PARTIES_BUILD}/brotli/libbrotlidec.a
-  ${THIRD_PARTIES_BUILD}/brotli/libbrotlicommon.a
+  ${THIRD_PARTIES_BUILD}/libjxl/third_party/brotli/libbrotlicommon-static.a
+  ${THIRD_PARTIES_BUILD}/libjxl/third_party/brotli/libbrotlidec-static.a
 )
