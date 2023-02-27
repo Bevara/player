@@ -1075,9 +1075,14 @@ SET(MP4DMX_SRC
         ${GPAC_LOCATION}/src/odf/slc.c
 )
 
+SET(MP4DMX_LIB
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc.a
+        ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libemmalloc.a
+)
+
 add_filter(mp4dmx
         "${MP4DMX_SRC}"
-        ""
+        "${MP4DMX_LIB}"
         _isoffin_register
         ""
         ""
