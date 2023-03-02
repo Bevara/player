@@ -34,11 +34,11 @@ class buffer {
     }
 
     get HEAPU8(){
-        return new Uint8Array(this.buffer_u8.buffer);
+        return this.buffer_u8?new Uint8Array(this.buffer_u8.buffer) : new Uint8Array();
     }
 
     get HEAP32(){
-        return new Int32Array(this.buffer_u8.buffer);
+        return this.buffer_u8? new Int32Array(this.buffer_u8.buffer): new Int32Array();
     }
 
 }
