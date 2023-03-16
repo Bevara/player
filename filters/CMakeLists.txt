@@ -318,7 +318,7 @@ SET(RFMP3_LIB
 add_filter(rfmp3
         "${RFMP3_SRC}"
         "${RFMP3_LIB}"
-        _mp3_dmx_register
+        _dynCall_mp3_dmx_register
         ""
         ${GPAC_LOCATION}/include
         "")
@@ -347,7 +347,7 @@ SET(MADDEC_LIB
 add_filter(maddec
         "${MADDEC_SRC}"
         "${MADDEC_LIB}"        
-        _maddec_register
+        _dynCall_maddec_register
         GPAC_HAS_MAD
         ${THIRD_PARTIES_BINARIES}/libmad
         "")
@@ -380,7 +380,7 @@ SET(RFAC3_LIB
 add_filter(rfac3
         "${RFAC3_SRC}"
         "${RFAC3_LIB}"
-        _ac3dmx_register
+        _dynCall_ac3dmx_register
         ""
         ${GPAC_LOCATION}/include
         "")
@@ -416,7 +416,7 @@ SET(FAAD_LIB
 add_filter(faaddec
         "${FAAD_SRC}"
         "${FAAD_LIB}"
-        _faad_register
+        _dynCall_faad_register
         GPAC_HAS_FAAD
         "${FAAD_INCLUDE}"
         "")
@@ -449,7 +449,7 @@ SET(A52DEC_LIB
 add_filter(a52dec
         "${A52DEC_SRC}"
         "${A52DEC_LIB}"
-        _a52dec_register
+        _dynCall_a52dec_register
         GPAC_HAS_LIBA52
         "${A52DEC_INCLUDE}"
         "")
@@ -530,7 +530,7 @@ SET(FFDEC_LIB
 add_filter(ffdec
         "${FFDEC_SRC}"
         "${FFDEC_LIB}"
-        _ffdec_register
+        _dynCall_ffdec_register
         GPAC_HAS_FFMPEG
         "${FF_INCLUDE}"
         "")
@@ -743,7 +743,7 @@ SET(RFFLAC_LIB
 add_filter(rfflac
         "${RFFLAC_SRC}"
         "${RFFLAC_LIB}"
-        _flac_dmx_register
+        _dynCall_flac_dmx_register
         ""
         ""
         "")
@@ -776,7 +776,7 @@ SET(OGGDMX_LIB
 add_filter(oggdmx
         "${OGGDMX_SRC}"
         "${OGGDMX_LIB}"
-        _oggdmx_register
+        _dynCall_oggdmx_register
         ""
         ""
         "")
@@ -814,7 +814,7 @@ SET(VORBISDEC_LIB
 add_filter(vorbisdec
         "${VORBISDEC_SRC}"
         "${VORBISDEC_LIB}"
-        _vorbisdec_register
+        _dynCall_vorbisdec_register
         GPAC_HAS_VORBIS
         "${VORBISDEC_INCLUDE}"
         "")
@@ -925,7 +925,7 @@ SET(RFADTS_LIB
 add_filter(rfadts
         "${RFADTS_SRC}"
         "${RFADTS_LIB}"
-        _adts_dmx_register
+        _dynCall_adts_dmx_register
         ""
         ""
         "")
@@ -954,7 +954,7 @@ SET(RFAMR_LIB
 add_filter(rfamr
         "${RFAMR_SRC}"
         "${RFAMR_LIB}"
-        _amrdmx_register
+        _dynCall_amrdmx_register
         ""
         ""
         "")
@@ -1315,7 +1315,7 @@ SET(COMPOSE_LIB
 add_filter(compose
         "${COMPOSE_SRC}"
         "${COMPOSE_LIB}"
-        _compose_filter_register
+        _dynCall_compose_filter_register
         ""
         ""
         "")
@@ -1607,7 +1607,7 @@ SET(RESAMPLE_SRC
 add_filter(resample
         "${RESAMPLE_SRC}"
         "${RESAMPLE_LIB}"
-        _resample_register
+        _dynCall_resample_register
         ""
         ""
         "")
@@ -1910,7 +1910,7 @@ SET(SVGIN_SRC
 add_filter(svgplay
         "${SVGIN_SRC}"
         "${SVG_LIBS}"
-        _svgin_register
+        _dynCall_svgin_register
         ""
         ""
         "")
@@ -2239,7 +2239,7 @@ SET(JXLDEC_INC
 add_filter(jxldec
         "${JXLDEC_SRC}"
         "${JXLDEC_LIB}"
-        _jxldec_register
+        _dynCall_jxldec_register
         ""
         "${JXLDEC_INC}"
         "")
@@ -2269,7 +2269,7 @@ SET(RFJXL_LIB
 add_filter(rfjxl
         "${RFJXL_SRC}"
         "${RFJXL_LIB}"
-        _jxl_reframe_register
+        _dynCall_jxl_reframe_register
         ""
         "${JXLDEC_INC}"
         "")

@@ -4,19 +4,24 @@ import { fileio } from "./memio";
 
 class UniversalAudio extends HTMLAudioElement {
     using: string;
+    memory: Uint8Array;
+
     with: string;
 
     entry: any;
     module: any;
-    io: fileio;
+
     using_attribute: string;
     with_attribute: string[];
     print_attribute: Element | null;
     error_attribute: Element | null;
+
     out = "wav";
+    scriptDirectory = "";
     useCache = false;
     printProgess = false;
     cache = null;
+    worker = null;
 
     private _decodingPromise: Promise<string>;
 
@@ -75,72 +80,15 @@ class UniversalAudio extends HTMLAudioElement {
                 if (cachedImg) {
                     const cachedImgData = await cachedImg.blob();
                     this.dataURLToSrc(self, cachedImgData, true);
-                    main_resolve(self.srcset);
+                    main_resolve(self.src);
                     return;
                 }
             }
 
-            const print = this.print();
-            const printErr = this.printErr();
-
-            this.io = new fileio(self.src, "out." + this.out, this.using_attribute, this.with_attribute, this.print(),this.printProgess);
-            print("Downloading...");
-            await this.io.startDownload();
-            print("Downloading complete.");
-            print("Building decoder...");
-            new (Module as any)({
-                dynamicLibraries: this.io.with_attribute,
-                print: function () {
-                    return print;
-                }(),
-                printErr: function () {
-                    return printErr;
-                }()
-            }).then(module => {
-                print("Building complete.");
-                self.module = module;
-                self.io.module = module;
-                self.entry = self.module._constructor();
-                let buffer_in = self.io.fileio_in;
-                let buffer_out = self.io.fileio_out;
-                args["io_in"] = buffer_in.file_io;
-                args["io_out"] = buffer_out.file_io;
-
-                // Set input filters
-                args["filters"] = self.module.filter_entries.map(entry => self.module[entry](0));
-
-
-
-                // Convert json to string buffer
-                const json_args = JSON.stringify(args);
-                const len_args = (json_args.length << 2) + 1;
-                const ptr_args = self.module.stackAlloc(len_args);
-                self.module.stringToUTF8(json_args, ptr_args, len_args);
-
-                // Call set function and decode
-                print("Transcoding to " + this.out + "...");
-                self.module._set(self.entry, ptr_args);
-                print("Transcoding complete.");
-
-                // Retrieve result
-                const props = [];
-                if (self.hasAttribute("connections")) {
-                    props.push("connections");
-                }
-
-                const get_args = JSON.stringify(props);
-
-                const get_args_len = (get_args.length << 2) + 1;
-                const ptr_get_args = self.module.stackAlloc(get_args_len);
-
-                self.module.stringToUTF8(get_args, ptr_get_args, get_args_len);
-
-                const ptr_data = self.module._get(self.entry, ptr_get_args);
-                const json_res = self.module.UTF8ToString(ptr_data);
-                const json_res_parsed = JSON.parse(json_res);
-
-                this.dataURLToSrc(self, new Blob([buffer_out.buffer_u8], { type: "audio/wave" }), false);
-                self.load();
+            self.worker = new Worker(this.scriptDirectory+ this.using_attribute+'.js');
+            self.worker.postMessage({in:self.src, out:this.out, dynamicLibraries: this.with_attribute});
+            self.worker.addEventListener('message', m => {
+                this.dataURLToSrc(self, m.data.blob, false);
                 main_resolve(self.src);
             });
         });
@@ -157,10 +105,11 @@ class UniversalAudio extends HTMLAudioElement {
         this._decodingPromise = this.universal_decode(this, args);
     }
 
-    /*
-        disconnectedCallback() {
-    
-        }*/
+    disconnectedCallback() {
+        if (this.worker) {
+            this.worker.terminate();
+        }
+    }
 
     attributeChangedCallback(name: string, oldValue: string, newValue: string) {
         if (oldValue === newValue) return;
@@ -171,7 +120,7 @@ class UniversalAudio extends HTMLAudioElement {
                 this.using_attribute = this.getAttribute("using");
                 break;
             case 'with':
-                this.with_attribute = this.getAttribute("with").split(';');
+                this.with_attribute = this.getAttribute("with").split(';').map(x => x + ".wasm");
                 break;
             case 'print':
                 this.print_attribute = document.querySelector(this.getAttribute("print"));
@@ -188,10 +137,13 @@ class UniversalAudio extends HTMLAudioElement {
             case 'progress':
                 this.printProgess = true;
                 break;
+            case 'script-directory':
+                this.scriptDirectory = this.getAttribute("script-directory");
+                break;
         }
     }
 
-    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache']; }
+    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress', 'script-directory']; }
 }
 
 if (!customElements.get('universal-audio')) {

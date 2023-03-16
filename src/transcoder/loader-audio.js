@@ -369,7 +369,6 @@ class fileio {
 
 
 addEventListener("message", async a => {
-	location.using = "core-img.wasm";
 	const module = await Module({ dynamicLibraries: a.data.dynamicLibraries });
 
 	const io = new fileio(a.data.in, "out." + a.data.out, module);
@@ -405,5 +404,5 @@ addEventListener("message", async a => {
 	const json_res = module.UTF8ToString(ptr_data);
 	const json_res_parsed = JSON.parse(json_res);
 
-	postMessage({ blob: new Blob([buffer_out.HEAPU8], { type: "image/" + this.out }) });
+	postMessage({ blob: new Blob([buffer_out.HEAPU8], { type: "audio/" + this.out }) });	
 });

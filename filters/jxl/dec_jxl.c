@@ -225,7 +225,7 @@ GF_FilterRegister JXLDecoderRegister = {
     .process = jxldec_process,
 };
 
-const GF_FilterRegister *jxldec_register(GF_FilterSession *session)
+const GF_FilterRegister *dynCall_jxldec_register(GF_FilterSession *session)
 {
     return &JXLDecoderRegister;
 }

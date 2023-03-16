@@ -15,18 +15,22 @@ SET(EXTERNAL_RUNTIME
   "['stringToUTF8','UTF8ToString','stackAlloc','addFunction','getTempRet0']"
 )
 
-SET(JS_RUNTIME
-  ${CMAKE_SOURCE_DIR}/src/transcoder/loader.js
+SET(JS_RUNTIME_IMG
+  ${CMAKE_SOURCE_DIR}/src/transcoder/loader-img.js
 )
 
 set_target_properties( core-img 
                         PROPERTIES 
-                            LINK_FLAGS "${USE_FLAGS} -s USE_ZLIB=1 -s ALLOW_MEMORY_GROWTH=1 --no-entry --extern-post-js=${JS_RUNTIME} -s MAIN_MODULE=2 -s MODULARIZE=1 -s EXPORTED_RUNTIME_METHODS=${EXTERNAL_RUNTIME} -s EXPORTED_FUNCTIONS=${EXTERNAL_FN} -s ERROR_ON_UNDEFINED_SYMBOLS=0"
+                            LINK_FLAGS "${USE_FLAGS} -s USE_ZLIB=1 -s ALLOW_MEMORY_GROWTH=1 --no-entry --extern-post-js=${JS_RUNTIME_IMG} -s MAIN_MODULE=2 -s MODULARIZE=1 -s EXPORTED_RUNTIME_METHODS=${EXTERNAL_RUNTIME} -s EXPORTED_FUNCTIONS=${EXTERNAL_FN} -s ERROR_ON_UNDEFINED_SYMBOLS=0"
                             )
+
+SET(JS_RUNTIME_AUDIO
+  ${CMAKE_SOURCE_DIR}/src/transcoder/loader-audio.js
+)
 
 set_target_properties( core-audio 
                         PROPERTIES 
-                            LINK_FLAGS "${USE_FLAGS} -s USE_ZLIB=1 -s ALLOW_MEMORY_GROWTH=1 --no-entry -s MAIN_MODULE=2  -s MODULARIZE=1 -s EXPORTED_RUNTIME_METHODS=${EXTERNAL_RUNTIME} -s EXPORTED_FUNCTIONS=${EXTERNAL_FN} -s ERROR_ON_UNDEFINED_SYMBOLS=0"
+                            LINK_FLAGS "${USE_FLAGS} -s USE_ZLIB=1 -s ALLOW_MEMORY_GROWTH=1 --no-entry --extern-post-js=${JS_RUNTIME_AUDIO} -s MAIN_MODULE=2  -s MODULARIZE=1 -s EXPORTED_RUNTIME_METHODS=${EXTERNAL_RUNTIME} -s EXPORTED_FUNCTIONS=${EXTERNAL_FN} -s ERROR_ON_UNDEFINED_SYMBOLS=0"
                             )
 
 set_target_properties( core-video 
