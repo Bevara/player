@@ -1,8 +1,3 @@
-import { Module } from "./core-coder.js";
-import { fileio } from "./memio";
-
-//declare var Module: any;
-
 class UniversalImage extends HTMLImageElement {
     using: string;
     memory: Uint8Array;
@@ -11,15 +6,18 @@ class UniversalImage extends HTMLImageElement {
 
     entry: any;
     module: any;
-    io: fileio;
+
     using_attribute: string;
     with_attribute: string[];
     print_attribute: Element | null;
     error_attribute: Element | null;
+
     out = "png";
+    scriptDirectory = "";
     useCache = false;
     printProgess = false;
     cache = null;
+    worker = null;
 
     private _decodingPromise: Promise<string>;
 
@@ -84,10 +82,20 @@ class UniversalImage extends HTMLImageElement {
                 }
             }
 
+            self.worker = new Worker(this.scriptDirectory+ this.using_attribute+'.js');
+            self.worker.postMessage({in:self.src, out:this.out, dynamicLibraries: this.with_attribute});
+            self.worker.addEventListener('message', m => {
+                this.dataURLToSrc(self, m.data.blob, false);
+                main_resolve(self.srcset);
+            });
+/*
             const print = this.print();
             const printErr = this.printErr();
 
             this.io = new fileio(self.src, "out."+this.out, this.using_attribute, this.with_attribute, this.print(),this.printProgess);
+
+
+
             print("Downloading...");
             await this.io.startDownload();
             print("Downloading complete.");
@@ -184,7 +192,7 @@ class UniversalImage extends HTMLImageElement {
                     this.dataURLToSrc(self, new Blob([buffer_out.HEAPU8], { type: "image/"+this.out}), false);
                     main_resolve(self.srcset);
                 }
-            });
+            });*/
         });
     }
 
@@ -200,10 +208,12 @@ class UniversalImage extends HTMLImageElement {
 
         this._decodingPromise = this.universal_decode(this, args);
     }
-    /*
-        disconnectedCallback() {
     
-        }*/
+    disconnectedCallback() {
+        if(this.worker){
+            this.worker.terminate();
+        }
+    }
 
     attributeChangedCallback(name: string, oldValue: string, newValue: string) {
         if (oldValue === newValue) return;
@@ -214,7 +224,7 @@ class UniversalImage extends HTMLImageElement {
                 this.using_attribute = this.getAttribute("using");
                 break;
             case 'with':
-                this.with_attribute = this.getAttribute("with").split(';');
+                this.with_attribute = this.getAttribute("with").split(';').map(x=>x+".wasm");
                 break;
             case 'print':
                 this.print_attribute = document.querySelector(this.getAttribute("print"));
@@ -231,10 +241,13 @@ class UniversalImage extends HTMLImageElement {
             case 'progress':
                 this.printProgess = true;
                 break;
+            case 'script-directory':
+                this.scriptDirectory = this.getAttribute("script-directory");
+                break;
         }
     }
 
-    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress']; }
+    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress', 'script-directory']; }
 }
 
 if (!customElements.get('universal-img')) {

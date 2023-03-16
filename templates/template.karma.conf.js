@@ -6,6 +6,7 @@ module.exports = function (config) {
     frameworks: ['mocha', 'chai'],
     files: [{ pattern: '@CMAKE_BINARY_DIR@/dist/universal-tags.js', watched: false, included: true },
     { pattern: '@CMAKE_BINARY_DIR@/dist/*.wasm', watched: false, included: false, served: true, nocache: false },
+    { pattern: '@CMAKE_BINARY_DIR@/dist/*.js', watched: false, included: false, served: true, nocache: false },
       'test/**/*.js'],
     reporters: ['dots', 'junit'],
     port: 9876,  // karma web server port

@@ -49,7 +49,7 @@ SET(FOUT_LIB
 add_filter(fout
         "${FOUT_SRC}"
         "${FOUT_LIB}"
-        _fileout_register
+        _dynCall_fileout_register
         ""
         ""
         "")
@@ -80,7 +80,7 @@ SET(FIN_LIB
 add_filter(fin
         "${FIN_SRC}"
         "${FIN_LIB}"
-        _filein_register
+        _dynCall_filein_register
         ""
         ""
         "")
@@ -141,7 +141,7 @@ SET(IMG_LIBS
 add_filter(imgdec
         "${IMG_DEC_SRC}"
         "${IMG_LIBS}"
-        _imgdec_register
+        _dynCall_imgdec_register
         "${IMG_FLAGS}"
         ""
         "-sUSE_ZLIB=1")
@@ -165,7 +165,7 @@ SET(RFIMG_SRC
 add_filter(rfimg
         "${RFIMG_SRC}"
         "${IMG_LIBS}"
-        _img_reframe_register
+        _dynCall_img_reframe_register
         "${IMG_FLAGS}"
         ""
         "")
@@ -195,7 +195,7 @@ SET(WRITEGEN_LIBS
 add_filter(writegen
         "${WRITEGEN_SRC}"
         "${WRITEGEN_LIBS}"
-        _writegen_register
+        _dynCall_writegen_register
         ""
         ""
         "")
@@ -225,7 +225,7 @@ SET(PNGENC_LIBS
 add_filter(pngenc
         "${PNGENC_SRC}"
         "${PNGENC_LIBS}"
-        _pngenc_register
+        '_dynCall_pngenc_register'
         GPAC_HAS_PNG
         ""
         "")
@@ -248,7 +248,7 @@ SET(JPGENC_SRC
 add_filter(jpgenc
         "${JPGENC_SRC}"
         "${JPEG_LIB}"
-        _jpgenc_register
+        _dynCall_jpgenc_register
         GPAC_HAS_JPEG
         ""
         "")
@@ -285,7 +285,7 @@ SET(J2KDEC_SRC
 add_filter(j2kdec
         "${J2KDEC_SRC}"
         "${J2KDEC_LIB}"
-        _j2kdec_register
+        _dynCall_j2kdec_register
         GPAC_HAS_JP2
         "${J2KDEC_INC}"
         "")
@@ -602,7 +602,7 @@ SET(FFDMX_LIB
 add_filter(ffdmx
         "${FFDMX_SRC}"
         "${FFDMX_LIB}"
-        "['_ffdmx_register','_sinf']"
+        "['_dynCall_ffdmx_register','_sinf']"
         GPAC_HAS_FFMPEG
         "${FF_INCLUDE}"
         "")
@@ -635,7 +635,7 @@ SET(FFRESCALE_SRC
 add_filter(ffsws
         "${FFRESCALE_SRC}"
         "${FF_LIB}"
-        _ffsws_register
+        _dynCall_ffsws_register
         GPAC_HAS_FFMPEG
         "${FF_INCLUDE}"
         "")

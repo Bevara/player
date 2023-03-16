@@ -12,12 +12,16 @@ SET(EXTERNAL_FN
 )
 
 SET(EXTERNAL_RUNTIME
-  "['stringToUTF8','UTF8ToString','stackAlloc']"
+  "['stringToUTF8','UTF8ToString','stackAlloc','addFunction','getTempRet0']"
+)
+
+SET(JS_RUNTIME
+  ${CMAKE_SOURCE_DIR}/src/transcoder/loader.js
 )
 
 set_target_properties( core-img 
                         PROPERTIES 
-                            LINK_FLAGS "${USE_FLAGS} -s USE_ZLIB=1 -s ALLOW_MEMORY_GROWTH=1 --no-entry -s MAIN_MODULE=2  -s MODULARIZE=1 -s EXPORTED_RUNTIME_METHODS=${EXTERNAL_RUNTIME} -s EXPORTED_FUNCTIONS=${EXTERNAL_FN} -s ERROR_ON_UNDEFINED_SYMBOLS=0"
+                            LINK_FLAGS "${USE_FLAGS} -s USE_ZLIB=1 -s ALLOW_MEMORY_GROWTH=1 --no-entry --extern-post-js=${JS_RUNTIME} -s MAIN_MODULE=2 -s MODULARIZE=1 -s EXPORTED_RUNTIME_METHODS=${EXTERNAL_RUNTIME} -s EXPORTED_FUNCTIONS=${EXTERNAL_FN} -s ERROR_ON_UNDEFINED_SYMBOLS=0"
                             )
 
 set_target_properties( core-audio 
