@@ -369,7 +369,8 @@ class fileio {
 
 
 addEventListener("message", async a => {
-	const module = await Module({ dynamicLibraries: a.data.dynamicLibraries });
+	const module = await Module({ dynamicLibraries: a.data.dynamicLibraries ,
+		INITIAL_MEMORY: 16777216*10}); // FIXME : Should be set by the tag itself
 
 	const io = new fileio(a.data.in, "out." + a.data.out, module);
 	await io.startDownload();
