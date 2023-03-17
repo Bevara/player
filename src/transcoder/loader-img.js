@@ -378,11 +378,11 @@ addEventListener("message", async a => {
 	const buffer_out = io.fileio_out;
 	const register_fns = Object.keys(module).filter(x => x.endsWith("_register"));
 
-	const args = {
-		io_in: buffer_in.file_io,
-		io_out: buffer_out.file_io,
-		filters: register_fns.map(entry => module[entry](0))
-	};
+	const args = a.data.args? a.data.args : {};
+
+	args["io_in"] = buffer_in.file_io;
+	args["io_out"] = buffer_out.file_io;
+	args["filters"] = register_fns.map(entry => module[entry](0));
 
 	// Convert json to string buffer
 	const json_args = JSON.stringify(args);

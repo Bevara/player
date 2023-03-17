@@ -1,6 +1,3 @@
-import { Module } from "./core-coder.js";
-import { fileio } from "./memio";
-
 class UniversalVideo extends HTMLVideoElement {
     using: string;
     memory: Uint8Array;
@@ -93,7 +90,8 @@ class UniversalVideo extends HTMLVideoElement {
                         dynamicLibraries: this.with_attribute,
                         INITIAL_MEMORY: 16777216 * 10
                     },
-                    type:"video/" + this.out
+                    type:"video/" + this.out,
+                    args:{enc: "enc:c=avc"}
                 });
             self.worker.addEventListener('message', m => {
                 this.dataURLToSrc(self, m.data.blob, false);

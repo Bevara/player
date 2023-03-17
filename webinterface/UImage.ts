@@ -88,7 +88,8 @@ class UniversalImage extends HTMLImageElement {
                     in:self.src, 
                     out:this.out, 
                     module:{
-                        dynamicLibraries: this.with_attribute
+                        dynamicLibraries: this.with_attribute,
+                        INITIAL_MEMORY: 16777216 * 10
                     },
                     type:"image/" + this.out
                 });
