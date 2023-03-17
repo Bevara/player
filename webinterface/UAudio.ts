@@ -1,7 +1,3 @@
-//import {HEAPU8, asmLibraryArg, writeArrayToMemory, initRuntime, stackCheckInit, Module, wasmTable, wasmMemory, stringToUTF8, stackAlloc} from './player'
-import { Module } from "./core-coder.js";
-import { fileio } from "./memio";
-
 class UniversalAudio extends HTMLAudioElement {
     using: string;
     memory: Uint8Array;
@@ -85,8 +81,16 @@ class UniversalAudio extends HTMLAudioElement {
                 }
             }
 
-            self.worker = new Worker(this.scriptDirectory+ this.using_attribute+'.js');
-            self.worker.postMessage({in:self.src, out:this.out, dynamicLibraries: this.with_attribute});
+            self.worker = new Worker(this.scriptDirectory + this.using_attribute + '.js');
+            self.worker.postMessage({
+                in: self.src, 
+                out: this.out, 
+                module: {
+                    dynamicLibraries: this.with_attribute,
+                    INITIAL_MEMORY: 16777216 * 10
+                },
+                type:"audio/" + this.out
+            });
             self.worker.addEventListener('message', m => {
                 this.dataURLToSrc(self, m.data.blob, false);
                 main_resolve(self.src);

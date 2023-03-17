@@ -369,7 +369,7 @@ class fileio {
 
 
 addEventListener("message", async a => {
-	const module = await Module({ dynamicLibraries: a.data.dynamicLibraries });
+	const module = await Module(a.data.module);
 
 	const io = new fileio(a.data.in, "out." + a.data.out, module);
 	await io.startDownload();
@@ -436,6 +436,6 @@ addEventListener("message", async a => {
 			postMessage({ blob: blob });
 		});
 	}else {
-		postMessage({ blob: new Blob([buffer_out.HEAPU8], { type: "image/" + this.out }) });
+		postMessage({ blob: new Blob([buffer_out.HEAPU8], { type: a.data.type }) });
 	}	
 });

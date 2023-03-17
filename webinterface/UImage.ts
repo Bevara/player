@@ -83,7 +83,16 @@ class UniversalImage extends HTMLImageElement {
             }
 
             self.worker = new Worker(this.scriptDirectory+ this.using_attribute+'.js');
-            self.worker.postMessage({in:self.src, out:this.out, dynamicLibraries: this.with_attribute});
+            self.worker.postMessage(
+                {
+                    in:self.src, 
+                    out:this.out, 
+                    module:{
+                        dynamicLibraries: this.with_attribute
+                    },
+                    type:"image/" + this.out
+                });
+
             self.worker.addEventListener('message', m => {
                 this.dataURLToSrc(self, m.data.blob, false);
                 main_resolve(self.srcset);

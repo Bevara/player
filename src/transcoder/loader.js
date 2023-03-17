@@ -369,8 +369,7 @@ class fileio {
 
 
 addEventListener("message", async a => {
-	const module = await Module({ dynamicLibraries: a.data.dynamicLibraries ,
-		INITIAL_MEMORY: 16777216*10}); // FIXME : Should be set by the tag itself
+	const module = await Module(a.data.module);
 
 	const io = new fileio(a.data.in, "out." + a.data.out, module);
 	await io.startDownload();
@@ -405,5 +404,5 @@ addEventListener("message", async a => {
 	const json_res = module.UTF8ToString(ptr_data);
 	const json_res_parsed = JSON.parse(json_res);
 
-	postMessage({ blob: new Blob([buffer_out.HEAPU8], { type: "audio/" + this.out }) });	
+	postMessage({ blob: new Blob([buffer_out.HEAPU8], { type: a.data.type }) });	
 });
