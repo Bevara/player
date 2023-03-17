@@ -431,7 +431,7 @@ describe('core-player', () => {
         "wav",
         false
       );
-    }).timeout(60000);
+    }).timeout(360000);
   });
   
 

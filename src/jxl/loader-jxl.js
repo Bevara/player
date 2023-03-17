@@ -364,7 +364,7 @@ addEventListener("message", async a => {
 	a.data.module["locateFile"] = function (path, scriptDirectory) {
 		if (path.startsWith("blob")){
 			return path;
-		}else if(path == "core-img.wasm" && a.data.core){
+		}else if(path == "jxl.wasm" && a.data.core){
 			return a.data.core;
 		}
 		return scriptDirectory + path;
@@ -376,7 +376,7 @@ addEventListener("message", async a => {
 		postMessage({});
 	}
 
-	const io = new fileio(a.data.in.src, a.data.in.buffer, "out." + a.data.out, module);
+	const io = new fileio(a.data.in.src, a.data.in.buffer, "out.rgba", module);
 	const entry = module._constructor();
 	const buffer_in = io.fileio_in;
 	const buffer_out = io.fileio_out;
@@ -405,33 +405,13 @@ addEventListener("message", async a => {
 	const ptr_data = module._get(entry, ptr_get_args);
 	const json_res = module.UTF8ToString(ptr_data);
 	const json_res_parsed = JSON.parse(json_res);
-
-	if (a.data.out == "rgba" && json_res_parsed.width && json_res_parsed.height){
+	if (json_res_parsed.width && json_res_parsed.height){
 		const canvas = new OffscreenCanvas(json_res_parsed.width, json_res_parsed.height);
 		const imgData = new ImageData(new Uint8ClampedArray(buffer_out.HEAPU8), json_res_parsed.width, json_res_parsed.height );
 		canvas.getContext('2d').putImageData(imgData, 0, 0);
 		let blob = await canvas.convertToBlob();
 		postMessage({ blob: blob });
-	} else if (a.data.out == "rgb" && json_res_parsed.width && json_res_parsed.height){
-		const canvas = new OffscreenCanvas(json_res_parsed.width, json_res_parsed.height);
-		const imgData = new ImageData(json_res_parsed.width, json_res_parsed.height );
-		
-		const dest = imgData.data;
-		const src = buffer_out.HEAPU8;
-		const n = 4 * json_res_parsed.width * json_res_parsed.height;
-		let s = 0, d = 0;
-		while (d < n) {
-			dest[d++] = src[s++];
-			dest[d++] = src[s++];
-			dest[d++] = src[s++];
-			dest[d++] = 255;    // skip alpha byte
-		}
-		
-		canvas.getContext('2d').putImageData(imgData, 0, 0);
-
-		let blob = await canvas.convertToBlob();
-		postMessage({ blob: blob });
-	}else {
-		postMessage({ blob: new Blob([buffer_out.HEAPU8], { type: a.data.type }) });
-	}	
+	}else{
+		postMessage({});
+	}
 });
