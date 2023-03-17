@@ -81,6 +81,13 @@ class UniversalVideo extends HTMLVideoElement {
                 }
             }
 
+            const props = [];
+            if (self.hasAttribute("connections")) {
+                props.push("connections");
+            }
+
+            args["enc"] = "enc:c=avc";
+
             self.worker = new Worker(this.scriptDirectory+ this.using_attribute+'.js');
             self.worker.postMessage(
                 {
@@ -91,7 +98,8 @@ class UniversalVideo extends HTMLVideoElement {
                         INITIAL_MEMORY: 16777216 * 10
                     },
                     type:"video/" + this.out,
-                    args:{enc: "enc:c=avc"}
+                    args:args,
+                    props : props
                 });
             self.worker.addEventListener('message', m => {
                 this.dataURLToSrc(self, m.data.blob, false);

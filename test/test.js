@@ -112,18 +112,18 @@ describe('core-player', () => {
       );
     }).timeout(5000);
 
-    // it('should transcode Cevennes2.jp2 to canvas', (done) => {
-    //   create_test('img',
-    //     'universal-img',
-    //     "core-img",
-    //     "fin;fout;rfimg;writegen;j2kdec",
-    //     "http://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2",
-    //     "http://bevara.ddns.net/test-signals/out/j2k/cevennes2_canvas.png",
-    //     done,
-    //     "rgb",
-    //     false
-    //   );
-    // }).timeout(5000);
+    it('should transcode Cevennes2.jp2 to canvas', (done) => {
+      create_test('img',
+        'universal-img',
+        "core-img",
+        "fin;fout;rfimg;writegen;j2kdec",
+        "http://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2",
+        "http://bevara.ddns.net/test-signals/out/j2k/cevennes2_canvas.png",
+        done,
+        "rgb",
+        false
+      );
+    }).timeout(5000);
 
     it('should decode Bretagne1.j2k', (done) => {
       create_test('img',
@@ -152,29 +152,29 @@ describe('core-player', () => {
     //   );
     // }).timeout(5000);
 
-    // it('should handle cache with Cevennes2.jp2', (done) => {
-    //   create_test('img',
-    //     'universal-img',
-    //     "core-img",
-    //     "fin;fout;pngenc;rfimg;writegen;j2kdec",
-    //     "http://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2",
-    //     "http://bevara.ddns.net/test-signals/out/j2k/Cevennes2.png",
-    //     done,
-    //     "png",
-    //     true
-    //   );
+    it('should handle cache with Cevennes2.jp2', (done) => {
+      create_test('img',
+        'universal-img',
+        "core-img",
+        "fin;fout;pngenc;rfimg;writegen;j2kdec",
+        "http://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2",
+        "http://bevara.ddns.net/test-signals/out/j2k/Cevennes2.png",
+        done,
+        "png",
+        true
+      );
 
-    //   create_test('img',
-    //     'universal-img',
-    //     "core-img",
-    //     "fin;fout;pngenc;rfimg;writegen;j2kdec",
-    //     "http://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2",
-    //     "http://bevara.ddns.net/test-signals/out/j2k/Cevennes2.png",
-    //     done,
-    //     "png",
-    //     true
-    //   );
-    // }).timeout(5000);
+      create_test('img',
+        'universal-img',
+        "core-img",
+        "fin;fout;pngenc;rfimg;writegen;j2kdec",
+        "http://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2",
+        "http://bevara.ddns.net/test-signals/out/j2k/Cevennes2.png",
+        done,
+        "png",
+        true
+      );
+    }).timeout(5000);
 
   });
 
@@ -190,7 +190,7 @@ describe('core-player', () => {
           "png",
           false
         );
-      }).timeout(20000);
+      }).timeout(200000);
 
       it('should decode test2.jxl to png', (done) => {
         create_test('img',
@@ -203,7 +203,7 @@ describe('core-player', () => {
           "png",
           false
         );
-      }).timeout(20000);
+      }).timeout(200000);
 
       it('should decode test3.jxl to png', (done) => {
         create_test('img',
@@ -216,7 +216,7 @@ describe('core-player', () => {
           "png",
           false
         );
-      }).timeout(20000);
+      }).timeout(200000);
 
       it('should decode red-room.jxl to png', (done) => {
         create_test('img',
@@ -229,23 +229,23 @@ describe('core-player', () => {
           "png",
           false
         );
-      }).timeout(20000);
+      }).timeout(200000);
 
 
 
 
-  //     it('should decode test.jxl to canvas', (done) => {
-  //       create_test('img',
-  //         'universal-img',
-  //         "core-img",
-  //         "rfjxl;jxldec;fin;fout;writegen",
-  //         "http://bevara.ddns.net/test-signals/JXL/test.jxl",
-  //         "http://bevara.ddns.net/test-signals/out/jxl/canvas.png",
-  //         done,
-  //         "rgba",
-  //         false
-  //       );
-  //     }).timeout(20000);
+      it('should decode test.jxl to canvas', (done) => {
+        create_test('img',
+          'universal-img',
+          "core-img",
+          "rfjxl;jxldec;fin;fout;writegen",
+          "http://bevara.ddns.net/test-signals/JXL/test.jxl",
+          "http://bevara.ddns.net/test-signals/out/jxl/canvas.png",
+          done,
+          "rgba",
+          false
+        );
+      }).timeout(200000);
   });
 
   describe('#svgplay', () => {

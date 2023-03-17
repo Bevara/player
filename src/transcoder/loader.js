@@ -379,6 +379,7 @@ addEventListener("message", async a => {
 	const register_fns = Object.keys(module).filter(x => x.endsWith("_register"));
 
 	const args = a.data.args? a.data.args : {};
+	const props = a.data.props? a.data.props : [];
 
 	args["io_in"] = buffer_in.file_io;
 	args["io_out"] = buffer_out.file_io;
@@ -390,10 +391,6 @@ addEventListener("message", async a => {
 	const ptr_args = module.stackAlloc(len_args);
 	module.stringToUTF8(json_args, ptr_args, len_args);
 	module._set(entry, ptr_args);
-
-	// Retrieve result
-	const props = [];
-	props.push("connections");
 
 	const get_args = JSON.stringify(props);
 	const get_args_len = (get_args.length << 2) + 1;

@@ -81,6 +81,11 @@ class UniversalAudio extends HTMLAudioElement {
                 }
             }
 
+            const props = [];
+            if (self.hasAttribute("connections")) {
+                props.push("connections");
+            }
+
             self.worker = new Worker(this.scriptDirectory + this.using_attribute + '.js');
             self.worker.postMessage({
                 in: self.src, 
@@ -89,7 +94,9 @@ class UniversalAudio extends HTMLAudioElement {
                     dynamicLibraries: this.with_attribute,
                     INITIAL_MEMORY: 16777216 * 10
                 },
-                type:"audio/" + this.out
+                type:"audio/" + this.out,
+                args:args,
+                props:props
             });
             self.worker.addEventListener('message', m => {
                 this.dataURLToSrc(self, m.data.blob, false);

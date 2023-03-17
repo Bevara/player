@@ -379,6 +379,7 @@ addEventListener("message", async a => {
 	const register_fns = Object.keys(module).filter(x => x.endsWith("_register"));
 
 	const args = a.data.args? a.data.args : {};
+	const props = a.data.props? a.data.props : [];
 
 	args["io_in"] = buffer_in.file_io;
 	args["io_out"] = buffer_out.file_io;
@@ -391,9 +392,6 @@ addEventListener("message", async a => {
 	module.stringToUTF8(json_args, ptr_args, len_args);
 	module._set(entry, ptr_args);
 
-	// Retrieve result
-	const props = [];
-	props.push("connections");
 
 	const get_args = JSON.stringify(props);
 	const get_args_len = (get_args.length << 2) + 1;
@@ -404,19 +402,14 @@ addEventListener("message", async a => {
 	const json_res = module.UTF8ToString(ptr_data);
 	const json_res_parsed = JSON.parse(json_res);
 
-	if (this.out == "rgba"){
-		const canvas = document.createElement('canvas');
-		canvas.width = json_res_parsed.width;
-		canvas.height = json_res_parsed.height;
+	if (a.data.out == "rgba"){
+		const canvas = new OffscreenCanvas(json_res_parsed.width, json_res_parsed.height);
 		const imgData = new ImageData(new Uint8ClampedArray(buffer_out.HEAPU8), json_res_parsed.width, json_res_parsed.height );
 		canvas.getContext('2d').putImageData(imgData, 0, 0);
-		canvas.toBlob(blob => {
-			postMessage({ blob: blob });
-		});
-	} else if (self.out == "rgb"){
-		const canvas = document.createElement('canvas');
-		canvas.width = json_res_parsed.width;
-		canvas.height = json_res_parsed.height;
+		let blob = await canvas.convertToBlob();
+		postMessage({ blob: blob });
+	} else if (a.data.out == "rgb"){
+		const canvas = new OffscreenCanvas(json_res_parsed.width, json_res_parsed.height);
 		const imgData = new ImageData(json_res_parsed.width, json_res_parsed.height );
 		
 		const dest = imgData.data;
@@ -432,9 +425,8 @@ addEventListener("message", async a => {
 		
 		canvas.getContext('2d').putImageData(imgData, 0, 0);
 
-		canvas.toBlob(blob => {
-			postMessage({ blob: blob });
-		});
+		let blob = await canvas.convertToBlob();
+		postMessage({ blob: blob });
 	}else {
 		postMessage({ blob: new Blob([buffer_out.HEAPU8], { type: a.data.type }) });
 	}	
