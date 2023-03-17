@@ -1,3 +1,5 @@
+import JSZip = require("jszip");
+
 class UniversalImage extends HTMLImageElement {
     using: string;
     memory: Uint8Array;
@@ -7,8 +9,8 @@ class UniversalImage extends HTMLImageElement {
     entry: any;
     module: any;
 
-    using_attribute: string;
-    with_attribute: string[];
+    using_attribute: string = "";
+    with_attribute: string[] =[];
     print_attribute: Element | null;
     error_attribute: Element | null;
 
@@ -18,6 +20,7 @@ class UniversalImage extends HTMLImageElement {
     printProgess = false;
     cache = null;
     worker = null;
+    core=null;
 
     private _decodingPromise: Promise<string>;
 
@@ -82,6 +85,7 @@ class UniversalImage extends HTMLImageElement {
                 }
             }
 
+
             // Retrieve result
             const props = [];
             if (self.hasAttribute("connections")) {
@@ -93,24 +97,60 @@ class UniversalImage extends HTMLImageElement {
                 props.push("height");
             }
 
-            self.worker = new Worker(this.scriptDirectory + this.using_attribute + '.js');
-            self.worker.postMessage(
-                {
-                    in: self.src,
-                    out: this.out,
-                    module: {
-                        dynamicLibraries: this.with_attribute,
-                        INITIAL_MEMORY: 16777216 * 10
-                    },
-                    type: "image/" + this.out,
-                    args:args,
-                    props:props
-                });
+            const response = await fetch(self.src);
+            let buffer = await response.arrayBuffer();
+            const mime = response.headers.get("Content-Type");
+            let src = self.src;
+            
+            if (self.src.endsWith(".bvr") || mime == "application/x-bevara") {
+                const jszip = new JSZip();
+                const zip = await jszip.loadAsync(buffer);
+                const metadata = await zip.file("meta.json").async("string");
+                const bvr = JSON.parse(metadata);
+                src = bvr.source;
+                buffer = await zip.file(bvr.source).async("arraybuffer");
 
-            self.worker.addEventListener('message', m => {
-                this.dataURLToSrc(self, m.data.blob, false);
-                main_resolve(self.srcset);
-            });
+                const blob_core = await zip.file(bvr.core).async("blob");
+                this.core = URL.createObjectURL(blob_core);
+
+                if (this.using_attribute == "") {
+                    const blob = await zip.file(bvr.js).async("blob");
+                    this.using_attribute =  URL.createObjectURL(blob);
+                }else{
+                    this.using_attribute = this.using_attribute+ ".js";
+                }
+
+                for (const decoder of bvr.decoders) {
+                    const blob = await zip.file(decoder).async("blob");
+                    this.with_attribute.push(URL.createObjectURL(blob));
+                }
+
+                self.worker = new Worker(this.scriptDirectory + this.using_attribute);
+            }else  if (this.using_attribute){
+                self.worker = new Worker(this.scriptDirectory + this.using_attribute + '.js');
+            }
+
+            if (self.worker){
+                self.worker.postMessage(
+                    {
+                        in: {src:src, buffer:buffer},
+                        out: this.out,
+                        module: {
+                            dynamicLibraries: this.with_attribute,
+                            INITIAL_MEMORY: 16777216 * 10
+                        },
+                        type: "image/" + this.out,
+                        args:args,
+                        props:props,
+                        core:this.core
+                    });
+    
+                self.worker.addEventListener('message', m => {
+                    this.dataURLToSrc(self, m.data.blob, false);
+                    main_resolve(self.srcset);
+                });
+            }
+            
             /*
                         const print = this.print();
                         const printErr = this.printErr();

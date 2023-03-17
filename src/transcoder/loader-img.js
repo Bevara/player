@@ -66,8 +66,9 @@ class fileio {
 	print;
 	print_progress;
 
-	constructor(in_url, out_url, module, print, print_progress) {
+	constructor(in_url, in_buffer, out_url, module, print, print_progress) {
 		this.in_url = in_url;
+		this.in_buffer = in_buffer;
 		this.out_url = out_url;
 		this.module = module;
 		this.print = print;
@@ -302,14 +303,6 @@ class fileio {
 		this.open.value = this.module.addFunction(this.open, this.open.sig);
 	}
 
-	async startDownload() {
-		const response = await fetch(this.in_url);
-		const buffer = await response.arrayBuffer();
-		const mime = response.headers.get("Content-Type");
-
-		this.buffer_in = buffer;
-	}
-
 	get fileio_in() {
 		const len_source_str = (this.in_url.length << 2) + 1;
 		const ptr_source_str = this.module.stackAlloc(len_source_str);
@@ -329,7 +322,7 @@ class fileio {
 
 		const fio_url_ptr = this.module._gf_fileio_url(fio);
 
-		new_buffer.buffer = this.buffer_in;
+		new_buffer.buffer = this.in_buffer;
 		new_buffer.file_io = this.module.UTF8ToString(fio_url_ptr);
 
 		return new_buffer;
@@ -357,8 +350,6 @@ class fileio {
 			this.printf.value);
 
 		const fio_url_ptr = this.module._gf_fileio_url(fio);
-
-		new_buffer.buffer = this.buffer_in;
 		new_buffer.file_io = this.module.UTF8ToString(fio_url_ptr);
 
 		return new_buffer;
@@ -369,10 +360,23 @@ class fileio {
 
 
 addEventListener("message", async a => {
+	
+	a.data.module["locateFile"] = function (path, scriptDirectory) {
+		if (path.startsWith("blob")){
+			return path;
+		}else if(path == "core-img.wasm" && a.data.core){
+			return a.data.core;
+		}
+		return scriptDirectory + path;
+	};
+
 	const module = await Module(a.data.module);
 
-	const io = new fileio(a.data.in, "out." + a.data.out, module);
-	await io.startDownload();
+	if (!a.data.in){
+		postMessage({});
+	}
+
+	const io = new fileio(a.data.in.src, a.data.in.buffer, "out." + a.data.out, module);
 	const entry = module._constructor();
 	const buffer_in = io.fileio_in;
 	const buffer_out = io.fileio_out;

@@ -86,22 +86,28 @@ class UniversalAudio extends HTMLAudioElement {
                 props.push("connections");
             }
 
-            self.worker = new Worker(this.scriptDirectory + this.using_attribute + '.js');
-            self.worker.postMessage({
-                in: self.src, 
-                out: this.out, 
-                module: {
-                    dynamicLibraries: this.with_attribute,
-                    INITIAL_MEMORY: 16777216 * 10
-                },
-                type:"audio/" + this.out,
-                args:args,
-                props:props
-            });
-            self.worker.addEventListener('message', m => {
-                this.dataURLToSrc(self, m.data.blob, false);
-                main_resolve(self.src);
-            });
+            if (this.using_attribute){
+                self.worker = new Worker(this.scriptDirectory + this.using_attribute + '.js');
+            }
+
+            if (self.worker){
+                self.worker.postMessage({
+                    in: self.src, 
+                    out: this.out, 
+                    module: {
+                        dynamicLibraries: this.with_attribute,
+                        INITIAL_MEMORY: 16777216 * 10
+                    },
+                    type:"audio/" + this.out,
+                    args:args,
+                    props:props
+                });
+                self.worker.addEventListener('message', m => {
+                    this.dataURLToSrc(self, m.data.blob, false);
+                    main_resolve(self.src);
+                });
+            }
+            
         });
     }
 
