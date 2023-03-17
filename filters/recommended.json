@@ -33,21 +33,21 @@
 		"dxf":"image/vnd.dxf"
 	},
 	"with":{
-		"jp2": "fin.wasm;fout.wasm;pngenc.wasm;rfimg.wasm;writegen.wasm;j2kdec.wasm",
-		"j2k":"fout.wasm;j2kdec.wasm;ffdmx.wasm;writegen.wasm;pngenc.wasm",
-		"jxl":"rfjxl.wasm;jxldec.wasm;fin.wasm;fout.wasm;pngenc.wasm;writegen.wasm",
-		"ac3": "fin.wasm;fout.wasm;writegen.wasm;rfac3.wasm;a52dec.wasm",
-		"amr": "rfamr.wasm;writegen.wasm;resample.wasm;ffdec.wasm;rfamr.wasm;fin.wasm;fout.wasm",
-		"flac": "fin.wasm;fout.wasm;writegen.wasm;rfflac.wasm;ffdec.wasm",
-		"opus": "fin.wasm;fout.wasm;writegen.wasm;oggdmx.wasm;ffdec.wasm",
-		"wma": "fin.wasm;fout.wasm;writegen.wasm;rfadts.wasm;ffdec.wasm",
-		"mp3":"fin.wasm;fout.wasm;writegen.wasm;rfmp3.wasm;maddec.wasm",
-		"tif":"fout.wasm;ffdec.wasm;ffdmx.wasm;writegen.wasm;ffsws.wasm;fin.wasm;pngenc.wasm",
-		"pbm":"fout.wasm;ffdec.wasm;ffdmx.wasm;writegen.wasm;ffsws.wasm;fin.wasm;pngenc.wasm",
-		"pnm":"fout.wasm;ffdec.wasm;ffdmx.wasm;writegen.wasm;ffsws.wasm;fin.wasm;pngenc.wasm",
-		"pcx":"fout.wasm;ffdec.wasm;ffdmx.wasm;writegen.wasm;ffsws.wasm;pngenc.wasm",
-		"aiff":"fout.wasm;ffdmx.wasm;writegen.wasm",
-		"aac":"faaddec.wasm;fout.wasm;rfadts.wasm;writegen.wasm;fin.wasm",
-		"ogg":"vorbisdec.wasm;fout.wasm;oggdmx.wasm;writegen.wasm;fin.wasm"
+		"jp2": "fin;fout;pngenc;rfimg;writegen;j2kdec",
+		"j2k":"fout;j2kdec;ffdmx;writegen;pngenc",
+		"jxl":"rfjxl;jxldec;fin;fout;pngenc;writegen",
+		"ac3": "fin;fout;writegen;rfac3;a52dec",
+		"amr": "rfamr;writegen;resample;ffdec;rfamr;fin;fout",
+		"flac": "fin;fout;writegen;rfflac;ffdec",
+		"opus": "fin;fout;writegen;oggdmx;ffdec",
+		"wma": "fin;fout;writegen;rfadts;ffdec",
+		"mp3":"fin;fout;writegen;rfmp3;maddec",
+		"tif":"fout;ffdec;ffdmx;writegen;ffsws;fin;pngenc",
+		"pbm":"fout;ffdec;ffdmx;writegen;ffsws;fin;pngenc",
+		"pnm":"fout;ffdec;ffdmx;writegen;ffsws;fin;pngenc",
+		"pcx":"fout;ffdec;ffdmx;writegen;ffsws;pngenc",
+		"aiff":"fout;ffdmx;writegen",
+		"aac":"faaddec;fout;rfadts;writegen;fin",
+		"ogg":"vorbisdec;fout;oggdmx;writegen;fin"
 	}
 }
