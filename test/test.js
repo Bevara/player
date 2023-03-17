@@ -4,51 +4,54 @@ function create_test(tag, extension, using_attribute, with_atribute, test_file, 
     const img = document.createElement(tag, { "is": extension });
     img.setAttribute("src", test_file);
     img.setAttribute("using", using_attribute);
-    img.setAttribute("with", with_atribute);
+    if (with_atribute) {
+      img.setAttribute("with", with_atribute);
+    }
+
     img.setAttribute("script-directory", "/base/build/dist/");
 
-    if (out){
+    if (out) {
       img.setAttribute("out", out);
     }
 
-    if (useCache){
-      img.setAttribute("use-cache","");
+    if (useCache) {
+      img.setAttribute("use-cache", "");
     }
 
     document.body.appendChild(img);
     console.log(using_attribute + ";" + with_atribute + " : Tag " + tag + " extended by " + extension + " has been added to the DOM");
-    img.decodingPromise.then(src =>{
-      if (reference_file){
+    img.decodingPromise.then(src => {
+      if (reference_file) {
         return Promise.all([
           fetch(src),
           fetch(reference_file)
         ]);
-      }else{
+      } else {
         resolve();
         return Promise.all([]);
       }
     })
-    .then((responses) => {
-      console.log(using_attribute + ";" + with_atribute + " : Both test and reference signal has been processed");
-      arrayBuffers = responses.map(response => response.arrayBuffer());
-      Promise.all(arrayBuffers)
-        .then(buffers => {
-          console.log(using_attribute + ";" + with_atribute + " : Calculating hash of the results");
-          hashedBuffers = buffers.map(buffer => crypto.subtle.digest('SHA-256', buffer));
-          Promise.all(hashedBuffers)
-            .then(hashedResults => {
-              console.log(using_attribute + ";" + with_atribute + " : Transforming hashes of to hex values");
-              const result = new Uint8Array(hashedResults[0]);
-              const ref = new Uint8Array(hashedResults[1]);
-              const resultHex = result.map(b => b.toString(16).padStart(2, '0')).join('');
-              const refHex = ref.map(b => b.toString(16).padStart(2, '0')).join('');
-              console.log(using_attribute + ";" + with_atribute + " : hex values of result is " + resultHex + " and expected is " + refHex);
-              expect(resultHex).to.equal(refHex);
-              console.log(using_attribute + ";" + with_atribute + " : Test OK");
-              resolve();
-            });
-        });
-    });
+      .then((responses) => {
+        console.log(using_attribute + ";" + with_atribute + " : Both test and reference signal has been processed");
+        arrayBuffers = responses.map(response => response.arrayBuffer());
+        Promise.all(arrayBuffers)
+          .then(buffers => {
+            console.log(using_attribute + ";" + with_atribute + " : Calculating hash of the results");
+            hashedBuffers = buffers.map(buffer => crypto.subtle.digest('SHA-256', buffer));
+            Promise.all(hashedBuffers)
+              .then(hashedResults => {
+                console.log(using_attribute + ";" + with_atribute + " : Transforming hashes of to hex values");
+                const result = new Uint8Array(hashedResults[0]);
+                const ref = new Uint8Array(hashedResults[1]);
+                const resultHex = result.map(b => b.toString(16).padStart(2, '0')).join('');
+                const refHex = ref.map(b => b.toString(16).padStart(2, '0')).join('');
+                console.log(using_attribute + ";" + with_atribute + " : hex values of result is " + resultHex + " and expected is " + refHex);
+                expect(resultHex).to.equal(refHex);
+                console.log(using_attribute + ";" + with_atribute + " : Test OK");
+                resolve();
+              });
+          });
+      });
   })
     .then(done);
 }
@@ -59,45 +62,45 @@ describe('core-player', () => {
 
   describe('#imgdec', () => {
     it('should decode Freedom.jpeg', (done) => {
-      create_test('img', 
-                  'universal-img', 
-                  "core-img",
-                  "imgdec;fin;fout;pngenc;rfimg;writegen",
-                  "http://bevara.ddns.net/test-signals/Freedom.jpg",
-                  "http://bevara.ddns.net/test-signals/Freedom.png",
-                  done,
-                  "png",
-                  false
-                  );
+      create_test('img',
+        'universal-img',
+        "core-img",
+        "imgdec;fin;fout;pngenc;rfimg;writegen",
+        "http://bevara.ddns.net/test-signals/Freedom.jpg",
+        "http://bevara.ddns.net/test-signals/Freedom.png",
+        done,
+        "png",
+        false
+      );
     }).timeout(5000);
-    
+
     it('should transcode Freedom.png to Freedom.jpeg', (done) => {
-      create_test('img', 
-                  'universal-img', 
-                  "core-img",
-                  "fin;fout;rfimg;writegen;ffsws;jpgenc;rfimg;imgdec",
-                  "http://bevara.ddns.net/test-signals/Freedom.png",
-                  "http://bevara.ddns.net/test-signals/out/png/Freedom.jpeg",
-                  done,
-                  "jpg",
-                  false
-                  );
+      create_test('img',
+        'universal-img',
+        "core-img",
+        "fin;fout;rfimg;writegen;ffsws;jpgenc;rfimg;imgdec",
+        "http://bevara.ddns.net/test-signals/Freedom.png",
+        "http://bevara.ddns.net/test-signals/out/png/Freedom.jpeg",
+        done,
+        "jpg",
+        false
+      );
     }).timeout(5000);
-   
+
     it('should load all decoders', (done) => {
-      create_test('img', 
-                  'universal-img', 
-                  "core-img",
-                  "a52dec;ffenc;inspect;nhmlw;restamp;rfmpgvid;tileagg;ufmhas;vtt2tx3g;aout;ffmx;j2kdec;nhntr;rewind;rfnalu;tilesplit;ufnalu;vttdec;avidmx;ffsws;jpgenc;nhntw;rfac3;rfpcm;tssplit;ufobu;writegen;bifsdec;cryptin;fin;lsrdec;odfdec;rfadts;rfprores;ttml2srt;ufttxt;writeqcp;bsagg;cryptout;fout;m2psdmx;rfamr;rfqcp;ttml2vtt;ufvc1;writeuf;bsrw;dasher;flist;m2tsdmx;oggdmx;rfav1;rfrawvid;ttmldec;ufvtt;xviddec;bssplit;dashin;gsfdmx;m2tsmx;oggmx;rfflac;rfsrt;ttxtdec;unframer;btplay;faaddec;gsfmx;maddec;rfh263;rftruehd;tx3g2srt;vcrop;cdcrypt;ffavf;hevcmerge;mp4dmx;pngenc;rfimg;safdmx;tx3g2ttml;vflip;cecrypt;ffbsf;hevcsplit;mp4mx;probe;rflatm;tx3g2vtt;vobsubdmx;compose;ffdec;httpin;nanojpeg;reframer;rfmhas;svgplay;txtin;vorbisdec;ffdmx;imgdec;nhmlr;resample;rfmp3;theoradec;uflatm;vout",
-                  "http://bevara.ddns.net/test-signals/Freedom.jpg",
-                  "http://bevara.ddns.net/test-signals/Freedom.png",
-                  done,
-                  "png",
-                  false
-                  );
+      create_test('img',
+        'universal-img',
+        "core-img",
+        "a52dec;ffenc;inspect;nhmlw;restamp;rfmpgvid;tileagg;ufmhas;vtt2tx3g;aout;ffmx;j2kdec;nhntr;rewind;rfnalu;tilesplit;ufnalu;vttdec;avidmx;ffsws;jpgenc;nhntw;rfac3;rfpcm;tssplit;ufobu;writegen;bifsdec;cryptin;fin;lsrdec;odfdec;rfadts;rfprores;ttml2srt;ufttxt;writeqcp;bsagg;cryptout;fout;m2psdmx;rfamr;rfqcp;ttml2vtt;ufvc1;writeuf;bsrw;dasher;flist;m2tsdmx;oggdmx;rfav1;rfrawvid;ttmldec;ufvtt;xviddec;bssplit;dashin;gsfdmx;m2tsmx;oggmx;rfflac;rfsrt;ttxtdec;unframer;btplay;faaddec;gsfmx;maddec;rfh263;rftruehd;tx3g2srt;vcrop;cdcrypt;ffavf;hevcmerge;mp4dmx;pngenc;rfimg;safdmx;tx3g2ttml;vflip;cecrypt;ffbsf;hevcsplit;mp4mx;probe;rflatm;tx3g2vtt;vobsubdmx;compose;ffdec;httpin;nanojpeg;reframer;rfmhas;svgplay;txtin;vorbisdec;ffdmx;imgdec;nhmlr;resample;rfmp3;theoradec;uflatm;vout",
+        "http://bevara.ddns.net/test-signals/Freedom.jpg",
+        "http://bevara.ddns.net/test-signals/Freedom.png",
+        done,
+        "png",
+        false
+      );
     }).timeout(60000);
   });
-  
+
   describe('#j2kdec', () => {
     it('should transcode Cevennes2.jp2 to png', (done) => {
       create_test('img',
@@ -179,73 +182,101 @@ describe('core-player', () => {
   });
 
   describe('#jxldec', () => {
-  it('should decode test.jxl to png', (done) => {
-        create_test('img',
-          'universal-img',
-          "core-img",
-          "rfjxl;jxldec;fin;fout;pngenc;writegen",
-          "http://bevara.ddns.net/test-signals/JXL/test.jxl",
-          "http://bevara.ddns.net/test-signals/out/jxl/test.png",
-          done,
-          "png",
-          false
-        );
-      }).timeout(200000);
+    it('should decode test.jxl to png', (done) => {
+      create_test('img',
+        'universal-img',
+        "core-img",
+        "rfjxl;jxldec;fin;fout;pngenc;writegen",
+        "http://bevara.ddns.net/test-signals/JXL/test.jxl",
+        "http://bevara.ddns.net/test-signals/out/jxl/test.png",
+        done,
+        "png",
+        false
+      );
+    }).timeout(200000);
 
-      it('should decode test2.jxl to png', (done) => {
-        create_test('img',
-          'universal-img',
-          "core-img",
-          "rfjxl;jxldec;fin;fout;pngenc;writegen",
-          "http://bevara.ddns.net/test-signals/JXL/test2.jxl",
-          "http://bevara.ddns.net/test-signals/out/jxl/test2.png",
-          done,
-          "png",
-          false
-        );
-      }).timeout(200000);
+    it('should decode test2.jxl to png', (done) => {
+      create_test('img',
+        'universal-img',
+        "core-img",
+        "rfjxl;jxldec;fin;fout;pngenc;writegen",
+        "http://bevara.ddns.net/test-signals/JXL/test2.jxl",
+        "http://bevara.ddns.net/test-signals/out/jxl/test2.png",
+        done,
+        "png",
+        false
+      );
+    }).timeout(200000);
 
-      it('should decode test3.jxl to png', (done) => {
-        create_test('img',
-          'universal-img',
-          "core-img",
-          "rfjxl;jxldec;fin;fout;pngenc;writegen",
-          "http://bevara.ddns.net/test-signals/JXL/test3.jxl",
-          "http://bevara.ddns.net/test-signals/out/jxl/test3.png",
-          done,
-          "png",
-          false
-        );
-      }).timeout(200000);
+    it('should decode test3.jxl to png', (done) => {
+      create_test('img',
+        'universal-img',
+        "core-img",
+        "rfjxl;jxldec;fin;fout;pngenc;writegen",
+        "http://bevara.ddns.net/test-signals/JXL/test3.jxl",
+        "http://bevara.ddns.net/test-signals/out/jxl/test3.png",
+        done,
+        "png",
+        false
+      );
+    }).timeout(200000);
 
-      it('should decode red-room.jxl to png', (done) => {
-        create_test('img',
-          'universal-img',
-          "core-img",
-          "rfjxl;jxldec;fin;fout;pngenc;writegen",
-          "http://bevara.ddns.net/test-signals/JXL/red-room.jxl",
-          "http://bevara.ddns.net/test-signals/out/jxl/red-room.png",
-          done,
-          "png",
-          false
-        );
-      }).timeout(200000);
-
-
+    it('should decode red-room.jxl to png', (done) => {
+      create_test('img',
+        'universal-img',
+        "core-img",
+        "rfjxl;jxldec;fin;fout;pngenc;writegen",
+        "http://bevara.ddns.net/test-signals/JXL/red-room.jxl",
+        "http://bevara.ddns.net/test-signals/out/jxl/red-room.png",
+        done,
+        "png",
+        false
+      );
+    }).timeout(200000);
 
 
-      it('should decode test.jxl to canvas', (done) => {
-        create_test('img',
-          'universal-img',
-          "core-img",
-          "rfjxl;jxldec;fin;fout;writegen",
-          "http://bevara.ddns.net/test-signals/JXL/test.jxl",
-          "http://bevara.ddns.net/test-signals/out/jxl/canvas.png",
-          done,
-          "rgba",
-          false
-        );
-      }).timeout(200000);
+
+
+    it('should decode test.jxl to canvas', (done) => {
+      create_test('img',
+        'universal-img',
+        "core-img",
+        "rfjxl;jxldec;fin;fout;writegen",
+        "http://bevara.ddns.net/test-signals/JXL/test.jxl",
+        "http://bevara.ddns.net/test-signals/out/jxl/canvas.png",
+        done,
+        "rgba",
+        false
+      );
+    }).timeout(200000);
+  });
+
+  describe('#corejxl', () => {
+    it('should decode test.jxl', (done) => {
+      create_test('img',
+        'universal-img',
+        "jxl",
+        null,
+        "http://bevara.ddns.net/test-signals/JXL/test.jxl",
+        "http://bevara.ddns.net/test-signals/out/jxl/canvas.png",
+        done,
+      );
+    }).timeout(200000);
+  });
+
+  describe('#corejp2', () => {
+    it('should transcode Cevennes2.jp2 to canvas', (done) => {
+      create_test('img',
+        'universal-img',
+        "jp2",
+        null,
+        "http://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2",
+        "http://bevara.ddns.net/test-signals/out/j2k/cevennes2_canvas.png",
+        done,
+        "rgb",
+        false
+      );
+    }).timeout(5000);
   });
 
   describe('#svgplay', () => {
@@ -278,18 +309,18 @@ describe('core-player', () => {
       );
     }).timeout(10000);
 
-  //   it('should decode ImagineDragons.mp3.bvr"', (done) => {
-  //     create_test('audio',
-  //       "universal-audio",
-  //       "core-audio",
-  //       "fin;fout;writegen;rfmp3;maddec",
-  //       "http://bevara.ddns.net/test-signals/out/maddec/ImagineDragons.mp3.bvr",
-  //       "http://bevara.ddns.net/test-signals/out/maddec/ImagineDragons.wav",
-  //       done,
-  //       "wav",
-  //       false
-  //     );
-  //   }).timeout(10000);
+    //   it('should decode ImagineDragons.mp3.bvr"', (done) => {
+    //     create_test('audio',
+    //       "universal-audio",
+    //       "core-audio",
+    //       "fin;fout;writegen;rfmp3;maddec",
+    //       "http://bevara.ddns.net/test-signals/out/maddec/ImagineDragons.mp3.bvr",
+    //       "http://bevara.ddns.net/test-signals/out/maddec/ImagineDragons.wav",
+    //       done,
+    //       "wav",
+    //       false
+    //     );
+    //   }).timeout(10000);
 
   });
 
@@ -307,18 +338,18 @@ describe('core-player', () => {
       );
     }).timeout(10000);
 
-  //   it('should decode sound.ac3.bvr"', (done) => {
-  //     create_test('audio',
-  //       "universal-audio",
-  //       "core-audio",
-  //       "fin;fout;writegen;rfac3;a52dec",
-  //       "http://bevara.ddns.net/test-signals/out/ac3/sound.ac3.bvr",
-  //       "http://bevara.ddns.net/test-signals/out/ac3/sound.wav",
-  //       done,
-  //       "wav",
-  //       false
-  //     );
-  //   }).timeout(10000);
+    //   it('should decode sound.ac3.bvr"', (done) => {
+    //     create_test('audio',
+    //       "universal-audio",
+    //       "core-audio",
+    //       "fin;fout;writegen;rfac3;a52dec",
+    //       "http://bevara.ddns.net/test-signals/out/ac3/sound.ac3.bvr",
+    //       "http://bevara.ddns.net/test-signals/out/ac3/sound.wav",
+    //       done,
+    //       "wav",
+    //       false
+    //     );
+    //   }).timeout(10000);
   });
 
   describe('#rfflac', () => {
@@ -335,19 +366,19 @@ describe('core-player', () => {
       );
     }).timeout(60000);
 
-    
-  //   it('should decode ff-16b-1c-44100hz.flac.bvr"', (done) => {
-  //     create_test('audio',
-  //       "universal-audio",
-  //       "core-audio",
-  //       "fin;fout;writegen;rfflac;ffdec",
-  //       "http://bevara.ddns.net/test-signals/out/flac/ff-16b-1c-44100hz.flac.bvr",
-  //       "http://bevara.ddns.net/test-signals/out/flac/ff-16b-1c-44100hz.wav",
-  //       done,
-  //       "wav",
-  //       false
-  //     );
-  //   }).timeout(60000);
+
+    //   it('should decode ff-16b-1c-44100hz.flac.bvr"', (done) => {
+    //     create_test('audio',
+    //       "universal-audio",
+    //       "core-audio",
+    //       "fin;fout;writegen;rfflac;ffdec",
+    //       "http://bevara.ddns.net/test-signals/out/flac/ff-16b-1c-44100hz.flac.bvr",
+    //       "http://bevara.ddns.net/test-signals/out/flac/ff-16b-1c-44100hz.wav",
+    //       done,
+    //       "wav",
+    //       false
+    //     );
+    //   }).timeout(60000);
 
     it('should handle cache with ff-16b-1c-44100hz.flac"', (done) => {
       create_test('audio',
@@ -361,15 +392,15 @@ describe('core-player', () => {
         true
       );
       create_test('audio',
-      "universal-audio",
-      "core-audio",
-      "fin;fout;writegen;rfflac;ffdec",
-      "http://bevara.ddns.net/test-signals/ff-16b-1c-44100hz.flac",
-      "http://bevara.ddns.net/test-signals/out/flac/ff-16b-1c-44100hz.wav",
-      done,
-      "wav",
-      true
-    );
+        "universal-audio",
+        "core-audio",
+        "fin;fout;writegen;rfflac;ffdec",
+        "http://bevara.ddns.net/test-signals/ff-16b-1c-44100hz.flac",
+        "http://bevara.ddns.net/test-signals/out/flac/ff-16b-1c-44100hz.wav",
+        done,
+        "wav",
+        true
+      );
     }).timeout(60000);
   });
 
@@ -433,7 +464,7 @@ describe('core-player', () => {
       );
     }).timeout(360000);
   });
-  
+
 
   describe('#theoradec', () => {
     it('should decode Big_Buck_Bunny_Trailer_400p.ogv"', (done) => {
@@ -505,6 +536,6 @@ describe('core-player', () => {
     }).timeout(360000);
   });
 
-  
+
 
 });

@@ -293,7 +293,7 @@ GF_FilterRegister ReframeJxlRegister = {
 	.process = rfjxl_process,
 	.process_event = rfjxl_process_event};
 
-const GF_FilterRegister *dynCall_jxl_reframe_register(GF_FilterSession *session)
+const GF_FilterRegister * EMSCRIPTEN_KEEPALIVE dynCall_jxl_reframe_register(GF_FilterSession *session)
 {
 	return &ReframeJxlRegister;
 }

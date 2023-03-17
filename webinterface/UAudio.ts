@@ -62,6 +62,7 @@ class UniversalAudio extends HTMLAudioElement {
     }
 
     dataURLToSrc(self, blob, cached) {
+        if (!blob) return;
         if (self.useCache && self.cache && !cached) {
             self.cache.put(self.src, new Response(blob));
         }

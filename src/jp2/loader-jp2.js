@@ -380,7 +380,7 @@ addEventListener("message", async a => {
 		postMessage({});
 	}
 
-	const io = new fileio(a.data.in.src, a.data.in.buffer, "out.rgba", module);
+	const io = new fileio(a.data.in.src, a.data.in.buffer, "out.rgb", module);
 	const entry = module._constructor();
 	const buffer_in = io.fileio_in;
 	const buffer_out = io.fileio_out;
@@ -413,8 +413,21 @@ addEventListener("message", async a => {
 	const json_res_parsed = JSON.parse(json_res);
 	if (json_res_parsed.width && json_res_parsed.height){
 		const canvas = new OffscreenCanvas(json_res_parsed.width, json_res_parsed.height);
-		const imgData = new ImageData(new Uint8ClampedArray(buffer_out.HEAPU8), json_res_parsed.width, json_res_parsed.height );
+		const imgData = new ImageData(json_res_parsed.width, json_res_parsed.height );
+		
+		const dest = imgData.data;
+		const src = buffer_out.HEAPU8;
+		const n = 4 * json_res_parsed.width * json_res_parsed.height;
+		let s = 0, d = 0;
+		while (d < n) {
+			dest[d++] = src[s++];
+			dest[d++] = src[s++];
+			dest[d++] = src[s++];
+			dest[d++] = 255;    // skip alpha byte
+		}
+		
 		canvas.getContext('2d').putImageData(imgData, 0, 0);
+
 		let blob = await canvas.convertToBlob();
 		postMessage({ blob: blob });
 	}else{
