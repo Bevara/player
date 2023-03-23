@@ -227,6 +227,8 @@ class UniversalImage extends HTMLImageElement {
                 }
 
                 this.launch(this.scriptDirectory + this.using_attribute, src, buffer, args, props, main_resolve);
+            } else if (new URL(this.using_attribute).protocol === 'blob:') {
+                this.launch(this.using_attribute, src, buffer, args, props, main_resolve);
             } else if (this.using_attribute) {
                 this.launch(this.scriptDirectory + this.using_attribute + '.js', src, buffer, args, props, main_resolve);
             }
