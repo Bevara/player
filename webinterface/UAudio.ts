@@ -10,17 +10,19 @@ class UniversalAudio extends HTMLAudioElement {
     module: any;
 
     using_attribute: string;
-    with_attribute: string[];
+    with_attribute: string[] = [];
     print_attribute: Element | null;
     error_attribute: Element | null;
 
     out = "wav";
     scriptDirectory = "";
     useCache = false;
+    useWorker = true;
     printProgess = false;
     cache = null;
     worker = null;
-    core=null;
+    script = null;
+    core = null;
 
     private _decodingPromise: Promise<string>;
 
@@ -61,41 +63,139 @@ class UniversalAudio extends HTMLAudioElement {
         }
     }
 
-    dataURLToSrc(self, blob, cached) {
+    dataURLToSrc(blob, cached) {
         if (!blob) return;
-        if (self.useCache && self.cache && !cached) {
-            self.cache.put(self.src, new Response(blob));
+        if (this.useCache && this.cache && !cached) {
+            this.cache.put(this.src, new Response(blob));
         }
 
-        self.src = URL.createObjectURL(blob);
+        this.src = URL.createObjectURL(blob);
     }
 
-    async universal_decode(self, args): Promise<string> {
+    launchWorker(script, src, buffer, args, props, resolve) {
+        const worker = new Worker(script);
+        if (worker) {
+            worker.postMessage({
+                tag: {
+                    in: { src: src, buffer: buffer },
+                    out: this.out,
+                    module: {
+                        dynamicLibraries: this.with_attribute,
+                        INITIAL_MEMORY: 16777216 * 10
+                    },
+                    type: "audio/" + this.out,
+                    args: args,
+                    props: props,
+                    core: this.core
+                }
+            });
+
+            worker.addEventListener('message', m => {
+                if (m.data.core) {
+                    this.dataURLToSrc(m.data.core.blob, false);
+                    resolve(this.src);
+                }
+            });
+        }
+
+        this.worker = worker;
+    }
+
+    launchNoWorker(script, src, buffer, args, props, resolve) {
+        const self = this;
+        const ref = JSON.stringify(this);
+
+        function addLoadEvent(script, func) {
+            var oldonload = script.onload;
+            if (typeof script.onload != 'function') {
+                script.onload = func;
+            } else {
+                script.onload = function () {
+                    if (oldonload) {
+                        oldonload();
+                    }
+                    func();
+                };
+            }
+        }
+
+        function init() {
+            postMessage(
+                {
+                    tag: {
+                        in: { src: src, buffer: buffer },
+                        out: self.out,
+                        module: {
+                            dynamicLibraries: self.with_attribute,
+                            INITIAL_MEMORY: 16777216 * 10
+                        },
+                        type: "audio/" + self.out,
+                        using: self.using_attribute,
+                        args: args,
+                        props: props,
+                        core: this.core,
+                        ref: ref
+                    }
+                });
+
+            function processResult(m) {
+                if (m.data.core && m.data.core.ref == ref) {
+                    removeEventListener('message', processResult);
+                    self.dataURLToSrc(m.data.core.blob, false);
+                    resolve(self.src);
+                }
+            }
+
+            window.addEventListener('message', processResult);
+        }
+
+        const scripts = document.querySelectorAll(`script[src$="${script}"]`);
+
+        if (scripts.length > 0) {
+            addLoadEvent(scripts[0], init);
+        } else {
+            const script_elt = document.createElement('script');
+            script_elt.src = script;
+            addLoadEvent(script_elt, init);
+            document.head.appendChild(script_elt);
+            this.script = script_elt;
+        }
+    }
+
+    launch(script, src, buffer, args, props, resolve) {
+        if (this.useWorker) {
+            this.launchWorker(script, src, buffer, args, props, resolve);
+        } else {
+            this.launchNoWorker(script, src, buffer, args, props, resolve);
+        }
+    }
+
+    async universal_decode(args): Promise<string> {
         return new Promise(async (main_resolve, _main_reject) => {
-            if (self.useCache) {
+            if (this.useCache) {
                 try {
-                    self.cache = self.cache || await caches.open('universal-audio');
+                    this.cache = this.cache || await caches.open('universal-audio');
                 } catch (e) { }
-                const cachedImg = self.cache && await self.cache.match(self.src);
+                const cachedImg = this.cache && await this.cache.match(this.src);
                 if (cachedImg) {
                     const cachedImgData = await cachedImg.blob();
-                    this.dataURLToSrc(self, cachedImgData, true);
-                    main_resolve(self.src);
+                    this.dataURLToSrc(cachedImgData, true);
+                    main_resolve(this.src);
                     return;
                 }
             }
 
             const props = [];
-            if (self.hasAttribute("connections")) {
+            if (this.hasAttribute("connections")) {
                 props.push("connections");
             }
 
-            const response = await fetch(self.src);
+            const response = await fetch(this.src);
             let buffer = await response.arrayBuffer();
             const mime = response.headers.get("Content-Type");
-            let src = self.src;
+            let src = this.src;
 
-            if (self.src.endsWith(".bvr") || mime == "application/x-bevara") {
+            if (this.src.endsWith(".bvr") || mime == "application/x-bevara") {
                 const jszip = new JSZip();
                 const zip = await jszip.loadAsync(buffer);
                 const metadata = await zip.file("meta.json").async("string");
@@ -118,29 +218,10 @@ class UniversalAudio extends HTMLAudioElement {
                     this.with_attribute.push(URL.createObjectURL(blob));
                 }
 
-                self.worker = new Worker(this.scriptDirectory + this.using_attribute);
+                this.launch(this.scriptDirectory + this.using_attribute, src, buffer, args, props, main_resolve);
             } else if (this.using_attribute) {
-                self.worker = new Worker(this.scriptDirectory + this.using_attribute + '.js');
+                this.launch(this.scriptDirectory + this.using_attribute + '.js', src, buffer, args, props, main_resolve);
             }
-
-            if (self.worker) {
-                self.worker.postMessage({
-                    in: {src:src, buffer:buffer},
-                    out: this.out,
-                    module: {
-                        dynamicLibraries: this.with_attribute,
-                        INITIAL_MEMORY: 16777216 * 10
-                    },
-                    type: "audio/" + this.out,
-                    args: args,
-                    props: props
-                });
-                self.worker.addEventListener('message', m => {
-                    this.dataURLToSrc(self, m.data.blob, false);
-                    main_resolve(self.src);
-                });
-            }
-
         });
     }
 
@@ -152,7 +233,7 @@ class UniversalAudio extends HTMLAudioElement {
             args[nodeName] = atts[i].nodeValue;
         }
 
-        this._decodingPromise = this.universal_decode(this, args);
+        this._decodingPromise = this.universal_decode(args);
     }
 
     disconnectedCallback() {
@@ -184,6 +265,9 @@ class UniversalAudio extends HTMLAudioElement {
             case 'use-cache':
                 this.useCache = true;
                 break;
+            case 'no-worker':
+                this.useWorker = false;
+                break;
             case 'progress':
                 this.printProgess = true;
                 break;
@@ -193,7 +277,7 @@ class UniversalAudio extends HTMLAudioElement {
         }
     }
 
-    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress', 'script-directory']; }
+    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress', 'script-directory', 'no-worker']; }
 }
 
 if (!customElements.get('universal-audio')) {

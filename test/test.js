@@ -1,5 +1,5 @@
 
-function create_test(tag, extension, using_attribute, with_atribute, test_file, reference_file, done, out, useCache) {
+function create_test(tag, extension, using_attribute, with_atribute, test_file, reference_file, done, out, useCache, noWorker) {
   new Promise(function (resolve) {
     const img = document.createElement(tag, { "is": extension });
     img.setAttribute("src", test_file);
@@ -16,6 +16,10 @@ function create_test(tag, extension, using_attribute, with_atribute, test_file, 
 
     if (useCache) {
       img.setAttribute("use-cache", "");
+    }
+
+    if (noWorker) {
+      img.setAttribute("no-worker", "");
     }
 
     document.body.appendChild(img);
@@ -48,6 +52,7 @@ function create_test(tag, extension, using_attribute, with_atribute, test_file, 
                 console.log(using_attribute + ";" + with_atribute + " : hex values of result is " + resultHex + " and expected is " + refHex);
                 expect(resultHex).to.equal(refHex);
                 console.log(using_attribute + ";" + with_atribute + " : Test OK");
+                document.body.removeChild(img);
                 resolve();
               });
           });
@@ -70,6 +75,7 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/Freedom.png",
         done,
         "png",
+        false,
         false
       );
     }).timeout(5000);
@@ -83,6 +89,7 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/png/Freedom.jpeg",
         done,
         "jpg",
+        false,
         false
       );
     }).timeout(5000);
@@ -96,6 +103,7 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/Freedom.png",
         done,
         "png",
+        false,
         false
       );
     }).timeout(60000);
@@ -111,8 +119,8 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/j2k/Cevennes2.png",
         done,
         "png",
-        false
-      );
+        false,
+        false);
     }).timeout(5000);
 
     it('should transcode Cevennes2.jp2 to canvas', (done) => {
@@ -124,8 +132,21 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/j2k/cevennes2_canvas.png",
         done,
         "rgb",
-        false
-      );
+        false,
+        false);
+    }).timeout(5000);
+
+    it('should transcode Cevennes2.jp2 to png without worker', (done) => {
+      create_test('img',
+        'universal-img',
+        "core-img",
+        "fin;fout;pngenc;rfimg;writegen;j2kdec",
+        "http://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2",
+        "http://bevara.ddns.net/test-signals/out/j2k/Cevennes2.png",
+        done,
+        "png",
+        false,
+        true);
     }).timeout(5000);
 
     it('should decode Bretagne1.j2k', (done) => {
@@ -137,8 +158,8 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/j2k/Bretagne1.png",
         done,
         "png",
-        false
-      );
+        false,
+        false);
     }).timeout(5000);
 
 
@@ -164,7 +185,8 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/j2k/Cevennes2.png",
         done,
         "png",
-        true
+        true,
+        false
       );
 
       create_test('img',
@@ -175,7 +197,8 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/j2k/Cevennes2.png",
         done,
         "png",
-        true
+        true,
+        false
       );
     }).timeout(5000);
 
@@ -191,9 +214,11 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/jxl/test.png",
         done,
         "png",
-        false
-      );
+        false,
+        false);
     }).timeout(200000);
+
+    
 
     it('should decode test2.jxl to png', (done) => {
       create_test('img',
@@ -204,8 +229,8 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/jxl/test2.png",
         done,
         "png",
-        false
-      );
+        false,
+        false);
     }).timeout(200000);
 
     it('should decode test3.jxl to png', (done) => {
@@ -217,8 +242,8 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/jxl/test3.png",
         done,
         "png",
-        false
-      );
+        false,
+        false);
     }).timeout(200000);
 
     it('should decode red-room.jxl to png', (done) => {
@@ -230,8 +255,8 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/jxl/red-room.png",
         done,
         "png",
-        false
-      );
+        false,
+        false);
     }).timeout(200000);
 
 
@@ -246,12 +271,13 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/jxl/canvas.png",
         done,
         "rgba",
-        false
-      );
+        false,
+        false);
     }).timeout(200000);
   });
 
   describe('#corejxl', () => {
+
     it('should decode test.jxl', (done) => {
       create_test('img',
         'universal-img',
@@ -260,8 +286,24 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/JXL/test.jxl",
         "http://bevara.ddns.net/test-signals/out/jxl/canvas.png",
         done,
+        false,
+        false
       );
-    }).timeout(200000);
+    }).timeout(20000);
+
+    it('should decode test.jxl without workers', (done) => {
+      create_test('img',
+        'universal-img',
+        "jxl",
+        null,
+        "http://bevara.ddns.net/test-signals/JXL/test.jxl",
+        "http://bevara.ddns.net/test-signals/out/jxl/canvas.png",
+        done,
+        false,
+        true
+      );
+    }).timeout(20000);
+
   });
 
   describe('#corejp2', () => {
@@ -274,9 +316,23 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/j2k/cevennes2_canvas.png",
         done,
         "rgb",
-        false
-      );
+        false,
+        false);
     }).timeout(5000);
+
+    it('should transcode Cevennes2.jp2 to canvas without workers', (done) => {
+      create_test('img',
+        'universal-img',
+        "jp2",
+        null,
+        "http://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2",
+        "http://bevara.ddns.net/test-signals/out/j2k/cevennes2_canvas.png",
+        done,
+        "rgb",
+        false,
+        true);
+    }).timeout(5000);
+
   });
 
   describe('#svgplay', () => {
@@ -289,8 +345,8 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/svg/410.png",
         done,
         "png",
-        false
-      );
+        false,
+        false);
     }).timeout(5000);
   });
 
@@ -305,8 +361,8 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/maddec/ImagineDragons.wav",
         done,
         "wav",
-        false
-      );
+        false,
+        false);
     }).timeout(10000);
 
     //   it('should decode ImagineDragons.mp3.bvr"', (done) => {
@@ -318,8 +374,8 @@ describe('core-player', () => {
     //       "http://bevara.ddns.net/test-signals/out/maddec/ImagineDragons.wav",
     //       done,
     //       "wav",
-    //       false
-    //     );
+    //        false,
+    //    false        );
     //   }).timeout(10000);
 
   });
@@ -334,8 +390,21 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/ac3/sound.wav",
         done,
         "wav",
-        false
-      );
+        false,
+        false);
+    }).timeout(10000);
+
+    it('should decode sound.ac3 without workers"', (done) => {
+      create_test('audio',
+        "universal-audio",
+        "core-audio",
+        "fin;fout;writegen;rfac3;a52dec",
+        "http://bevara.ddns.net/test-signals/sound.ac3",
+        "http://bevara.ddns.net/test-signals/out/ac3/sound.wav",
+        done,
+        "wav",
+        false,
+        true);
     }).timeout(10000);
 
     //   it('should decode sound.ac3.bvr"', (done) => {
@@ -347,8 +416,8 @@ describe('core-player', () => {
     //       "http://bevara.ddns.net/test-signals/out/ac3/sound.wav",
     //       done,
     //       "wav",
-    //       false
-    //     );
+    //        false,
+    //    false         );
     //   }).timeout(10000);
   });
 
@@ -362,8 +431,8 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/flac/ff-16b-1c-44100hz.wav",
         done,
         "wav",
-        false
-      );
+        false,
+        false);
     }).timeout(60000);
 
 
@@ -376,8 +445,8 @@ describe('core-player', () => {
     //       "http://bevara.ddns.net/test-signals/out/flac/ff-16b-1c-44100hz.wav",
     //       done,
     //       "wav",
-    //       false
-    //     );
+    //        false,
+    //     false       );
     //   }).timeout(60000);
 
     it('should handle cache with ff-16b-1c-44100hz.flac"', (done) => {
@@ -389,7 +458,8 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/flac/ff-16b-1c-44100hz.wav",
         done,
         "wav",
-        true
+        true,
+        false
       );
       create_test('audio',
         "universal-audio",
@@ -399,7 +469,8 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/flac/ff-16b-1c-44100hz.wav",
         done,
         "wav",
-        true
+        true,
+        false
       );
     }).timeout(60000);
   });
@@ -415,8 +486,8 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/faad/sample.wav",
         done,
         "wav",
-        false
-      );
+        false,
+        false);
     }).timeout(60000);
   });
 
@@ -430,8 +501,8 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/ogg/Median_test.wav",
         done,
         "wav",
-        false
-      );
+        false,
+        false);
     }).timeout(60000);
   });
 
@@ -445,8 +516,8 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/amr/ff-16b-1c-8000hz.wav",
         done,
         "wav",
-        false
-      );
+        false,
+        false);
     }).timeout(60000);
   });
 
@@ -460,8 +531,8 @@ describe('core-player', () => {
         "http://bevara.ddns.net/test-signals/out/wma/ff-16b-1c-44100hz.wav",
         done,
         "wav",
-        false
-      );
+        false,
+        false);
     }).timeout(360000);
   });
 
@@ -476,13 +547,13 @@ describe('core-player', () => {
         null,
         done,
         "mp4",
-        false
-      );
+        false,
+        false);
     }).timeout(360000);
   });
 
   describe('#mpeg', () => {
-    it('should decode centaur_2.mpg"', (done) => {
+    it('should decode centaur_2.mpg', (done) => {
       create_test('video',
         "universal-video",
         "core-video",
@@ -491,8 +562,21 @@ describe('core-player', () => {
         null,
         done,
         "mp4",
-        false
-      );
+        false,
+        false);
+    }).timeout(360000);
+
+    it('should decode centaur_2.mpg without workers', (done) => {
+      create_test('video',
+        "universal-video",
+        "core-video",
+        "fout;m2psdmx;rfmpgvid;ffdec;mp4mx;rfnalu;ffenc;fin",
+        "http://bevara.ddns.net/test-signals/mpeg1/centaur_2.mpg",
+        null,
+        done,
+        "mp4",
+        false,
+        true);
     }).timeout(360000);
 
     it('should handle cache centaur_2.mpg"', (done) => {
@@ -531,11 +615,8 @@ describe('core-player', () => {
         null,
         done,
         "mp4",
-        false
-      );
+        false,
+        false);
     }).timeout(360000);
   });
-
-
-
 });
