@@ -400,6 +400,10 @@ addEventListener("message", async m => {
 		}();
 	}
 
+	if ("INITIAL_MEMORY" in m.data.tag.module){ //FIXME
+		delete m.data.tag.module["INITIAL_MEMORY"]; 
+	}
+	
 	const module = await Module(m.data.tag.module);
 
 	const io = new fileio(m.data.tag.in.src, m.data.tag.in.buffer, "out." + m.data.tag.out, module, m.data.tag.print_progress);
