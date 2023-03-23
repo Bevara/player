@@ -1,14 +1,17 @@
 addEventListener("message", async m => {
-
+	const name = "core-video";
 	var ENVIRONMENT_IS_WORKER = typeof importScripts == 'function';
 
 	if (!ENVIRONMENT_IS_WORKER){
 		//Filter messages since multiple universal tag can work at the same time
-		if (!m.data.tag || !m.data.tag.using || !m.data.tag.using.endsWith("core-video")) {
+		if (!m.data.tag || !m.data.tag.using || !m.data.tag.using.endsWith(name)) {
 			return;
 		};
 	}
 
+	if (!m.data.tag || !m.data.tag.in){
+		return;
+	}
 
 	class buffer {
 		buffer;
@@ -78,12 +81,11 @@ addEventListener("message", async m => {
 		print;
 		print_progress;
 	
-		constructor(in_url, in_buffer, out_url, module, print, print_progress) {
+		constructor(in_url, in_buffer, out_url, module, print_progress) {
 			this.in_url = in_url;
 			this.in_buffer = in_buffer;
 			this.out_url = out_url;
 			this.module = module;
-			this.print = print;
 			this.print_progress = print_progress;
 			this.createIO();
 		}
@@ -93,7 +95,8 @@ addEventListener("message", async m => {
 				const ioctx_id = this.module._gf_fileio_get_udta(fileio);
 				const mem = this.io_ctxs[ioctx_id];
 				if (this.print_progress) {
-					this.print("Reading from " + mem.p + " to " + (mem.p + bytes) + " of " + mem.buffer_u8.length + " bytes in total.");
+					const message = "Reading from " + mem.p + " to " + (mem.p + bytes) + " of " + mem.buffer_u8.length + " bytes in total.";
+					postMessage({core:{ print: message, ref: m.data.tag.ref}});
 				}
 	
 				let remaining = mem.buffer_u8.length - mem.p;
@@ -127,7 +130,8 @@ addEventListener("message", async m => {
 				}
 	
 				if (this.print_progress) {
-					this.print("Writing from " + mem.p + " to " + (mem.p + bytes) + " of " + mem.buffer_u8.length + " bytes in total.");
+					const message = "Writing from " + mem.p + " to " + (mem.p + bytes) + " of " + mem.buffer_u8.length + " bytes in total.";
+					postMessage({core:{ print: message, ref: m.data.tag.ref}});
 				}
 	
 				mem.buffer_u8.set(this.module.HEAPU8.slice(buffer, buffer + bytes), mem.p);
@@ -367,11 +371,11 @@ addEventListener("message", async m => {
 			return new_buffer;
 		}
 	}
-
+	
 	m.data.tag.module["locateFile"] = function (path, scriptDirectory) {
 		if (path.startsWith("blob")){
 			return path;
-		}else if(path == "core-video.wasm" && m.data.tag.core){
+		}else if(path == name+".wasm" && m.data.tag.core){
 			return m.data.tag.core;
 		}else if(m.data.tag.scriptDirectory && m.data.tag.scriptDirectory != ""){
 			return m.data.tag.scriptDirectory + path;
@@ -379,13 +383,26 @@ addEventListener("message", async m => {
 		return scriptDirectory + path;
 	};
 
-	const module = await Module(m.data.tag.module);
-
-	if (!m.data.tag.in){
-		postMessage({core:{ ref: m.data.tag.ref}});
+	const module_parameters = m.data.tag.module;
+	if (m.data.tag.print){
+		module_parameters["print"] = function () {
+			return function (t) {
+				postMessage({core:{ print: t, ref: m.data.tag.ref}});
+			};
+		}();
+	}
+	
+	if (m.data.tag.printErr){
+		module_parameters["printErr"] = function () {
+			return function (t) {
+				postMessage({core:{ printErr: t, ref: m.data.tag.ref}});
+			};
+		}();
 	}
 
-	const io = new fileio(m.data.tag.in.src, m.data.tag.in.buffer, "out." + m.data.tag.out, module);
+	const module = await Module(m.data.tag.module);
+
+	const io = new fileio(m.data.tag.in.src, m.data.tag.in.buffer, "out." + m.data.tag.out, module, m.data.tag.print_progress);
 	const entry = module._constructor();
 	const buffer_in = io.fileio_in;
 	const buffer_out = io.fileio_out;
@@ -405,6 +422,7 @@ addEventListener("message", async m => {
 	module.stringToUTF8(json_args, ptr_args, len_args);
 	module._set(entry, ptr_args);
 
+
 	const get_args = JSON.stringify(props);
 	const get_args_len = (get_args.length << 2) + 1;
 	const ptr_get_args = module.stackAlloc(get_args_len);
@@ -414,5 +432,5 @@ addEventListener("message", async m => {
 	const json_res = module.UTF8ToString(ptr_data);
 	const json_res_parsed = JSON.parse(json_res);
 	
-	postMessage({core:{  blob: new Blob([buffer_out.HEAPU8], { type: m.data.tag.type }), ref: m.data.tag.ref} });
+	postMessage({ core:{blob: new Blob([buffer_out.HEAPU8], { type: m.data.tag.type }), ref: m.data.tag.ref }});
 });

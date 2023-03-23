@@ -30,39 +30,7 @@ class UniversalAudio extends HTMLAudioElement {
         return this._decodingPromise;
     }
 
-    private print() {
-        const self = this;
-        if (self.print_attribute) {
-            return function (t) {
-                function clear_text(text) {
-                    return text
-                        .replaceAll("[37m", '')
-                        .replaceAll("[0m", '');
-                }
-                (self.print_attribute as any).value += clear_text(t) + "\n";
-            };
-        } else {
-            return console.log.bind(console);
-        }
-    }
-
-    private printErr() {
-        const self = this;
-        if (self.error_attribute) {
-            return function (t) {
-                function clear_text(text) {
-                    return text
-                        .replaceAll("[37m", '')
-                        .replaceAll("[0m", '');
-                }
-
-                (self.error_attribute as any).value += clear_text(t) + "\n";
-            };
-        } else {
-            return console.warn.bind(console);
-        }
-    }
-
+    
     dataURLToSrc(blob, cached) {
         if (!blob) return;
         if (this.useCache && this.cache && !cached) {
@@ -71,30 +39,46 @@ class UniversalAudio extends HTMLAudioElement {
 
         this.src = URL.createObjectURL(blob);
     }
+    
+    processMessages(self, core, resolve){
+        if(core.blob){
+            self.dataURLToSrc(core.blob, false);
+            resolve(self.src);
+        }
 
-    launchWorker(script, src, buffer, args, props, resolve) {
+        function clear_text(text) {
+            return text
+                .replaceAll("[37m", '')
+                .replaceAll("[0m", '');
+        }
+
+        if(core.print){
+            if (self.print_attribute){
+                (self.print_attribute as any).value += clear_text(core.print) + "\n";
+            }else{
+                console.log(core.print);
+            }
+        }
+
+        if(core.printErr){
+            if (self.error_attribute){
+                (self.error_attribute as any).value += clear_text(core.printErr) + "\n";
+            }else{
+                console.log(core.printErr);
+            }
+            
+        }
+
+    }
+
+    launchWorker(initMessage, script, resolve) {
         const worker = new Worker(script);
         if (worker) {
-            worker.postMessage({
-                tag: {
-                    in: { src: src, buffer: buffer },
-                    out: this.out,
-                    module: {
-                        dynamicLibraries: this.with_attribute,
-                        INITIAL_MEMORY: 16777216 * 10
-                    },
-                    type: "audio/" + this.out,
-                    args: args,
-                    props: props,
-                    core: this.core,
-                    scriptDirectory:this.scriptDirectory
-                }
-            });
+            worker.postMessage(initMessage);
 
             worker.addEventListener('message', m => {
                 if (m.data.core) {
-                    this.dataURLToSrc(m.data.core.blob, false);
-                    resolve(this.src);
+                    this.processMessages(this, m.data.core, resolve);
                 }
             });
         }
@@ -102,9 +86,8 @@ class UniversalAudio extends HTMLAudioElement {
         this.worker = worker;
     }
 
-    launchNoWorker(script, src, buffer, args, props, resolve) {
+    launchNoWorker(initMessage, script, ref, resolve) {
         const self = this;
-        const ref = JSON.stringify(this);
 
         function addLoadEvent(script, func) {
             var oldonload = script.onload;
@@ -121,29 +104,15 @@ class UniversalAudio extends HTMLAudioElement {
         }
 
         function init() {
-            postMessage(
-                {
-                    tag: {
-                        in: { src: src, buffer: buffer },
-                        out: self.out,
-                        module: {
-                            dynamicLibraries: self.with_attribute,
-                            INITIAL_MEMORY: 16777216 * 10
-                        },
-                        type: "audio/" + self.out,
-                        using: self.using_attribute,
-                        args: args,
-                        props: props,
-                        core: this.core,
-                        ref: ref
-                    }
-                });
+            postMessage(initMessage);
 
             function processResult(m) {
                 if (m.data.core && m.data.core.ref == ref) {
-                    removeEventListener('message', processResult);
-                    self.dataURLToSrc(m.data.core.blob, false);
-                    resolve(self.src);
+                    self.processMessages(self, m.data.core, resolve);
+
+                    if(m.data.core.blob){
+                        removeEventListener('message', processResult);
+                    }
                 }
             }
 
@@ -164,10 +133,33 @@ class UniversalAudio extends HTMLAudioElement {
     }
 
     launch(script, src, buffer, args, props, resolve) {
+        const ref = JSON.stringify(this);
+
+        const initMessage = {
+            tag: {
+                in: { src: src, buffer: buffer },
+                out: this.out,
+                module: {
+                    dynamicLibraries: this.with_attribute,
+                    INITIAL_MEMORY: 16777216 * 10
+                },
+                type: "audio/" + this.out,
+                using:this.using_attribute,
+                args: args,
+                props: props,
+                core: this.core,
+                scriptDirectory:this.scriptDirectory,
+                ref: ref,
+                print:this.print_attribute?true:false,
+                printErr:this.error_attribute?true:false,
+                print_progress:this.printProgess
+            }
+        };
+
         if (this.useWorker) {
-            this.launchWorker(script, src, buffer, args, props, resolve);
+            this.launchWorker(initMessage, script, resolve);
         } else {
-            this.launchNoWorker(script, src, buffer, args, props, resolve);
+            this.launchNoWorker(initMessage, script, ref, resolve);
         }
     }
 

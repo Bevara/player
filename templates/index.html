@@ -4,7 +4,8 @@
         
     </head>
     <body >
-        <img is="universal-img" src="http://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2" using="jp2" controls  connections>
+        <textarea id="output" rows="8" readonly=""></textarea>
+        <img is="universal-img" src="http://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2" using="core-img" with="j2kdec;fin;fout;pngenc;rfimg;writegen" controls  connections print="#output" printerr="#output" progress>
     </body>
 
 </html>
