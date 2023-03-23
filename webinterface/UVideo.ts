@@ -86,7 +86,8 @@ class UniversalVideo extends HTMLVideoElement {
                     type: "video/" + this.out,
                     args: args,
                     props: props,
-                    core: this.core
+                    core: this.core,
+                    scriptDirectory:this.scriptDirectory
                 }
             });
 

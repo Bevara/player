@@ -372,6 +372,8 @@ addEventListener("message", async m => {
 			return path;
 		}else if(path == "core-img.wasm" && m.data.tag.core){
 			return m.data.tag.core;
+		}else if(m.data.tag.scriptDirectory && m.data.tag.scriptDirectory != ""){
+			return m.data.tag.scriptDirectory + path;
 		}
 		return scriptDirectory + path;
 	};
