@@ -203,6 +203,14 @@ class UniversalImage extends HTMLImageElement {
             const mime = response.headers.get("Content-Type");
             let src = this.src;
 
+            // Check if using is a full url
+            try {
+                new URL(this.using_attribute);
+                this.launch(this.using_attribute, src, buffer, args, props, main_resolve);
+                return;
+            } catch (_) {
+            }
+
             if (this.src.endsWith(".bvr") || mime == "application/x-bevara") {
                 const jszip = new JSZip();
                 const zip = await jszip.loadAsync(buffer);
@@ -227,8 +235,6 @@ class UniversalImage extends HTMLImageElement {
                 }
 
                 this.launch(this.scriptDirectory + this.using_attribute, src, buffer, args, props, main_resolve);
-            } else if (new URL(this.using_attribute).protocol === 'blob:') {
-                this.launch(this.using_attribute, src, buffer, args, props, main_resolve);
             } else if (this.using_attribute) {
                 this.launch(this.scriptDirectory + this.using_attribute + '.js', src, buffer, args, props, main_resolve);
             }

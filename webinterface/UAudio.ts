@@ -195,6 +195,15 @@ class UniversalAudio extends HTMLAudioElement {
             const mime = response.headers.get("Content-Type");
             let src = this.src;
 
+            // Check if using is a full url
+            try {
+                new URL(this.using_attribute);
+                this.launch(this.using_attribute, src, buffer, args, props, main_resolve);
+                return;
+            } catch (_) {
+            }
+
+
             if (this.src.endsWith(".bvr") || mime == "application/x-bevara") {
                 const jszip = new JSZip();
                 const zip = await jszip.loadAsync(buffer);
