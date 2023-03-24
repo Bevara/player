@@ -406,7 +406,7 @@ addEventListener("message", async m => {
 	
 	const module = await Module(m.data.tag.module);
 
-	const io = new fileio(m.data.tag.in.src, m.data.tag.in.buffer, "out." + m.data.tag.out, module, m.data.tag.print_progress);
+	const io = new fileio(m.data.tag.in.src, m.data.tag.in.buffer, "out.rgb", module, m.data.tag.print_progress);
 	const entry = module._constructor();
 	const buffer_in = io.fileio_in;
 	const buffer_out = io.fileio_out;
