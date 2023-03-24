@@ -32,10 +32,11 @@
 		"svg":"image/svg+xml",
 		"dxf":"image/vnd.dxf"
 	},
+	"using":{
+		"jp2":"jp2",
+		"jxl":"jxl"
+	},
 	"with":{
-		"jp2": "fin;fout;pngenc;rfimg;writegen;j2kdec",
-		"j2k":"fout;j2kdec;ffdmx;writegen;pngenc",
-		"jxl":"rfjxl;jxldec;fin;fout;pngenc;writegen",
 		"ac3": "fin;fout;writegen;rfac3;a52dec",
 		"amr": "rfamr;writegen;resample;ffdec;rfamr;fin;fout",
 		"flac": "fin;fout;writegen;rfflac;ffdec",

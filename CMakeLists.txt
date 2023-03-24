@@ -35,7 +35,7 @@ link_directories(${CMAKE_BINARY_DIR}/third_parties/gpac/bin/gcc)
 add_subdirectory(filters)
 add_subdirectory(src)
 
-list(APPEND WASM_FILES ${CMAKE_BINARY_DIR}/core-img.wasm ${CMAKE_BINARY_DIR}/core-audio.wasm ${CMAKE_BINARY_DIR}/core-video.wasm ${CMAKE_BINARY_DIR}/core-canvas.wasm)
+list(APPEND WASM_FILES ${CMAKE_BINARY_DIR}/core.wasm ${CMAKE_BINARY_DIR}/core-canvas.wasm)
 
 add_custom_target (serve
   COMMAND npm run serve
@@ -53,4 +53,4 @@ add_custom_target (test-watch
   COMMAND npm run test-watch
 )
 
-add_dependencies(test release core-img core-audio core-video core-canvas)
+add_dependencies(test release core core-canvas)

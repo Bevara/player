@@ -1,10 +1,15 @@
 {
 	"tag": {
-		"image": "img is='universal-img' using='core-img' ",
-		"audio": "audio is='universal-audio' using='core-audio' ",
-		"video": "video is='universal-video' using='core-video' ",
+		"image": "img is='universal-img' using='core' ",
+		"audio": "audio is='universal-audio' using='core' ",
+		"video": "video is='universal-video' using='core' ",
 		"canvas": "canvas is='universal-canvas'"
 	},
+	"using":[
+		"core",
+		"jp2",
+		"jxl"
+	],
 	"with": [
 		"a52dec",
 		"ffenc",

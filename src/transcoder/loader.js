@@ -1,5 +1,5 @@
 addEventListener("message", async m => {
-	const name = "core-img";
+	const name = "core";
 	var ENVIRONMENT_IS_WORKER = typeof importScripts == 'function';
 
 	if (!ENVIRONMENT_IS_WORKER){
