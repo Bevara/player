@@ -34,6 +34,7 @@
 	},
 	"using":{
 		"jp2":"jp2",
+		"j2k":"jp2",
 		"jxl":"jxl"
 	},
 	"with":{
