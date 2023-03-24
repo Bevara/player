@@ -191,6 +191,12 @@ class UniversalImage extends HTMLImageElement {
             }
 
             const response = await fetch(this.src);
+            
+            if(!response.ok){
+                main_resolve("");
+                return;
+            }
+            
             let buffer = await response.arrayBuffer();
             const mime = response.headers.get("Content-Type");
             let src = this.src;
