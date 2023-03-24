@@ -1,8 +1,8 @@
 {
 	"tag": {
-		"image": "img is='universal-img' using='core' ",
-		"audio": "audio is='universal-audio' using='core' ",
-		"video": "video is='universal-video' using='core' ",
+		"image": "img is='universal-img'",
+		"audio": "audio is='universal-audio'",
+		"video": "video is='universal-video'",
 		"canvas": "canvas is='universal-canvas'"
 	},
 	"using":[
