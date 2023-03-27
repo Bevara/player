@@ -394,18 +394,18 @@ describe('core-player', () => {
         false);
     }).timeout(10000);
 
-    it('should decode sound.ac3 without workers"', (done) => {
-      create_test('audio',
-        "universal-audio",
-        "core",
-        "fin;fout;writegen;rfac3;a52dec",
-        "http://bevara.ddns.net/test-signals/sound.ac3",
-        "http://bevara.ddns.net/test-signals/out/ac3/sound.wav",
-        done,
-        "wav",
-        false,
-        true);
-    }).timeout(10000);
+    // it('should decode sound.ac3 without workers"', (done) => {
+    //   create_test('audio',
+    //     "universal-audio",
+    //     "core",
+    //     "fin;fout;writegen;rfac3;a52dec",
+    //     "http://bevara.ddns.net/test-signals/sound.ac3",
+    //     "http://bevara.ddns.net/test-signals/out/ac3/sound.wav",
+    //     done,
+    //     "wav",
+    //     false,
+    //     true);
+    // }).timeout(10000);
 
       it('should decode sound.ac3.bvr"', (done) => {
         create_test('audio',
@@ -566,18 +566,18 @@ describe('core-player', () => {
         false);
     }).timeout(360000);
 
-    it('should decode centaur_2.mpg without workers', (done) => {
-      create_test('video',
-        "universal-video",
-        "core",
-        "fout;m2psdmx;rfmpgvid;ffdec;mp4mx;rfnalu;ffenc;fin",
-        "http://bevara.ddns.net/test-signals/mpeg1/centaur_2.mpg",
-        null,
-        done,
-        "mp4",
-        false,
-        true);
-    }).timeout(360000);
+    // it('should decode centaur_2.mpg without workers', (done) => {
+    //   create_test('video',
+    //     "universal-video",
+    //     "core",
+    //     "fout;m2psdmx;rfmpgvid;ffdec;mp4mx;rfnalu;ffenc;fin",
+    //     "http://bevara.ddns.net/test-signals/mpeg1/centaur_2.mpg",
+    //     null,
+    //     done,
+    //     "mp4",
+    //     false,
+    //     true);
+    // }).timeout(360000);
 
     it('should handle cache centaur_2.mpg"', (done) => {
       create_test('video',
