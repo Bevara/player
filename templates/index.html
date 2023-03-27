@@ -4,7 +4,9 @@
         
     </head>
     <body >
-        <video is="universal-video" src="http://bevara.ddns.net/test-signals/mpeg2/video_mpeg2.mp4" using="core" with="fout;rfmpgvid;ffdec;mp4mx;rfnalu;ffenc;fin;mp4dmx" controls  connections>
+        <img is="universal-img" src="http://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2" using="core" with="j2kdec;fin;fout;pngenc;rfimg;writegen" controls  connections progress no-worker>
+        <audio is="universal-audio" src="http://bevara.ddns.net/test-signals/sound.ac3" using="core" with="fin;fout;writegen;rfac3;a52dec" controls  connections progress no-worker></audio>
+        <video is="universal-video" src="http://bevara.ddns.net/test-signals/xvid/Big_Buck_Bunny_Trailer_400p.avi" using="core" with="mp4mx;avidmx;xviddec;fout;rfmp3;rfmpgvid;rfnalu;ffenc;writegen;fin" controls  connections progress no-worker></video>
     </body>
 
 </html>

@@ -39,8 +39,8 @@ class UniversalVideo extends HTMLVideoElement {
         this.src = URL.createObjectURL(blob);
     }
 
-    processMessages(self, core, resolve){
-        if(core.blob){
+    processMessages(self, core, resolve) {
+        if (core.blob) {
             self.dataURLToSrc(core.blob, false);
             resolve(self.srcset);
         }
@@ -51,21 +51,21 @@ class UniversalVideo extends HTMLVideoElement {
                 .replaceAll("[0m", '');
         }
 
-        if(core.print){
-            if (self.print_attribute){
+        if (core.print) {
+            if (self.print_attribute) {
                 (self.print_attribute as any).value += clear_text(core.print) + "\n";
-            }else{
+            } else {
                 console.log(core.print);
             }
         }
 
-        if(core.printErr){
-            if (self.error_attribute){
+        if (core.printErr) {
+            if (self.error_attribute) {
                 (self.error_attribute as any).value += clear_text(core.printErr) + "\n";
-            }else{
+            } else {
                 console.log(core.printErr);
             }
-            
+
         }
 
     }
@@ -109,7 +109,7 @@ class UniversalVideo extends HTMLVideoElement {
                 if (m.data.core && m.data.core.ref == ref) {
                     self.processMessages(self, m.data.core, resolve);
 
-                    if(m.data.core.blob){
+                    if (m.data.core.blob) {
                         removeEventListener('message', processResult);
                     }
                 }
@@ -121,13 +121,17 @@ class UniversalVideo extends HTMLVideoElement {
         const scripts = document.querySelectorAll(`script[src$="${script}"]`);
 
         if (scripts.length > 0) {
-            addLoadEvent(scripts[0], init);
+            if ((window as any)[this.using_attribute + "Loaded"]) {
+                init();
+            } else {
+                addLoadEvent(scripts[0], init);
+            }
         } else {
             const script_elt = document.createElement('script');
             script_elt.src = script;
             addLoadEvent(script_elt, init);
             document.head.appendChild(script_elt);
-            this.script = script_elt;            
+            this.script = script_elt;
         }
     }
 
@@ -143,15 +147,15 @@ class UniversalVideo extends HTMLVideoElement {
                     INITIAL_MEMORY: 16777216 * 10
                 },
                 type: "video/" + this.out,
-                using:this.using_attribute,
+                using: this.using_attribute,
                 args: args,
                 props: props,
                 core: this.core,
-                scriptDirectory:this.scriptDirectory,
+                scriptDirectory: this.scriptDirectory,
                 ref: ref,
-                print:this.print_attribute?true:false,
-                printErr:this.error_attribute?true:false,
-                print_progress:this.printProgess
+                print: this.print_attribute ? true : false,
+                printErr: this.error_attribute ? true : false,
+                print_progress: this.printProgess
             }
         };
 
@@ -186,11 +190,11 @@ class UniversalVideo extends HTMLVideoElement {
 
             const response = await fetch(this.src);
 
-            if(!response.ok){
+            if (!response.ok) {
                 main_resolve("");
                 return;
             }
-            
+
             let buffer = await response.arrayBuffer();
             const mime = response.headers.get("Content-Type");
             let src = this.src;
@@ -248,6 +252,12 @@ class UniversalVideo extends HTMLVideoElement {
     disconnectedCallback() {
         if (this.worker) {
             this.worker.terminate();
+        }
+
+        if (this.script) {
+            document.head.removeChild(this.script);
+            this.script = null;
+            (window as any)[this.using_attribute + "Loaded"] = null; 
         }
     }
 

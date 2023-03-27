@@ -1,6 +1,9 @@
+var ENVIRONMENT_IS_WEB = typeof window == 'object';
+var ENVIRONMENT_IS_WORKER = typeof importScripts == 'function';
+
+
 addEventListener("message", async m => {
 	const name = "jxl";
-	var ENVIRONMENT_IS_WORKER = typeof importScripts == 'function';
 
 	if (!ENVIRONMENT_IS_WORKER){
 		//Filter messages since multiple universal tag can work at the same time
@@ -447,3 +450,7 @@ addEventListener("message", async m => {
 		postMessage({core:{ ref: m.data.tag.ref}});
 	}
 });
+
+if (ENVIRONMENT_IS_WEB){
+	window["jxlLoaded"] = true;
+}

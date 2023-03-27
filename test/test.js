@@ -136,7 +136,7 @@ describe('core-player', () => {
         false);
     }).timeout(5000);
 
-    /*it('should transcode Cevennes2.jp2 to png without worker', (done) => {
+    it('should transcode Cevennes2.jp2 to png without worker', (done) => {
       create_test('img',
         'universal-img',
         "core",
@@ -147,7 +147,7 @@ describe('core-player', () => {
         "png",
         false,
         true);
-    }).timeout(5000);*/
+    }).timeout(5000);
 
     it('should decode Bretagne1.j2k', (done) => {
       create_test('img',
@@ -291,7 +291,7 @@ describe('core-player', () => {
       );
     }).timeout(20000);
 
-   /* it('should decode test.jxl without workers', (done) => {
+    it('should decode test.jxl without workers', (done) => {
       create_test('img',
         'universal-img',
         "jxl",
@@ -302,7 +302,7 @@ describe('core-player', () => {
         false,
         true
       );
-    }).timeout(20000);*/
+    }).timeout(20000);
 
   });
 
@@ -320,7 +320,7 @@ describe('core-player', () => {
         false);
     }).timeout(5000);
 
-    /*it('should transcode Cevennes2.jp2 to canvas without workers', (done) => {
+    it('should transcode Cevennes2.jp2 to canvas without workers', (done) => {
       create_test('img',
         'universal-img',
         "jp2",
@@ -331,7 +331,7 @@ describe('core-player', () => {
         "rgb",
         false,
         true);
-    }).timeout(5000);*/
+    }).timeout(5000);
 
   });
 
@@ -394,7 +394,7 @@ describe('core-player', () => {
         false);
     }).timeout(10000);
 
-   /* it('should decode sound.ac3 without workers"', (done) => {
+    it('should decode sound.ac3 without workers"', (done) => {
       create_test('audio',
         "universal-audio",
         "core",
@@ -405,7 +405,7 @@ describe('core-player', () => {
         "wav",
         false,
         true);
-    }).timeout(10000);*/
+    }).timeout(10000);
 
       it('should decode sound.ac3.bvr"', (done) => {
         create_test('audio',
@@ -566,7 +566,7 @@ describe('core-player', () => {
         false);
     }).timeout(360000);
 
-   /* it('should decode centaur_2.mpg without workers', (done) => {
+    it('should decode centaur_2.mpg without workers', (done) => {
       create_test('video',
         "universal-video",
         "core",
@@ -577,7 +577,7 @@ describe('core-player', () => {
         "mp4",
         false,
         true);
-    }).timeout(360000);*/
+    }).timeout(360000);
 
     it('should handle cache centaur_2.mpg"', (done) => {
       create_test('video',

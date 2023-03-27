@@ -1,6 +1,8 @@
+var ENVIRONMENT_IS_WEB = typeof window == 'object';
+var ENVIRONMENT_IS_WORKER = typeof importScripts == 'function';
+
 addEventListener("message", async m => {
 	const name = "core";
-	var ENVIRONMENT_IS_WORKER = typeof importScripts == 'function';
 
 	if (!ENVIRONMENT_IS_WORKER){
 		//Filter messages since multiple universal tag can work at the same time
@@ -462,3 +464,7 @@ addEventListener("message", async m => {
 
 	postMessage({core:{ blob: blob, ref: m.data.tag.ref}});
 });
+
+if (ENVIRONMENT_IS_WEB){
+	window["coreLoaded"] = true;
+}
