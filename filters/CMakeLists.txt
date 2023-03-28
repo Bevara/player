@@ -130,6 +130,13 @@ SET(IMG_FLAGS
         GPAC_HAS_PNG
 )
 
+SET(IMG_INC
+        ${THIRD_PARTIES}/libpng-code
+        ${THIRD_PARTIES}/jpeg-9e
+        ${THIRD_PARTIES_BINARIES}/libpng
+        ${THIRD_PARTIES_BINARIES}/libjpeg
+)
+
 SET(IMG_LIBS
         ${PNG_LIB}
         ${JPEG_LIB}
@@ -143,8 +150,8 @@ add_filter(imgdec
         "${IMG_LIBS}"
         _dynCall_imgdec_register
         "${IMG_FLAGS}"
-        ""
-        "-sUSE_ZLIB=1")
+        "${IMG_INC}"
+        "")
 
 SET(RFIMG_SRC
         ${GPAC_LOCATION}/src/filters/reframe_img.c
@@ -167,7 +174,7 @@ add_filter(rfimg
         "${IMG_LIBS}"
         _dynCall_img_reframe_register
         "${IMG_FLAGS}"
-        ""
+        "${IMG_INC}"
         "")
 
 SET(WRITEGEN_SRC
@@ -227,7 +234,7 @@ add_filter(pngenc
         "${PNGENC_LIBS}"
         _dynCall_pngenc_register
         GPAC_HAS_PNG
-        ""
+        "${IMG_INC}"
         "")
 
 SET(JPGENC_SRC
@@ -250,7 +257,7 @@ add_filter(jpgenc
         "${JPEG_LIB}"
         _dynCall_jpgenc_register
         GPAC_HAS_JPEG
-        ""
+        "${IMG_INC}"
         "")
 
 SET(J2KDEC_INC
