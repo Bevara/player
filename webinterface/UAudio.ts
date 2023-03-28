@@ -144,8 +144,7 @@ class UniversalAudio extends HTMLAudioElement {
                 in: { src: src, buffer: buffer },
                 out: this.out,
                 module: {
-                    dynamicLibraries: this.with_attribute,
-                    INITIAL_MEMORY: 16777216 * 10
+                    dynamicLibraries: this.with_attribute
                 },
                 type: "audio/" + this.out,
                 using: this.using_attribute,

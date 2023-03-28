@@ -10,7 +10,7 @@ SET(EXTERNAL_FN
 )
 
 SET(EXTERNAL_RUNTIME
-  "['stringToUTF8','UTF8ToString','stackAlloc','addFunction','getTempRet0']"
+  "['stringToUTF8','UTF8ToString','stackAlloc','addFunction','getTempRet0','FS']"
 )
 
 SET(JS_RUNTIME

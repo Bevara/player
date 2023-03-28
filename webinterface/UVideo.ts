@@ -143,8 +143,7 @@ class UniversalVideo extends HTMLVideoElement {
                 in: { src: src, buffer: buffer },
                 out: this.out,
                 module: {
-                    dynamicLibraries: this.with_attribute,
-                    INITIAL_MEMORY: 16777216 * 10
+                    dynamicLibraries: this.with_attribute
                 },
                 type: "video/" + this.out,
                 using: this.using_attribute,
