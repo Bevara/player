@@ -87,13 +87,12 @@ addEventListener("message", async m => {
 	const imgData = new ImageData(json_res_parsed.width, json_res_parsed.height);
 
 	const dest = imgData.data;
-	const src = res;
 	const n = 4 * json_res_parsed.width * json_res_parsed.height;
 	let s = 0, d = 0;
 	while (d < n) {
-		dest[d++] = src[s++];
-		dest[d++] = src[s++];
-		dest[d++] = src[s++];
+		dest[d++] = res[s++];
+		dest[d++] = res[s++];
+		dest[d++] = res[s++];
 		dest[d++] = 255;    // skip alpha byte
 	}
 
