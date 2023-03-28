@@ -228,7 +228,7 @@ class UniversalImage extends HTMLImageElement {
                     const blob = await zip.file(bvr.js).async("blob");
                     this.using_attribute = URL.createObjectURL(blob);
                 } else {
-                    this.using_attribute = this.using_attribute + ".js";
+                    this.using_attribute = this.scriptDirectory + this.using_attribute + ".js";
                 }
 
                 for (const decoder of bvr.decoders) {
@@ -236,7 +236,7 @@ class UniversalImage extends HTMLImageElement {
                     this.with_attribute.push(URL.createObjectURL(blob));
                 }
 
-                this.launch(this.scriptDirectory + this.using_attribute, src, buffer, args, props, main_resolve);
+                this.launch(this.using_attribute, src, buffer, args, props, main_resolve);
             } else if (this.using_attribute) {
                 this.launch(this.scriptDirectory + this.using_attribute + '.js', src, buffer, args, props, main_resolve);
             }
