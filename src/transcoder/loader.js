@@ -261,7 +261,7 @@ addEventListener("message", async m => {
 	
 					//in test mode we want to use our ftell and fseek wrappers
 					if (mode[0] == 'r') {
-						this.module._gf_fileio_set_stats_u32(fileio_ref, cur_buffer.size(), cur_buffer.size(), 1, 0);
+						this.module._gf_fileio_set_stats(fileio_ref, cur_buffer.size(), cur_buffer.size(), 1, 0);
 					}
 					return fileio_ref;
 				}
@@ -311,7 +311,7 @@ addEventListener("message", async m => {
 						this.eof.value,
 						this.printf.value);
 					if (mode[0] == 'r') {
-						this.module._gf_fileio_set_stats_u32(fileio_ref, cur_buffer.size(), cur_buffer.size(), 1, 0);
+						this.module._gf_fileio_set_stats(fileio_ref, cur_buffer.size(), cur_buffer.size(), 1, 0);
 					}
 				}
 	
@@ -408,7 +408,7 @@ addEventListener("message", async m => {
 	const entry = module._constructor();
 	const buffer_in = io.fileio_in;
 	const buffer_out = io.fileio_out;
-	const register_fns = Object.keys(module).filter(x => x.endsWith("_register"));
+	const register_fns = Object.keys(module).filter(x => x.startsWith("dynCall_") && x.endsWith("_register"));
 
 	const args = m.data.tag.args? m.data.tag.args : {};
 	const props = m.data.tag.props? m.data.tag.props : [];

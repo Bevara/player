@@ -20,7 +20,7 @@ SET(CORE_JP2
 )
 
 SET(EXTERNAL_FN
-  "['dynCall_img_reframe_register','dynCall_j2kdec_register','dynCall_writegen_register','dynCall_fileout_register','dynCall_filein_register','_gf_fileio_url','_gf_fileio_new','_gf_fileio_set_stats_u32','_gf_fileio_get_udta','_gf_url_concatenate']"
+  "['dynCall_img_reframe_register','dynCall_j2kdec_register','dynCall_writegen_register','dynCall_fileout_register','dynCall_filein_register','_gf_fileio_url','_gf_fileio_new','_gf_fileio_set_stats','_gf_fileio_get_udta','_gf_url_concatenate']"
 )
 
 SET(EXTERNAL_RUNTIME
@@ -42,7 +42,7 @@ target_compile_definitions(jp2 PRIVATE GPAC_HAVE_CONFIG_H GPAC_HAS_JP2)
 
 set_target_properties(jp2
   PROPERTIES
-  LINK_FLAGS " ${USE_FLAGS} -s ALLOW_TABLE_GROWTH=1 -s ALLOW_MEMORY_GROWTH=1 --no-entry --extern-post-js=${JS_RUNTIME_JP2} -s MODULARIZE=1 -s EXPORTED_RUNTIME_METHODS=${EXTERNAL_RUNTIME} -s EXPORTED_FUNCTIONS=${EXTERNAL_FN} -s ERROR_ON_UNDEFINED_SYMBOLS=0"
+  LINK_FLAGS "${USE_FLAGS} -s ALLOW_TABLE_GROWTH=1 -s ALLOW_MEMORY_GROWTH=1 --no-entry --extern-post-js=${JS_RUNTIME_JP2} -s MODULARIZE=1 -s EXPORTED_RUNTIME_METHODS=${EXTERNAL_RUNTIME} -s EXPORTED_FUNCTIONS=${EXTERNAL_FN} -s ERROR_ON_UNDEFINED_SYMBOLS=0"
 )
 
 target_include_directories(jp2 PRIVATE ${J2KDEC_INC})

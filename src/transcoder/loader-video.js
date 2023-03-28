@@ -1,9 +1,6 @@
-var ENVIRONMENT_IS_WEB = typeof window == 'object';
-var ENVIRONMENT_IS_WORKER = typeof importScripts == 'function';
-
-
 addEventListener("message", async m => {
-	const name = "jxl";
+	const name = "core-video";
+	var ENVIRONMENT_IS_WORKER = typeof importScripts == 'function';
 
 	if (!ENVIRONMENT_IS_WORKER){
 		//Filter messages since multiple universal tag can work at the same time
@@ -262,7 +259,7 @@ addEventListener("message", async m => {
 	
 					//in test mode we want to use our ftell and fseek wrappers
 					if (mode[0] == 'r') {
-						this.module._gf_fileio_set_stats(fileio_ref, cur_buffer.size(), cur_buffer.size(), 1, 0);
+						this.module._gf_fileio_set_stats_u32(fileio_ref, cur_buffer.size(), cur_buffer.size(), 1, 0);
 					}
 					return fileio_ref;
 				}
@@ -312,7 +309,7 @@ addEventListener("message", async m => {
 						this.eof.value,
 						this.printf.value);
 					if (mode[0] == 'r') {
-						this.module._gf_fileio_set_stats(fileio_ref, cur_buffer.size(), cur_buffer.size(), 1, 0);
+						this.module._gf_fileio_set_stats_u32(fileio_ref, cur_buffer.size(), cur_buffer.size(), 1, 0);
 					}
 				}
 	
@@ -403,17 +400,13 @@ addEventListener("message", async m => {
 		}();
 	}
 
-	if ("INITIAL_MEMORY" in m.data.tag.module){ //FIXME
-		delete m.data.tag.module["INITIAL_MEMORY"]; 
-	}
-
 	const module = await Module(m.data.tag.module);
 
-	const io = new fileio(m.data.tag.in.src, m.data.tag.in.buffer, "out.rgba", module, m.data.tag.print_progress);
+	const io = new fileio(m.data.tag.in.src, m.data.tag.in.buffer, "out." + m.data.tag.out, module, m.data.tag.print_progress);
 	const entry = module._constructor();
 	const buffer_in = io.fileio_in;
 	const buffer_out = io.fileio_out;
-	const register_fns = Object.keys(module).filter(x => x.startsWith("dynCall_") && x.endsWith("_register"));
+	const register_fns = Object.keys(module).filter(x => x.endsWith("_register"));
 
 	const args = m.data.tag.args? m.data.tag.args : {};
 	const props = m.data.tag.props? m.data.tag.props : [];
@@ -421,8 +414,6 @@ addEventListener("message", async m => {
 	args["io_in"] = buffer_in.file_io;
 	args["io_out"] = buffer_out.file_io;
 	args["filters"] = register_fns.map(entry => module[entry](0));
-	props.push("width");
-	props.push("height");
 
 	// Convert json to string buffer
 	const json_args = JSON.stringify(args);
@@ -440,17 +431,6 @@ addEventListener("message", async m => {
 	const ptr_data = module._get(entry, ptr_get_args);
 	const json_res = module.UTF8ToString(ptr_data);
 	const json_res_parsed = JSON.parse(json_res);
-	if (json_res_parsed.width && json_res_parsed.height){
-		const canvas = new OffscreenCanvas(json_res_parsed.width, json_res_parsed.height);
-		const imgData = new ImageData(new Uint8ClampedArray(buffer_out.HEAPU8), json_res_parsed.width, json_res_parsed.height );
-		canvas.getContext('2d').putImageData(imgData, 0, 0);
-		let blob = await canvas.convertToBlob();
-		postMessage({core:{ blob: blob, ref: m.data.tag.ref}});
-	}else{
-		postMessage({core:{ ref: m.data.tag.ref}});
-	}
+	
+	postMessage({ core:{blob: new Blob([buffer_out.HEAPU8], { type: m.data.tag.type }), ref: m.data.tag.ref }});
 });
-
-if (ENVIRONMENT_IS_WEB){
-	window["jxlLoaded"] = true;
-}

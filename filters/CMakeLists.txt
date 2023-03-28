@@ -6,7 +6,7 @@ set(THIRD_PARTIES_BINARIES ${CMAKE_BINARY_DIR}/third_parties)
 set(GPAC_LOCATION ${THIRD_PARTIES}/gpac)
 set(FFMPEG_LOCATION ${THIRD_PARTIES}/ffmpeg)
 
-add_compile_definitions(GPAC_HAVE_CONFIG_H)
+add_compile_definitions(GPAC_HAVE_CONFIG_H GPAC_DISABLE_NETWORK)
 
 macro(add_filter FILTERNAME ENTRYFILES LINKFILES ENTRY_FN DEFINITIONS INCLUDES LINK_FLAGS)
         list(APPEND WASM_FILES ${CMAKE_BINARY_DIR}/${FILTERNAME}.wasm)
@@ -624,6 +624,7 @@ SET(FFRESCALE_SRC
         ${GPAC_LOCATION}/src/evg/raster_argb.c
         ${GPAC_LOCATION}/src/evg/raster_565.c
         ${GPAC_LOCATION}/src/evg/raster_yuv.c
+        ${GPAC_LOCATION}/src/evg/ftgrays.c
         ${GPAC_LOCATION}/src/utils/alloc.c
         ${GPAC_LOCATION}/src/utils/color.c
         ${GPAC_LOCATION}/src/utils/error.c

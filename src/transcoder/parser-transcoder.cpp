@@ -115,9 +115,3 @@ extern "C" const char *parse_get_session(Entry *entry, const char *json)
   out.Accept(writer);
   return sb.GetString();
 }
-
-GF_EXPORT
-extern "C" void gf_fileio_set_stats_u32(GF_FileIO *gfio, u32 bytes_done, u32 file_size, Bool cache_complete, u32 bytes_per_sec)
-{
-  gf_fileio_set_stats(gfio, bytes_done, file_size, cache_complete, bytes_per_sec);
-}

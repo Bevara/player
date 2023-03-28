@@ -53,4 +53,5 @@ add_custom_target (test-watch
   COMMAND npm run test-watch
 )
 
-add_dependencies(test release core core-canvas)
+#add_dependencies(test release core core-canvas)
+add_dependencies(test release core)
