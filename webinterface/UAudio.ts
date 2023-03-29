@@ -9,7 +9,7 @@ class UniversalAudio extends HTMLAudioElement {
     entry: any;
     module: any;
 
-    using_attribute: string;
+    using_attribute: string = "";
     with_attribute: string[] = [];
     print_attribute: Element | null;
     error_attribute: Element | null;
@@ -29,7 +29,6 @@ class UniversalAudio extends HTMLAudioElement {
     get decodingPromise() {
         return this._decodingPromise;
     }
-
 
     dataURLToSrc(blob, cached) {
         if (!blob) return;
@@ -71,6 +70,7 @@ class UniversalAudio extends HTMLAudioElement {
 
     }
 
+
     launchWorker(initMessage, script, resolve) {
         const worker = new Worker(script);
         if (worker) {
@@ -86,7 +86,7 @@ class UniversalAudio extends HTMLAudioElement {
         this.worker = worker;
     }
 
-    launchNoWorker(initMessage, script, ref, resolve) {
+    launchNoWorker(initMessage, script, resolve) {
         const self = this;
 
         function addLoadEvent(script, func) {
@@ -103,26 +103,17 @@ class UniversalAudio extends HTMLAudioElement {
             }
         }
 
-        function init() {
-            postMessage(initMessage);
-
-            function processResult(m) {
-                if (m.data.core && m.data.core.ref == ref) {
-                    self.processMessages(self, m.data.core, resolve);
-
-                    if (m.data.core.blob) {
-                        removeEventListener('message', processResult);
-                    }
-                }
-            }
-
-            window.addEventListener('message', processResult);
+        async function init() {
+            const blob = await (window as any)[self.using_attribute]({data:initMessage});
+            self.dataURLToSrc(blob, false);
+            resolve(self.src);
         }
 
         const scripts = document.querySelectorAll(`script[src$="${script}"]`);
 
         if (scripts.length > 0) {
-            if ((window as any)[this.using_attribute + "Loaded"]) {
+            const coreInit = (window as any)[this.using_attribute];
+            if (coreInit) {
                 init();
             } else {
                 addLoadEvent(scripts[0], init);
@@ -137,7 +128,6 @@ class UniversalAudio extends HTMLAudioElement {
     }
 
     launch(script, src, buffer, args, props, resolve) {
-        const ref = JSON.stringify(this);
 
         const initMessage = {
             tag: {
@@ -152,7 +142,6 @@ class UniversalAudio extends HTMLAudioElement {
                 props: props,
                 core: this.core,
                 scriptDirectory: this.scriptDirectory,
-                ref: ref,
                 print: this.print_attribute ? true : false,
                 printErr: this.error_attribute ? true : false,
                 print_progress: this.printProgess
@@ -162,7 +151,7 @@ class UniversalAudio extends HTMLAudioElement {
         if (this.useWorker) {
             this.launchWorker(initMessage, script, resolve);
         } else {
-            this.launchNoWorker(initMessage, script, ref, resolve);
+            this.launchNoWorker(initMessage, script, resolve);
         }
     }
 
@@ -181,6 +170,8 @@ class UniversalAudio extends HTMLAudioElement {
                 }
             }
 
+
+            // Retrieve result
             const props = [];
             if (this.hasAttribute("connections")) {
                 props.push("connections");
@@ -204,7 +195,6 @@ class UniversalAudio extends HTMLAudioElement {
                 return;
             } catch (_) {
             }
-
 
             if (this.src.endsWith(".bvr") || mime == "application/x-bevara") {
                 const jszip = new JSZip();
@@ -236,8 +226,10 @@ class UniversalAudio extends HTMLAudioElement {
         });
     }
 
+
     connectedCallback() {
         let args: any = {};
+
 
         for (var i = 0, atts = this.attributes, n = atts.length, arr = []; i < n; i++) {
             const nodeName = atts[i].nodeName;
@@ -250,12 +242,13 @@ class UniversalAudio extends HTMLAudioElement {
     disconnectedCallback() {
         if (this.worker) {
             this.worker.terminate();
+            this.worker = null;
         }
 
         if (this.script) {
             document.head.removeChild(this.script);
             this.script = null;
-            (window as any)[this.using_attribute + "Loaded"] = null; 
+            (window as any)[this.using_attribute] = null; 
         }
     }
 

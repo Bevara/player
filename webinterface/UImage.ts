@@ -86,7 +86,7 @@ class UniversalImage extends HTMLImageElement {
         this.worker = worker;
     }
 
-    launchNoWorker(initMessage, script, ref, resolve) {
+    launchNoWorker(initMessage, script, resolve) {
         const self = this;
 
         function addLoadEvent(script, func) {
@@ -103,26 +103,17 @@ class UniversalImage extends HTMLImageElement {
             }
         }
 
-        function init() {
-            postMessage(initMessage);
-
-            function processResult(m) {
-                if (m.data.core && m.data.core.ref == ref) {
-                    self.processMessages(self, m.data.core, resolve);
-
-                    if (m.data.core.blob) {
-                        removeEventListener('message', processResult);
-                    }
-                }
-            }
-
-            window.addEventListener('message', processResult);
+        async function init() {
+            const blob = await (window as any)[self.using_attribute]({data:initMessage});
+            self.dataURLToSrc(blob, false);
+            resolve(self.srcset);
         }
 
         const scripts = document.querySelectorAll(`script[src$="${script}"]`);
 
         if (scripts.length > 0) {
-            if ((window as any)[this.using_attribute + "Loaded"]) {
+            const coreInit = (window as any)[this.using_attribute];
+            if (coreInit) {
                 init();
             } else {
                 addLoadEvent(scripts[0], init);
@@ -137,7 +128,6 @@ class UniversalImage extends HTMLImageElement {
     }
 
     launch(script, src, buffer, args, props, resolve) {
-        const ref = JSON.stringify(this);
 
         const initMessage = {
             tag: {
@@ -152,7 +142,6 @@ class UniversalImage extends HTMLImageElement {
                 props: props,
                 core: this.core,
                 scriptDirectory: this.scriptDirectory,
-                ref: ref,
                 print: this.print_attribute ? true : false,
                 printErr: this.error_attribute ? true : false,
                 print_progress: this.printProgess
@@ -162,7 +151,7 @@ class UniversalImage extends HTMLImageElement {
         if (this.useWorker) {
             this.launchWorker(initMessage, script, resolve);
         } else {
-            this.launchNoWorker(initMessage, script, ref, resolve);
+            this.launchNoWorker(initMessage, script, resolve);
         }
     }
 
@@ -264,7 +253,7 @@ class UniversalImage extends HTMLImageElement {
         if (this.script) {
             document.head.removeChild(this.script);
             this.script = null;
-            (window as any)[this.using_attribute + "Loaded"] = null; 
+            (window as any)[this.using_attribute] = null; 
         }
     }
 

@@ -9,7 +9,7 @@ class UniversalVideo extends HTMLVideoElement {
     entry: any;
     module: any;
 
-    using_attribute: string;
+    using_attribute: string = "";
     with_attribute: string[] = [];
     print_attribute: Element | null;
     error_attribute: Element | null;
@@ -70,6 +70,7 @@ class UniversalVideo extends HTMLVideoElement {
 
     }
 
+
     launchWorker(initMessage, script, resolve) {
         const worker = new Worker(script);
         if (worker) {
@@ -85,7 +86,7 @@ class UniversalVideo extends HTMLVideoElement {
         this.worker = worker;
     }
 
-    launchNoWorker(initMessage, script, ref, resolve) {
+    launchNoWorker(initMessage, script, resolve) {
         const self = this;
 
         function addLoadEvent(script, func) {
@@ -102,26 +103,17 @@ class UniversalVideo extends HTMLVideoElement {
             }
         }
 
-        function init() {
-            postMessage(initMessage);
-
-            function processResult(m) {
-                if (m.data.core && m.data.core.ref == ref) {
-                    self.processMessages(self, m.data.core, resolve);
-
-                    if (m.data.core.blob) {
-                        removeEventListener('message', processResult);
-                    }
-                }
-            }
-
-            window.addEventListener('message', processResult);
+        async function init() {
+            const blob = await (window as any)[self.using_attribute]({data:initMessage});
+            self.dataURLToSrc(blob, false);
+            resolve(self.src);
         }
 
         const scripts = document.querySelectorAll(`script[src$="${script}"]`);
 
         if (scripts.length > 0) {
-            if ((window as any)[this.using_attribute + "Loaded"]) {
+            const coreInit = (window as any)[this.using_attribute];
+            if (coreInit) {
                 init();
             } else {
                 addLoadEvent(scripts[0], init);
@@ -136,7 +128,6 @@ class UniversalVideo extends HTMLVideoElement {
     }
 
     launch(script, src, buffer, args, props, resolve) {
-        const ref = JSON.stringify(this);
 
         const initMessage = {
             tag: {
@@ -151,7 +142,6 @@ class UniversalVideo extends HTMLVideoElement {
                 props: props,
                 core: this.core,
                 scriptDirectory: this.scriptDirectory,
-                ref: ref,
                 print: this.print_attribute ? true : false,
                 printErr: this.error_attribute ? true : false,
                 print_progress: this.printProgess
@@ -161,7 +151,7 @@ class UniversalVideo extends HTMLVideoElement {
         if (this.useWorker) {
             this.launchWorker(initMessage, script, resolve);
         } else {
-            this.launchNoWorker(initMessage, script, ref, resolve);
+            this.launchNoWorker(initMessage, script, resolve);
         }
     }
 
@@ -169,7 +159,7 @@ class UniversalVideo extends HTMLVideoElement {
         return new Promise(async (main_resolve, _main_reject) => {
             if (this.useCache) {
                 try {
-                    this.cache = this.cache || await caches.open('universal-audio');
+                    this.cache = this.cache || await caches.open('universal-video');
                 } catch (e) { }
                 const cachedImg = this.cache && await this.cache.match(this.src);
                 if (cachedImg) {
@@ -180,6 +170,8 @@ class UniversalVideo extends HTMLVideoElement {
                 }
             }
 
+
+            // Retrieve result
             const props = [];
             if (this.hasAttribute("connections")) {
                 props.push("connections");
@@ -236,8 +228,10 @@ class UniversalVideo extends HTMLVideoElement {
         });
     }
 
+
     connectedCallback() {
         let args: any = {};
+
 
         for (var i = 0, atts = this.attributes, n = atts.length, arr = []; i < n; i++) {
             const nodeName = atts[i].nodeName;
@@ -247,16 +241,16 @@ class UniversalVideo extends HTMLVideoElement {
         this._decodingPromise = this.universal_decode(args);
     }
 
-
     disconnectedCallback() {
         if (this.worker) {
             this.worker.terminate();
+            this.worker = null;
         }
 
         if (this.script) {
             document.head.removeChild(this.script);
             this.script = null;
-            (window as any)[this.using_attribute + "Loaded"] = null; 
+            (window as any)[this.using_attribute] = null; 
         }
     }
 
