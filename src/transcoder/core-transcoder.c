@@ -36,7 +36,7 @@ void SET_CONSOLE(int code)
 	default: return;
 	}
 	MAIN_THREAD_EM_ASM({
-		libgpac.gpac_set_console($0);
+		Module.gpac_set_console($0);
 	}, code);
 }
 
