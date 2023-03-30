@@ -8,16 +8,16 @@
 			return;
 		}
 
-		m.data.tag.module["locateFile"] = function (path, scriptDirectory) {
+		/*m.data.tag.module["locateFile"] = function (path, scriptDirectory) {
 			if (path.startsWith("blob")) {
 				return path;
-			} else if (path == name + ".wasm" && m.data.tag.core) {
+			} else if (path == "core.wasm" && m.data.tag.core) {
 				return m.data.tag.core;
 			} else if (m.data.tag.scriptDirectory && m.data.tag.scriptDirectory != "") {
 				return m.data.tag.scriptDirectory + path;
 			}
 			return scriptDirectory + path;
-		};
+		};*/
 
 		const module_parameters = m.data.tag.module;
 		if (m.data.tag.print) {
@@ -46,6 +46,8 @@
 
 		const entry = module._constructor();
 		const register_fns = Object.keys(module).filter(x => x.startsWith("dynCall_") && x.endsWith("_register"));
+		register_fns.push("_wcdec_register");
+		register_fns.push("_wcenc_register");
 
 		const args = m.data.tag.args ? m.data.tag.args : {};
 		const props = m.data.tag.props ? m.data.tag.props : [];

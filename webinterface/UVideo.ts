@@ -177,7 +177,7 @@ class UniversalVideo extends HTMLVideoElement {
                 props.push("connections");
             }
 
-            args["enc"] = "enc:c=avc";
+            args["enc"] = ["c=avc","c=aac"];
 
             const response = await fetch(this.src);
 

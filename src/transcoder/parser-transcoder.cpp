@@ -40,13 +40,15 @@ extern "C" void parse_set_session(Entry *entry, const char *json)
   if (document.HasMember("enc"))
   {
     GF_Err err;
-    assert(document["enc"].IsString());
-    const char *enc = document["enc"].GetString();
-
-    gf_fs_load_filter(entry->session, enc, &err);
-    if (err)
+    assert(document["enc"].IsArray());
+    for (Value::ConstValueIterator itr = document["enc"].Begin(); itr != document["enc"].End(); ++itr)
     {
-      fprintf(stderr, "session error %s\n", gf_error_to_string(err));
+      const char *enc = itr->GetString();
+      gf_fs_load_filter(entry->session, enc, &err);
+      if (err)
+      {
+        fprintf(stderr, "session error %s\n", gf_error_to_string(err));
+      }
     }
   }
 
@@ -89,9 +91,10 @@ extern "C" const char *parse_get_session(Entry *entry, const char *json)
     else if (strcmp(property, "width") == 0)
     {
       u32 width = 0;
-      GF_FilterPid* ipid = gf_filter_get_ipid(entry->dst, 0);
-      if (ipid){
-        const GF_PropertyValue * p = gf_filter_pid_get_property(ipid, GF_PROP_PID_WIDTH);
+      GF_FilterPid *ipid = gf_filter_get_ipid(entry->dst, 0);
+      if (ipid)
+      {
+        const GF_PropertyValue *p = gf_filter_pid_get_property(ipid, GF_PROP_PID_WIDTH);
         width = p->value.uint;
       }
 
@@ -100,9 +103,10 @@ extern "C" const char *parse_get_session(Entry *entry, const char *json)
     else if (strcmp(property, "height") == 0)
     {
       u32 height = 0;
-      GF_FilterPid* ipid = gf_filter_get_ipid(entry->dst, 0);
-      if (ipid){
-        const GF_PropertyValue * p = gf_filter_pid_get_property(ipid, GF_PROP_PID_HEIGHT);
+      GF_FilterPid *ipid = gf_filter_get_ipid(entry->dst, 0);
+      if (ipid)
+      {
+        const GF_PropertyValue *p = gf_filter_pid_get_property(ipid, GF_PROP_PID_HEIGHT);
         height = p->value.uint;
       }
 

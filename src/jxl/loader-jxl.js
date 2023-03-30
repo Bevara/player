@@ -11,7 +11,7 @@
 		m.data.tag.module["locateFile"] = function (path, scriptDirectory) {
 			if (path.startsWith("blob")) {
 				return path;
-			} else if (path == name + ".wasm" && m.data.tag.core) {
+			} else if (path == "jxl.wasm" && m.data.tag.core) {
 				return m.data.tag.core;
 			} else if (m.data.tag.scriptDirectory && m.data.tag.scriptDirectory != "") {
 				return m.data.tag.scriptDirectory + path;
