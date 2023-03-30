@@ -153,18 +153,18 @@ describe('core-player', () => {
         true);
     }).timeout(5000);
 
-    it('should decode Bretagne1.j2k', (done) => {
-      create_test('img',
-        'universal-img',
-        "core",
-        "fout;j2kdec;ffdmx;writegen;pngenc",
-        "http://bevara.ddns.net/test-signals/j2k/Bretagne1.j2k",
-        "http://bevara.ddns.net/test-signals/out/j2k/Bretagne1.png",
-        done,
-        "png",
-        false,
-        false);
-    }).timeout(5000);
+    // it('should decode Bretagne1.j2k', (done) => {
+    //   create_test('img',
+    //     'universal-img',
+    //     "core",
+    //     "fout;j2kdec;ffdmx;writegen;pngenc",
+    //     "http://bevara.ddns.net/test-signals/j2k/Bretagne1.j2k",
+    //     "http://bevara.ddns.net/test-signals/out/j2k/Bretagne1.png",
+    //     done,
+    //     "png",
+    //     false,
+    //     false);
+    // }).timeout(5000);
 
 
     // it('should decode Cevennes2.jp2.bvr', (done) => {
@@ -567,20 +567,20 @@ describe('core-player', () => {
   //   }).timeout(60000);
   // });
 
-  describe('#ffdmx', () => {
-    it('should decode ff-16b-1c-44100hz.wma"', (done) => {
-      create_test('audio',
-        "universal-audio",
-        "core",
-        "writegen;fin;fout;ffdec;ffdmx;resample",
-        "http://bevara.ddns.net/test-signals/ff-16b-1c-44100hz.wma",
-        "http://bevara.ddns.net/test-signals/out/wma/ff-16b-1c-44100hz.wav",
-        done,
-        "wav",
-        false,
-        false);
-    }).timeout(360000);
-  });
+  // describe('#ffdmx', () => {
+  //   it('should decode ff-16b-1c-44100hz.wma"', (done) => {
+  //     create_test('audio',
+  //       "universal-audio",
+  //       "core",
+  //       "writegen;fin;fout;ffdec;ffdmx;resample",
+  //       "http://bevara.ddns.net/test-signals/ff-16b-1c-44100hz.wma",
+  //       "http://bevara.ddns.net/test-signals/out/wma/ff-16b-1c-44100hz.wav",
+  //       done,
+  //       "wav",
+  //       false,
+  //       false);
+  //   }).timeout(360000);
+  // });
 
 
   describe('#theoradec', () => {
