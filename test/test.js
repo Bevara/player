@@ -612,6 +612,19 @@ describe('core-player', () => {
         false);
     }).timeout(360000);
 
+    it('should decode medical_demo.mpg', (done) => {
+      create_test('video',
+        "universal-video",
+        "core",
+        "fout;m2psdmx;rfmpgvid;ffdec;mp4mx;rfnalu;ffenc;fin",
+        "http://bevara.ddns.net/test-signals/mpeg1/medical_demo.mpg",
+        null,
+        done,
+        "mp4",
+        false,
+        false);
+    }).timeout(360000);
+
     // it('should decode centaur_2.mpg without workers', (done) => {
     //   create_test('video',
     //     "universal-video",

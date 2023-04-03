@@ -42,7 +42,7 @@ class UniversalVideo extends HTMLVideoElement {
     processMessages(self, core, resolve) {
         if (core.blob) {
             self.dataURLToSrc(core.blob, false);
-            resolve(self.srcset);
+            resolve(self.src);
         }
 
         function clear_text(text) {
