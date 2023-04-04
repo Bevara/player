@@ -481,6 +481,19 @@ describe('core-player', () => {
         false);
     }).timeout(60000);
 
+    it('should decode ff-16b-1c-44100hz.flac"', (done) => {
+      create_test('audio',
+        "universal-audio",
+        "core",
+        "fin;fout;writegen;rfflac;ffdec",
+        "http://bevara.ddns.net/test-signals/flac/Symphony6.flac",
+        "http://bevara.ddns.net/test-signals/out/flac/Symphony6.wav",
+        done,
+        "wav",
+        false,
+        false);
+    }).timeout(60000);
+
 
       // it('should decode ff-16b-1c-44100hz.flac.bvr"', (done) => {
       //   create_test('audio',
