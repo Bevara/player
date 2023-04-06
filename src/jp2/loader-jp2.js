@@ -108,6 +108,6 @@
 	if (ENVIRONMENT_IS_WORKER) {
 		addEventListener("message", init);
 	} else if (ENVIRONMENT_IS_WEB) {
-		window.core = init;
+		window.jp2 = init;
 	}
 })();
