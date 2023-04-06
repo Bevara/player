@@ -155,7 +155,7 @@ class UniversalVideo extends HTMLVideoElement {
             let src = this.src;
             let js = null;
             let wasmBinaryFile = null;
-            let dynamicLibraries :string[] = [];
+            let dynamicLibraries: string[] = [];
 
             const mime = response.headers.get("Content-Type");
             if (this.src.endsWith(".bvr") || mime == "application/x-bevara") {
@@ -172,12 +172,12 @@ class UniversalVideo extends HTMLVideoElement {
                 const json_meta = JSON.parse(metadata);
 
                 const getURLData = async (name) => {
-                    if (Array.isArray(name)){
-                        const blobs = await Promise.all(name.map(x=> zip.file(x).async("blob")));
-                        const urls = blobs.map(x=> URL.createObjectURL(x));
+                    if (Array.isArray(name)) {
+                        const blobs = await Promise.all(name.map(x => zip.file(x).async("blob")));
+                        const urls = blobs.map(x => URL.createObjectURL(x));
                         this.urlToRevoke = this.urlToRevoke.concat(urls);
                         return urls;
-                    }else if (typeof name == 'string') {
+                    } else if (typeof name == 'string') {
                         const blob = await zip.file(name).async("blob");
                         const url = URL.createObjectURL(blob);
                         this.urlToRevoke.push(url);
@@ -189,31 +189,43 @@ class UniversalVideo extends HTMLVideoElement {
                 src = (await getURLData(json_meta.source) as string);
                 js = await getURLData(json_meta.core + ".js");
                 wasmBinaryFile = await getURLData(json_meta.core + ".wasm");
-                dynamicLibraries = (await getURLData(json_meta.decoders.map(x=> x+".wasm")) as string[]);
+                dynamicLibraries = (await getURLData(json_meta.decoders.map(x => x + ".wasm")) as string[]);
             }
-            const scriptDirectory = this.getAttribute("script-directory")?this.getAttribute("script-directory"):"";
+            const scriptDirectory = this.getAttribute("script-directory") ? this.getAttribute("script-directory") : "";
 
-            if (this.getAttribute("using")){
-                js = scriptDirectory + this.getAttribute("using")+".js";
-                wasmBinaryFile = scriptDirectory + this.getAttribute("using")+".wasm";
+            function addScriptDirectoryIfNeeded(url) {
+                try {
+                    const parsed_url = new URL(url);
+                    if (parsed_url.protocol === 'blob:' || parsed_url.protocol === 'http:' || parsed_url.protocol === 'https:') {
+                        return url;
+                    }
+                } catch (e) {
+                    return scriptDirectory + url;
+                }
+                return scriptDirectory + url;
             }
 
-            if (this.getAttribute("with")){
-                dynamicLibraries = dynamicLibraries.concat(this.getAttribute("with").split(';').map(x => scriptDirectory + x + ".wasm"));
+            if (this.getAttribute("using")) {
+                js = addScriptDirectoryIfNeeded(this.getAttribute("using") + ".js");
+                wasmBinaryFile = addScriptDirectoryIfNeeded(this.getAttribute("using") + ".wasm");
+            }
+
+            if (this.getAttribute("with")) {
+                dynamicLibraries = dynamicLibraries.concat(this.getAttribute("with").split(';').map(x => addScriptDirectoryIfNeeded(x + ".wasm")));
             }
 
             const args = JSON.parse(JSON.stringify(this, UniversalVideo.observedAttributes));
-            args["enc"] = ["c=avc","c=aac"];
+            args["enc"] = ["c=avc", "c=aac"];
 
             const message = {
-                module : {dynamicLibraries:dynamicLibraries},
-                wasmBinaryFile : wasmBinaryFile,
-                src : src,
+                module: { dynamicLibraries: dynamicLibraries },
+                wasmBinaryFile: wasmBinaryFile,
+                src: src,
                 dst: "out." + this.out,
                 args
             };
 
-            
+
             const test = this.getAttribute("no-worker");
 
 
@@ -238,10 +250,10 @@ class UniversalVideo extends HTMLVideoElement {
             const core = this.getAttribute("using");
             document.head.removeChild(this.script);
             this.script = null;
-            if ((window as any)[core]){
+            if ((window as any)[core]) {
                 (window as any)[core] = null;
             }
-            
+
         }
     }
 

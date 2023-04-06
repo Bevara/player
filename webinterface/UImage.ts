@@ -195,13 +195,25 @@ class UniversalImage extends HTMLImageElement {
             }
             const scriptDirectory = this.getAttribute("script-directory")?this.getAttribute("script-directory"):"";
 
+            function addScriptDirectoryIfNeeded(url) {
+                try {
+                    const parsed_url = new URL(url);
+                    if(parsed_url.protocol === 'blob:' || parsed_url.protocol === 'http:' || parsed_url.protocol === 'https:'){
+                        return url;
+                    }                    
+                  }catch(e){
+                    return scriptDirectory + url;
+                  }
+                  return scriptDirectory + url;
+            }
+
             if (this.getAttribute("using")){
-                js = scriptDirectory + this.getAttribute("using")+".js";
-                wasmBinaryFile = scriptDirectory + this.getAttribute("using")+".wasm";
+                js = addScriptDirectoryIfNeeded(this.getAttribute("using")+".js");
+                wasmBinaryFile = addScriptDirectoryIfNeeded(this.getAttribute("using")+".wasm");
             }
 
             if (this.getAttribute("with")){
-                dynamicLibraries = dynamicLibraries.concat(this.getAttribute("with").split(';').map(x => scriptDirectory + x + ".wasm"));
+                dynamicLibraries = dynamicLibraries.concat(this.getAttribute("with").split(';').map(x => addScriptDirectoryIfNeeded(x + ".wasm")));
             }
 
             const args = JSON.parse(JSON.stringify(this, UniversalImage.observedAttributes));

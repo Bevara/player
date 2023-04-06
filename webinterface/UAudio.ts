@@ -192,14 +192,26 @@ class UniversalAudio extends HTMLAudioElement {
                 dynamicLibraries = (await getURLData(json_meta.decoders.map(x=> x+".wasm")) as string[]);
             }
             const scriptDirectory = this.getAttribute("script-directory")?this.getAttribute("script-directory"):"";
-
-            if (this.getAttribute("using")){
-                js = scriptDirectory + this.getAttribute("using")+".js";
-                wasmBinaryFile = scriptDirectory + this.getAttribute("using")+".wasm";
+            
+            function addScriptDirectoryIfNeeded(url) {
+                try {
+                    const parsed_url = new URL(url);
+                    if (parsed_url.protocol === 'blob:' || parsed_url.protocol === 'http:' || parsed_url.protocol === 'https:') {
+                        return url;
+                    }
+                } catch (e) {
+                    return scriptDirectory + url;
+                }
+                return scriptDirectory + url;
             }
 
-            if (this.getAttribute("with")){
-                dynamicLibraries = dynamicLibraries.concat(this.getAttribute("with").split(';').map(x => scriptDirectory + x + ".wasm"));
+            if (this.getAttribute("using")) {
+                js = addScriptDirectoryIfNeeded(this.getAttribute("using") + ".js");
+                wasmBinaryFile = addScriptDirectoryIfNeeded(this.getAttribute("using") + ".wasm");
+            }
+
+            if (this.getAttribute("with")) {
+                dynamicLibraries = dynamicLibraries.concat(this.getAttribute("with").split(';').map(x => addScriptDirectoryIfNeeded(x + ".wasm")));
             }
 
             const args = JSON.parse(JSON.stringify(this, UniversalAudio.observedAttributes));
