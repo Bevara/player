@@ -24,7 +24,7 @@ SET(EXTERNAL_FN
 )
 
 SET(EXTERNAL_RUNTIME
-  "['stringToUTF8','UTF8ToString','stackAlloc','addFunction','FS']"
+"['stringToUTF8','UTF8ToString','stackAlloc','addFunction','allocateUTF8OnStack','getTempRet0','setTempRet0','FS','cwrap','ccall']"
 )
 
 SET(JS_RUNTIME_JP2

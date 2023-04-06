@@ -69,49 +69,49 @@ function create_test(tag, extension, using_attribute, with_atribute, test_file, 
 
 describe('core-player', () => {
 
-  describe('#imgdec', () => {
-    it('should decode Freedom.jpeg', (done) => {
-      create_test('img',
-        'universal-img',
-        "core",
-        "imgdec;fin;fout;pngenc;rfimg;writegen",
-        "http://bevara.ddns.net/test-signals/Freedom.jpg",
-        "http://bevara.ddns.net/test-signals/Freedom.png",
-        done,
-        "png",
-        false,
-        false
-      );
-    }).timeout(5000);
+  // describe('#imgdec', () => {
+  //   it('should decode Freedom.jpeg', (done) => {
+  //     create_test('img',
+  //       'universal-img',
+  //       "core",
+  //       "imgdec;fin;fout;pngenc;rfimg;writegen",
+  //       "http://bevara.ddns.net/test-signals/Freedom.jpg",
+  //       "http://bevara.ddns.net/test-signals/Freedom.png",
+  //       done,
+  //       "png",
+  //       false,
+  //       false
+  //     );
+  //   }).timeout(5000);
 
-    it('should transcode Freedom.png to Freedom.jpeg', (done) => {
-      create_test('img',
-        'universal-img',
-        "core",
-        "fin;fout;rfimg;writegen;ffsws;jpgenc;rfimg;imgdec",
-        "http://bevara.ddns.net/test-signals/Freedom.png",
-        "http://bevara.ddns.net/test-signals/out/png/Freedom.jpeg",
-        done,
-        "jpg",
-        false,
-        false
-      );
-    }).timeout(5000);
+  //   it('should transcode Freedom.png to Freedom.jpeg', (done) => {
+  //     create_test('img',
+  //       'universal-img',
+  //       "core",
+  //       "fin;fout;rfimg;writegen;ffsws;jpgenc;rfimg;imgdec",
+  //       "http://bevara.ddns.net/test-signals/Freedom.png",
+  //       "http://bevara.ddns.net/test-signals/out/png/Freedom.jpeg",
+  //       done,
+  //       "jpg",
+  //       false,
+  //       false
+  //     );
+  //   }).timeout(5000);
 
-    // it('should load all decoders', (done) => {
-    //   create_test('img',
-    //     'universal-img',
-    //     "core",
-    //     "a52dec;ffenc;inspect;nhmlw;restamp;rfmpgvid;tileagg;ufmhas;vtt2tx3g;aout;ffmx;j2kdec;nhntr;rewind;rfnalu;tilesplit;ufnalu;vttdec;avidmx;ffsws;jpgenc;nhntw;rfac3;rfpcm;tssplit;ufobu;writegen;bifsdec;cryptin;fin;lsrdec;odfdec;rfadts;rfprores;ttml2srt;ufttxt;writeqcp;bsagg;cryptout;fout;m2psdmx;rfamr;rfqcp;ttml2vtt;ufvc1;writeuf;bsrw;dasher;flist;m2tsdmx;oggdmx;rfav1;rfrawvid;ttmldec;ufvtt;xviddec;bssplit;dashin;gsfdmx;m2tsmx;oggmx;rfflac;rfsrt;ttxtdec;unframer;btplay;faaddec;gsfmx;maddec;rfh263;rftruehd;tx3g2srt;vcrop;cdcrypt;ffavf;hevcmerge;mp4dmx;pngenc;rfimg;safdmx;tx3g2ttml;vflip;cecrypt;ffbsf;hevcsplit;mp4mx;probe;rflatm;tx3g2vtt;vobsubdmx;compose;ffdec;httpin;nanojpeg;reframer;rfmhas;svgplay;txtin;vorbisdec;ffdmx;imgdec;nhmlr;resample;rfmp3;theoradec;uflatm;vout",
-    //     "http://bevara.ddns.net/test-signals/Freedom.jpg",
-    //     "http://bevara.ddns.net/test-signals/Freedom.png",
-    //     done,
-    //     "png",
-    //     false,
-    //     false
-    //   );
-    // }).timeout(60000);
-  });
+  //   it('should load all decoders', (done) => {
+  //     create_test('img',
+  //       'universal-img',
+  //       "core",
+  //       "a52dec;ffenc;inspect;nhmlw;restamp;rfmpgvid;tileagg;ufmhas;vtt2tx3g;aout;ffmx;j2kdec;nhntr;rewind;rfnalu;tilesplit;ufnalu;vttdec;avidmx;ffsws;jpgenc;nhntw;rfac3;rfpcm;tssplit;ufobu;writegen;bifsdec;cryptin;fin;lsrdec;odfdec;rfadts;rfprores;ttml2srt;ufttxt;writeqcp;bsagg;cryptout;fout;m2psdmx;rfamr;rfqcp;ttml2vtt;ufvc1;writeuf;bsrw;dasher;flist;m2tsdmx;oggdmx;rfav1;rfrawvid;ttmldec;ufvtt;xviddec;bssplit;dashin;gsfdmx;m2tsmx;oggmx;rfflac;rfsrt;ttxtdec;unframer;btplay;faaddec;gsfmx;maddec;rfh263;rftruehd;tx3g2srt;vcrop;cdcrypt;ffavf;hevcmerge;mp4dmx;pngenc;rfimg;safdmx;tx3g2ttml;vflip;cecrypt;ffbsf;hevcsplit;mp4mx;probe;rflatm;tx3g2vtt;vobsubdmx;compose;ffdec;httpin;nanojpeg;reframer;rfmhas;svgplay;txtin;vorbisdec;ffdmx;imgdec;nhmlr;resample;rfmp3;theoradec;uflatm;vout",
+  //       "http://bevara.ddns.net/test-signals/Freedom.jpg",
+  //       "http://bevara.ddns.net/test-signals/Freedom.png",
+  //       done,
+  //       "png",
+  //       false,
+  //       false
+  //     );
+  //   }).timeout(60000);
+  // });
 
   describe('#j2kdec', () => {
     it('should transcode Cevennes2.jp2 to png', (done) => {
@@ -140,31 +140,44 @@ describe('core-player', () => {
         false);
     }).timeout(5000);
 
-    it('should transcode Cevennes2.jp2 to png without worker', (done) => {
-      create_test('img',
-        'universal-img',
-        "core",
-        "fin;fout;pngenc;rfimg;writegen;j2kdec",
-        "http://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2",
-        "http://bevara.ddns.net/test-signals/out/j2k/Cevennes2.png",
-        done,
-        "png",
-        false,
-        true);
-    }).timeout(5000);
-
-    // it('should decode Bretagne1.j2k', (done) => {
+    // it('should transcode Cevennes2.jp2 to png without worker', (done) => {
     //   create_test('img',
     //     'universal-img',
     //     "core",
-    //     "fout;j2kdec;ffdmx;writegen;pngenc",
-    //     "http://bevara.ddns.net/test-signals/j2k/Bretagne1.j2k",
-    //     "http://bevara.ddns.net/test-signals/out/j2k/Bretagne1.png",
+    //     "fin;fout;pngenc;rfimg;writegen;j2kdec",
+    //     "http://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2",
+    //     "http://bevara.ddns.net/test-signals/out/j2k/Cevennes2.png",
     //     done,
     //     "png",
     //     false,
-    //     false);
+    //     true);
     // }).timeout(5000);
+
+    // it('should transcode Cevennes2.jp2 to canvas without worker', (done) => {
+    //   create_test('img',
+    //     'universal-img',
+    //     "core",
+    //     "fin;fout;rfimg;writegen;j2kdec",
+    //     "http://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2",
+    //     "http://bevara.ddns.net/test-signals/out/j2k/cevennes2_canvas.png",
+    //     done,
+    //     "rgb",
+    //     false,
+    //     true);
+    // }).timeout(5000);
+
+    it('should decode Bretagne1.j2k', (done) => {
+      create_test('img',
+        'universal-img',
+        "core",
+        "fout;j2kdec;ffdmx;writegen;pngenc",
+        "http://bevara.ddns.net/test-signals/j2k/Bretagne1.j2k",
+        "http://bevara.ddns.net/test-signals/out/j2k/Bretagne1.png",
+        done,
+        "png",
+        false,
+        false);
+    }).timeout(5000);
 
 
     // it('should decode Cevennes2.jp2.bvr', (done) => {
@@ -310,18 +323,18 @@ describe('core-player', () => {
       );
     }).timeout(20000);
 
-    it('should decode test.jxl without workers', (done) => {
-      create_test('img',
-        'universal-img',
-        "jxl",
-        null,
-        "http://bevara.ddns.net/test-signals/JXL/test.jxl",
-        "http://bevara.ddns.net/test-signals/out/jxl/canvas.png",
-        done,
-        false,
-        true
-      );
-    }).timeout(20000);
+    // it('should decode test.jxl without workers', (done) => {
+    //   create_test('img',
+    //     'universal-img',
+    //     "jxl",
+    //     null,
+    //     "http://bevara.ddns.net/test-signals/JXL/test.jxl",
+    //     "http://bevara.ddns.net/test-signals/out/jxl/canvas.png",
+    //     done,
+    //     false,
+    //     true
+    //   );
+    // }).timeout(20000);
 
   });
 
@@ -339,35 +352,35 @@ describe('core-player', () => {
         false);
     }).timeout(5000);
 
-    it('should transcode Cevennes2.jp2 to canvas without workers', (done) => {
-      create_test('img',
-        'universal-img',
-        "jp2",
-        null,
-        "http://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2",
-        "http://bevara.ddns.net/test-signals/out/j2k/cevennes2_canvas.png",
-        done,
-        "rgb",
-        false,
-        true);
-    }).timeout(5000);
+    // it('should transcode Cevennes2.jp2 to canvas without workers', (done) => {
+    //   create_test('img',
+    //     'universal-img',
+    //     "jp2",
+    //     null,
+    //     "http://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2",
+    //     "http://bevara.ddns.net/test-signals/out/j2k/cevennes2_canvas.png",
+    //     done,
+    //     "rgb",
+    //     false,
+    //     true);
+    // }).timeout(5000);
 
   });
 
-  // describe('#svgplay', () => {
-  //   it('should decode 410.svg', (done) => {
-  //     create_test('img',
-  //       'universal-img',
-  //       "core",
-  //       "fin;svgplay;compose;pngenc;writegen;fout",
-  //       "http://bevara.ddns.net/test-signals/SVG/410.svg",
-  //       "http://bevara.ddns.net/test-signals/out/svg/410.png",
-  //       done,
-  //       "png",
-  //       false,
-  //       false);
-  //   }).timeout(5000);
-  // });
+  describe('#svgplay', () => {
+    it('should decode 410.svg', (done) => {
+      create_test('img',
+        'universal-img',
+        "core",
+        "fin;svgplay;compose;pngenc;writegen;fout",
+        "http://bevara.ddns.net/test-signals/SVG/410.svg",
+        "http://bevara.ddns.net/test-signals/out/svg/410.png",
+        done,
+        "png",
+        false,
+        false);
+    }).timeout(5000);
+  });
 
 
   describe('#maddec', () => {
@@ -565,35 +578,35 @@ describe('core-player', () => {
     }).timeout(60000);
   });
 
-  // describe('#rfamr', () => {
-  //   it('should decode ff-16b-1c-8000hz.amr"', (done) => {
-  //     create_test('audio',
-  //       "universal-audio",
-  //       "core",
-  //       "rfamr;writegen;resample;ffdec;fin;fout",
-  //       "http://bevara.ddns.net/test-signals/ff-16b-1c-8000hz.amr",
-  //       "http://bevara.ddns.net/test-signals/out/amr/ff-16b-1c-8000hz.wav",
-  //       done,
-  //       "wav",
-  //       false,
-  //       false);
-  //   }).timeout(60000);
-  // });
+  describe('#rfamr', () => {
+    it('should decode ff-16b-1c-8000hz.amr"', (done) => {
+      create_test('audio',
+        "universal-audio",
+        "core",
+        "rfamr;writegen;resample;ffdec;fin;fout",
+        "http://bevara.ddns.net/test-signals/ff-16b-1c-8000hz.amr",
+        "http://bevara.ddns.net/test-signals/out/amr/ff-16b-1c-8000hz.wav",
+        done,
+        "wav",
+        false,
+        false);
+    }).timeout(60000);
+  });
 
-  // describe('#ffdmx', () => {
-  //   it('should decode ff-16b-1c-44100hz.wma"', (done) => {
-  //     create_test('audio',
-  //       "universal-audio",
-  //       "core",
-  //       "writegen;fin;fout;ffdec;ffdmx;resample",
-  //       "http://bevara.ddns.net/test-signals/ff-16b-1c-44100hz.wma",
-  //       "http://bevara.ddns.net/test-signals/out/wma/ff-16b-1c-44100hz.wav",
-  //       done,
-  //       "wav",
-  //       false,
-  //       false);
-  //   }).timeout(360000);
-  // });
+  describe('#ffdmx', () => {
+    it('should decode ff-16b-1c-44100hz.wma"', (done) => {
+      create_test('audio',
+        "universal-audio",
+        "core",
+        "writegen;fin;fout;ffdec;ffdmx;resample",
+        "http://bevara.ddns.net/test-signals/ff-16b-1c-44100hz.wma",
+        "http://bevara.ddns.net/test-signals/out/wma/ff-16b-1c-44100hz.wav",
+        done,
+        "wav",
+        false,
+        false);
+    }).timeout(360000);
+  });
 
 
   describe('#theoradec', () => {

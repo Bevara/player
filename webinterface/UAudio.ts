@@ -24,6 +24,8 @@ class UniversalAudio extends HTMLAudioElement {
     script = null;
     core = null;
 
+    urlToRevoke = [];
+
     private _decodingPromise: Promise<string>;
 
     get decodingPromise() {
@@ -71,10 +73,10 @@ class UniversalAudio extends HTMLAudioElement {
     }
 
 
-    launchWorker(initMessage, script, resolve) {
+    launchWorker(script, message, resolve) {
         const worker = new Worker(script);
         if (worker) {
-            worker.postMessage(initMessage);
+            worker.postMessage(message);
 
             worker.addEventListener('message', m => {
                 if (m.data.core) {
@@ -86,8 +88,9 @@ class UniversalAudio extends HTMLAudioElement {
         this.worker = worker;
     }
 
-    launchNoWorker(initMessage, script, resolve) {
+    launchNoWorker(script, message, resolve) {
         const self = this;
+        const core = this.getAttribute("using");
 
         function addLoadEvent(script, func) {
             var oldonload = script.onload;
@@ -104,7 +107,7 @@ class UniversalAudio extends HTMLAudioElement {
         }
 
         async function init() {
-            const blob = await (window as any)[self.using_attribute]({data:initMessage});
+            const blob = await (window as any)[core]({ data: message });
             self.dataURLToSrc(blob, false);
             resolve(self.src);
         }
@@ -112,7 +115,7 @@ class UniversalAudio extends HTMLAudioElement {
         const scripts = document.querySelectorAll(`script[src$="${script}"]`);
 
         if (scripts.length > 0) {
-            const coreInit = (window as any)[this.using_attribute];
+            const coreInit = (window as any)[core];
             if (coreInit) {
                 init();
             } else {
@@ -127,35 +130,7 @@ class UniversalAudio extends HTMLAudioElement {
         }
     }
 
-    launch(script, src, buffer, args, props, resolve) {
-
-        const initMessage = {
-            tag: {
-                in: { src: src, buffer: buffer },
-                out: this.out,
-                module: {
-                    dynamicLibraries: this.with_attribute
-                },
-                type: "audio/" + this.out,
-                using: this.using_attribute,
-                args: args,
-                props: props,
-                core: this.core,
-                scriptDirectory: this.scriptDirectory,
-                print: this.print_attribute ? true : false,
-                printErr: this.error_attribute ? true : false,
-                print_progress: this.printProgess
-            }
-        };
-
-        if (this.useWorker) {
-            this.launchWorker(initMessage, script, resolve);
-        } else {
-            this.launchNoWorker(initMessage, script, resolve);
-        }
-    }
-
-    async universal_decode(args): Promise<string> {
+    async universal_decode(): Promise<string> {
         return new Promise(async (main_resolve, _main_reject) => {
             if (this.useCache) {
                 try {
@@ -170,73 +145,84 @@ class UniversalAudio extends HTMLAudioElement {
                 }
             }
 
-
-            // Retrieve result
-            const props = [];
-            if (this.hasAttribute("connections")) {
-                props.push("connections");
-            }
-
-            const response = await fetch(this.src);
+            const response = await fetch(this.src, { method: 'HEAD' });
 
             if (!response.ok) {
                 main_resolve("");
                 return;
             }
 
-            let buffer = await response.arrayBuffer();
-            const mime = response.headers.get("Content-Type");
             let src = this.src;
+            let js = null;
+            let wasmBinaryFile = null;
+            let dynamicLibraries :string[] = [];
 
-            // Check if using is a full url
-            try {
-                new URL(this.using_attribute);
-                this.launch(this.using_attribute, src, buffer, args, props, main_resolve);
-                return;
-            } catch (_) {
-            }
-
+            const mime = response.headers.get("Content-Type");
             if (this.src.endsWith(".bvr") || mime == "application/x-bevara") {
                 const jszip = new JSZip();
-                const zip = await jszip.loadAsync(buffer);
+                const fetched_bvr = await fetch(this.src);
+
+                if (!response.ok) {
+                    main_resolve("");
+                    return;
+                }
+
+                const zip = await jszip.loadAsync(fetched_bvr.blob());
                 const metadata = await zip.file("meta.json").async("string");
-                const bvr = JSON.parse(metadata);
-                src = bvr.source;
-                buffer = await zip.file(bvr.source).async("arraybuffer");
+                const json_meta = JSON.parse(metadata);
 
-                const blob_core = await zip.file(bvr.core).async("blob");
-                this.core = URL.createObjectURL(blob_core);
+                const getURLData = async (name) => {
+                    if (Array.isArray(name)){
+                        const blobs = await Promise.all(name.map(x=> zip.file(x).async("blob")));
+                        const urls = blobs.map(x=> URL.createObjectURL(x));
+                        this.urlToRevoke = this.urlToRevoke.concat(urls);
+                        return urls;
+                    }else if (typeof name == 'string') {
+                        const blob = await zip.file(name).async("blob");
+                        const url = URL.createObjectURL(blob);
+                        this.urlToRevoke.push(url);
+                        return url;
+                    }
+                    return null;
+                };
 
-                if (this.using_attribute == "") {
-                    const blob = await zip.file(bvr.js).async("blob");
-                    this.using_attribute = URL.createObjectURL(blob);
-                } else {
-                    this.using_attribute = this.scriptDirectory + this.using_attribute + ".js";
-                }
-
-                for (const decoder of bvr.decoders) {
-                    const blob = await zip.file(decoder).async("blob");
-                    this.with_attribute.push(URL.createObjectURL(blob));
-                }
-
-                this.launch(this.using_attribute, src, buffer, args, props, main_resolve);
-            } else if (this.using_attribute) {
-                this.launch(this.scriptDirectory + this.using_attribute + '.js', src, buffer, args, props, main_resolve);
+                src = (await getURLData(json_meta.source) as string);
+                js = await getURLData(json_meta.core + ".js");
+                wasmBinaryFile = await getURLData(json_meta.core + ".wasm");
+                dynamicLibraries = (await getURLData(json_meta.decoders.map(x=> x+".wasm")) as string[]);
             }
+            const scriptDirectory = this.getAttribute("script-directory")?this.getAttribute("script-directory"):"";
+
+            if (this.getAttribute("using")){
+                js = scriptDirectory + this.getAttribute("using")+".js";
+                wasmBinaryFile = scriptDirectory + this.getAttribute("using")+".wasm";
+            }
+
+            if (this.getAttribute("with")){
+                dynamicLibraries = dynamicLibraries.concat(this.getAttribute("with").split(';').map(x => scriptDirectory + x + ".wasm"));
+            }
+
+            const args = JSON.parse(JSON.stringify(this, UniversalAudio.observedAttributes));
+                        
+            const message = {
+                module : {dynamicLibraries:dynamicLibraries},
+                wasmBinaryFile : wasmBinaryFile,
+                src : src,
+                dst: "out." + this.out,
+                args
+            };
+
+            
+            const test = this.getAttribute("no-worker");
+
+
+            this.getAttribute("no-worker") == "" ? this.launchNoWorker(js, message, main_resolve) : this.launchWorker(js, message, main_resolve);
         });
     }
 
 
     connectedCallback() {
-        let args: any = {};
-
-
-        for (var i = 0, atts = this.attributes, n = atts.length, arr = []; i < n; i++) {
-            const nodeName = atts[i].nodeName;
-            args[nodeName] = atts[i].nodeValue;
-        }
-
-        this._decodingPromise = this.universal_decode(args);
+        this._decodingPromise = this.universal_decode();
     }
 
     disconnectedCallback() {
@@ -245,10 +231,16 @@ class UniversalAudio extends HTMLAudioElement {
             this.worker = null;
         }
 
+        this.urlToRevoke.forEach(x => URL.revokeObjectURL(x));
+
         if (this.script) {
+            const core = this.getAttribute("using");
             document.head.removeChild(this.script);
             this.script = null;
-            (window as any)[this.using_attribute] = null; 
+            if ((window as any)[core]){
+                (window as any)[core] = null;
+            }
+            
         }
     }
 
@@ -287,7 +279,7 @@ class UniversalAudio extends HTMLAudioElement {
         }
     }
 
-    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress', 'script-directory', 'no-worker']; }
+    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress', 'script-directory', 'no-worker', "debug"]; }
 }
 
 if (!customElements.get('universal-audio')) {

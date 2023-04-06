@@ -24,13 +24,13 @@ extern "C" void parse_set_session(Entry *entry, const char *json)
       gf_fs_add_filter_register(entry->session, (const GF_FilterRegister *)filters[i].GetInt());
   }
 
-  if (document.HasMember("io_in"))
+  if (document.HasMember("src"))
   {
     GF_Err err;
-    assert(document["io_in"].IsString());
-    const char *io_in = document["io_in"].GetString();
+    assert(document["src"].IsString());
+    const char *source = document["src"].GetString();
 
-    entry->src = gf_fs_load_source(entry->session, io_in, NULL, NULL, &err);
+    entry->src = gf_fs_load_source(entry->session, source, NULL, NULL, &err);
     if (err)
     {
       fprintf(stderr, "session error %s\n", gf_error_to_string(err));
@@ -52,13 +52,13 @@ extern "C" void parse_set_session(Entry *entry, const char *json)
     }
   }
 
-  if (document.HasMember("io_out"))
+  if (document.HasMember("dst"))
   {
     GF_Err err;
-    assert(document["io_out"].IsString());
-    const char *io_out = document["io_out"].GetString();
+    assert(document["dst"].IsString());
+    const char *destination = document["dst"].GetString();
 
-    entry->dst = gf_fs_load_destination(entry->session, io_out, NULL, NULL, &err);
+    entry->dst = gf_fs_load_destination(entry->session, destination, NULL, NULL, &err);
     if (err)
     {
       fprintf(stderr, "session error %s\n", gf_error_to_string(err));
