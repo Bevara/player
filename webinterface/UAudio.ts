@@ -193,25 +193,27 @@ class UniversalAudio extends HTMLAudioElement {
             }
             const scriptDirectory = this.getAttribute("script-directory")?this.getAttribute("script-directory"):"";
             
-            function addScriptDirectoryIfNeeded(url) {
+            function addScriptDirectoryAndExtIfNeeded(url, ext) {
                 try {
                     const parsed_url = new URL(url);
-                    if (parsed_url.protocol === 'blob:' || parsed_url.protocol === 'http:' || parsed_url.protocol === 'https:') {
+                    if(parsed_url.protocol === 'blob:'){
                         return url;
+                    }else if(parsed_url.protocol === 'http:' || parsed_url.protocol === 'https:'){
+                        return url + ext;
                     }
-                } catch (e) {
-                    return scriptDirectory + url;
-                }
-                return scriptDirectory + url;
+                    return scriptDirectory + url + ext;
+                  }catch(e){
+                    return scriptDirectory + url + ext;
+                  }
             }
 
-            if (this.getAttribute("using")) {
-                js = addScriptDirectoryIfNeeded(this.getAttribute("using") + ".js");
-                wasmBinaryFile = addScriptDirectoryIfNeeded(this.getAttribute("using") + ".wasm");
+            if (this.getAttribute("using")){
+                js = addScriptDirectoryAndExtIfNeeded(this.getAttribute("using"),".js");
+                wasmBinaryFile = addScriptDirectoryAndExtIfNeeded(this.getAttribute("using"),".wasm");
             }
 
-            if (this.getAttribute("with")) {
-                dynamicLibraries = dynamicLibraries.concat(this.getAttribute("with").split(';').map(x => addScriptDirectoryIfNeeded(x + ".wasm")));
+            if (this.getAttribute("with")){
+                dynamicLibraries = dynamicLibraries.concat(this.getAttribute("with").split(';').map(x => addScriptDirectoryAndExtIfNeeded(x,".wasm")));
             }
 
             const args = JSON.parse(JSON.stringify(this, UniversalAudio.observedAttributes));
