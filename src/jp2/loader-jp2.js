@@ -6,7 +6,7 @@
 		const params = m.data.module;
 
 		params["locateFile"] = function (path, scriptDirectory) {
-			if (path == "jp2.wasm" && m.data.wasmBinaryFile) {
+			if (path == 'jp2.wasm' && m.data.wasmBinaryFile) {
 				return m.data.wasmBinaryFile;
 			} 
 			return path;
