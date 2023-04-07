@@ -212,6 +212,11 @@ class UniversalVideo extends HTMLVideoElement {
                 wasmBinaryFile = addScriptDirectoryAndExtIfNeeded(this.getAttribute("using"),".wasm");
             }
 
+            if (this.getAttribute("js")){
+                //Overwrite js attribute
+                js = addScriptDirectoryAndExtIfNeeded(this.getAttribute("js"),"");
+            }
+
             if (this.getAttribute("with")){
                 dynamicLibraries = dynamicLibraries.concat(this.getAttribute("with").split(';').map(x => addScriptDirectoryAndExtIfNeeded(x,".wasm")));
             }

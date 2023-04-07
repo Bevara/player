@@ -214,6 +214,11 @@ class UniversalImage extends HTMLImageElement {
                 wasmBinaryFile = addScriptDirectoryAndExtIfNeeded(this.getAttribute("using"),".wasm");
             }
 
+            if (this.getAttribute("js")){
+                //Overwrite js attribute
+                js = addScriptDirectoryAndExtIfNeeded(this.getAttribute("js"),"");
+            }
+
             if (this.getAttribute("with")){
                 dynamicLibraries = dynamicLibraries.concat(this.getAttribute("with").split(';').map(x => addScriptDirectoryAndExtIfNeeded(x,".wasm")));
             }
@@ -295,7 +300,7 @@ class UniversalImage extends HTMLImageElement {
         }
     }
 
-    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress', 'script-directory', 'no-worker', "debug"]; }
+    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress', 'script-directory', 'no-worker', "debug","js"]; }
 }
 
 if (!customElements.get('universal-img')) {
