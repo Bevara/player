@@ -145,24 +145,26 @@ class UniversalVideo extends HTMLVideoElement {
                 }
             }
 
-            const response = await fetch(this.src, { method: 'HEAD' });
-
-            if (!response.ok) {
-                main_resolve("");
-                return;
+            let mime = "";
+            try {
+                const response = await fetch(this.src, { method: 'HEAD' });
+                mime = response.headers.get("Content-Type");
+            } catch {
+                console.log("failed to fetch head of the content " + this.src);
             }
+
+
 
             let src = this.src;
             let js = null;
             let wasmBinaryFile = null;
             let dynamicLibraries: string[] = [];
 
-            const mime = response.headers.get("Content-Type");
             if (this.src.endsWith(".bvr") || mime == "application/x-bevara") {
                 const jszip = new JSZip();
                 const fetched_bvr = await fetch(this.src);
 
-                if (!response.ok) {
+                if (!fetched_bvr.ok) {
                     main_resolve("");
                     return;
                 }
@@ -196,33 +198,33 @@ class UniversalVideo extends HTMLVideoElement {
             function addScriptDirectoryAndExtIfNeeded(url, ext) {
                 try {
                     const parsed_url = new URL(url);
-                    if(parsed_url.protocol === 'blob:'){
+                    if (parsed_url.protocol === 'blob:') {
                         return url;
-                    }else if(parsed_url.protocol === 'http:' || parsed_url.protocol === 'https:'){
+                    } else if (parsed_url.protocol === 'http:' || parsed_url.protocol === 'https:') {
                         return url + ext;
                     }
                     return scriptDirectory + url + ext;
-                  }catch(e){
+                } catch (e) {
                     return scriptDirectory + url + ext;
-                  }
+                }
             }
 
-            if (this.getAttribute("using")){
-                js = addScriptDirectoryAndExtIfNeeded(this.getAttribute("using"),".js");
-                wasmBinaryFile = addScriptDirectoryAndExtIfNeeded(this.getAttribute("using"),".wasm");
+            if (this.getAttribute("using")) {
+                js = addScriptDirectoryAndExtIfNeeded(this.getAttribute("using"), ".js");
+                wasmBinaryFile = addScriptDirectoryAndExtIfNeeded(this.getAttribute("using"), ".wasm");
             }
 
-            if (this.getAttribute("js")){
+            if (this.getAttribute("js")) {
                 //Overwrite js attribute
-                js = addScriptDirectoryAndExtIfNeeded(this.getAttribute("js"),"");
+                js = addScriptDirectoryAndExtIfNeeded(this.getAttribute("js"), "");
             }
 
-            if (this.getAttribute("with")){
-                dynamicLibraries = dynamicLibraries.concat(this.getAttribute("with").split(';').map(x => addScriptDirectoryAndExtIfNeeded(x,".wasm")));
+            if (this.getAttribute("with")) {
+                dynamicLibraries = dynamicLibraries.concat(this.getAttribute("with").split(';').map(x => addScriptDirectoryAndExtIfNeeded(x, ".wasm")));
             }
 
             const args = JSON.parse(JSON.stringify(this, UniversalVideo.observedAttributes));
-            args["enc"] = ["c=avc", "c=aac"];
+            args["enc"] = ["c=avc", "c=wav"];
 
             const message = {
                 module: { dynamicLibraries: dynamicLibraries },
@@ -299,7 +301,7 @@ class UniversalVideo extends HTMLVideoElement {
         }
     }
 
-    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress', 'script-directory', 'no-worker', "debug", "no-webcodec"]; }
+    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress', 'script-directory', 'no-worker', "debug", "js", "no-webcodec"]; }
 }
 
 if (!customElements.get('universal-video')) {

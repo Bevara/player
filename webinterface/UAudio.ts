@@ -145,24 +145,26 @@ class UniversalAudio extends HTMLAudioElement {
                 }
             }
 
-            const response = await fetch(this.src, { method: 'HEAD' });
-
-            if (!response.ok) {
-                main_resolve("");
-                return;
+            let mime = "";
+            try{
+                const response = await fetch(this.src, { method: 'HEAD' });
+                mime = response.headers.get("Content-Type");
+            }catch {
+                console.log("failed to fetch head of the content "+ this.src);
             }
+
+            
 
             let src = this.src;
             let js = null;
             let wasmBinaryFile = null;
             let dynamicLibraries :string[] = [];
 
-            const mime = response.headers.get("Content-Type");
             if (this.src.endsWith(".bvr") || mime == "application/x-bevara") {
                 const jszip = new JSZip();
                 const fetched_bvr = await fetch(this.src);
 
-                if (!response.ok) {
+                if (!fetched_bvr.ok) {
                     main_resolve("");
                     return;
                 }
@@ -192,7 +194,7 @@ class UniversalAudio extends HTMLAudioElement {
                 dynamicLibraries = (await getURLData(json_meta.decoders.map(x=> x+".wasm")) as string[]);
             }
             const scriptDirectory = this.getAttribute("script-directory")?this.getAttribute("script-directory"):"";
-            
+
             function addScriptDirectoryAndExtIfNeeded(url, ext) {
                 try {
                     const parsed_url = new URL(url);
