@@ -147,8 +147,15 @@ class UniversalAudio extends HTMLAudioElement {
 
             let mime = "";
             try{
-                const response = await fetch(this.src, { method: 'HEAD' });
-                mime = response.headers.get("Content-Type");
+                const parsed_url = new URL(this.src);
+                if(parsed_url.protocol === 'blob:'){
+                    // We can't fetch head of a blob
+                    const response = await fetch(this.src);
+                    mime = response.headers.get("Content-Type");
+                }else if(parsed_url.protocol === 'http:' || parsed_url.protocol === 'https:'){
+                    const response = await fetch(this.src, { method: 'HEAD' });
+                    mime = response.headers.get("Content-Type");
+                }
             }catch {
                 console.log("failed to fetch head of the content "+ this.src);
             }
