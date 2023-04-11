@@ -10,11 +10,30 @@ using namespace rapidjson;
 
 StringBuffer sb;
 
+extern "C"
+{
+  const GF_FilterRegister *wcdec_register(GF_FilterSession *session);
+  const GF_FilterRegister *wcenc_register(GF_FilterSession *session);
+  const GF_FilterRegister *webgrab_register(GF_FilterSession *session);
+}
+
 extern "C" void parse_set_session(Entry *entry, const char *json)
 {
   Document document;
   document.Parse(json);
   assert(document.IsObject());
+
+  if (document.HasMember("debug") && (document["debug"].GetBool() == true))
+  {
+    gf_log_set_tool_level(GF_LOG_TOOL_MAX, GF_LOG_INFO);
+  }
+
+  if (document.HasMember("use-webcodec") && (document["use-webcodec"].GetBool() == true))
+  {
+    gf_fs_add_filter_register(entry->session, wcdec_register(entry->session));
+    gf_fs_add_filter_register(entry->session, wcenc_register(entry->session));
+    gf_fs_add_filter_register(entry->session, webgrab_register(entry->session));
+  }
 
   if (document.HasMember("filters"))
   {
@@ -63,11 +82,6 @@ extern "C" void parse_set_session(Entry *entry, const char *json)
     {
       fprintf(stderr, "session error %s\n", gf_error_to_string(err));
     }
-  }
-
-  if (document.HasMember("debug"))
-  {
-    gf_log_set_tool_level(GF_LOG_FILTER, GF_LOG_INFO);
   }
 }
 

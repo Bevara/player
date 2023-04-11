@@ -232,7 +232,8 @@ class UniversalImage extends HTMLImageElement {
             }
 
             const args = JSON.parse(JSON.stringify(this, UniversalImage.observedAttributes));
-                        
+            args["debug"] = this.getAttribute("debug") == "" ? true :false;
+
             const message = {
                 module : {dynamicLibraries:dynamicLibraries},
                 wasmBinaryFile : wasmBinaryFile,

@@ -233,6 +233,8 @@ class UniversalVideo extends HTMLVideoElement {
 
             const args = JSON.parse(JSON.stringify(this, UniversalVideo.observedAttributes));
             args["enc"] = ["c=avc", "c=wav"];
+            args["use-webcodec"] = this.getAttribute("use-webcodec") == "" ? true :false;
+            args["debug"] = this.getAttribute("debug") == "" ? true :false;
 
             const message = {
                 module: { dynamicLibraries: dynamicLibraries },
@@ -241,9 +243,6 @@ class UniversalVideo extends HTMLVideoElement {
                 dst: "out." + this.out,
                 args
             };
-
-
-            const test = this.getAttribute("no-worker");
 
 
             this.getAttribute("no-worker") == "" ? this.launchNoWorker(js, message, main_resolve) : this.launchWorker(js, message, main_resolve);
@@ -309,7 +308,7 @@ class UniversalVideo extends HTMLVideoElement {
         }
     }
 
-    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress', 'script-directory', 'no-worker', "debug", "js", "no-webcodec"]; }
+    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress', 'script-directory', 'no-worker', "debug", "js", "use-webcodec"]; }
 }
 
 if (!customElements.get('universal-video')) {

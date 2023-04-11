@@ -44,12 +44,6 @@
 
 		args["src"] = fname;
 		args["dst"] = m.data.dst;
-
-		/*if (args["no-webcodec"] != ""){
-			register_fns.push("_wcdec_register");
-			register_fns.push("_wcenc_register");
-		}*/
-		
 		args["filters"] = register_fns.map(entry => module[entry](0));
 
 

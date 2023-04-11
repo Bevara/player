@@ -232,7 +232,9 @@ class UniversalAudio extends HTMLAudioElement {
             }
 
             const args = JSON.parse(JSON.stringify(this, UniversalAudio.observedAttributes));
-                        
+            args["use-webcodec"] = this.getAttribute("use-webcodec") == "" ? true :false;
+            args["debug"] = this.getAttribute("debug") == "" ? true :false;
+      
             const message = {
                 module : {dynamicLibraries:dynamicLibraries},
                 wasmBinaryFile : wasmBinaryFile,
@@ -240,10 +242,6 @@ class UniversalAudio extends HTMLAudioElement {
                 dst: "out." + this.out,
                 args
             };
-
-            
-            const test = this.getAttribute("no-worker");
-
 
             this.getAttribute("no-worker") == "" ? this.launchNoWorker(js, message, main_resolve) : this.launchWorker(js, message, main_resolve);
         });
@@ -308,7 +306,7 @@ class UniversalAudio extends HTMLAudioElement {
         }
     }
 
-    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress', 'script-directory', 'no-worker', "debug"]; }
+    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress', 'script-directory', 'no-worker', "debug", "use-webcodec"]; }
 }
 
 if (!customElements.get('universal-audio')) {
