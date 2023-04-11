@@ -90,7 +90,6 @@ class UniversalVideo extends HTMLVideoElement {
 
     launchNoWorker(script, message, resolve) {
         const self = this;
-        const core = this.getAttribute("using");
 
         function addLoadEvent(script, func) {
             var oldonload = script.onload;
@@ -107,7 +106,7 @@ class UniversalVideo extends HTMLVideoElement {
         }
 
         async function init() {
-            const blob = await (window as any)[core]({ data: message });
+            const blob = await (window as any)[self.core]({ data: message });
             self.dataURLToSrc(blob, false);
             resolve(self.src);
         }
@@ -115,7 +114,7 @@ class UniversalVideo extends HTMLVideoElement {
         const scripts = document.querySelectorAll(`script[src$="${script}"]`);
 
         if (scripts.length > 0) {
-            const coreInit = (window as any)[core];
+            const coreInit = (window as any)[self.core];
             if (coreInit) {
                 init();
             } else {
@@ -179,6 +178,7 @@ class UniversalVideo extends HTMLVideoElement {
                 const zip = await jszip.loadAsync(fetched_bvr.blob());
                 const metadata = await zip.file("meta.json").async("string");
                 const json_meta = JSON.parse(metadata);
+                this.core = json_meta.core;
 
                 const getURLData = async (name) => {
                     if (Array.isArray(name)) {
@@ -217,6 +217,7 @@ class UniversalVideo extends HTMLVideoElement {
             }
 
             if (this.getAttribute("using")) {
+                this.core = this.getAttribute("using");
                 js = addScriptDirectoryAndExtIfNeeded(this.getAttribute("using"), ".js");
                 wasmBinaryFile = addScriptDirectoryAndExtIfNeeded(this.getAttribute("using"), ".wasm");
             }
