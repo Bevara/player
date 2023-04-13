@@ -486,13 +486,13 @@ SET(OPENHEVCDEC_SRC
         ${GPAC_LOCATION}/src/utils/os_thread.c
 )
 
-add_filter(openhevcdec
-        "${OPENHEVCDEC_SRC}"
-        "${OPENHEVCDEC_LIB}"
-        _dynCall_ohevcdec_register
-        "-DGPAC_HAS_OPENHEVC -DGPAC_OPENHEVC_STATIC -DOPENHEVC_HAS_AVC_BASE"
-        "${OPENHEVCDEC_INCLUDE}"
-        "")
+# add_filter(openhevcdec
+#         "${OPENHEVCDEC_SRC}"
+#         "${OPENHEVCDEC_LIB}"
+#         _dynCall_ohevcdec_register
+#         "-DGPAC_HAS_OPENHEVC -DGPAC_OPENHEVC_STATIC -DOPENHEVC_HAS_AVC_BASE"
+#         "${OPENHEVCDEC_INCLUDE}"
+#         "")
 
 SET(FFDEC_SRC
         ${GPAC_LOCATION}/src/filters/ff_dec.c
