@@ -15,7 +15,7 @@ class UniversalAudio extends HTMLAudioElement {
     error_attribute: Element | null;
 
     out = "wav";
-    scriptDirectory = "";
+    scriptDirectory = document.currentScript? this.initScriptDirectory((document.currentScript as any).src) :"";
     useCache = false;
     useWorker = true;
     printProgess = false;
@@ -28,6 +28,14 @@ class UniversalAudio extends HTMLAudioElement {
 
     private _decodingPromise: Promise<string>;
 
+    private initScriptDirectory(src:string){
+        if (src.indexOf('blob:') !== 0) {
+            return src.substr(0, src.replace(/[?#].*/, "").lastIndexOf('/')+1);
+          } else {
+            return '';
+        }
+    }
+    
     get decodingPromise() {
         return this._decodingPromise;
     }
@@ -249,6 +257,12 @@ class UniversalAudio extends HTMLAudioElement {
 
 
     connectedCallback() {
+        if (this.scriptDirectory.indexOf('blob:') !== 0) {
+            this.scriptDirectory = this.scriptDirectory.substr(0, this.scriptDirectory.replace(/[?#].*/, "").lastIndexOf('/')+1);
+          } else {
+            this.scriptDirectory = '';
+        }
+
         this._decodingPromise = this.universal_decode();
     }
 

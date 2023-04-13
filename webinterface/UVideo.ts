@@ -15,7 +15,7 @@ class UniversalVideo extends HTMLVideoElement {
     error_attribute: Element | null;
 
     out = "mp4";
-    scriptDirectory = "";
+    scriptDirectory = document.currentScript? this.initScriptDirectory((document.currentScript as any).src) :"";
     useCache = false;
     useWorker = true;
     printProgess = false;
@@ -28,6 +28,14 @@ class UniversalVideo extends HTMLVideoElement {
 
     private _decodingPromise: Promise<string>;
 
+    private initScriptDirectory(src:string){
+        if (src.indexOf('blob:') !== 0) {
+            return src.substr(0, src.replace(/[?#].*/, "").lastIndexOf('/')+1);
+          } else {
+            return '';
+        }
+    }
+    
     get decodingPromise() {
         return this._decodingPromise;
     }
