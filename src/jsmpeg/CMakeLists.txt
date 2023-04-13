@@ -1,5 +1,11 @@
+find_program(UGLIFY_EXECUTABLE uglifyjs ${CMAKE_SOURCE_DIR}/node_modules/uglify-js/bin/)
+
 set(THIRD_PARTIES ${CMAKE_SOURCE_DIR}/third_parties)
 set(JSMPEG_LOCATION ${THIRD_PARTIES}/jsmpeg)
+
+set(JS_IN ${CMAKE_BINARY_DIR}/jsmpeg.js.in)
+set(JS_JSMPEG ${CMAKE_BINARY_DIR}/jsmpeg.js)
+set(JSMIN_JSMPEG ${CMAKE_BINARY_DIR}/jsmpeg.min.js)
 
 set(CMAKE_EXECUTABLE_SUFFIX ".wasm")
 
@@ -30,10 +36,10 @@ function(cat IN_FILE OUT_FILE)
   file(APPEND ${OUT_FILE} "${CONTENTS}")
 endfunction()
 
-file(WRITE ${CMAKE_BINARY_DIR}/jsmpeg.js.in "")
+file(WRITE ${JS_IN} "")
 
 foreach(JSMPEG_FILE ${COREJS_JSMPEG})
-  cat(${JSMPEG_FILE} ${CMAKE_BINARY_DIR}/jsmpeg.js.in)
+  cat(${JSMPEG_FILE} ${JS_IN})
 endforeach()
 
 SET(CORE_JSMPEG
@@ -60,13 +66,12 @@ set_target_properties(jsmpeg
   ADDITIONAL_CLEAN_FILES "${CORE_CLEAN}"
 )
 
-find_program(YUI_EXECUTABLE yui-compressor)
-if(YUI_EXECUTABLE AND (NOT ${DEBUG_MODE}))
-  message(STATUS "JS files will be minified before install.")
-   add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/jsmpeg.js
-            COMMAND ${YUI_EXECUTABLE}
-            ARGS "${CMAKE_BINARY_DIR}/jsmpeg.js.in" -o "jsmpeg.js"
+configure_file(${JS_IN} ${JS_JSMPEG} COPYONLY)
+
+if(UGLIFY_EXECUTABLE AND (NOT ${DEBUG_MODE}))
+message(STATUS "JSmpeg files will be minified.")
+add_custom_command(OUTPUT ${JSMIN_JSMPEG}
+            COMMAND ${UGLIFY_EXECUTABLE}
+            ARGS "${JS_JSMPEG} -o ${JSMIN_JSMPEG}"
    )
-else()
-	configure_file(${CMAKE_BINARY_DIR}/jsmpeg.js.in ${CMAKE_BINARY_DIR}/jsmpeg.js COPYONLY)
 endif()

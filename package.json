@@ -47,7 +47,7 @@
         "webpack-cli": "^4.7.2",
         "webpack-dev-server": "^3.11.2",
         "workbox-webpack-plugin": "^6.1.5",
-        "yuicompressor": "^2.4.8"
+        "uglify-js": "^3.17.4"
     },
     "dependencies": {
         "jszip": "^3.10.1"
