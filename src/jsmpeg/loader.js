@@ -111,11 +111,7 @@ var JSMpeg = {
 	const ENVIRONMENT_IS_WORKER = typeof importScripts == 'function';
 
 	async function init(m) {
-		//new JSMpeg.VideoElement(m.data.self);
-		var elements = document.querySelectorAll('.jsmpeg');
-		for (var i = 0; i < elements.length; i++) {
-			new JSMpeg.VideoElement(elements[i], m.data.self);
-		}
+		new JSMpeg.VideoElement(m.data.self);
 	}
 
 	if (ENVIRONMENT_IS_WORKER) {
