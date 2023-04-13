@@ -6,7 +6,7 @@
 		const params = m.data.module;
 
 		params["locateFile"] = function (path, scriptDirectory) {
-			if (path == "jp2.wasm" && m.data.wasmBinaryFile) {
+			if (path == 'jp2.wasm' && m.data.wasmBinaryFile) {
 				return m.data.wasmBinaryFile;
 			} 
 			return path;
@@ -108,6 +108,6 @@
 	if (ENVIRONMENT_IS_WORKER) {
 		addEventListener("message", init);
 	} else if (ENVIRONMENT_IS_WEB) {
-		window.core = init;
+		window.jp2 = init;
 	}
 })();

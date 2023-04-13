@@ -6,7 +6,7 @@
 		const params = m.data.module;
 
 		params["locateFile"] = function (path, scriptDirectory) {
-			if (path == "core.wasm" && m.data.wasmBinaryFile) {
+			if (path == "player.wasm" && m.data.wasmBinaryFile) {
 				return m.data.wasmBinaryFile;
 			} 
 			return path;
@@ -109,6 +109,6 @@
 	if (ENVIRONMENT_IS_WORKER) {
 		addEventListener("message", init);
 	} else if (ENVIRONMENT_IS_WEB) {
-		window.core = init;
+		window.player = init;
 	}
 })();

@@ -90,7 +90,6 @@ class UniversalVideo extends HTMLVideoElement {
 
     launchNoWorker(script, message, resolve) {
         const self = this;
-        const core = this.getAttribute("using");
 
         function addLoadEvent(script, func) {
             var oldonload = script.onload;
@@ -107,7 +106,7 @@ class UniversalVideo extends HTMLVideoElement {
         }
 
         async function init() {
-            const blob = await (window as any)[core]({ data: message });
+            const blob = await (window as any)[self.core]({ data: message });
             self.dataURLToSrc(blob, false);
             resolve(self.src);
         }
@@ -115,7 +114,7 @@ class UniversalVideo extends HTMLVideoElement {
         const scripts = document.querySelectorAll(`script[src$="${script}"]`);
 
         if (scripts.length > 0) {
-            const coreInit = (window as any)[core];
+            const coreInit = (window as any)[self.core];
             if (coreInit) {
                 init();
             } else {
@@ -145,24 +144,33 @@ class UniversalVideo extends HTMLVideoElement {
                 }
             }
 
-            const response = await fetch(this.src, { method: 'HEAD' });
-
-            if (!response.ok) {
-                main_resolve("");
-                return;
+            let mime = "";
+            try{
+                const parsed_url = new URL(this.src);
+                if(parsed_url.protocol === 'blob:'){
+                    // We can't fetch head of a blob
+                    const response = await fetch(this.src);
+                    mime = response.headers.get("Content-Type");
+                }else if(parsed_url.protocol === 'http:' || parsed_url.protocol === 'https:'){
+                    const response = await fetch(this.src, { method: 'HEAD' });
+                    mime = response.headers.get("Content-Type");
+                }
+            }catch {
+                console.log("failed to fetch head of the content "+ this.src);
             }
+
+
 
             let src = this.src;
             let js = null;
             let wasmBinaryFile = null;
-            let dynamicLibraries :string[] = [];
+            let dynamicLibraries: string[] = [];
 
-            const mime = response.headers.get("Content-Type");
             if (this.src.endsWith(".bvr") || mime == "application/x-bevara") {
                 const jszip = new JSZip();
                 const fetched_bvr = await fetch(this.src);
 
-                if (!response.ok) {
+                if (!fetched_bvr.ok) {
                     main_resolve("");
                     return;
                 }
@@ -170,14 +178,15 @@ class UniversalVideo extends HTMLVideoElement {
                 const zip = await jszip.loadAsync(fetched_bvr.blob());
                 const metadata = await zip.file("meta.json").async("string");
                 const json_meta = JSON.parse(metadata);
+                this.core = json_meta.core;
 
                 const getURLData = async (name) => {
-                    if (Array.isArray(name)){
-                        const blobs = await Promise.all(name.map(x=> zip.file(x).async("blob")));
-                        const urls = blobs.map(x=> URL.createObjectURL(x));
+                    if (Array.isArray(name)) {
+                        const blobs = await Promise.all(name.map(x => zip.file(x).async("blob")));
+                        const urls = blobs.map(x => URL.createObjectURL(x));
                         this.urlToRevoke = this.urlToRevoke.concat(urls);
                         return urls;
-                    }else if (typeof name == 'string') {
+                    } else if (typeof name == 'string') {
                         const blob = await zip.file(name).async("blob");
                         const url = URL.createObjectURL(blob);
                         this.urlToRevoke.push(url);
@@ -189,32 +198,51 @@ class UniversalVideo extends HTMLVideoElement {
                 src = (await getURLData(json_meta.source) as string);
                 js = await getURLData(json_meta.core + ".js");
                 wasmBinaryFile = await getURLData(json_meta.core + ".wasm");
-                dynamicLibraries = (await getURLData(json_meta.decoders.map(x=> x+".wasm")) as string[]);
+                dynamicLibraries = (await getURLData(json_meta.decoders.map(x => x + ".wasm")) as string[]);
             }
-            const scriptDirectory = this.getAttribute("script-directory")?this.getAttribute("script-directory"):"";
+            const scriptDirectory = this.getAttribute("script-directory") ? this.getAttribute("script-directory") : "";
 
-            if (this.getAttribute("using")){
-                js = scriptDirectory + this.getAttribute("using")+".js";
-                wasmBinaryFile = scriptDirectory + this.getAttribute("using")+".wasm";
+            function addScriptDirectoryAndExtIfNeeded(url, ext) {
+                try {
+                    const parsed_url = new URL(url);
+                    if (parsed_url.protocol === 'blob:') {
+                        return url;
+                    } else if (parsed_url.protocol === 'http:' || parsed_url.protocol === 'https:') {
+                        return url + ext;
+                    }
+                    return scriptDirectory + url + ext;
+                } catch (e) {
+                    return scriptDirectory + url + ext;
+                }
             }
 
-            if (this.getAttribute("with")){
-                dynamicLibraries = dynamicLibraries.concat(this.getAttribute("with").split(';').map(x => scriptDirectory + x + ".wasm"));
+            if (this.getAttribute("using")) {
+                this.core = this.getAttribute("using");
+                js = addScriptDirectoryAndExtIfNeeded(this.getAttribute("using"), ".js");
+                wasmBinaryFile = addScriptDirectoryAndExtIfNeeded(this.getAttribute("using"), ".wasm");
+            }
+
+            if (this.getAttribute("js")) {
+                //Overwrite js attribute
+                js = addScriptDirectoryAndExtIfNeeded(this.getAttribute("js"), "");
+            }
+
+            if (this.getAttribute("with")) {
+                dynamicLibraries = dynamicLibraries.concat(this.getAttribute("with").split(';').map(x => addScriptDirectoryAndExtIfNeeded(x, ".wasm")));
             }
 
             const args = JSON.parse(JSON.stringify(this, UniversalVideo.observedAttributes));
-            args["enc"] = ["c=avc","c=aac"];
+            args["enc"] = ["c=avc", "c=wav"];
+            args["use-webcodec"] = this.getAttribute("use-webcodec") == "" ? true :false;
+            args["debug"] = this.getAttribute("debug") == "" ? true :false;
 
             const message = {
-                module : {dynamicLibraries:dynamicLibraries},
-                wasmBinaryFile : wasmBinaryFile,
-                src : src,
+                module: { dynamicLibraries: dynamicLibraries },
+                wasmBinaryFile: wasmBinaryFile,
+                src: src,
                 dst: "out." + this.out,
                 args
             };
-
-            
-            const test = this.getAttribute("no-worker");
 
 
             this.getAttribute("no-worker") == "" ? this.launchNoWorker(js, message, main_resolve) : this.launchWorker(js, message, main_resolve);
@@ -238,10 +266,10 @@ class UniversalVideo extends HTMLVideoElement {
             const core = this.getAttribute("using");
             document.head.removeChild(this.script);
             this.script = null;
-            if ((window as any)[core]){
+            if ((window as any)[core]) {
                 (window as any)[core] = null;
             }
-            
+
         }
     }
 
@@ -280,7 +308,7 @@ class UniversalVideo extends HTMLVideoElement {
         }
     }
 
-    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress', 'script-directory', 'no-worker', "debug", "no-webcodec"]; }
+    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress', 'script-directory', 'no-worker', "debug", "js", "use-webcodec"]; }
 }
 
 if (!customElements.get('universal-video')) {

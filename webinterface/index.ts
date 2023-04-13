@@ -16,9 +16,9 @@ import {UniversalVideo} from "./UVideo";
 if (!customElements.get('universal-video')) {
     customElements.define('universal-video', UniversalVideo, { extends: 'video' });
 }
-/*
+
 import {UniversalCanvas} from "./UCanvas";
 
 if (!customElements.get('universal-canvas')) {
     customElements.define('universal-canvas', UniversalCanvas, {extends: 'canvas' });
-}*/
+}

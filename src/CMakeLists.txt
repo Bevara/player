@@ -1,4 +1,5 @@
-#add_subdirectory(player)
+add_subdirectory(player)
+add_subdirectory(jsmpeg)
 add_subdirectory(transcoder)
 add_subdirectory(jxl)
 add_subdirectory(jp2)

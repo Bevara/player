@@ -90,7 +90,6 @@ class UniversalAudio extends HTMLAudioElement {
 
     launchNoWorker(script, message, resolve) {
         const self = this;
-        const core = this.getAttribute("using");
 
         function addLoadEvent(script, func) {
             var oldonload = script.onload;
@@ -107,7 +106,7 @@ class UniversalAudio extends HTMLAudioElement {
         }
 
         async function init() {
-            const blob = await (window as any)[core]({ data: message });
+            const blob = await (window as any)[self.core]({ data: message });
             self.dataURLToSrc(blob, false);
             resolve(self.src);
         }
@@ -115,7 +114,7 @@ class UniversalAudio extends HTMLAudioElement {
         const scripts = document.querySelectorAll(`script[src$="${script}"]`);
 
         if (scripts.length > 0) {
-            const coreInit = (window as any)[core];
+            const coreInit = (window as any)[self.core];
             if (coreInit) {
                 init();
             } else {
@@ -145,24 +144,33 @@ class UniversalAudio extends HTMLAudioElement {
                 }
             }
 
-            const response = await fetch(this.src, { method: 'HEAD' });
-
-            if (!response.ok) {
-                main_resolve("");
-                return;
+            let mime = "";
+            try{
+                const parsed_url = new URL(this.src);
+                if(parsed_url.protocol === 'blob:'){
+                    // We can't fetch head of a blob
+                    const response = await fetch(this.src);
+                    mime = response.headers.get("Content-Type");
+                }else if(parsed_url.protocol === 'http:' || parsed_url.protocol === 'https:'){
+                    const response = await fetch(this.src, { method: 'HEAD' });
+                    mime = response.headers.get("Content-Type");
+                }
+            }catch {
+                console.log("failed to fetch head of the content "+ this.src);
             }
+
+            
 
             let src = this.src;
             let js = null;
             let wasmBinaryFile = null;
             let dynamicLibraries :string[] = [];
 
-            const mime = response.headers.get("Content-Type");
             if (this.src.endsWith(".bvr") || mime == "application/x-bevara") {
                 const jszip = new JSZip();
                 const fetched_bvr = await fetch(this.src);
 
-                if (!response.ok) {
+                if (!fetched_bvr.ok) {
                     main_resolve("");
                     return;
                 }
@@ -170,6 +178,7 @@ class UniversalAudio extends HTMLAudioElement {
                 const zip = await jszip.loadAsync(fetched_bvr.blob());
                 const metadata = await zip.file("meta.json").async("string");
                 const json_meta = JSON.parse(metadata);
+                this.core = json_meta.core;
 
                 const getURLData = async (name) => {
                     if (Array.isArray(name)){
@@ -193,17 +202,39 @@ class UniversalAudio extends HTMLAudioElement {
             }
             const scriptDirectory = this.getAttribute("script-directory")?this.getAttribute("script-directory"):"";
 
+            function addScriptDirectoryAndExtIfNeeded(url, ext) {
+                try {
+                    const parsed_url = new URL(url);
+                    if(parsed_url.protocol === 'blob:'){
+                        return url;
+                    }else if(parsed_url.protocol === 'http:' || parsed_url.protocol === 'https:'){
+                        return url + ext;
+                    }
+                    return scriptDirectory + url + ext;
+                  }catch(e){
+                    return scriptDirectory + url + ext;
+                  }
+            }
+
             if (this.getAttribute("using")){
-                js = scriptDirectory + this.getAttribute("using")+".js";
-                wasmBinaryFile = scriptDirectory + this.getAttribute("using")+".wasm";
+                this.core = this.getAttribute("using");
+                js = addScriptDirectoryAndExtIfNeeded(this.getAttribute("using"),".js");
+                wasmBinaryFile = addScriptDirectoryAndExtIfNeeded(this.getAttribute("using"),".wasm");
+            }
+
+            if (this.getAttribute("js")){
+                //Overwrite js attribute
+                js = addScriptDirectoryAndExtIfNeeded(this.getAttribute("js"),"");
             }
 
             if (this.getAttribute("with")){
-                dynamicLibraries = dynamicLibraries.concat(this.getAttribute("with").split(';').map(x => scriptDirectory + x + ".wasm"));
+                dynamicLibraries = dynamicLibraries.concat(this.getAttribute("with").split(';').map(x => addScriptDirectoryAndExtIfNeeded(x,".wasm")));
             }
 
             const args = JSON.parse(JSON.stringify(this, UniversalAudio.observedAttributes));
-                        
+            args["use-webcodec"] = this.getAttribute("use-webcodec") == "" ? true :false;
+            args["debug"] = this.getAttribute("debug") == "" ? true :false;
+      
             const message = {
                 module : {dynamicLibraries:dynamicLibraries},
                 wasmBinaryFile : wasmBinaryFile,
@@ -211,10 +242,6 @@ class UniversalAudio extends HTMLAudioElement {
                 dst: "out." + this.out,
                 args
             };
-
-            
-            const test = this.getAttribute("no-worker");
-
 
             this.getAttribute("no-worker") == "" ? this.launchNoWorker(js, message, main_resolve) : this.launchWorker(js, message, main_resolve);
         });
@@ -279,7 +306,7 @@ class UniversalAudio extends HTMLAudioElement {
         }
     }
 
-    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress', 'script-directory', 'no-worker', "debug"]; }
+    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress', 'script-directory', 'no-worker', "debug", "use-webcodec"]; }
 }
 
 if (!customElements.get('universal-audio')) {
