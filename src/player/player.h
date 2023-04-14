@@ -1,5 +1,5 @@
-#ifndef _PLAYER_
-#define _PLAYER_
+#ifndef _TRANSCODER_
+#define _TRANSCODER_
 
 #ifdef __cplusplus
 extern "C" {  
@@ -21,13 +21,14 @@ typedef struct
 
 typedef struct _Entry
 {
-  //GF_User* user;
-  //GF_Terminal *term;
-  GF_List *filter_registers;
+  GF_FilterSession *session;
+  GF_Filter* src;
+  GF_Filter* dst;
 } Entry;
 
-void parse_set_term(Entry* entry, const char *json);
-const char * parse_get_term(Entry *entry, const char *json);
+void parse_set_session(Entry* entry, const char *json);
+const char * parse_get_session(Entry *entry, const char *json);
+
 
 #ifdef __cplusplus
 }

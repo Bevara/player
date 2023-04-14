@@ -66,43 +66,6 @@
 		}
 
 		setProperty(args);
-
-
-		const res = FS.readFile(args.dst, { encoding: "binary" });
-
-		if (args.dst.endsWith("rgba")) {
-			const props  = getProperty(["width", "height"]);
-			const canvas = new OffscreenCanvas(props.width, props.height);
-			const imgData = new ImageData(Uint8ClampedArray.from(res), props.width, props.height);
-			canvas.getContext('2d').putImageData(imgData, 0, 0);
-			blob = await canvas.convertToBlob();
-		} else if (args.dst.endsWith("rgb")) {
-			const props  = getProperty(["width", "height"]);
-			const canvas = new OffscreenCanvas(props.width, props.height);
-			const imgData = new ImageData(props.width, props.height);
-
-			const dest = imgData.data;
-			const n = 4 * props.width * props.height;
-			let s = 0, d = 0;
-			while (d < n) {
-				dest[d++] = res[s++];
-				dest[d++] = res[s++];
-				dest[d++] = res[s++];
-				dest[d++] = 255;    // skip alpha byte
-			}
-
-			canvas.getContext('2d').putImageData(imgData, 0, 0);
-
-			blob = await canvas.convertToBlob();
-		} else {
-			blob = new Blob([res], { type: "application/octet-stream" });
-		}
-
-		if (ENVIRONMENT_IS_WORKER) {
-			postMessage({ core: { blob: blob} });
-		} else if (ENVIRONMENT_IS_WEB){
-			return blob;
-		}
 	};
 
 

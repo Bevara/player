@@ -252,8 +252,7 @@ class UniversalCanvas extends HTMLCanvasElement {
                 self:this,
                 module: { dynamicLibraries: dynamicLibraries },
                 wasmBinaryFile: wasmBinaryFile,
-                src: src,
-                dst: "out." + this.out,
+                src: this.getAttribute("data-url"),
                 args
             };
 

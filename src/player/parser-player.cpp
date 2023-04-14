@@ -1,51 +1,74 @@
 #include "rapidjson/document.h"
 
 #include <emscripten/emscripten.h>
-#include <emscripten/fetch.h>
 #include <rapidjson/stringbuffer.h>
 #include <rapidjson/writer.h>
 
 #include "player.h"
 
-#include "gpac/list.h"
-#include "module_wrap.h"
-
-extern GF_ModuleManager *gpac_modules_static;
-
 using namespace rapidjson;
 
 StringBuffer sb;
 
-extern "C" void parse_set_term(Entry *entry, const char *json)
+extern "C"
+{
+  const GF_FilterRegister *wcdec_register(GF_FilterSession *session);
+  const GF_FilterRegister *wcenc_register(GF_FilterSession *session);
+  const GF_FilterRegister *webgrab_register(GF_FilterSession *session);
+  const GF_FilterRegister *dynCall_vout_register(GF_FilterSession *session);
+  const GF_FilterRegister *dynCall_aout_register(GF_FilterSession *session);
+}
+
+extern "C" void parse_set_session(Entry *entry, const char *json)
 {
   Document document;
   document.Parse(json);
   assert(document.IsObject());
+
+  if (document.HasMember("debug") && (document["debug"].GetBool() == true))
+  {
+    gf_log_set_tool_level(GF_LOG_TOOL_MAX, GF_LOG_INFO);
+  }
+
+  if (document.HasMember("use-webcodec") && (document["use-webcodec"].GetBool() == true))
+  {
+    gf_fs_add_filter_register(entry->session, wcdec_register(entry->session));
+    gf_fs_add_filter_register(entry->session, wcenc_register(entry->session));
+    gf_fs_add_filter_register(entry->session, webgrab_register(entry->session));
+  }
+
+  gf_fs_add_filter_register(entry->session, dynCall_vout_register(entry->session));
+  gf_fs_add_filter_register(entry->session, dynCall_aout_register(entry->session));
+  
 
   if (document.HasMember("filters"))
   {
     assert(document["filters"].IsArray());
     const Value &filters = document["filters"];
     for (SizeType i = 0; i < filters.Size(); i++)
-      gf_list_add(entry->filter_registers,(void*)filters[i].GetInt());
+      gf_fs_add_filter_register(entry->session, (const GF_FilterRegister *)filters[i].GetInt());
   }
 
-  if (document.HasMember("modules"))
+  if (document.HasMember("src"))
   {
-    assert(document["modules"].IsArray());
-    const Value &modules = document["modules"];
-    for (SizeType i = 0; i < modules.Size(); i++)
-      gf_list_add(gpac_modules_static->plugin_registry, (void*)modules[i].GetInt());
+    GF_Err err;
+    assert(document["src"].IsString());
+    const char *source = document["src"].GetString();
+
+    entry->src = gf_fs_load_source(entry->session, source, NULL, NULL, &err);
+    if (err)
+    {
+      fprintf(stderr, "session error %s\n", gf_error_to_string(err));
+    }
   }
 
-  if (document.HasMember("io_in"))
-  {
-    
-  }
+  GF_Err e;
 
+  GF_Filter *filter = gf_fs_load_filter(entry->session, "vout", &e);
+  filter = gf_fs_load_filter(entry->session, "aout", &e);
 }
 
-extern "C" const char *parse_get_term(Entry *entry, const char *json)
+extern "C" const char *parse_get_session(Entry *entry, const char *json)
 {
   Document document;
   document.Parse(json);
@@ -58,6 +81,34 @@ extern "C" const char *parse_get_term(Entry *entry, const char *json)
   {
     const char *property = itr->GetString();
 
+    if (strcmp(property, "connections") == 0)
+    {
+      gf_fs_print_connections(entry->session);
+    }
+    else if (strcmp(property, "width") == 0)
+    {
+      u32 width = 0;
+      GF_FilterPid *ipid = gf_filter_get_ipid(entry->dst, 0);
+      if (ipid)
+      {
+        const GF_PropertyValue *p = gf_filter_pid_get_property(ipid, GF_PROP_PID_WIDTH);
+        width = p->value.uint;
+      }
+
+      out.AddMember(Value("width"), Value(width), out.GetAllocator());
+    }
+    else if (strcmp(property, "height") == 0)
+    {
+      u32 height = 0;
+      GF_FilterPid *ipid = gf_filter_get_ipid(entry->dst, 0);
+      if (ipid)
+      {
+        const GF_PropertyValue *p = gf_filter_pid_get_property(ipid, GF_PROP_PID_HEIGHT);
+        height = p->value.uint;
+      }
+
+      out.AddMember(Value("height"), Value(height), out.GetAllocator());
+    }
   }
 
   sb.Clear();
