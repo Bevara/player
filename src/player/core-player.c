@@ -139,7 +139,7 @@ const char *EMSCRIPTEN_KEEPALIVE get(Entry *entry, const char *attrs)
 	if (!entry->term)
 		return NULL;
  
-	int res = play_pause_seek_gettime(entry->term, "http://bevara.ddns.net/test-signals/ogv/Big_Buck_Bunny_Trailer_400p.ogv");
+	int res = play_pause_seek_gettime(entry->term, "https://bevara.ddns.net/test-signals/ogv/Big_Buck_Bunny_Trailer_400p.ogv");
 	if (res == GF_FALSE)
 	{
 		fprintf(stderr, "Failure with input \n");
