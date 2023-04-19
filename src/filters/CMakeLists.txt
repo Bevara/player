@@ -969,31 +969,6 @@ add_filter(restamp
         ""
         "")
 
-SET(RESAMPLE_LIB
-)
-
-
-SET(RESAMPLE_SRC
-        ${GPAC_LOCATION}/src/filters/resample_audio.c
-        ${GPAC_LOCATION}/src/utils/constants.c
-)
-
-add_filter(resample
-        "${RESAMPLE_SRC}"
-        "${RESAMPLE_LIB}"
-        _dynCall_resample_register
-        ""
-        ""
-        "")
-
-add_filter(reframer
-        ${GPAC_LOCATION}/src/filters/reframer.c
-        ""
-        _dynCall_reframer_register
-        ""
-        ""
-        "")
-
 SET(RFTRUEHD_SRC
         ${GPAC_LOCATION}/src/filters/reframe_truehd.c
         ${GPAC_LOCATION}/src/utils/bitstream.c

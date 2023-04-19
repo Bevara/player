@@ -10,6 +10,8 @@ SET(GPAC
     '_wcdec_register'
     '_wcenc_register'
     '_webgrab_register'
+    '_resample_register'
+    '_reframer_register'
     '_main'
 )
 

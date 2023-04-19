@@ -55,6 +55,11 @@
 		const module = await libgpac(params);
 		const FS = module['FS'];
 		 
+
+		// Reframer and resampler
+		register_fns.push("_reframer_register");
+		register_fns.push("_resample_register");
+
 		if(m.data.src){
 			register_fns.push("_filein_register");
 			const src = m.data.src;
