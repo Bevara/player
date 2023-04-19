@@ -33,7 +33,7 @@ SET(JS_RUNTIME_JXL
 add_executable(jxl ${CORE_JXL})
 
 target_link_libraries(jxl
-  ${THIRD_PARTIES_BINARIES}/gpac/bin/gcc/libgpac_static.a
+  ${THIRD_PARTIES_BINARIES}/gpac_minimal/bin/gcc/libgpac_static.a
   ${THIRD_PARTIES_BINARIES}/libjxl/lib/libjxl.a
   ${THIRD_PARTIES_BINARIES}/libjxl/third_party/highway/libhwy.a
 )

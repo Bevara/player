@@ -12,6 +12,7 @@ SET(J2KDEC_INC
 SET(CORE_JP2
   ${CMAKE_SOURCE_DIR}/src/jp2/reframe_img.c
   ${CMAKE_SOURCE_DIR}/src/jp2/dec_j2k.c
+  ${GPAC_LOCATION}/src/media_tools/img.c
   ${CMAKE_SOURCE_DIR}/src/transcoder/core-transcoder.c
   ${CMAKE_SOURCE_DIR}/src/transcoder/parser-transcoder.cpp
 )
@@ -31,7 +32,7 @@ SET(JS_RUNTIME_JP2
 add_executable(jp2 ${CORE_JP2})
 
 target_link_libraries(jp2
-  ${THIRD_PARTIES_BINARIES}/gpac/bin/gcc/libgpac_static.a
+  ${THIRD_PARTIES_BINARIES}/gpac_minimal/bin/gcc/libgpac_static.a
   ${THIRD_PARTIES_BINARIES}/openjpeg/bin/libopenjp2.a
 )
 
