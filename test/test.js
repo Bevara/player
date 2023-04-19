@@ -310,62 +310,62 @@ describe('core-player', () => {
 
   describe('#corejxl', () => {
 
-    // it('should decode test.jxl', (done) => {
-    //   create_test('img',
-    //     'universal-img',
-    //     "jxl",
-    //     null,
-    //     "https://bevara.ddns.net/test-signals/JXL/test.jxl",
-    //     "https://bevara.ddns.net/test-signals/out/jxl/canvas.png",
-    //     done,
-    //      null,
-    //     false,
-    //     false
-    //   );
-    // }).timeout(40000);
+    it('should decode test.jxl', (done) => {
+      create_test('img',
+        'universal-img',
+        "jxl",
+        null,
+        "https://bevara.ddns.net/test-signals/JXL/test.jxl",
+        "https://bevara.ddns.net/test-signals/out/jxl/canvas.png",
+        done,
+         null,
+        false,
+        false
+      );
+    }).timeout(40000);
 
-    // it('should decode test.jxl without workers', (done) => {
-    //   create_test('img',
-    //     'universal-img',
-    //     "jxl",
-    //     null,
-    //     "https://bevara.ddns.net/test-signals/JXL/test.jxl",
-    //     "https://bevara.ddns.net/test-signals/out/jxl/canvas.png",
-    //     done,
-    //     null,
-    //     false,
-    //     true
-    //   );
-    // }).timeout(40000);
+    it('should decode test.jxl without workers', (done) => {
+      create_test('img',
+        'universal-img',
+        "jxl",
+        null,
+        "https://bevara.ddns.net/test-signals/JXL/test.jxl",
+        "https://bevara.ddns.net/test-signals/out/jxl/canvas.png",
+        done,
+        null,
+        false,
+        true
+      );
+    }).timeout(40000);
 
   });
 
   describe('#corejp2', () => {
-    // it('should transcode Cevennes2.jp2 to canvas', (done) => {
-    //   create_test('img',
-    //     'universal-img',
-    //     "jp2",
-    //     null,
-    //     "https://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2",
-    //     "https://bevara.ddns.net/test-signals/out/j2k/cevennes2_canvas.png",
-    //     done,
-    //     "rgb",
-    //     false,
-    //     false);
-    // }).timeout(5000);
+    it('should transcode Cevennes2.jp2 to canvas', (done) => {
+      create_test('img',
+        'universal-img',
+        "jp2",
+        null,
+        "https://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2",
+        "https://bevara.ddns.net/test-signals/out/j2k/cevennes2_canvas.png",
+        done,
+        "rgb",
+        false,
+        false);
+    }).timeout(5000);
 
-    // it('should transcode Cevennes2.jp2 to canvas without workers', (done) => {
-    //   create_test('img',
-    //     'universal-img',
-    //     "jp2",
-    //     null,
-    //     "https://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2",
-    //     "https://bevara.ddns.net/test-signals/out/j2k/cevennes2_canvas.png",
-    //     done,
-    //     "rgb",
-    //     false,
-    //     true);
-    // }).timeout(5000);
+    it('should transcode Cevennes2.jp2 to canvas without workers', (done) => {
+      create_test('img',
+        'universal-img',
+        "jp2",
+        null,
+        "https://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2",
+        "https://bevara.ddns.net/test-signals/out/j2k/cevennes2_canvas.png",
+        done,
+        "rgb",
+        false,
+        true);
+    }).timeout(5000);
 
   });
 

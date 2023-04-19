@@ -38,7 +38,7 @@
 		FS.writeFile(fname, new Uint8Array(data));
 
 		const entry = module._constructor();
-		const register_fns = Object.keys(module).filter(x => x.startsWith("dynCall_") && x.endsWith("_register"));
+		const register_fns = ["_img_reframe_register","_j2kdec_register","_writegen_register","_fileout_register","_filein_register"];
 
 		const args = m.data.args ? m.data.args : {};
 
@@ -98,7 +98,7 @@
 		}
 
 		if (ENVIRONMENT_IS_WORKER) {
-			postMessage({ core: { blob: blob} });
+			postMessage({ blob: blob});
 		} else if (ENVIRONMENT_IS_WEB){
 			return blob;
 		}
