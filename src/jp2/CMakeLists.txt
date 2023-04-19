@@ -20,7 +20,7 @@ SET(CORE_JP2
 )
 
 SET(EXTERNAL_FN
-  "['dynCall_img_reframe_register','dynCall_j2kdec_register','dynCall_writegen_register','dynCall_fileout_register','dynCall_filein_register','_gf_fileio_url','_gf_fileio_new','_gf_fileio_set_stats','_gf_fileio_get_udta','_gf_url_concatenate']"
+  "['_writegen_register','_fileout_register','_filein_register','_gf_fileio_url','_gf_fileio_new','_gf_fileio_set_stats','_gf_fileio_get_udta','_gf_url_concatenate']"
 )
 
 SET(EXTERNAL_RUNTIME

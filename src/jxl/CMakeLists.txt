@@ -15,14 +15,14 @@ SET(CORE_JXL
   ${GPAC_LOCATION}/src/filters/write_generic.c
   ${GPAC_LOCATION}/src/filters/out_file.c
   ${GPAC_LOCATION}/src/filters/in_file.c
-  ${CMAKE_SOURCE_DIR}/filters/jxl/dec_jxl.c
-  ${CMAKE_SOURCE_DIR}/filters/jxl/reframe_jxl.c
+  ${CMAKE_SOURCE_DIR}/src/filters/jxl/dec_jxl.c
+  ${CMAKE_SOURCE_DIR}/src/filters/jxl/reframe_jxl.c
   ${CMAKE_SOURCE_DIR}/src/transcoder/core-transcoder.c
   ${CMAKE_SOURCE_DIR}/src/transcoder/parser-transcoder.cpp
 )
 
 SET(EXTERNAL_FN
-  "['dynCall_jxldec_register','dynCall_jxl_reframe_register','dynCall_writegen_register','dynCall_fileout_register','dynCall_filein_register','_gf_fileio_url','_gf_fileio_new','_gf_fileio_set_stats','_gf_fileio_get_udta','_gf_url_concatenate']"
+  "['dynCall_jxldec_register','dynCall_jxl_reframe_register','_writegen_register','_fileout_register','_filein_register','_gf_fileio_url','_gf_fileio_new','_gf_fileio_set_stats','_gf_fileio_get_udta','_gf_url_concatenate']"
 )
 
 SET(EXTERNAL_RUNTIME

@@ -87,9 +87,7 @@ class UniversalAudio extends HTMLAudioElement {
             worker.postMessage(message);
 
             worker.addEventListener('message', m => {
-                if (m.data.core) {
-                    this.processMessages(this, m.data.core, resolve);
-                }
+                this.processMessages(this, m.data, resolve);
             });
         }
 
@@ -239,16 +237,17 @@ class UniversalAudio extends HTMLAudioElement {
                 dynamicLibraries = dynamicLibraries.concat(this.getAttribute("with").split(';').map(x => addScriptDirectoryAndExtIfNeeded(x,".wasm")));
             }
 
-            const args = JSON.parse(JSON.stringify(this, UniversalAudio.observedAttributes));
-            args["use-webcodec"] = this.getAttribute("use-webcodec") == "" ? true :false;
-            args["debug"] = this.getAttribute("debug") == "" ? true :false;
-      
             const message = {
-                module : {dynamicLibraries:dynamicLibraries},
-                wasmBinaryFile : wasmBinaryFile,
+                module: { 
+                    dynamicLibraries: dynamicLibraries ,
+                    noInitialRun: true,
+                    noExitRuntime: true
+
+                },
+                wasmBinaryFile: wasmBinaryFile,
                 src : src,
                 dst: "out." + this.out,
-                args
+                useWebcodec: this.getAttribute("no-webcodec") != ""
             };
 
             this.getAttribute("no-worker") == "" ? this.launchNoWorker(js, message, main_resolve) : this.launchWorker(js, message, main_resolve);

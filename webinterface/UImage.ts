@@ -87,9 +87,7 @@ class UniversalImage extends HTMLImageElement {
             worker.postMessage(message);
 
             worker.addEventListener('message', m => {
-                if (m.data.core) {
-                    this.processMessages(this, m.data.core, resolve);
-                }
+                this.processMessages(this, m.data, resolve);
             });
         }
 
@@ -238,16 +236,18 @@ class UniversalImage extends HTMLImageElement {
             if (this.getAttribute("with")){
                 dynamicLibraries = dynamicLibraries.concat(this.getAttribute("with").split(';').map(x => addScriptDirectoryAndExtIfNeeded(x,".wasm")));
             }
-
-            const args = JSON.parse(JSON.stringify(this, UniversalImage.observedAttributes));
-            args["debug"] = this.getAttribute("debug") == "" ? true :false;
-
+            
             const message = {
-                module : {dynamicLibraries:dynamicLibraries},
-                wasmBinaryFile : wasmBinaryFile,
+                module: { 
+                    dynamicLibraries: dynamicLibraries ,
+                    noInitialRun: true,
+                    noExitRuntime: true
+
+                },
+                wasmBinaryFile: wasmBinaryFile,
                 src : src,
                 dst: "out." + this.out,
-                args
+                useWebcodec : false
             };
 
             

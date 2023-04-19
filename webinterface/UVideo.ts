@@ -87,9 +87,7 @@ class UniversalVideo extends HTMLVideoElement {
             worker.postMessage(message);
 
             worker.addEventListener('message', m => {
-                if (m.data.core) {
-                    this.processMessages(this, m.data.core, resolve);
-                }
+                this.processMessages(this, m.data, resolve);
             });
         }
 
@@ -239,17 +237,18 @@ class UniversalVideo extends HTMLVideoElement {
                 dynamicLibraries = dynamicLibraries.concat(this.getAttribute("with").split(';').map(x => addScriptDirectoryAndExtIfNeeded(x, ".wasm")));
             }
 
-            const args = JSON.parse(JSON.stringify(this, UniversalVideo.observedAttributes));
-            args["enc"] = ["c=avc", "c=wav"];
-            args["use-webcodec"] = this.getAttribute("use-webcodec") == "" ? true :false;
-            args["debug"] = this.getAttribute("debug") == "" ? true :false;
-
             const message = {
-                module: { dynamicLibraries: dynamicLibraries },
+                module: { 
+                    dynamicLibraries: dynamicLibraries ,
+                    noInitialRun: true,
+                    noExitRuntime: true
+
+                },
                 wasmBinaryFile: wasmBinaryFile,
-                src: src,
+                src : src,
                 dst: "out." + this.out,
-                args
+                transcode:["c=avc", "c=aac"],
+                useWebcodec: this.getAttribute("no-webcodec") != ""
             };
 
 

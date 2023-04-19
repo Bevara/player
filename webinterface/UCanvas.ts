@@ -115,13 +115,15 @@ class UniversalCanvas extends HTMLCanvasElement {
             }
         }
 
-        async function init() {
+        function init() {
             if (window[self.core]){
-                const blob = await (window as any)[self.core]({ data: message });
-                self.dataURLToSrc(blob, false);
+                try{
+                    (window as any)[self.core]({ data: message });
+                }catch(error){
+                    console.log(error.message);
+                }
+                
             }
-
-            resolve(self.src);
         }
 
         const scripts = document.querySelectorAll(`script[src$="${script}"]`);
@@ -244,16 +246,18 @@ class UniversalCanvas extends HTMLCanvasElement {
                 dynamicLibraries = dynamicLibraries.concat(this.getAttribute("with").split(';').map(x => addScriptDirectoryAndExtIfNeeded(x, ".wasm")));
             }
 
-            const args = JSON.parse(JSON.stringify(this, UniversalCanvas.observedAttributes));
-            args["use-webcodec"] = this.getAttribute("use-webcodec") == "" ? true :false;
-            args["debug"] = this.getAttribute("debug") == "" ? true :false;
-
             const message = {
                 self:this,
-                module: { dynamicLibraries: dynamicLibraries },
+                module: { 
+                    dynamicLibraries: dynamicLibraries ,
+                    canvas : document.getElementById("canvas"),
+                    noInitialRun: true,
+                    noExitRuntime: true
+
+                },
                 wasmBinaryFile: wasmBinaryFile,
                 src: this.getAttribute("data-url"),
-                args
+                useWebcodec: this.getAttribute("no-webcodec") == ""
             };
 
 
@@ -264,6 +268,8 @@ class UniversalCanvas extends HTMLCanvasElement {
 
 
     connectedCallback() {
+        this.setAttribute("id", "canvas");
+        this.src = this.getAttribute("data-url");
         this._decodingPromise = this.universal_decode();
     }
 
@@ -321,7 +327,7 @@ class UniversalCanvas extends HTMLCanvasElement {
         }
     }
 
-    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress', 'script-directory', 'no-worker', "debug", "js", "use-webcodec"]; }
+    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress', 'script-directory', 'no-worker', "debug", "js", "no-webcodec"]; }
 }
 
 if (!customElements.get('universal-canvas')) {
