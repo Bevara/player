@@ -10,17 +10,14 @@ SET(J2KDEC_INC
 
 
 SET(CORE_JP2
-  ${GPAC_LOCATION}/src/filters/write_generic.c
-  ${GPAC_LOCATION}/src/filters/out_file.c
-  ${GPAC_LOCATION}/src/filters/in_file.c
-  ${GPAC_LOCATION}/src/filters/reframe_img.c
-  ${GPAC_LOCATION}/src/filters/dec_j2k.c
+  ${CMAKE_SOURCE_DIR}/src/jp2/reframe_img.c
+  ${CMAKE_SOURCE_DIR}/src/jp2/dec_j2k.c
   ${CMAKE_SOURCE_DIR}/src/transcoder/core-transcoder.c
   ${CMAKE_SOURCE_DIR}/src/transcoder/parser-transcoder.cpp
 )
 
 SET(EXTERNAL_FN
-  "['_writegen_register','_fileout_register','_filein_register','_gf_fileio_url','_gf_fileio_new','_gf_fileio_set_stats','_gf_fileio_get_udta','_gf_url_concatenate']"
+  "['_j2kdec_register','_img_reframe_register','_writegen_register','_fileout_register','_filein_register','_gf_fileio_url','_gf_fileio_new','_gf_fileio_set_stats','_gf_fileio_get_udta','_gf_url_concatenate']"
 )
 
 SET(EXTERNAL_RUNTIME
