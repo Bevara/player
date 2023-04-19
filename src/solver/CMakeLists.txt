@@ -4,7 +4,7 @@ set (GPAC_LOCATION ${THIRD_PARTIES}/gpac)
 
 add_compile_definitions(GPAC_HAVE_CONFIG_H GPAC_DISABLE_DOC)
 
-include(Exports.cmake)
+include(exports.cmake)
 
 SET(SOLVER_SRC
   filter_register.c
