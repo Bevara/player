@@ -103,6 +103,8 @@ SET(STDLIB
     '_lrintf'
     '_fwrite'
     '_log10f'
+    '_cbrt'
+    '_strerror_r'
 )
 
 SET(EMSCRIPTEN
