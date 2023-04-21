@@ -261,7 +261,7 @@ SET(FF_SRC
 
 SET(FF_INCLUDE
         ${THIRD_PARTIES}/ffmpeg
-        ${THIRD_PARTIES_BINARIES}/ffmpeg-enc
+        ${THIRD_PARTIES_BINARIES}/ffmpeg
         ${THIRD_PARTIES}/x264
         ${THIRD_PARTIES_BINARIES}/x264
 )
