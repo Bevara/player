@@ -249,14 +249,21 @@ SET(OPENHEVCDEC_SRC
 #         "${OPENHEVCDEC_INCLUDE}"
 #         "")
 
-SET(FFDEC_SRC
+SET(FF_SRC
         ${GPAC_LOCATION}/src/filters/ff_dec.c
+        ${GPAC_LOCATION}/src/filters/ff_enc.c
+        ${GPAC_LOCATION}/src/filters/ff_avf.c
+        ${GPAC_LOCATION}/src/filters/ff_dmx.c
+        ${GPAC_LOCATION}/src/filters/ff_rescale.c
         ${GPAC_LOCATION}/src/filters/ff_common.c
+        ${GPAC_LOCATION}/src/filters/ff_mx.c
 )
 
 SET(FF_INCLUDE
         ${THIRD_PARTIES}/ffmpeg
-        ${THIRD_PARTIES_BINARIES}/ffmpeg
+        ${THIRD_PARTIES_BINARIES}/ffmpeg-enc
+        ${THIRD_PARTIES}/x264
+        ${THIRD_PARTIES_BINARIES}/x264
 )
 
 SET(FF_LIB
@@ -266,126 +273,15 @@ SET(FF_LIB
         ${THIRD_PARTIES_BINARIES}/ffmpeg/libavfilter/libavfilter.a
         ${THIRD_PARTIES_BINARIES}/ffmpeg/libswresample/libswresample.a
         ${THIRD_PARTIES_BINARIES}/ffmpeg/libswscale/libswscale.a
-)
-
-
-SET(FFDEC_LIB
-        ${FF_LIB}
-)
-
-add_filter(ffdec
-        "${FFDEC_SRC}"
-        "${FFDEC_LIB}"
-        _dynCall_ffdec_register
-        GPAC_HAS_FFMPEG
-        "${FF_INCLUDE}"
-        "")
-
-SET(FFBSF_SRC
-        ${GPAC_LOCATION}/src/filters/ff_bsf.c
-        ${GPAC_LOCATION}/src/filters/ff_common.c
-)
-
-add_filter(ffbsf
-        "${FFBSF_SRC}"
-        "${FF_LIB}"
-        _dynCall_ffbsf_register
-        GPAC_HAS_FFMPEG
-        "${FF_INCLUDE}"
-        "")
-
-SET(FFAVF_SRC
-        ${GPAC_LOCATION}/src/filters/ff_avf.c
-        ${GPAC_LOCATION}/src/filters/ff_common.c
-)
-
-add_filter(ffavf
-        "${FFAVF_SRC}"
-        "${FF_LIB}"
-        _dynCall_ffavf_register
-        GPAC_HAS_FFMPEG
-        "${FF_INCLUDE}"
-        "")
-
-SET(FFDMX_SRC
-        ${GPAC_LOCATION}/src/filters/ff_dmx.c
-        ${GPAC_LOCATION}/src/filters/ff_common.c
-)
-
-SET(FFDMX_LIB
-        ${FF_LIB}
-)
-
-add_filter(ffdmx
-        "${FFDMX_SRC}"
-        "${FFDMX_LIB}"
-        _dynCall_ffdmx_register
-        GPAC_HAS_FFMPEG
-        "${FF_INCLUDE}"
-        "")
-
-SET(FFRESCALE_SRC
-        ${GPAC_LOCATION}/src/filters/ff_rescale.c
-        ${GPAC_LOCATION}/src/filters/ff_common.c
-)
-
-add_filter(ffsws
-        "${FFRESCALE_SRC}"
-        "${FF_LIB}"
-        _dynCall_ffsws_register
-        GPAC_HAS_FFMPEG
-        "${FF_INCLUDE}"
-        "")
-
-SET(FFMX_SRC
-        ${GPAC_LOCATION}/src/filters/ff_mx.c
-        ${GPAC_LOCATION}/src/filters/ff_common.c
-)
-
-SET(FFMX_LIB
-        ${FF_LIB}
-)
-
-add_filter(ffmx
-        "${FFMX_SRC}"
-        "${FFMX_LIB}"
-        _dynCall_ffmx_register
-        GPAC_HAS_FFMPEG
-        "${FF_INCLUDE}"
-        "")
-
-SET(FFENC_INCLUDE
-        ${THIRD_PARTIES}/ffmpeg
-        ${THIRD_PARTIES_BINARIES}/ffmpeg-enc
-        ${THIRD_PARTIES}/x264
-        ${THIRD_PARTIES_BINARIES}/x264
-)
-
-SET(FFENC_LIB
-        ${THIRD_PARTIES_BINARIES}/ffmpeg-enc/libavcodec/libavcodec.a
-        ${THIRD_PARTIES_BINARIES}/ffmpeg-enc/libavutil/libavutil.a
-        ${THIRD_PARTIES_BINARIES}/ffmpeg-enc/libavformat/libavformat.a
-        ${THIRD_PARTIES_BINARIES}/ffmpeg-enc/libavfilter/libavfilter.a
-        ${THIRD_PARTIES_BINARIES}/ffmpeg-enc/libswresample/libswresample.a
-        ${THIRD_PARTIES_BINARIES}/ffmpeg-enc/libswscale/libswscale.a
         ${THIRD_PARTIES_BINARIES}/x264/libx264.a
 )
 
-SET(FFENC_SRC
-        ${GPAC_LOCATION}/src/filters/ff_enc.c
-        ${GPAC_LOCATION}/src/filters/ff_common.c
-)
-
-SET(FFENC_FLAGS
+add_filter(ffmpeg
+        "${FF_SRC}"
+        "${FF_LIB}"
+        ['_dynCall_ffdec_register','_dynCall_ffenc_register','_dynCall_ffbsf_register','_dynCall_ffavf_register','_dynCall_ffavf_register','_dynCall_ffdmx_register','_dynCall_ffsws_register','_dynCall_ffmx_register']
         GPAC_HAS_FFMPEG
-)
-
-add_filter(ffenc
-        "${FFENC_SRC}"
-        "${FFENC_LIB}"
-        _dynCall_ffenc_register
-        "${FFENC_FLAGS}"
-        "${FFENC_INCLUDE}"
+        "${FF_INCLUDE}"
         "")
 
 SET(RFFLAC_SRC
