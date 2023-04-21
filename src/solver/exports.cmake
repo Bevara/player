@@ -45,6 +45,8 @@ SET(STDLIB
     '_realloc'
     '_memcmp'
     '_memchr'
+    '_memcpy'
+    '_free'
     '_memalign'
     '_getenv'
     '_strcasecmp'
@@ -105,6 +107,7 @@ SET(STDLIB
 
 SET(EMSCRIPTEN
     '_emscripten_longjmp'
+    '_saveSetjmp'
     '___threwValue'
     '___THREW__'
 )
