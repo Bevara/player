@@ -183,43 +183,29 @@ add_filter(libfaad
         "")
 
 
-SET(RFAC3_SRC
-${GPAC_LOCATION}/src/filters/reframe_ac3.c
-${GPAC_LOCATION}/src/media_tools/av_parsers.c
-${GPAC_LOCATION}/src/utils/bitstream.c
-${GPAC_LOCATION}/src/odf/descriptors.c
-)
-
-SET(RFAC3_LIB
-)
-
-add_filter(rfac3
-"${RFAC3_SRC}"
-"${RFAC3_LIB}"
-_dynCall_ac3dmx_register
-""
-${GPAC_LOCATION}/include
-"")
-
-
-SET(A52DEC_SRC
+SET(LIBA52_SRC
         ${GPAC_LOCATION}/src/filters/dec_ac52.c
+        ${GPAC_LOCATION}/src/filters/reframe_ac3.c
+        ${GPAC_LOCATION}/src/media_tools/av_parsers.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c
+        ${GPAC_LOCATION}/src/odf/descriptors.c
 )
 
-SET(A52DEC_INCLUDE
+SET(LIBA52_INCLUDE
+        ${GPAC_LOCATION}/include
         ${THIRD_PARTIES}/a52dec-0.7.4/include
 )
 
-SET(A52DEC_LIB
+SET(LIBA52_LIB
         ${THIRD_PARTIES_BINARIES}/liba52/liba52/.libs/liba52.a
 )
 
-add_filter(a52dec
-        "${A52DEC_SRC}"
-        "${A52DEC_LIB}"
-        _dynCall_a52dec_register
+add_filter(liba52
+        "${LIBA52_SRC}"
+        "${LIBA52_LIB}"
+        ['_dynCall_ac3dmx_register','_dynCall_a52dec_register']
         GPAC_HAS_LIBA52
-        "${A52DEC_INCLUDE}"
+        "${LIBA52_INCLUDE}"
         "")
 
 SET(OPENHEVCDEC_INCLUDE
