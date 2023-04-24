@@ -137,37 +137,27 @@ add_filter(j2kdec
         "${J2KDEC_INC}"
         "")
 
-SET(RFMP3_SRC
+SET(LIBMAD_SRC
+        ${GPAC_LOCATION}/src/filters/dec_mad.c
         ${GPAC_LOCATION}/src/filters/reframe_mp3.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
 )
 
-SET(RFMP3_LIB
-
-)
-
-add_filter(rfmp3
-        "${RFMP3_SRC}"
-        "${RFMP3_LIB}"
-        _dynCall_mp3_dmx_register
-        ""
-        ${GPAC_LOCATION}/include
-        "")
-
-SET(MADDEC_SRC
-        ${GPAC_LOCATION}/src/filters/dec_mad.c
-)
-
-SET(MADDEC_LIB
+SET(LIBMAD_LIB
         ${THIRD_PARTIES_BINARIES}/libmad/.libs/libmad.a
 )
 
-add_filter(maddec
-        "${MADDEC_SRC}"
-        "${MADDEC_LIB}"        
-        _dynCall_maddec_register
-        GPAC_HAS_MAD
+SET(LIBMAD_INC
         ${THIRD_PARTIES_BINARIES}/libmad
+        ${GPAC_LOCATION}/include
+)
+
+add_filter(libmad
+        "${LIBMAD_SRC}"
+        "${LIBMAD_LIB}"        
+        ['_dynCall_maddec_register','_dynCall_mp3_dmx_register']
+        GPAC_HAS_MAD
+        "${LIBMAD_INC}"
         "")
 
 SET(RFAC3_SRC
@@ -203,7 +193,7 @@ SET(FAAD_LIB
 add_filter(faaddec
         "${FAAD_SRC}"
         "${FAAD_LIB}"
-        _dynCall_faad_register
+        ['_dynCall_faad_register']
         GPAC_HAS_FAAD
         "${FAAD_INCLUDE}"
         "")

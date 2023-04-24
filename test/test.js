@@ -102,7 +102,7 @@ describe('core-player', () => {
     //   create_test('img',
     //     'universal-img',
     //     "solver",
-    //     "a52dec;ffmpeg;inspect;nhmlw;restamp;rfmpgvid;tileagg;ufmhas;vtt2tx3g;ffmx;j2kdec;nhntr;rewind;rfnalu;tilesplit;ufnalu;vttdec;avidmx;jpgenc;nhntw;rfac3;rfpcm;tssplit;ufobu;bifsdec;cryptin;lsrdec;odfdec;rfadts;rfprores;ttml2srt;ufttxt;writeqcp;bsagg;cryptout;m2psdmx;rfamr;rfqcp;ttml2vtt;ufvc1;writeuf;bsrw;dasher;flist;m2tsdmx;oggdmx;rfav1;rfrawvid;ttmldec;ufvtt;xviddec;bssplit;dashin;gsfdmx;m2tsmx;oggmx;rfflac;rfsrt;ttxtdec;unframer;btplay;faaddec;gsfmx;maddec;rfh263;rftruehd;tx3g2srt;vcrop;cdcrypt;ffavf;hevcmerge;mp4dmx;pngenc;rfimg;safdmx;tx3g2ttml;vflip;cecrypt;ffbsf;hevcsplit;mp4mx;probe;rflatm;tx3g2vtt;vobsubdmx;compose;ffdec;nanojpeg;reframer;rfmhas;svgplay;txtin;vorbisdec;ffdmx;imgdec;nhmlr;rfmp3;theoradec;uflatm",
+    //     "a52dec;ffmpeg;inspect;nhmlw;restamp;rfmpgvid;tileagg;ufmhas;vtt2tx3g;ffmx;j2kdec;nhntr;rewind;rfnalu;tilesplit;ufnalu;vttdec;avidmx;jpgenc;nhntw;rfac3;rfpcm;tssplit;ufobu;bifsdec;cryptin;lsrdec;odfdec;rfadts;rfprores;ttml2srt;ufttxt;writeqcp;bsagg;cryptout;m2psdmx;rfamr;rfqcp;ttml2vtt;ufvc1;writeuf;bsrw;dasher;flist;m2tsdmx;oggdmx;rfav1;rfrawvid;ttmldec;ufvtt;xviddec;bssplit;dashin;gsfdmx;m2tsmx;oggmx;rfflac;rfsrt;ttxtdec;unframer;btplay;faaddec;gsfmx;rfh263;rftruehd;tx3g2srt;vcrop;cdcrypt;ffavf;hevcmerge;mp4dmx;pngenc;rfimg;safdmx;tx3g2ttml;vflip;cecrypt;ffbsf;hevcsplit;mp4mx;probe;rflatm;tx3g2vtt;vobsubdmx;compose;ffdec;nanojpeg;reframer;rfmhas;svgplay;txtin;vorbisdec;ffdmx;imgdec;nhmlr;libmad;theoradec;uflatm",
     //     "https://bevara.ddns.net/test-signals/Freedom.jpg",
     //     "https://bevara.ddns.net/test-signals/Freedom.png",
     //     done,
@@ -385,12 +385,12 @@ describe('core-player', () => {
   // });
 
 
-  describe('#maddec', () => {
+  describe('#libmad', () => {
     it('should decode ImagineDragons.mp3"', (done) => {
       create_test('audio',
         "universal-audio",
         "solver",
-        "rfmp3;maddec",
+        "libmad",
         "https://bevara.ddns.net/test-signals/ImagineDragons.mp3",
         "https://bevara.ddns.net/test-signals/out/maddec/ImagineDragons.wav",
         done,
@@ -403,7 +403,7 @@ describe('core-player', () => {
       //   create_test('audio',
       //     "universal-audio",
       //     "solver",
-      //     "rfmp3;maddec",
+      //     "libmad",
       //     "https://bevara.ddns.net/test-signals/out/maddec/ImagineDragons.mp3.bvr",
       //     "https://bevara.ddns.net/test-signals/out/maddec/ImagineDragons.wav",
       //     done,
@@ -416,7 +416,7 @@ describe('core-player', () => {
       //   create_test('audio',
       //     "universal-audio",
       //     "solver",
-      //     "rfmp3;maddec",
+      //     "libmad",
       //     "https://bevara.ddns.net/test-signals/out/maddec/ImagineDragons.mp3.bvr",
       //     "https://bevara.ddns.net/test-signals/out/maddec/ImagineDragons.wav",
       //     done,
@@ -711,7 +711,7 @@ describe('core-player', () => {
       create_test('video',
         "universal-video",
         "solver",
-        "mp4mx;avidmx;xviddec;rfmp3;rfmpgvid;rfnalu;ffmpeg",
+        "mp4mx;avidmx;xviddec;libmad;rfmpgvid;rfnalu;ffmpeg",
         "https://bevara.ddns.net/test-signals/xvid/Big_Buck_Bunny_Trailer_400p.avi",
         null,
         done,

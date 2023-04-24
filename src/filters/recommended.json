@@ -43,7 +43,7 @@
 		"flac": "fin;fout;writegen;rfflac;ffmpeg",
 		"opus": "fin;fout;writegen;oggdmx;ffmpeg",
 		"wma": "fin;fout;writegen;rfadts;ffmpeg",
-		"mp3":"fin;fout;writegen;rfmp3;maddec",
+		"mp3":"libmad",
 		"tif":"fout;ffmpeg;writegen;fin;pngenc",
 		"pbm":"fout;ffmpeg;writegen;fin;pngenc",
 		"pnm":"fout;ffmpeg;writegen;fin;pngenc",
