@@ -428,7 +428,7 @@ describe('core-player', () => {
 
   });
 
-  describe('#a52dec', () => {
+  describe('#liba52', () => {
     it('should decode sound.ac3', (done) => {
       create_test('audio',
         "universal-audio",
