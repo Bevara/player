@@ -1314,11 +1314,12 @@ add_filter(bsagg
         ""
         "")
 
-SET(JXLDEC_SRC
+SET(LIBJXL_SRC
+        ${CMAKE_SOURCE_DIR}/src/filters/jxl/reframe_jxl.c
         ${CMAKE_SOURCE_DIR}/src/filters/jxl/dec_jxl.c
 )
 
-SET(JXLDEC_LIB
+SET(LIBJXL_LIB
         ${THIRD_PARTIES_BINARIES}/libjxl/lib/libjxl.a
         ${THIRD_PARTIES_BINARIES}/libjxl/third_party/highway/libhwy.a
         ${THIRD_PARTIES_BINARIES}/libjxl/third_party/brotli/libbrotlicommon-static.a
@@ -1327,33 +1328,17 @@ SET(JXLDEC_LIB
         ${THIRD_PARTIES}/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/pic/libc++abi.a
 )
 
-SET(JXLDEC_INC
+SET(LIBJXL_INC
         ${THIRD_PARTIES}/libjxl/lib/include
         ${THIRD_PARTIES_BINARIES}/libjxl/lib/include
 )
 
-add_filter(jxldec
-        "${JXLDEC_SRC}"
-        "${JXLDEC_LIB}"
-        _dynCall_jxldec_register
+add_filter(libjxl
+        "${LIBJXL_SRC}"
+        "${LIBJXL_LIB}"
+        ['_dynCall_jxldec_register','_dynCall_jxl_reframe_register']
         ""
-        "${JXLDEC_INC}"
-        "")
-
-SET(RFJXL_SRC
-        ${CMAKE_SOURCE_DIR}/src/filters/jxl/reframe_jxl.c
-)
-
-SET(RFJXL_LIB
-        ${THIRD_PARTIES_BINARIES}/libjxl/lib/libjxl.a
-)
-
-add_filter(rfjxl
-        "${RFJXL_SRC}"
-        "${RFJXL_LIB}"
-        _dynCall_jxl_reframe_register
-        ""
-        "${JXLDEC_INC}"
+        "${LIBJXL_INC}"
         "")
 
 # Should always be at the end of this file
