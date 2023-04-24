@@ -160,26 +160,10 @@ add_filter(libmad
         "${LIBMAD_INC}"
         "")
 
-SET(RFAC3_SRC
-        ${GPAC_LOCATION}/src/filters/reframe_ac3.c
-        ${GPAC_LOCATION}/src/media_tools/av_parsers.c
-        ${GPAC_LOCATION}/src/utils/bitstream.c
-        ${GPAC_LOCATION}/src/odf/descriptors.c
-)
-
-SET(RFAC3_LIB
-)
-
-add_filter(rfac3
-        "${RFAC3_SRC}"
-        "${RFAC3_LIB}"
-        _dynCall_ac3dmx_register
-        ""
-        ${GPAC_LOCATION}/include
-        "")
-
 SET(FAAD_SRC
+        ${GPAC_LOCATION}/src/filters/reframe_adts.c
         ${GPAC_LOCATION}/src/filters/dec_faad.c
+        ${GPAC_LOCATION}/src/utils/bitstream.c
 )
 
 SET(FAAD_INCLUDE
@@ -190,13 +174,33 @@ SET(FAAD_LIB
         ${THIRD_PARTIES_BINARIES}/libfaad/libfaad/.libs/libfaad.a
 )
 
-add_filter(faaddec
+add_filter(libfaad
         "${FAAD_SRC}"
         "${FAAD_LIB}"
-        ['_dynCall_faad_register']
+        ['_dynCall_faad_register','_dynCall_adts_dmx_register']
         GPAC_HAS_FAAD
         "${FAAD_INCLUDE}"
         "")
+
+
+SET(RFAC3_SRC
+${GPAC_LOCATION}/src/filters/reframe_ac3.c
+${GPAC_LOCATION}/src/media_tools/av_parsers.c
+${GPAC_LOCATION}/src/utils/bitstream.c
+${GPAC_LOCATION}/src/odf/descriptors.c
+)
+
+SET(RFAC3_LIB
+)
+
+add_filter(rfac3
+"${RFAC3_SRC}"
+"${RFAC3_LIB}"
+_dynCall_ac3dmx_register
+""
+${GPAC_LOCATION}/include
+"")
+
 
 SET(A52DEC_SRC
         ${GPAC_LOCATION}/src/filters/dec_ac52.c
@@ -377,24 +381,6 @@ add_filter(xviddec
         _dynCall_xviddec_register
         GPAC_HAS_XVID
         "${XVIDDEC_INCLUDE}"
-        "")
-
-SET(RFADTS_SRC
-        ${GPAC_LOCATION}/src/filters/reframe_adts.c
-        ${GPAC_LOCATION}/src/utils/bitstream.c
-)
-
-SET(RFADTS_LIB
-
-)
-
-
-add_filter(rfadts
-        "${RFADTS_SRC}"
-        "${RFADTS_LIB}"
-        _dynCall_adts_dmx_register
-        ""
-        ""
         "")
 
 SET(RFAMR_SRC

@@ -49,7 +49,7 @@
 		"pnm":"fout;ffmpeg;writegen;fin;pngenc",
 		"pcx":"fout;ffmpeg;writegen;pngenc",
 		"aiff":"fout;ffmpeg;writegen",
-		"aac":"faaddec;fout;rfadts;writegen;fin",
+		"aac":"libfaad",
 		"ogg":"vorbisdec;fout;oggdmx;writegen;fin"
 	}
 }

@@ -102,7 +102,7 @@ describe('core-player', () => {
     //   create_test('img',
     //     'universal-img',
     //     "solver",
-    //     "a52dec;ffmpeg;inspect;nhmlw;restamp;rfmpgvid;tileagg;ufmhas;vtt2tx3g;ffmx;j2kdec;nhntr;rewind;rfnalu;tilesplit;ufnalu;vttdec;avidmx;jpgenc;nhntw;rfac3;rfpcm;tssplit;ufobu;bifsdec;cryptin;lsrdec;odfdec;rfadts;rfprores;ttml2srt;ufttxt;writeqcp;bsagg;cryptout;m2psdmx;rfamr;rfqcp;ttml2vtt;ufvc1;writeuf;bsrw;dasher;flist;m2tsdmx;oggdmx;rfav1;rfrawvid;ttmldec;ufvtt;xviddec;bssplit;dashin;gsfdmx;m2tsmx;oggmx;rfflac;rfsrt;ttxtdec;unframer;btplay;faaddec;gsfmx;rfh263;rftruehd;tx3g2srt;vcrop;cdcrypt;ffavf;hevcmerge;mp4dmx;pngenc;rfimg;safdmx;tx3g2ttml;vflip;cecrypt;ffbsf;hevcsplit;mp4mx;probe;rflatm;tx3g2vtt;vobsubdmx;compose;ffdec;nanojpeg;reframer;rfmhas;svgplay;txtin;vorbisdec;ffdmx;imgdec;nhmlr;libmad;theoradec;uflatm",
+    //     "a52dec;ffmpeg;inspect;nhmlw;restamp;rfmpgvid;tileagg;ufmhas;vtt2tx3g;ffmx;j2kdec;nhntr;rewind;rfnalu;tilesplit;ufnalu;vttdec;avidmx;jpgenc;nhntw;rfac3;rfpcm;tssplit;ufobu;bifsdec;cryptin;lsrdec;odfdec;rfadts;rfprores;ttml2srt;ufttxt;writeqcp;bsagg;cryptout;m2psdmx;rfamr;rfqcp;ttml2vtt;ufvc1;writeuf;bsrw;dasher;flist;m2tsdmx;oggdmx;rfav1;rfrawvid;ttmldec;ufvtt;xviddec;bssplit;dashin;gsfdmx;m2tsmx;oggmx;rfflac;rfsrt;ttxtdec;unframer;btplay;libfaad;gsfmx;rfh263;rftruehd;tx3g2srt;vcrop;cdcrypt;ffavf;hevcmerge;mp4dmx;pngenc;rfimg;safdmx;tx3g2ttml;vflip;cecrypt;ffbsf;hevcsplit;mp4mx;probe;rflatm;tx3g2vtt;vobsubdmx;compose;ffdec;nanojpeg;reframer;rfmhas;svgplay;txtin;vorbisdec;ffdmx;imgdec;nhmlr;libmad;theoradec;uflatm",
     //     "https://bevara.ddns.net/test-signals/Freedom.jpg",
     //     "https://bevara.ddns.net/test-signals/Freedom.png",
     //     done,
@@ -551,12 +551,12 @@ describe('core-player', () => {
   });
 
 
-  describe('#faaddec', () => {
+  describe('#libfaad', () => {
     it('should decode sample.aac"', (done) => {
       create_test('audio',
         "universal-audio",
         "solver",
-        "faaddec;rfadts",
+        "libfaad",
         "https://bevara.ddns.net/test-signals/sample.aac",
         "https://bevara.ddns.net/test-signals/out/faad/sample.wav",
         done,
