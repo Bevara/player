@@ -105,6 +105,7 @@ SET(STDLIB
     '_log10f'
     '_cbrt'
     '_strerror_r'
+    '_iconv_open'
 )
 
 SET(EMSCRIPTEN

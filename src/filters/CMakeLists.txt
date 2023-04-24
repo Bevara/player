@@ -24,9 +24,14 @@ macro(add_filter FILTERNAME ENTRYFILES LINKFILES ENTRY_FN DEFINITIONS INCLUDES L
         target_include_directories(${FILTERNAME} PRIVATE ${INCLUDES})
 endmacro()
 
-add_filter(nanojpeg
+Set(NANOJPEG_SRC
         ${CMAKE_SOURCE_DIR}/src/filters/nanojpeg.c
-        ${THIRD_PARTIES_BINARIES}/nanojpeg/nanojpeg.o
+        ${THIRD_PARTIES}/nanojpeg/trunk/nanojpeg/nanojpeg.c
+)
+
+add_filter(nanojpeg
+        "${NANOJPEG_SRC}"
+        ""
         _dynCall_nanojpeg_register
         ""
         ""
