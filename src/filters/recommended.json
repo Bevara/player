@@ -38,7 +38,7 @@
 		"jxl":"jxl"
 	},
 	"with":{
-		"ac3": "fin;fout;writegen;rfac3;a52dec",
+		"ac3": "liba52",
 		"amr": "rfamr;writegen;resample;ffmpeg;rfamr;fin;fout",
 		"flac": "fin;fout;writegen;rfflac;ffmpeg",
 		"opus": "fin;fout;writegen;oggdmx;ffmpeg",

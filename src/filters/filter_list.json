@@ -11,7 +11,7 @@
 		"jxl"
 	],
 	"with": [
-		"a52dec",
+		"liba52",
 		"inspect",
 		"nhmlw",
 		"restamp",
