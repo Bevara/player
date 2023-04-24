@@ -312,8 +312,8 @@ add_filter(xiph
         "${XIPH_SRC}"
         "${XIPH_LIB}"
         ['_dynCall_theoradec_register','_dynCall_vorbisdec_register','_dynCall_oggdmx_register']
-        GPAC_HAS_THEORA
         "${XIPH_FLAG}"
+        "${XIPH_INCLUDE}"
         "")
 
 SET(XVIDDEC_SRC
