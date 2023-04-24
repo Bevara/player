@@ -281,72 +281,39 @@ add_filter(rfflac
         ""
         "")
 
-SET(OGGDMX_SRC
+
+SET(XIPH_SRC
         ${GPAC_LOCATION}/src/filters/dmx_ogg.c
         ${GPAC_LOCATION}/src/media_tools/gpac_ogg.c
         ${GPAC_LOCATION}/src/media_tools/av_parsers.c
-)
-
-
-SET(OGGDMX_LIB
-)
-
-add_filter(oggdmx
-        "${OGGDMX_SRC}"
-        "${OGGDMX_LIB}"
-        _dynCall_oggdmx_register
-        ""
-        ""
-        "")
-
-SET(VORBISDEC_SRC
         ${GPAC_LOCATION}/src/filters/dec_vorbis.c
+        ${GPAC_LOCATION}/src/filters/dec_theora.c
 )
 
-SET(VORBISDEC_INCLUDE
-        ${THIRD_PARTIES}/vorbis/include
+SET(XIPH_INCLUDE
+        ${THIRD_PARTIES}/theora/include
         ${THIRD_PARTIES}/ogg/include
         ${THIRD_PARTIES_BINARIES}/ogg/include
+        ${THIRD_PARTIES}/vorbis/include
 )
 
-SET(VORBISDEC_LIB
+SET(XIPH_LIB
+        ${THIRD_PARTIES_BINARIES}/theora/lib/.libs/libtheora.a
         ${THIRD_PARTIES_BINARIES}/vorbis/lib/libvorbis.a
         ${THIRD_PARTIES_BINARIES}/ogg/libogg.a
 )
 
-add_filter(vorbisdec
-        "${VORBISDEC_SRC}"
-        "${VORBISDEC_LIB}"
-        _dynCall_vorbisdec_register
-        GPAC_HAS_VORBIS
-        "${VORBISDEC_INCLUDE}"
-        "")
-
-SET(VORBISDEC_SRC
-        ${GPAC_LOCATION}/src/filters/dec_vorbis.c
-)
-
-SET(THEORADEC_SRC
-        ${GPAC_LOCATION}/src/filters/dec_theora.c
-)
-
-SET(THEORADEC_INCLUDE
-        ${THIRD_PARTIES}/theora/include
-        ${THIRD_PARTIES}/ogg/include
-        ${THIRD_PARTIES_BINARIES}/ogg/include
-)
-
-SET(THEORADEC_LIB
-        ${THIRD_PARTIES_BINARIES}/theora/lib/.libs/libtheora.a
-        ${THIRD_PARTIES_BINARIES}/ogg/libogg.a
-)
-
-add_filter(theoradec
-        "${THEORADEC_SRC}"
-        "${THEORADEC_LIB}"
-        _dynCall_theoradec_register
+SET(XIPH_FLAG
         GPAC_HAS_THEORA
-        "${THEORADEC_INCLUDE}"
+        GPAC_HAS_VORBIS
+)
+
+add_filter(xiph
+        "${XIPH_SRC}"
+        "${XIPH_LIB}"
+        ['_dynCall_theoradec_register','_dynCall_vorbisdec_register','_dynCall_oggdmx_register']
+        GPAC_HAS_THEORA
+        "${XIPH_FLAG}"
         "")
 
 SET(XVIDDEC_SRC

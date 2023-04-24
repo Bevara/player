@@ -41,7 +41,7 @@
 		"ac3": "liba52",
 		"amr": "rfamr;writegen;resample;ffmpeg;rfamr;fin;fout",
 		"flac": "fin;fout;writegen;rfflac;ffmpeg",
-		"opus": "fin;fout;writegen;oggdmx;ffmpeg",
+		"opus": "fin;fout;writegen;xiph;ffmpeg",
 		"wma": "fin;fout;writegen;rfadts;ffmpeg",
 		"mp3":"libmad",
 		"tif":"fout;ffmpeg;writegen;fin;pngenc",
@@ -50,6 +50,6 @@
 		"pcx":"fout;ffmpeg;writegen;pngenc",
 		"aiff":"fout;ffmpeg;writegen",
 		"aac":"libfaad",
-		"ogg":"vorbisdec;fout;oggdmx;writegen;fin"
+		"ogg":"xiph"
 	}
 }
