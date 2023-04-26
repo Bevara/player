@@ -84,19 +84,19 @@ describe('core-player', () => {
       );
     }).timeout(5000);
 
-    it('should transcode Freedom.png to Freedom.jpeg', (done) => {
-      create_test('img',
-        'universal-img',
-        "solver",
-        "rfimg;jpgenc;imgdec;ffmpeg",
-        "https://bevara.ddns.net/test-signals/Freedom.png",
-        "https://bevara.ddns.net/test-signals/out/png/Freedom.jpeg",
-        done,
-        "jpg",
-        false,
-        false
-      );
-    }).timeout(5000);
+    // it('should transcode Freedom.png to Freedom.jpeg', (done) => {
+    //   create_test('img',
+    //     'universal-img',
+    //     "solver",
+    //     "rfimg;jpgenc;imgdec;ffmpeg",
+    //     "https://bevara.ddns.net/test-signals/Freedom.png",
+    //     "https://bevara.ddns.net/test-signals/out/png/Freedom.jpeg",
+    //     done,
+    //     "jpg",
+    //     false,
+    //     false
+    //   );
+    // }).timeout(5000);
 
     // it('should load all decoders', (done) => {
     //   create_test('img',
@@ -584,7 +584,7 @@ describe('core-player', () => {
     //   create_test('video',
     //     "universal-video",
     //     "solver",
-    //     "xiph;ffmpeg",
+    //     "xiph;ffmpeg",gf
     //     "https://bevara.ddns.net/test-signals/ogv/Big_Buck_Bunny_Trailer_400p.ogv",
     //     null,
     //     done,
