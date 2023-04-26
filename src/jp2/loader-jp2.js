@@ -38,7 +38,7 @@
 		FS.writeFile(fname, new Uint8Array(data));
 
 		const entry = module._constructor();
-		const register_fns = ["_img_reframe_register","_j2kdec_register","_writegen_register","_fileout_register","_filein_register"];
+		const register_fns = ["_img_reframe_register","_j2kdec_register","_writegen_register","_fileout_register","_fin_register"];
 
 		const args = m.data.args ? m.data.args : {};
 

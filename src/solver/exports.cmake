@@ -5,7 +5,7 @@ SET(GPAC
     '_vout_register'
     '_aout_register'
     '_fileout_register'
-    '_filein_register'
+    '_fin_register'
     '_httpin_register'
     '_writegen_register'
     '_wcdec_register'

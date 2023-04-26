@@ -62,7 +62,7 @@
 		register_fns.push("_compositor_register");
 
 		if(m.data.src){
-			register_fns.push("_filein_register");
+			register_fns.push("_fin_register");
 			const src = m.data.src;
 			const response = await fetch(src);
 			var fname = src.split('/').pop();
