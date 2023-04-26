@@ -19,6 +19,8 @@ SET(GPAC
 
 SET(PTHREADS
     '_pthread_mutex_init'
+    '_pthread_mutex_lock'
+    '_pthread_mutex_unlock'
     '_pthread_mutex_destroy'
     '_posix_memalign'
 )

@@ -248,7 +248,10 @@ class UniversalVideo extends HTMLVideoElement {
                 src : src,
                 dst: "out." + this.out,
                 transcode:["c=avc", "c=aac"],
-                useWebcodec: this.getAttribute("no-webcodec") != ""
+                useWebcodecs: this.getAttribute("webcodecs") == "",
+                showStats: this.getAttribute("stats") == "",
+                showGraph: this.getAttribute("graph") == "",
+                showReport: this.getAttribute("report") == ""
             };
 
 
@@ -315,7 +318,7 @@ class UniversalVideo extends HTMLVideoElement {
         }
     }
 
-    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress', 'script-directory', 'no-worker', "debug", "js", "use-webcodec"]; }
+    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress', 'script-directory', 'no-worker', "debug", "js"]; }
 }
 
 if (!customElements.get('universal-video')) {

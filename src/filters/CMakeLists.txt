@@ -400,6 +400,25 @@ SET(MP4DMX_SRC
         ${GPAC_LOCATION}/src/filters/isoffin_read.c
         ${GPAC_LOCATION}/src/filters/isoffin_load.c
         ${GPAC_LOCATION}/src/filters/isoffin_read_ch.c
+        ${GPAC_LOCATION}/src/isomedia/isom_read.c
+        ${GPAC_LOCATION}/src/isomedia/isom_store.c
+        ${GPAC_LOCATION}/src/isomedia/box_funcs.c
+        ${GPAC_LOCATION}/src/isomedia/box_code_base.c
+        ${GPAC_LOCATION}/src/isomedia/box_dump.c
+        ${GPAC_LOCATION}/src/isomedia/box_code_meta.c
+        ${GPAC_LOCATION}/src/isomedia/avc_ext.c
+        ${GPAC_LOCATION}/src/isomedia/box_code_drm.c
+        ${GPAC_LOCATION}/src/isomedia/box_code_3gpp.c
+        ${GPAC_LOCATION}/src/isomedia/box_code_apple.c
+        ${GPAC_LOCATION}/src/isomedia/box_code_adobe.c
+        ${GPAC_LOCATION}/src/isomedia/isom_intern.c
+        ${GPAC_LOCATION}/src/isomedia/data_map.c
+        ${GPAC_LOCATION}/src/isomedia/iff.c
+        ${GPAC_LOCATION}/src/isomedia/sample_descs.c
+        ${GPAC_LOCATION}/src/isomedia/track.c
+        ${GPAC_LOCATION}/src/isomedia/media.c
+        ${GPAC_LOCATION}/src/isomedia/stbl_read.c
+        ${GPAC_LOCATION}/src/media_tools/webvtt.c
 )
 
 SET(MP4DMX_LIB

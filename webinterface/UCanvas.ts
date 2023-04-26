@@ -257,7 +257,10 @@ class UniversalCanvas extends HTMLCanvasElement {
                 },
                 wasmBinaryFile: wasmBinaryFile,
                 src: this.getAttribute("data-url"),
-                useWebcodec: this.getAttribute("no-webcodec") == ""
+                useWebcodecs: this.getAttribute("webcodecs") == "",
+                showStats: this.getAttribute("stats") == "",
+                showGraph: this.getAttribute("graph") == "",
+                showReport: this.getAttribute("report") == ""
             };
 
 

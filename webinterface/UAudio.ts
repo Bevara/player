@@ -247,7 +247,10 @@ class UniversalAudio extends HTMLAudioElement {
                 wasmBinaryFile: wasmBinaryFile,
                 src : src,
                 dst: "out." + this.out,
-                useWebcodec: this.getAttribute("no-webcodec") != ""
+                useWebcodecs: this.getAttribute("webcodecs") == "",
+                showStats: this.getAttribute("stats") == "",
+                showGraph: this.getAttribute("graph") == "",
+                showReport: this.getAttribute("report") == ""
             };
 
             this.getAttribute("no-worker") == "" ? this.launchNoWorker(js, message, main_resolve) : this.launchWorker(js, message, main_resolve);

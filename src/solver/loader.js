@@ -97,9 +97,17 @@
 
 		register_fns = register_fns.concat(Object.keys(module).filter(x => x.startsWith("dynCall_") && x.endsWith("_register")));
 
-		args.push("-stats");
-		args.push("-graph");
-		args.push("-r");
+		if (m.data.showStats){
+			args.push("-stats");
+		}
+
+		if (m.data.showGraph){
+			args.push("-graph");
+		}
+
+		if (m.data.showReport){
+			args.push("-r");
+		}
 
 		function getProperty(props){
 			const json_str = JSON.stringify(props);

@@ -247,7 +247,10 @@ class UniversalImage extends HTMLImageElement {
                 wasmBinaryFile: wasmBinaryFile,
                 src : src,
                 dst: "out." + this.out,
-                useWebcodec : false
+                useWebcodec : false,
+                showStats: this.getAttribute("stats") == "",
+                showGraph: this.getAttribute("graph") == "",
+                showReport: this.getAttribute("report") == ""
             };
 
             
