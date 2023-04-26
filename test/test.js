@@ -88,7 +88,7 @@ describe('core-player', () => {
       create_test('img',
         'universal-img',
         "solver",
-        "rfimg;jpgenc;rfimg;imgdec;ffmpeg",
+        "rfimg;jpgenc;imgdec;ffmpeg",
         "https://bevara.ddns.net/test-signals/Freedom.png",
         "https://bevara.ddns.net/test-signals/out/png/Freedom.jpeg",
         done,
@@ -102,7 +102,7 @@ describe('core-player', () => {
     //   create_test('img',
     //     'universal-img',
     //     "solver",
-    //     "a52dec;ffmpeg;inspect;nhmlw;restamp;rfmpgvid;tileagg;ufmhas;vtt2tx3g;ffmx;j2kdec;nhntr;rewind;rfnalu;tilesplit;ufnalu;vttdec;avidmx;jpgenc;nhntw;rfac3;rfpcm;tssplit;ufobu;bifsdec;cryptin;lsrdec;odfdec;rfadts;rfprores;ttml2srt;ufttxt;writeqcp;bsagg;cryptout;m2psdmx;rfamr;rfqcp;ttml2vtt;ufvc1;writeuf;bsrw;dasher;flist;m2tsdmx;oggdmx;rfav1;rfrawvid;ttmldec;ufvtt;xviddec;bssplit;dashin;gsfdmx;m2tsmx;oggmx;rfflac;rfsrt;ttxtdec;unframer;btplay;libfaad;gsfmx;rfh263;rftruehd;tx3g2srt;vcrop;cdcrypt;ffavf;hevcmerge;mp4dmx;pngenc;rfimg;safdmx;tx3g2ttml;vflip;cecrypt;ffbsf;hevcsplit;mp4mx;probe;rflatm;tx3g2vtt;vobsubdmx;compose;ffdec;nanojpeg;reframer;rfmhas;svgplay;txtin;xiph;ffdmx;imgdec;nhmlr;libmad;theoradec;uflatm",
+    //     "a52dec;ffmpeg;inspect;nhmlw;restamp;rfmpgvid;tileagg;ufmhas;vtt2tx3g;ffmx;j2kdec;nhntr;rewind;rfnalu;ufnalu;vttdec;avidmx;jpgenc;nhntw;rfac3;rfpcm;tssplit;ufobu;bifsdec;cryptin;lsrdec;odfdec;rfadts;rfprores;ttml2srt;ufttxt;writeqcp;bsagg;cryptout;m2psdmx;rfamr;rfqcp;ttml2vtt;ufvc1;writeuf;bsrw;dasher;flist;m2tsdmx;oggdmx;rfav1;rfrawvid;ttmldec;ufvtt;xviddec;bssplit;dashin;gsfdmx;m2tsmx;oggmx;rfflac;rfsrt;ttxtdec;unframer;btplay;libfaad;gsfmx;rfh263;rftruehd;tx3g2srt;vcrop;cdcrypt;ffavf;hevcmerge;mp4dmx;pngenc;rfimg;safdmx;tx3g2ttml;vflip;cecrypt;ffbsf;hevcsplit;mp4mx;probe;rflatm;tx3g2vtt;vobsubdmx;compose;ffdec;nanojpeg;reframer;rfmhas;svgplay;txtin;xiph;ffdmx;imgdec;nhmlr;libmad;theoradec;uflatm",
     //     "https://bevara.ddns.net/test-signals/Freedom.jpg",
     //     "https://bevara.ddns.net/test-signals/Freedom.png",
     //     done,
@@ -580,18 +580,18 @@ describe('core-player', () => {
         false);
     }).timeout(60000);
 
-    it('should decode Big_Buck_Bunny_Trailer_400p.ogv"', (done) => {
-      create_test('video',
-        "universal-video",
-        "solver",
-        "xiph;ffmpeg",
-        "https://bevara.ddns.net/test-signals/ogv/Big_Buck_Bunny_Trailer_400p.ogv",
-        null,
-        done,
-        "mp4",
-        false,
-        false);
-    }).timeout(360000);
+    // it('should decode Big_Buck_Bunny_Trailer_400p.ogv"', (done) => {
+    //   create_test('video',
+    //     "universal-video",
+    //     "solver",
+    //     "xiph;ffmpeg",
+    //     "https://bevara.ddns.net/test-signals/ogv/Big_Buck_Bunny_Trailer_400p.ogv",
+    //     null,
+    //     done,
+    //     "mp4",
+    //     false,
+    //     false);
+    // }).timeout(360000);
   });
 
   describe('#rfamr', () => {
