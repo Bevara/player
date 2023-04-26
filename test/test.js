@@ -580,18 +580,18 @@ describe('core-player', () => {
         false);
     }).timeout(60000);
 
-    // it('should decode Big_Buck_Bunny_Trailer_400p.ogv"', (done) => {
-    //   create_test('video',
-    //     "universal-video",
-    //     "solver",
-    //     "xiph;ffmpeg",
-    //     "https://bevara.ddns.net/test-signals/ogv/Big_Buck_Bunny_Trailer_400p.ogv",
-    //     null,
-    //     done,
-    //     "mp4",
-    //     false,
-    //     false);
-    // }).timeout(360000);
+    it('should decode Big_Buck_Bunny_Trailer_400p.ogv"', (done) => {
+      create_test('video',
+        "universal-video",
+        "solver",
+        "xiph;ffmpeg",
+        "https://bevara.ddns.net/test-signals/ogv/Big_Buck_Bunny_Trailer_400p.ogv",
+        null,
+        done,
+        "mp4",
+        false,
+        false);
+    }).timeout(360000);
   });
 
   describe('#rfamr', () => {

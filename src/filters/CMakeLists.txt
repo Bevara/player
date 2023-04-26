@@ -224,15 +224,19 @@ SET(OPENHEVCDEC_LIB
 
 SET(OPENHEVCDEC_SRC
         ${GPAC_LOCATION}/src/filters/dec_openhevc.c
+        ${GPAC_LOCATION}/src/filters/tilesplit.c
+        ${GPAC_LOCATION}/src/filters/tileagg.c
+        ${GPAC_LOCATION}/src/filters/hevcsplit.c
+        ${GPAC_LOCATION}/src/filters/hevcmerge.c
 )
 
-# add_filter(openhevcdec
-#         "${OPENHEVCDEC_SRC}"
-#         "${OPENHEVCDEC_LIB}"
-#         _dynCall_ohevcdec_register
-#         "-DGPAC_HAS_OPENHEVC -DGPAC_OPENHEVC_STATIC -DOPENHEVC_HAS_AVC_BASE"
-#         "${OPENHEVCDEC_INCLUDE}"
-#         "")
+add_filter(libopenhevc
+        "${OPENHEVCDEC_SRC}"
+        "${OPENHEVCDEC_LIB}"
+        ['_dynCall_ohevcdec_register','dynCall_tilesplit_register','_dynCall_tileagg_register','_dynCall_hevcsplit_register','_dynCall_hevcmerge_register']
+        "-DGPAC_HAS_OPENHEVC -DGPAC_OPENHEVC_STATIC -DOPENHEVC_HAS_AVC_BASE"
+        "${OPENHEVCDEC_INCLUDE}"
+        "")
 
 SET(FF_SRC
         ${GPAC_LOCATION}/src/filters/ff_dec.c
@@ -446,141 +450,6 @@ add_filter(rfnalu
         ""
         "")
 
-SET(COMPOSE_SRC
-        ${GPAC_LOCATION}/src/filters/compose.c
-        ${GPAC_LOCATION}/src/filter_core/filter.c
-        ${GPAC_LOCATION}/src/filter_core/filter_pck.c
-        ${GPAC_LOCATION}/src/filter_core/filter_pid.c
-        ${GPAC_LOCATION}/src/filter_core/filter_props.c
-        ${GPAC_LOCATION}/src/filter_core/filter_session.c
-        ${GPAC_LOCATION}/src/filter_core/filter_queue.c
-        ${GPAC_LOCATION}/src/compositor/audio_input.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_layer_2d.c
-        ${GPAC_LOCATION}/src/compositor/audio_mixer.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_layer_3d.c
-        ${GPAC_LOCATION}/src/compositor/audio_render.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_layout.c
-        ${GPAC_LOCATION}/src/compositor/bindable.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_lighting.c
-        ${GPAC_LOCATION}/src/compositor/camera.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_mediacontrol.c
-        ${GPAC_LOCATION}/src/compositor/clock.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_mediasensor.c
-        ${GPAC_LOCATION}/src/compositor/compositor.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_path_layout.c
-        ${GPAC_LOCATION}/src/compositor/compositor_2d.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_sensors.c
-        ${GPAC_LOCATION}/src/compositor/compositor_3d.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_sound.c
-        ${GPAC_LOCATION}/src/compositor/compositor_node_init.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_text.c
-        ${GPAC_LOCATION}/src/compositor/drawable.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_textures.c
-        ${GPAC_LOCATION}/src/compositor/events.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_timesensor.c
-        ${GPAC_LOCATION}/src/compositor/font_engine.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_viewport.c
-        ${GPAC_LOCATION}/src/compositor/hardcoded_protos.c
-        ${GPAC_LOCATION}/src/compositor/navigate.c
-        ${GPAC_LOCATION}/src/compositor/hc_flash_shape.c
-        ${GPAC_LOCATION}/src/compositor/object_manager.c
-        ${GPAC_LOCATION}/src/compositor/media_object.c
-        ${GPAC_LOCATION}/src/compositor/offscreen_cache.c
-        ${GPAC_LOCATION}/src/compositor/mesh.c
-        ${GPAC_LOCATION}/src/compositor/scene.c
-        ${GPAC_LOCATION}/src/compositor/mesh_collide.c
-        ${GPAC_LOCATION}/src/compositor/scene_node_init.c
-        ${GPAC_LOCATION}/src/compositor/mesh_tesselate.c
-        ${GPAC_LOCATION}/src/compositor/scene_ns.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_animstream.c
-        ${GPAC_LOCATION}/src/compositor/svg_base.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_audio.c
-        ${GPAC_LOCATION}/src/compositor/svg_external.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_background.c
-        ${GPAC_LOCATION}/src/compositor/svg_filters.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_background2d.c
-        ${GPAC_LOCATION}/src/compositor/svg_font.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_bitmap.c
-        ${GPAC_LOCATION}/src/compositor/svg_geometry.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_composite.c
-        ${GPAC_LOCATION}/src/compositor/svg_grouping.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_form.c
-        ${GPAC_LOCATION}/src/compositor/svg_media.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_geometry_2d.c
-        ${GPAC_LOCATION}/src/compositor/svg_paint_servers.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_geometry_3d.c
-        ${GPAC_LOCATION}/src/compositor/svg_text.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_geometry_ifs2d.c
-        ${GPAC_LOCATION}/src/compositor/texturing.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_geometry_ils2d.c
-        ${GPAC_LOCATION}/src/compositor/texturing_gl.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_gradients.c
-        ${GPAC_LOCATION}/src/compositor/visual_manager.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_grouping.c
-        ${GPAC_LOCATION}/src/compositor/visual_manager_2d.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_grouping_2d.c
-        ${GPAC_LOCATION}/src/compositor/visual_manager_2d_draw.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_grouping_3d.c
-        ${GPAC_LOCATION}/src/compositor/visual_manager_3d.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_inline.c
-        ${GPAC_LOCATION}/src/compositor/visual_manager_3d_gl.c
-        ${GPAC_LOCATION}/src/compositor/mpeg4_inputsensor.c
-        ${GPAC_LOCATION}/src/compositor/x3d_geometry.c
-        ${GPAC_LOCATION}/src/scenegraph/base_scenegraph.c
-        ${GPAC_LOCATION}/src/scenegraph/mpeg4_valuator.c
-        ${GPAC_LOCATION}/src/scenegraph/vrml_js.c
-        ${GPAC_LOCATION}/src/scenegraph/commands.c
-        ${GPAC_LOCATION}/src/scenegraph/smil_anim.c
-        ${GPAC_LOCATION}/src/scenegraph/vrml_proto.c
-        ${GPAC_LOCATION}/src/scenegraph/dom_events.c
-        ${GPAC_LOCATION}/src/scenegraph/smil_timing.c
-        ${GPAC_LOCATION}/src/scenegraph/vrml_route.c
-        ${GPAC_LOCATION}/src/scenegraph/dom_js.c
-        ${GPAC_LOCATION}/src/scenegraph/svg_attributes.c
-        ${GPAC_LOCATION}/src/scenegraph/vrml_script.c
-        ${GPAC_LOCATION}/src/scenegraph/html5_media_js.c
-        ${GPAC_LOCATION}/src/scenegraph/svg_js.c
-        ${GPAC_LOCATION}/src/scenegraph/vrml_tools.c
-        ${GPAC_LOCATION}/src/scenegraph/html5_mse_js.c
-        ${GPAC_LOCATION}/src/scenegraph/svg_properties.c
-        ${GPAC_LOCATION}/src/scenegraph/x3d_nodes.c
-        ${GPAC_LOCATION}/src/scenegraph/mpeg4_animators.c
-        ${GPAC_LOCATION}/src/scenegraph/svg_types.c
-        ${GPAC_LOCATION}/src/scenegraph/xml_ns.c
-        ${GPAC_LOCATION}/src/scenegraph/mpeg4_nodes.c
-        ${GPAC_LOCATION}/src/scenegraph/vrml_interpolators.c
-        ${GPAC_LOCATION}/src/evg/ftgrays.c
-        ${GPAC_LOCATION}/src/evg/raster3d.c
-        ${GPAC_LOCATION}/src/evg/raster_565.c
-        ${GPAC_LOCATION}/src/evg/raster_argb.c
-        ${GPAC_LOCATION}/src/evg/raster_rgb.c
-        ${GPAC_LOCATION}/src/evg/raster_yuv.c
-        ${GPAC_LOCATION}/src/evg/stencil.c
-        ${GPAC_LOCATION}/src/evg/surface.c
-        ${GPAC_LOCATION}/src/utils/alloc.c
-        ${GPAC_LOCATION}/src/utils/constants.c
-        ${GPAC_LOCATION}/src/utils/color.c
-        ${GPAC_LOCATION}/src/utils/list.c
-        ${GPAC_LOCATION}/src/utils/math.c
-        ${GPAC_LOCATION}/src/utils/module.c
-        ${GPAC_LOCATION}/src/utils/path2d.c
-        ${GPAC_LOCATION}/src/utils/path2d_stroker.c
-        ${GPAC_LOCATION}/src/utils/os_thread.c
-        ${GPAC_LOCATION}/src/utils/os_config_init.c
-        ${GPAC_LOCATION}/src/utils/os_divers.c
-)
-
-SET(COMPOSE_LIB
-)
-
-add_filter(compose
-        "${COMPOSE_SRC}"
-        "${COMPOSE_LIB}"
-        _dynCall_compose_filter_register
-        ""
-        ""
-        "")
-
 SET(AVIDMX_LIB
 )
 
@@ -718,22 +587,6 @@ add_filter(tssplit
         ${GPAC_LOCATION}/src/filters/tssplit.c
         ""
         _dynCall_m2tssplit_register
-        ""
-        ""
-        "")
-
-add_filter(tilesplit
-        ${GPAC_LOCATION}/src/filters/tilesplit.c
-        ""
-        _dynCall_tilesplit_register
-        ""
-        ""
-        "")
-
-add_filter(tileagg
-        ${GPAC_LOCATION}/src/filters/tileagg.c
-        ""
-        _dynCall_tileagg_register
         ""
         ""
         "")
@@ -1090,22 +943,6 @@ add_filter(inspect
         ${GPAC_LOCATION}/src/filters/inspect.c
         ""
         _dynCall_inspect_register
-        ""
-        ""
-        "")
-
-add_filter(hevcsplit
-        ${GPAC_LOCATION}/src/filters/hevcsplit.c
-        ""
-        _dynCall_hevcsplit_register
-        ""
-        ""
-        "")
-
-add_filter(hevcmerge
-        ${GPAC_LOCATION}/src/filters/hevcmerge.c
-        ""
-        _dynCall_hevcmerge_register
         ""
         ""
         "")

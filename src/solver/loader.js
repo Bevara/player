@@ -59,6 +59,7 @@
 		// Reframer and resampler
 		register_fns.push("_reframer_register");
 		register_fns.push("_resample_register");
+		register_fns.push("_compositor_register");
 
 		if(m.data.src){
 			register_fns.push("_filein_register");
@@ -96,6 +97,9 @@
 
 		register_fns = register_fns.concat(Object.keys(module).filter(x => x.startsWith("dynCall_") && x.endsWith("_register")));
 
+		args.push("-stats");
+		args.push("-graph");
+		args.push("-r");
 
 		function getProperty(props){
 			const json_str = JSON.stringify(props);

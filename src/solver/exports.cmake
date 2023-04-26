@@ -6,12 +6,14 @@ SET(GPAC
     '_aout_register'
     '_fileout_register'
     '_filein_register'
+    '_httpin_register'
     '_writegen_register'
     '_wcdec_register'
     '_wcenc_register'
     '_webgrab_register'
     '_resample_register'
     '_reframer_register'
+    '_compositor_register'
     '_main'
 )
 
