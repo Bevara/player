@@ -17,7 +17,7 @@ class UniversalAudio extends HTMLAudioElement {
     out = "wav";
     scriptDirectory = document.currentScript? this.initScriptDirectory((document.currentScript as any).src) :"";
     useCache = false;
-    useWorker = true;
+    useWorker = false;
     printProgess = false;
     cache = null;
     worker = null;
@@ -247,13 +247,19 @@ class UniversalAudio extends HTMLAudioElement {
                 wasmBinaryFile: wasmBinaryFile,
                 src : src,
                 dst: "out." + this.out,
-                useWebcodecs: this.getAttribute("webcodecs") == "",
+                useWebcodec: this.getAttribute("use-webcodec") == "",
                 showStats: this.getAttribute("stats") == "",
                 showGraph: this.getAttribute("graph") == "",
                 showReport: this.getAttribute("report") == ""
             };
 
-            this.getAttribute("no-worker") == "" ? this.launchNoWorker(js, message, main_resolve) : this.launchWorker(js, message, main_resolve);
+            if (!js){
+                console.log("Warning! no accessor is used on the universal, using a usual tag instead...");
+                main_resolve(this.src);
+                return;
+            }
+
+            this.getAttribute("use-worker") == "" ? this.launchWorker(js, message, main_resolve): this.launchNoWorker(js, message, main_resolve);
         });
     }
 
@@ -310,8 +316,8 @@ class UniversalAudio extends HTMLAudioElement {
             case 'use-cache':
                 this.useCache = true;
                 break;
-            case 'no-worker':
-                this.useWorker = false;
+            case 'use-worker':
+                this.useWorker = true;
                 break;
             case 'progress':
                 this.printProgess = true;
@@ -322,7 +328,7 @@ class UniversalAudio extends HTMLAudioElement {
         }
     }
 
-    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress', 'script-directory', 'no-worker', "debug", "use-webcodec"]; }
+    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress', 'script-directory', 'use-worker', "debug", "use-webcodec"]; }
 }
 
 if (!customElements.get('universal-audio')) {

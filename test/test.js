@@ -22,8 +22,8 @@ function create_test(tag, extension, using_attribute, with_atribute, test_file, 
       img.setAttribute("use-cache", "");
     }
 
-    if (noWorker) {
-      img.setAttribute("no-worker", "");
+    if (!noWorker) {
+      img.setAttribute("use-worker", "");
     }
 
     document.body.appendChild(img);

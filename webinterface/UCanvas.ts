@@ -257,12 +257,17 @@ class UniversalCanvas extends HTMLCanvasElement {
                 },
                 wasmBinaryFile: wasmBinaryFile,
                 src: this.getAttribute("data-url"),
-                useWebcodecs: this.getAttribute("webcodecs") == "",
+                useWebcodec: this.getAttribute("use-webcodec") == "",
                 showStats: this.getAttribute("stats") == "",
                 showGraph: this.getAttribute("graph") == "",
                 showReport: this.getAttribute("report") == ""
             };
 
+            if (!js){
+                console.log("Warning! no accessor is used on the universal, using a usual tag instead...");
+                main_resolve(this.src);
+                return;
+            }
 
             //this.getAttribute("no-worker") == "" ? this.launchNoWorker(js, message, main_resolve) : this.launchWorker(js, message, main_resolve);
             this.launchNoWorker(js, message, main_resolve);
@@ -315,12 +320,6 @@ class UniversalCanvas extends HTMLCanvasElement {
             case 'out':
                 this.out = this.getAttribute("out");
                 break;
-            case 'use-cache':
-                this.useCache = true;
-                break;
-            case 'no-worker':
-                this.useWorker = false;
-                break;
             case 'progress':
                 this.printProgess = true;
                 break;
@@ -330,7 +329,7 @@ class UniversalCanvas extends HTMLCanvasElement {
         }
     }
 
-    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress', 'script-directory', 'no-worker', "debug", "js", "no-webcodec"]; }
+    static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'progress', 'script-directory', "debug", "js", "use-webcodec"]; }
 }
 
 if (!customElements.get('universal-canvas')) {

@@ -110,6 +110,8 @@ SET(STDLIB
     '_cbrt'
     '_strerror_r'
     '_iconv_open'
+    '___multi3'
+    '_gmtime_r'
 )
 
 SET(EMSCRIPTEN
