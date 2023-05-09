@@ -47,6 +47,7 @@ class UniversalVideo extends HTMLVideoElement {
         }
 
         this.src = URL.createObjectURL(blob);
+        this.dispatchEvent(new CustomEvent('ready'));
     }
 
     processMessages(self, core, resolve) {
