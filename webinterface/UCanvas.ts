@@ -16,11 +16,6 @@ class UniversalCanvas extends HTMLCanvasElement {
 
     out = "mp4";
     scriptDirectory = document.currentScript? this.initScriptDirectory((document.currentScript as any).src) :"";
-    useCache = false;
-    useWorker = true;
-    printProgess = false;
-    cache = null;
-    worker = null;
     script = null;
     core = null;
     src="";
@@ -66,21 +61,7 @@ class UniversalCanvas extends HTMLCanvasElement {
         return "";
     }
 
-    dataURLToSrc(blob, cached) {
-        if (!blob) return;
-        if (this.useCache && this.cache && !cached) {
-            this.cache.put(this.src, new Response(blob));
-        }
-
-        this.src = URL.createObjectURL(blob);
-    }
-
     processMessages(self, core, resolve) {
-        if (core.blob) {
-            self.dataURLToSrc(core.blob, false);
-            resolve(self.src);
-        }
-
         function clear_text(text) {
             return text
                 .replaceAll("[37m", '')
@@ -106,22 +87,6 @@ class UniversalCanvas extends HTMLCanvasElement {
 
     }
 
-
-    launchWorker(script, message, resolve) {
-        const worker = new Worker(script);
-        if (worker) {
-            worker.postMessage(message);
-
-            worker.addEventListener('message', m => {
-                if (m.data.core) {
-                    this.processMessages(this, m.data.core, resolve);
-                }
-            });
-        }
-
-        this.worker = worker;
-    }
-
     launchNoWorker(script, message, resolve) {
         const self = this;
 
@@ -143,6 +108,7 @@ class UniversalCanvas extends HTMLCanvasElement {
             if (window[self.core]){
                 try{
                     (window as any)[self.core]({ data: message });
+                    self.dispatchEvent(new CustomEvent('loadedmetadata'));
                 }catch(error){
                     console.log(error.message);
                 }
@@ -170,19 +136,6 @@ class UniversalCanvas extends HTMLCanvasElement {
 
     async universal_decode(): Promise<string> {
         return new Promise(async (main_resolve, _main_reject) => {
-            if (this.useCache) {
-                try {
-                    this.cache = this.cache || await caches.open('universal-video');
-                } catch (e) { }
-                const cachedImg = this.cache && await this.cache.match(this.src);
-                if (cachedImg) {
-                    const cachedImgData = await cachedImg.blob();
-                    this.dataURLToSrc(cachedImgData, true);
-                    main_resolve(this.src);
-                    return;
-                }
-            }
-
             let mime = "";
             try{
                 const parsed_url = new URL(this.src);
@@ -293,7 +246,6 @@ class UniversalCanvas extends HTMLCanvasElement {
                 return;
             }
 
-            //this.getAttribute("no-worker") == "" ? this.launchNoWorker(js, message, main_resolve) : this.launchWorker(js, message, main_resolve);
             this.launchNoWorker(js, message, main_resolve);
         });
     }
@@ -306,11 +258,6 @@ class UniversalCanvas extends HTMLCanvasElement {
     }
 
     disconnectedCallback() {
-        if (this.worker) {
-            this.worker.terminate();
-            this.worker = null;
-        }
-
         this.urlToRevoke.forEach(x => URL.revokeObjectURL(x));
 
         if (this.script) {
@@ -343,9 +290,6 @@ class UniversalCanvas extends HTMLCanvasElement {
                 break;
             case 'out':
                 this.out = this.getAttribute("out");
-                break;
-            case 'progress':
-                this.printProgess = true;
                 break;
             case 'script-directory':
                 this.scriptDirectory = this.getAttribute("script-directory");
