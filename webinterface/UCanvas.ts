@@ -51,15 +51,15 @@ class UniversalCanvas extends HTMLCanvasElement {
     }
 
     play():void{
-
+        console.log("play");
     }
 
     pause():void{
-
+        console.log("pause");
     }
 
     load():void{
-
+        console.log("load");
     }
 
     canPlayType(type: string): CanPlayTypeResult{
