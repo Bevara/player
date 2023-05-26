@@ -42,6 +42,30 @@ class UniversalCanvas extends HTMLCanvasElement {
         return this._decodingPromise;
     }
 
+    get volume() {
+        return 0;
+    }
+
+    set volume(volume) {
+        
+    }
+
+    play():void{
+
+    }
+
+    pause():void{
+
+    }
+
+    load():void{
+
+    }
+
+    canPlayType(type: string): CanPlayTypeResult{
+        return "";
+    }
+
     dataURLToSrc(blob, cached) {
         if (!blob) return;
         if (this.useCache && this.cache && !cached) {
