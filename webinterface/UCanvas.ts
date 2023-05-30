@@ -38,11 +38,21 @@ class UniversalCanvas extends HTMLCanvasElement {
     }
 
     get volume() {
+        console.log("volume");
         return 0;
     }
 
     set volume(volume) {
-        
+        console.log("volume :" + volume);
+    }
+
+    set muted(muted) {
+        console.log("muted :" + muted);
+    }
+
+    get muted() {
+        console.log("muted ");
+        return false;
     }
 
     play():void{
