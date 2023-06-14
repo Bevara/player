@@ -208,7 +208,7 @@ SET(LIBA52_LIB
 add_filter(liba52
         "${LIBA52_SRC}"
         "${LIBA52_LIB}"
-        ['_dynCall_ac3dmx_register','_dynCall_a52dec_register']
+        ['_dynCall_rfac3_register','_dynCall_a52dec_register']
         GPAC_HAS_LIBA52
         "${LIBA52_INCLUDE}"
         "")
@@ -427,7 +427,7 @@ SET(MP4DMX_LIB
 add_filter(mp4dmx
         "${MP4DMX_SRC}"
         "${MP4DMX_LIB}"
-        _dynCall_isoffin_register
+        _dynCall_mp4dmx_register
         ""
         ""
         "")
@@ -683,7 +683,7 @@ SET(RFTRUEHD_LIB
 add_filter(rftruehd
         "${RFTRUEHD_SRC}"
         "${RFTRUEHD_LIB}"
-        _dynCall_truehd_register
+        _dynCall_rftruehd_register
         ""
         ""
         "")
@@ -757,7 +757,7 @@ SET(RFMHAS_LIB
 add_filter(rfmhas
         ${GPAC_LOCATION}/src/filters/reframe_mhas.c
          "${RFMHAS_LIB}"
-         _dynCall_mhas_dmx_register
+         _dynCall_rfmhas_register
         ""
         ""
         "")
