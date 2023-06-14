@@ -79,7 +79,7 @@
 		
 		if(m.data.dst){
 			register_fns.push("_writegen_register");
-			register_fns.push("_fileout_register");
+			register_fns.push("_fout_register");
 			args.push("-o");
 			args.push(m.data.dst);
 		}else{

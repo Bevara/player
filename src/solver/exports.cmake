@@ -4,7 +4,7 @@ SET(GPAC
     '_gf_filter_path_escape_colon'
     '_vout_register'
     '_aout_register'
-    '_fileout_register'
+    '_fout_register'
     '_fin_register'
     '_httpin_register'
     '_writegen_register'

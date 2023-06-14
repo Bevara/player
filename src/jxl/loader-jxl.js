@@ -38,7 +38,7 @@
 		FS.writeFile(fname, new Uint8Array(data));
 
 		const entry = module._constructor();
-		const register_fns = ["_jxldec_register","_jxl_reframe_register","_writegen_register","_fileout_register","_fin_register"];
+		const register_fns = ["_jxldec_register","_jxl_reframe_register","_writegen_register","_fout_register","_fin_register"];
 
 		const args = m.data.args ? m.data.args : {};
 

@@ -19,7 +19,7 @@ SET(CORE_JXL
 )
 
 SET(EXTERNAL_FN
-  "['_jxldec_register','_jxl_reframe_register','_writegen_register','_fileout_register','_fin_register','_gf_fileio_url','_gf_fileio_new','_gf_fileio_set_stats','_gf_fileio_get_udta','_gf_url_concatenate']"
+  "['_jxldec_register','_jxl_reframe_register','_writegen_register','_fout_register','_fin_register','_gf_fileio_url','_gf_fileio_new','_gf_fileio_set_stats','_gf_fileio_get_udta','_gf_url_concatenate']"
 )
 
 SET(EXTERNAL_RUNTIME
