@@ -140,18 +140,18 @@ describe('core-player', () => {
     //     false);
     // }).timeout(5000);
 
-    // it('should transcode Cevennes2.jp2 to png without worker', (done) => {
-    //   create_test('img',
-    //     'universal-img',
-    //     "solver_1",
-    //     "pngenc_1;rfimg_1;j2kdec_1",
-    //     "https://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2",
-    //     "https://bevara.ddns.net/test-signals/out/j2k/Cevennes2.png",
-    //     done,
-    //     "png",
-    //     false,
-    //     true);
-    // }).timeout(5000);
+    it('should transcode Cevennes2.jp2 to png without worker', (done) => {
+      create_test('img',
+        'universal-img',
+        "solver_1",
+        "pngenc_1;rfimg_1;j2kdec_1",
+        "https://bevara.ddns.net/test-signals/j2k/Cevennes2.jp2",
+        "https://bevara.ddns.net/test-signals/out/j2k/Cevennes2.png",
+        done,
+        "png",
+        false,
+        true);
+    }).timeout(5000);
 
     // it('should transcode Cevennes2.jp2 to canvas without worker', (done) => {
     //   create_test('img',
