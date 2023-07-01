@@ -36,7 +36,7 @@ add_filter(nanojpeg
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(IMG_DEC_SRC
         ${GPAC_LOCATION}/src/filters/dec_img.c
@@ -81,7 +81,7 @@ add_filter(imgdec
         "${IMG_FLAGS}"
         "${IMG_INC}"
         ""
-        "1.0")
+        "1")
 
 SET(RFIMG_SRC
         ${GPAC_LOCATION}/src/filters/reframe_img.c
@@ -94,7 +94,7 @@ add_filter(rfimg
         "${IMG_FLAGS}"
         "${IMG_INC}"
         ""
-        "1.0")
+        "1")
 
 SET(PNGENC_SRC
         ${GPAC_LOCATION}/src/filters/enc_png.c
@@ -111,7 +111,7 @@ add_filter(pngenc
         GPAC_HAS_PNG
         "${IMG_INC}"
         ""
-        "1.0")
+        "1")
 
 SET(JPGENC_SRC
         ${GPAC_LOCATION}/src/filters/enc_jpg.c
@@ -124,7 +124,7 @@ add_filter(jpgenc
         GPAC_HAS_JPEG
         "${IMG_INC}"
         ""
-        "1.0")
+        "1")
 
 SET(J2KDEC_INC
         ${THIRD_PARTIES}/openjpeg/src/lib/openjp2
@@ -146,7 +146,7 @@ add_filter(j2kdec
         GPAC_HAS_JP2
         "${J2KDEC_INC}"
         ""
-        "1.0")
+        "1")
 
 SET(LIBMAD_SRC
         ${GPAC_LOCATION}/src/filters/dec_mad.c
@@ -170,7 +170,7 @@ add_filter(libmad
         GPAC_HAS_MAD
         "${LIBMAD_INC}"
         ""
-        "1.0")
+        "1")
 
 SET(FAAD_SRC
         ${GPAC_LOCATION}/src/filters/reframe_adts.c
@@ -193,7 +193,7 @@ add_filter(libfaad
         GPAC_HAS_FAAD
         "${FAAD_INCLUDE}"
         ""
-        "1.0")
+        "1")
 
 
 SET(LIBA52_SRC
@@ -220,7 +220,7 @@ add_filter(liba52
         GPAC_HAS_LIBA52
         "${LIBA52_INCLUDE}"
         ""
-        "1.0")
+        "1")
 
 SET(OPENHEVCDEC_INCLUDE
         ${GPAC_LOCATION}/extra_lib/include
@@ -246,7 +246,7 @@ add_filter(libopenhevc
         "-DGPAC_HAS_OPENHEVC -DGPAC_OPENHEVC_STATIC -DOPENHEVC_HAS_AVC_BASE"
         "${OPENHEVCDEC_INCLUDE}"
         ""
-        "1.0")
+        "1")
 
 SET(FF_SRC
         ${GPAC_LOCATION}/src/filters/ff_dec.c
@@ -282,7 +282,7 @@ add_filter(ffmpeg
         GPAC_HAS_FFMPEG
         "${FF_INCLUDE}"
         ""
-        "1.0")
+        "1")
 
 SET(RFFLAC_SRC
         ${GPAC_LOCATION}/src/filters/reframe_flac.c
@@ -300,7 +300,7 @@ add_filter(rfflac
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 
 SET(XIPH_SRC
@@ -336,7 +336,7 @@ add_filter(xiph
         "${XIPH_FLAG}"
         "${XIPH_INCLUDE}"
         ""
-        "1.0")
+        "1")
 
 SET(XVIDDEC_SRC
         ${GPAC_LOCATION}/src/filters/dec_xvid.c
@@ -357,7 +357,7 @@ add_filter(xviddec
         GPAC_HAS_XVID
         "${XVIDDEC_INCLUDE}"
         ""
-        "1.0")
+        "1")
 
 SET(RFAMR_SRC
         ${GPAC_LOCATION}/src/filters/reframe_amr.c
@@ -373,7 +373,7 @@ add_filter(rfamr
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(M2PSDMX_SRC
         ${GPAC_LOCATION}/src/filters/dmx_mpegps.c
@@ -393,7 +393,7 @@ add_filter(m2psdmx
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(RFMPGVID_SRC
         ${GPAC_LOCATION}/src/filters/reframe_mpgvid.c
@@ -411,7 +411,7 @@ add_filter(rfmpgvid
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(MP4DMX_SRC
         ${GPAC_LOCATION}/src/filters/isoffin_read.c
@@ -448,7 +448,7 @@ add_filter(mp4dmx
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(MP4MX_LIB
 )
@@ -469,7 +469,7 @@ add_filter(mp4mx
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(RFNALU_SRC
         ${GPAC_LOCATION}/src/filters/reframe_nalu.c
@@ -487,7 +487,7 @@ add_filter(rfnalu
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(AVIDMX_LIB
 )
@@ -506,7 +506,7 @@ add_filter(avidmx
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(ufvtt
         ${GPAC_LOCATION}/src/filters/write_vtt.c
@@ -515,7 +515,7 @@ add_filter(ufvtt
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(tx3g2ttml
         ${GPAC_LOCATION}/src/filters/write_tx3g.c
@@ -524,7 +524,7 @@ add_filter(tx3g2ttml
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(tx3g2vtt
         ${GPAC_LOCATION}/src/filters/write_tx3g.c
@@ -533,7 +533,7 @@ add_filter(tx3g2vtt
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(tx3g2srt
         ${GPAC_LOCATION}/src/filters/write_tx3g.c
@@ -542,7 +542,7 @@ add_filter(tx3g2srt
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(ufttxt
         ${GPAC_LOCATION}/src/filters/write_tx3g.c
@@ -551,7 +551,7 @@ add_filter(ufttxt
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(WRITEQCP_LIB
 )
@@ -563,7 +563,7 @@ add_filter(writeqcp
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(nhntw
         ${GPAC_LOCATION}/src/filters/write_nhnt.c
@@ -572,7 +572,7 @@ add_filter(nhntw
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(nhmlw
         ${GPAC_LOCATION}/src/filters/write_nhml.c
@@ -581,7 +581,7 @@ add_filter(nhmlw
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(writeuf
         ${GPAC_LOCATION}/src/filters/write_generic.c
@@ -590,7 +590,7 @@ add_filter(writeuf
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(vflip
         ${GPAC_LOCATION}/src/filters/vflip.c
@@ -599,7 +599,7 @@ add_filter(vflip
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(vcrop
         ${GPAC_LOCATION}/src/filters/vcrop.c
@@ -608,7 +608,7 @@ add_filter(vcrop
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(unframer
         ${GPAC_LOCATION}/src/filters/unframer.c
@@ -617,7 +617,7 @@ add_filter(unframer
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(ttml2srt
         ${GPAC_LOCATION}/src/filters/ttml_conv.c
@@ -626,7 +626,7 @@ add_filter(ttml2srt
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(ttml2vtt
         ${GPAC_LOCATION}/src/filters/ttml_conv.c
@@ -635,7 +635,7 @@ add_filter(ttml2vtt
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(tssplit
         ${GPAC_LOCATION}/src/filters/tssplit.c
@@ -644,7 +644,7 @@ add_filter(tssplit
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(ufobu
         ${GPAC_LOCATION}/src/filters/rewrite_obu.c
@@ -653,7 +653,7 @@ add_filter(ufobu
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(ufnalu
         ${GPAC_LOCATION}/src/filters/rewrite_nalu.c
@@ -662,7 +662,7 @@ add_filter(ufnalu
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(ufvc1
         ${GPAC_LOCATION}/src/filters/rewrite_mp4v.c
@@ -671,7 +671,7 @@ add_filter(ufvc1
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(ufmhas
         ${GPAC_LOCATION}/src/filters/rewrite_mhas.c
@@ -680,7 +680,7 @@ add_filter(ufmhas
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(UFLATM_SRC
         ${GPAC_LOCATION}/src/filters/rewrite_adts.c
@@ -694,7 +694,7 @@ add_filter(uflatm
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(rewind
         ${GPAC_LOCATION}/src/filters/rewind.c
@@ -703,7 +703,7 @@ add_filter(rewind
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(restamp
         ${GPAC_LOCATION}/src/filters/restamp.c
@@ -712,7 +712,7 @@ add_filter(restamp
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(RFTRUEHD_SRC
         ${GPAC_LOCATION}/src/filters/reframe_truehd.c
@@ -730,7 +730,7 @@ add_filter(rftruehd
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(RFRAW_SRC
         ${GPAC_LOCATION}/src/filters/reframe_rawvid.c
@@ -749,7 +749,7 @@ add_filter(rfrawvid
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(RFPCM_SRC
         ${GPAC_LOCATION}/src/filters/reframe_rawpcm.c
@@ -769,7 +769,7 @@ add_filter(rfpcm
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(RFQCP_SRC
         ${GPAC_LOCATION}/src/filters/reframe_qcp.c
@@ -787,7 +787,7 @@ add_filter(rfqcp
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(rfprores
         ${GPAC_LOCATION}/src/filters/reframe_prores.c
@@ -796,7 +796,7 @@ add_filter(rfprores
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(RFMHAS_LIB
 
@@ -809,7 +809,7 @@ add_filter(rfmhas
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(LATM_SRC
         ${GPAC_LOCATION}/src/filters/reframe_latm.c
@@ -829,7 +829,7 @@ add_filter(rflatm
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(RFH263_SRC
         ${GPAC_LOCATION}/src/filters/reframe_h263.c
@@ -843,7 +843,7 @@ add_filter(rfh263
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(RFAV1_SRC
         ${GPAC_LOCATION}/src/filters/reframe_av1.c
@@ -867,7 +867,7 @@ add_filter(rfav1
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(m2tsmx
         ${GPAC_LOCATION}/src/filters/mux_ts.c
@@ -876,7 +876,7 @@ add_filter(m2tsmx
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(oggmx
         ${GPAC_LOCATION}/src/filters/mux_ogg.c
@@ -885,7 +885,7 @@ add_filter(oggmx
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(gsfmx
         ${GPAC_LOCATION}/src/filters/mux_gsf.c
@@ -894,7 +894,7 @@ add_filter(gsfmx
         ""
         ""
         ""
-        "1.0")
+        "1")
 
  SET(RFSRT_LIB
 
@@ -913,7 +913,7 @@ add_filter(rfsrt
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(VTT2TX3G_SRC
         ${GPAC_LOCATION}/src/filters/load_text.c
@@ -931,7 +931,7 @@ add_filter(vtt2tx3g
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(TXTIN_LIB
 
@@ -949,7 +949,7 @@ add_filter(txtin
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(SVG_LIBS
 
@@ -966,7 +966,7 @@ add_filter(svgplay
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(BTPLAY_LIB
 
@@ -984,7 +984,7 @@ add_filter(btplay
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(CRYPTIN_LIBS
 
@@ -997,7 +997,7 @@ add_filter(cryptin
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(CRYPTOUT_LIBS
 
@@ -1010,7 +1010,7 @@ add_filter(cryptout
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(probe
         ${GPAC_LOCATION}/src/filters/inspect.c
@@ -1019,7 +1019,7 @@ add_filter(probe
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(inspect
         ${GPAC_LOCATION}/src/filters/inspect.c
@@ -1028,7 +1028,7 @@ add_filter(inspect
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(FLIST_SRC
         ${GPAC_LOCATION}/src/filters/filelist.c
@@ -1042,7 +1042,7 @@ add_filter(flist
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(cecrypt
         ${GPAC_LOCATION}/src/filters/encrypt_cenc_isma.c
@@ -1051,7 +1051,7 @@ add_filter(cecrypt
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(VOBSUBDMX_LIB
 
@@ -1064,7 +1064,7 @@ add_filter(vobsubdmx
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(safdmx
         ${GPAC_LOCATION}/src/filters/dmx_saf.c
@@ -1073,7 +1073,7 @@ add_filter(safdmx
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(nhntr
         ${GPAC_LOCATION}/src/filters/dmx_nhnt.c
@@ -1082,7 +1082,7 @@ add_filter(nhntr
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(nhmlr
         ${GPAC_LOCATION}/src/filters/dmx_nhml.c
@@ -1091,7 +1091,7 @@ add_filter(nhmlr
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(M2TSDMX_LIB
 
@@ -1112,7 +1112,7 @@ add_filter(m2tsdmx
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(GSFDMX_LIB
         ${FF_LIB}
@@ -1126,7 +1126,7 @@ add_filter(gsfdmx
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(DASHIN_LIB
 
@@ -1139,7 +1139,7 @@ add_filter(dashin
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(cdcrypt
         ${GPAC_LOCATION}/src/filters/decrypt_cenc_isma.c
@@ -1148,7 +1148,7 @@ add_filter(cdcrypt
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(vttdec
         ${GPAC_LOCATION}/src/filters/dec_webvtt.c
@@ -1157,7 +1157,7 @@ add_filter(vttdec
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(ttxtdec
         ${GPAC_LOCATION}/src/filters/dec_ttxt.c
@@ -1166,7 +1166,7 @@ add_filter(ttxtdec
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(ttmldec
         ${GPAC_LOCATION}/src/filters/dec_ttml.c
@@ -1175,7 +1175,7 @@ add_filter(ttmldec
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(odfdec
         ${GPAC_LOCATION}/src/filters/dec_odf.c
@@ -1184,7 +1184,7 @@ add_filter(odfdec
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(LSRDRC_SRC
         ${GPAC_LOCATION}/src/filters/dec_laser.c
@@ -1198,7 +1198,7 @@ add_filter(lsrdec
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(bifsdec
         ${GPAC_LOCATION}/src/filters/dec_bifs.c
@@ -1207,7 +1207,7 @@ add_filter(bifsdec
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(DASHER_SRC
         ${GPAC_LOCATION}/src/filters/dasher.c
@@ -1221,7 +1221,7 @@ add_filter(dasher
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(BSRW_SRC
         ${GPAC_LOCATION}/src/filters/bsrw.c
@@ -1239,7 +1239,7 @@ add_filter(bsrw
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(bssplit
         ${GPAC_LOCATION}/src/filters/bs_split.c
@@ -1248,7 +1248,7 @@ add_filter(bssplit
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 add_filter(bsagg
         ${GPAC_LOCATION}/src/filters/bs_agg.c
@@ -1257,7 +1257,7 @@ add_filter(bsagg
         ""
         ""
         ""
-        "1.0")
+        "1")
 
 SET(LIBJXL_SRC
         ${CMAKE_SOURCE_DIR}/src/filters/jxl/reframe_jxl.c
@@ -1285,7 +1285,7 @@ add_filter(libjxl
         ""
         "${LIBJXL_INC}"
         ""
-        "1.0")
+        "1")
 
 # Should always be at the end of this file
 set(WASM_FILES ${WASM_FILES} PARENT_SCOPE)

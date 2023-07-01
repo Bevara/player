@@ -7,7 +7,7 @@
 		let args = [];
 
 		params["locateFile"] = function (path, scriptDirectory) {
-			if (path == "solver.wasm" && m.data.wasmBinaryFile) {
+			if (path == "solver_1.wasm" && m.data.wasmBinaryFile) {
 				return m.data.wasmBinaryFile;
 			} 
 			return path;
@@ -165,6 +165,6 @@
 	if (ENVIRONMENT_IS_WORKER) {
 		addEventListener("message", init);
 	} else if (ENVIRONMENT_IS_WEB) {
-		window.solver = init;
+		window.solver_1 = init;
 	}
 })();
