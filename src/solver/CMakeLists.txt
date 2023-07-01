@@ -1,7 +1,7 @@
 set (THIRD_PARTIES ${CMAKE_SOURCE_DIR}/third_parties)
 set (THIRD_PARTIES_BINARIES ${CMAKE_BINARY_DIR}/third_parties)
 set (GPAC_LOCATION ${THIRD_PARTIES}/gpac)
-set(VERSION "1.0")
+set(VERSION "1")
 add_compile_definitions(GPAC_HAVE_CONFIG_H GPAC_DISABLE_DOC)
 
 include(exports.cmake)
