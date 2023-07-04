@@ -1,4 +1,5 @@
 import JSZip = require("jszip");
+import {addScriptDirectoryAndExtIfNeeded} from "./UniversalFns";
 
 class UniversalImage extends HTMLImageElement {
     using: string;
@@ -208,33 +209,21 @@ class UniversalImage extends HTMLImageElement {
             }
             const scriptDirectory = this.getAttribute("script-directory")?this.getAttribute("script-directory"):"";
 
-            function addScriptDirectoryAndExtIfNeeded(url, ext) {
-                try {
-                    const parsed_url = new URL(url);
-                    if(parsed_url.protocol === 'blob:'){
-                        return url;
-                    }else if(parsed_url.protocol === 'http:' || parsed_url.protocol === 'https:'){
-                        return url + ext;
-                    }
-                    return scriptDirectory + url + ext;
-                  }catch(e){
-                    return scriptDirectory + url + ext;
-                  }
-            }
 
             if (this.getAttribute("using")){
                 this.core = this.getAttribute("using");
-                js = addScriptDirectoryAndExtIfNeeded(this.getAttribute("using"),".js");
-                wasmBinaryFile = addScriptDirectoryAndExtIfNeeded(this.getAttribute("using"),".wasm");
+                js = await addScriptDirectoryAndExtIfNeeded(scriptDirectory, this.getAttribute("using"),".js");
+                wasmBinaryFile = await addScriptDirectoryAndExtIfNeeded(scriptDirectory, this.getAttribute("using"),".wasm");
             }
 
             if (this.getAttribute("js")){
                 //Overwrite js attribute
-                js = addScriptDirectoryAndExtIfNeeded(this.getAttribute("js"),"");
+                js = addScriptDirectoryAndExtIfNeeded(scriptDirectory, this.getAttribute("js"),"");
             }
 
             if (this.getAttribute("with")){
-                dynamicLibraries = dynamicLibraries.concat(this.getAttribute("with").split(';').map(x => addScriptDirectoryAndExtIfNeeded(x,".wasm")));
+                const all_using = await Promise.all(this.getAttribute("with").split(';').map(x => addScriptDirectoryAndExtIfNeeded(scriptDirectory, x,".wasm")));
+                dynamicLibraries = dynamicLibraries.concat(all_using);
             }
             
             const message = {

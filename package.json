@@ -50,6 +50,7 @@
         "workbox-webpack-plugin": "^6.1.5"
     },
     "dependencies": {
-        "jszip": "^3.10.1"
+        "jszip": "^3.10.1",
+        "url-exist": "^3.0.1"
     }
 }

@@ -1,4 +1,5 @@
 import JSZip = require("jszip");
+import {addScriptDirectoryAndExtIfNeeded} from "./UniversalFns";
 
 class UniversalCanvas extends HTMLCanvasElement {
     using: string;
@@ -204,33 +205,19 @@ class UniversalCanvas extends HTMLCanvasElement {
             }
             const scriptDirectory = this.getAttribute("script-directory") ? this.getAttribute("script-directory") : "";
 
-            function addScriptDirectoryAndExtIfNeeded(url, ext) {
-                try {
-                    const parsed_url = new URL(url);
-                    if (parsed_url.protocol === 'blob:') {
-                        return url;
-                    } else if (parsed_url.protocol === 'http:' || parsed_url.protocol === 'https:') {
-                        return url + ext;
-                    }
-                    return scriptDirectory + url + ext;
-                } catch (e) {
-                    return scriptDirectory + url + ext;
-                }
-            }
-
             if (this.getAttribute("using")) {
                 this.core = this.getAttribute("using");
-                js = addScriptDirectoryAndExtIfNeeded(this.getAttribute("using"), ".js");
-                wasmBinaryFile = addScriptDirectoryAndExtIfNeeded(this.getAttribute("using"), ".wasm");
+                js = addScriptDirectoryAndExtIfNeeded(scriptDirectory, this.getAttribute("using"), ".js");
+                wasmBinaryFile = addScriptDirectoryAndExtIfNeeded(scriptDirectory, this.getAttribute("using"), ".wasm");
             }
 
             if (this.getAttribute("js")) {
                 //Overwrite js attribute
-                js = addScriptDirectoryAndExtIfNeeded(this.getAttribute("js"), "");
+                js = addScriptDirectoryAndExtIfNeeded(scriptDirectory, this.getAttribute("js"), "");
             }
 
             if (this.getAttribute("with")) {
-                dynamicLibraries = dynamicLibraries.concat(this.getAttribute("with").split(';').map(x => addScriptDirectoryAndExtIfNeeded(x, ".wasm")));
+                dynamicLibraries = dynamicLibraries.concat(this.getAttribute("with").split(';').map(x => addScriptDirectoryAndExtIfNeeded(scriptDirectory, x, ".wasm")));
             }
 
             const message = {
