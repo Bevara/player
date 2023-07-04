@@ -218,7 +218,7 @@ class UniversalImage extends HTMLImageElement {
 
             if (this.getAttribute("js")){
                 //Overwrite js attribute
-                js = addScriptDirectoryAndExtIfNeeded(scriptDirectory, this.getAttribute("js"),"");
+                js = await addScriptDirectoryAndExtIfNeeded(scriptDirectory, this.getAttribute("js"),"");
             }
 
             if (this.getAttribute("with")){

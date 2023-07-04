@@ -207,17 +207,18 @@ class UniversalCanvas extends HTMLCanvasElement {
 
             if (this.getAttribute("using")) {
                 this.core = this.getAttribute("using");
-                js = addScriptDirectoryAndExtIfNeeded(scriptDirectory, this.getAttribute("using"), ".js");
-                wasmBinaryFile = addScriptDirectoryAndExtIfNeeded(scriptDirectory, this.getAttribute("using"), ".wasm");
+                js = await addScriptDirectoryAndExtIfNeeded(scriptDirectory, this.getAttribute("using"), ".js");
+                wasmBinaryFile = await addScriptDirectoryAndExtIfNeeded(scriptDirectory, this.getAttribute("using"), ".wasm");
             }
 
             if (this.getAttribute("js")) {
                 //Overwrite js attribute
-                js = addScriptDirectoryAndExtIfNeeded(scriptDirectory, this.getAttribute("js"), "");
+                js = await addScriptDirectoryAndExtIfNeeded(scriptDirectory, this.getAttribute("js"), "");
             }
 
             if (this.getAttribute("with")) {
-                dynamicLibraries = dynamicLibraries.concat(this.getAttribute("with").split(';').map(x => addScriptDirectoryAndExtIfNeeded(scriptDirectory, x, ".wasm")));
+                const all_using = await Promise.all(this.getAttribute("with").split(';').map(x => addScriptDirectoryAndExtIfNeeded(scriptDirectory, x,".wasm")));
+                dynamicLibraries = dynamicLibraries.concat(all_using);
             }
 
             const message = {

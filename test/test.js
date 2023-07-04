@@ -12,7 +12,7 @@ function create_test(tag, extension, using_attribute, with_atribute, test_file, 
       img.setAttribute("with", with_atribute);
     }
 
-    img.setAttribute("script-directory", "/base/build/dist/");
+    img.setAttribute("script-directory", "http://localhost:9876/base/build/dist/");
 
     if (out) {
       img.setAttribute("out", out);
