@@ -1,15 +1,15 @@
 
-file(READ filters.json FILTERS_STRING)
+# file(READ filters.json FILTERS_STRING)
 
-# Loop through each element of the JSON array (indices 0 though 1).
-foreach(IDX RANGE 1)
-    # Get the name from the current JSON element.
-    string(JSON FILTER_NAME GET ${FILTERS_STRING} ${IDX} name)
-    message("FILTERS: ${FILTER_NAME}")
-    # Get the URL from the current JSON element.
-    string(JSON FILTER_FILES GET ${FILTERS_STRING} ${IDX} files)
-    message("FILTERS: ${FILTER_FILES}")
-endforeach()
+# # Loop through each element of the JSON array (indices 0 though 1).
+# foreach(IDX RANGE 1)
+#     # Get the name from the current JSON element.
+#     string(JSON FILTER_NAME GET ${FILTERS_STRING} ${IDX} name)
+#     message("FILTERS: ${FILTER_NAME}")
+#     # Get the URL from the current JSON element.
+#     string(JSON FILTER_FILES GET ${FILTERS_STRING} ${IDX} files)
+#     message("FILTERS: ${FILTER_FILES}")
+# endforeach()
 
 
 
