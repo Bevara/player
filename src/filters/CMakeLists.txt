@@ -1,4 +1,18 @@
 
+file(READ filters.json FILTERS_STRING)
+
+# Loop through each element of the JSON array (indices 0 though 1).
+foreach(IDX RANGE 1)
+    # Get the name from the current JSON element.
+    string(JSON FILTER_NAME GET ${FILTERS_STRING} ${IDX} name)
+    message("FILTERS: ${FILTER_NAME}")
+    # Get the URL from the current JSON element.
+    string(JSON FILTER_FILES GET ${FILTERS_STRING} ${IDX} files)
+    message("FILTERS: ${FILTER_FILES}")
+endforeach()
+
+
+
 set(CMAKE_EXECUTABLE_SUFFIX ".wasm")
 
 set(THIRD_PARTIES ${CMAKE_SOURCE_DIR}/third_parties)
@@ -223,7 +237,7 @@ add_filter(liba52
         "1")
 
 SET(OPENHEVCDEC_INCLUDE
-        ${GPAC_LOCATION}/extra_lib/include
+        ${THIRD_PARTIES}/openHEVC
 )
 
 SET(OPENHEVCDEC_LIB
