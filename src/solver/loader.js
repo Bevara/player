@@ -1,3 +1,4 @@
+let gf_fs_reg_all = null;
 (() => {
 	const ENVIRONMENT_IS_WEB = typeof window == 'object';
 	const ENVIRONMENT_IS_WORKER = typeof importScripts == 'function';
@@ -130,6 +131,11 @@
 		
 		//setProperty(args);
 		function call_gpac() {
+
+			//FIXME
+			libgpac.gf_fs_reg_all = params["gf_fs_reg_all"];
+			libgpac.gpac_done = params["gpac_done"];
+
 			GPAC.stack = module.stackSave();
 			args.unshift("gpac");
 			var argc = args.length;
