@@ -1,3 +1,6 @@
 [submodule "third_parties"]
 	path = third_parties
 	url = https://github.com/Bevara/third_parties.git
+[submodule "filters"]
+	path = filters
+	url = https://github.com/Bevara/filters.git
