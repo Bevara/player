@@ -1,4 +1,3 @@
-let gf_fs_reg_all = null;
 (() => {
 	const ENVIRONMENT_IS_WEB = typeof window == 'object';
 	const ENVIRONMENT_IS_WORKER = typeof importScripts == 'function';
