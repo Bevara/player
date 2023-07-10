@@ -1,13 +1,17 @@
 import urlExist from 'url-exist';
 
 async function test_url(directories, url){
-    for (const directory of directories){
+    const filter_directories = directories.filter(x => x !="");
+
+    for (const directory of filter_directories){
         if(await urlExist(directory+url)){
             return directory+url;
         }
+
+        return "";
     }
 
-    return await urlExist(url)?url : "";
+    return url;
 }
 
 function addScriptDirectoryAndExtIfNeeded(scriptDirectory, url, ext) {
