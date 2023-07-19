@@ -2,6 +2,8 @@ SET(GPAC
     '_gf_filter_get_dst_name'
     '_gf_filter_report_meta_option'
     '_gf_filter_path_escape_colon'
+    '_gf_inline_get_proto_lib'
+    '_gf_prog_lf'
     '_vout_register'
     '_aout_register'
     '_fout_register'
@@ -23,6 +25,7 @@ SET(PTHREADS
     '_pthread_mutex_unlock'
     '_pthread_mutex_destroy'
     '_posix_memalign'
+    '_logs_mx'
 )
 
 SET(ZLIB
@@ -108,6 +111,7 @@ SET(STDLIB
     '_fwrite'
     '_log10f'
     '_cbrt'
+    '_atoi'
     '_strerror_r'
     '_iconv_open'
     '___multi3'
