@@ -98,19 +98,19 @@ describe('core-player', () => {
     //   );
     // }).timeout(5000);
 
-    // it('should load all decoders', (done) => {
-    //   create_test('img',
-    //     'universal-img',
-    //     "solver_1",
-    //     "a52dec;ffmpeg_1;inspect;nhmlw;restamp;rfmpgvid_1;tileagg;ufmhas;vtt2tx3g;ffmx;j2kdec_1;nhntr;rewind;rfnalu_1;ufnalu;vttdec;avidmx_1;jpgenc;nhntw;rfac3;rfpcm;tssplit;ufobu;bifsdec;cryptin;lsrdec;odfdec;rfadts;rfprores;ttml2srt;ufttxt;writeqcp;bsagg;cryptout;m2psdmx_1;rfamr_1;rfqcp;ttml2vtt;ufvc1;writeuf;bsrw;dasher;flist;m2tsdmx;oggdmx;rfav1;rfrawvid;ttmldec;ufvtt;xviddec_1;bssplit;dashin;gsfdmx;m2tsmx;oggmx;rfflac_1;rfsrt;ttxtdec;unframer;btplay;libfaad;gsfmx;rfh263;rftruehd;tx3g2srt;vcrop;cdcrypt;ffavf;hevcmerge;mp4dmx;pngenc_1;rfimg_1;safdmx;tx3g2ttml;vflip;cecrypt;ffbsf;hevcsplit;mp4mx_1;probe;rflatm;tx3g2vtt;vobsubdmx;compose;ffdec;nanojpeg;reframer;rfmhas;svgplay;txtin;xiph;ffdmx;imgdec_1;nhmlr;libmad_1;theoradec;uflatm",
-    //     "https://bevara.ddns.net/test-signals/Freedom.jpg",
-    //     "https://bevara.ddns.net/test-signals/Freedom.png",
-    //     done,
-    //     "png",
-    //     false,
-    //     false
-    //   );
-    // }).timeout(60000);
+    it('should load all decoders', (done) => {
+      create_test('img',
+        'universal-img',
+        "solver_1",
+        "avidmx_1;dasher_1;liba52_1;mp4mx_1;restamp_1;rfnalu_1;tssplit_1;ufmhas_1;vtt2tx3g_1;bsagg_1;ffmpeg_1;libjxl_1;nhmlr_1;rfamr_1;rfprores_1;ttml2vtt_1;ufobu_1;writeqcp_1;bsrw_1;flist_1;libmad_1;nhmlw_1;rfav1_1;rfqcp_1;ttmldec_1;ufttxt_1;writeuf_1;bssplit_1;gsfdmx_1;libopenhevc_1;nhntr_1;rfflac_1;rfrawvid_1;ttxtdec_1;ufvc1_1;xiph_1;btplay_1;gsfmx_1;lsrdec_1;nhntw_1;rfh263_1;rfsrt_1;tx3g2srt_1;ufvtt_1;xviddec_1;cdcrypt_1;imgdec_1;m2psdmx_1;odfdec_1;rfimg_1;rftruehd_1;tx3g2ttml_1;unframer_1;cecrypt_1;inspect_1;m2tsdmx_1;oggmx_1;rflatm_1;safdmx_1;tx3g2vtt_1;vcrop_1;cryptin_1;j2kdec_1;m2tsmx_1;pngenc_1;rfmhas_1;solver_1;txtin_1;vflip_1;cryptout_1;jpgenc_1;mp4dmx_1;probe_1;rfmpgvid_1;svgplay_1;uflatm_1;vobsubdmx_1",
+        "https://bevara.ddns.net/test-signals/Freedom.jpg",
+        "https://bevara.ddns.net/test-signals/Freedom.png",
+        done,
+        "png",
+        false,
+        false
+      );
+    }).timeout(60000);
   });
 
   describe('#j2kdec', () => {
