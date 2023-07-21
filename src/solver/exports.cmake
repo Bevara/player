@@ -125,6 +125,10 @@ SET(EMSCRIPTEN
     '___THREW__'
 )
 
+SET(SOLVER
+    '_get_properties'
+    '_getWidth'
+)
 
 SET(EXTERNAL_FN
     ${GPAC}
@@ -132,6 +136,7 @@ SET(EXTERNAL_FN
     ${ZLIB}
     ${STDLIB}
     ${EMSCRIPTEN}
+    ${SOLVER}
 )
 
  string(JOIN "," EXPORTED_FUNCTIONS ${EXTERNAL_FN})

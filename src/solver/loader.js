@@ -40,6 +40,7 @@
 		let on_done_reject = null;
 
 		params["gpac_done"] = (code)=> {
+			//const props  = getProperty(["width", "height"]);
 			if (code) console.log('(exit code ' + code +')');
 			if(m.data.dst){
 				const res = FS.readFile(m.data.dst, { encoding: "binary" });
@@ -111,10 +112,10 @@
 
 		function getProperty(props){
 			const json_str = JSON.stringify(props);
-			var res = module.ccall('get', // name of C function
+			var res = module.ccall('get_properties', // name of C function
 			'string', // return type
-			['number', 'string'], // argument types
-			[entry, json_str]);
+			['string'], // argument types
+			[json_str]);
 			return JSON.parse(res);
 		}
 

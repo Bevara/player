@@ -8,6 +8,8 @@ include(exports.cmake)
 
 SET(SOLVER_SRC
   filter_register.c
+  common.c
+  properties.cpp
   ${GPAC_LOCATION}/applications/gpac/gpac.c
   ${GPAC_LOCATION}/applications/gpac/gpac_help.c
 )
