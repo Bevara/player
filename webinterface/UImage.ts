@@ -41,10 +41,42 @@ class UniversalImage extends HTMLImageElement {
         return this._decodingPromise;
     }
 
-    dataURLToSrc(blob, cached) {
+    async convertWithCanvas(format, blob){
+        const res = blob;
+        const props  = {width:0, height:0};
+        const canvas = new OffscreenCanvas(props.width, props.height);
+        const imgData = new ImageData(Uint8ClampedArray.from(res), props.width, props.height);
+        const ctx = canvas.getContext('2d') as any;
+
+        switch(format){
+            case "rgba":
+                ctx.putImageData(imgData, 0, 0);
+                return await (canvas as any).convertToBlob();
+            case "rgb":
+                const dest = imgData.data;
+                const n = 4 * props.width * props.height;
+                let s = 0, d = 0;
+                while (d < n) {
+                    dest[d++] = res[s++];
+                    dest[d++] = res[s++];
+                    dest[d++] = res[s++];
+                    dest[d++] = 255;    // skip alpha byte
+                }
+    
+                ctx.putImageData(imgData, 0, 0);
+    
+                return await (canvas as any).convertToBlob();
+        }
+    }
+
+    async dataURLToSrc(blob, cached) {
         if (!blob) return;
         if (this.useCache && this.cache && !cached) {
             this.cache.put(this.src, new Response(blob));
+        }
+
+        if (this.out == "rgb" || this.out == "rgba"){
+            blob = await this.convertWithCanvas(this.out, blob);
         }
 
         this.srcset = URL.createObjectURL(blob);
@@ -113,8 +145,8 @@ class UniversalImage extends HTMLImageElement {
         }
 
         async function init() {
-            const blob = await (window as any)[self.core]({ data: message });
-            self.dataURLToSrc(blob, false);
+            const res = await (window as any)[self.core]({ data: message });
+            self.dataURLToSrc(res.blob, false);
             resolve(self.srcset);
         }
 
@@ -239,7 +271,8 @@ class UniversalImage extends HTMLImageElement {
                 useWebcodec : false,
                 showStats: this.getAttribute("stats") == "",
                 showGraph: this.getAttribute("graph") == "",
-                showReport: this.getAttribute("report") == ""
+                showReport: this.getAttribute("report") == "",
+                get: this.out == "rgb" || this.out == "rgba" ?["width", "height"] :[]
             };
 
             

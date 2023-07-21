@@ -47,7 +47,7 @@
 				if (ENVIRONMENT_IS_WORKER) {
 					postMessage({ blob: blob});
 				} else if (ENVIRONMENT_IS_WEB){
-					on_done_resolve(blob);
+					on_done_resolve({ blob: blob});
 				}
 		  	}
 		};

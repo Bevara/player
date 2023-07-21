@@ -113,8 +113,8 @@ class UniversalAudio extends HTMLAudioElement {
         }
 
         async function init() {
-            const blob = await (window as any)[self.core]({ data: message });
-            self.dataURLToSrc(blob, false);
+            const res = await (window as any)[self.core]({ data: message });
+            self.dataURLToSrc(res.blob, false);
             resolve(self.src);
         }
 
