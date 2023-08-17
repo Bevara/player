@@ -227,6 +227,7 @@ class UniversalVideo extends HTMLVideoElement {
             }
 
             const message = {
+                event:"init",
                 module: { 
                     dynamicLibraries: dynamicLibraries ,
                     noInitialRun: true,

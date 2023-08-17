@@ -20,6 +20,7 @@ class UniversalCanvas extends HTMLCanvasElement {
     script = null;
     core = null;
     src="";
+    enable_reports = false;
 
     urlToRevoke = [];
 
@@ -56,6 +57,27 @@ class UniversalCanvas extends HTMLCanvasElement {
         return false;
     }
 
+    get reports() {
+        return this.enable_reports;
+    }
+
+    set reports(value) {
+        this.enable_reports = value;
+        const message = {
+            event:"reports",
+            enable:value
+        };
+
+        if (window[this.core]){
+            try{
+                (window as any)[this.core]({ data: message });
+            }catch(error){
+                console.log(error.message);
+            }
+        }
+    }
+
+
     play():void{
         console.log("play");
     }
@@ -66,6 +88,66 @@ class UniversalCanvas extends HTMLCanvasElement {
 
     load():void{
         console.log("load");
+    }
+
+    print_graph(elt_id :string):void{
+        const message = {
+            event:"graph",
+            id:elt_id
+        };
+
+        if (window[this.core]){
+            try{
+                (window as any)[this.core]({ data: message });
+            }catch(error){
+                console.log(error.message);
+            }
+        }
+    }
+
+    print_stats(elt_id :string):void{
+        const message = {
+            event:"graph",
+            id:elt_id
+        };
+
+        if (window[this.core]){
+            try{
+                (window as any)[this.core]({ data: message });
+            }catch(error){
+                console.log(error.message);
+            }
+        }
+    }
+
+    print_status(elt_id :string):void{
+        const message = {
+            event:"status",
+            id:elt_id
+        };
+
+        if (window[this.core]){
+            try{
+                (window as any)[this.core]({ data: message });
+            }catch(error){
+                console.log(error.message);
+            }
+        }
+    }
+
+    print_reports(elt_id :string):void{
+        const message = {
+            event:"reports",
+            id:elt_id
+        };
+
+        if (window[this.core]){
+            try{
+                (window as any)[this.core]({ data: message });
+            }catch(error){
+                console.log(error.message);
+            }
+        }
     }
 
     canPlayType(type: string): CanPlayTypeResult{
@@ -123,7 +205,6 @@ class UniversalCanvas extends HTMLCanvasElement {
                 }catch(error){
                     console.log(error.message);
                 }
-                
             }
         }
 
@@ -222,6 +303,7 @@ class UniversalCanvas extends HTMLCanvasElement {
             }
 
             const message = {
+                event:"init",
                 self:this,
                 module: { 
                     dynamicLibraries: dynamicLibraries ,

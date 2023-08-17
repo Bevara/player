@@ -259,6 +259,7 @@ class UniversalImage extends HTMLImageElement {
             }
             
             const message = {
+                event:"init",
                 module: { 
                     dynamicLibraries: dynamicLibraries ,
                     noInitialRun: true,

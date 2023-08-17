@@ -226,6 +226,7 @@ class UniversalAudio extends HTMLAudioElement {
             }
 
             const message = {
+                event:"init",
                 module: { 
                     dynamicLibraries: dynamicLibraries ,
                     noInitialRun: true,

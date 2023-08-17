@@ -3,6 +3,37 @@
 <head>
 </head>
 <body>
-    <img is="universal-img" src="https://bevara.ddns.net/test-signals/JXL/red-room.jxl" using="solver_1" with="libjxl_1;pngenc_1" controls  connections>
+	<canvas id="test_canvas" is="universal-canvas" using="solver_1" with="xiph_1" data-url="https://bevara.ddns.net/test-signals/ogv/Big_Buck_Bunny_Trailer_400p.ogv" data-autoplay=true></canvas>
+
+    <br>
+    <span><label>Reporting</label><input type="checkbox" checked id="reports" onclick="
+        toggle_reporting();
+      ">
+      </span>
+
+      <span><label>Graph</label><input type="checkbox" checked id="graph" onclick="
+        toggle_graph();
+      ">
+      </span>
+
+      <span><label>Stats</label><input type="checkbox" checked id="stats" onclick="
+        toggle_stats();
+      ">
+      </span>
+
+    <script>  
+    const test_canvas = document.getElementById("test_canvas");
+    function toggle_reporting() {
+            test_canvas.reports = true;
+    };
+
+    function toggle_graph() {
+            test_canvas.print_graph();
+    };
+
+    function toggle_stats() {
+            test_canvas.print_stats();
+    };
+    </script>
 </body>
 </html>
