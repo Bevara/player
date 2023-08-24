@@ -41,17 +41,55 @@
 		const module_parameters = m.data.module;
 		if (m.data.print) {
 			params["print"] = function () {
-				return function (t) {
-					postMessage({ print: t, ref: m.data.args });
-				};
+				if (ENVIRONMENT_IS_WORKER) {
+					return function (t) {
+						postMessage({ print: t, ref: m.data.args });
+					};
+				} else if (ENVIRONMENT_IS_WEB) {
+					var element = document.getElementById(m.data.print);
+					if (element) element.value = ''; // clear browser cache
+					return function(text) {
+					  if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+					  // These replacements are necessary if you render to raw HTML
+					  //text = text.replace(/&/g, "&amp;");
+					  //text = text.replace(/</g, "&lt;");
+					  //text = text.replace(/>/g, "&gt;");
+					  //text = text.replace('\n', '<br>', 'g');
+					  if (GPAC.no_log)
+						console.log(text);
+					  else if (element) {
+						element.value += text + "\n";
+						element.scrollTop = element.scrollHeight; // focus on bottom
+					  }
+					};
+				}
 			}();
 		}
 
 		if (m.data.printErr) {
 			params["printErr"] = function () {
-				return function (t) {
-					postMessage({ printErr: t, ref: m.data.args });
-				};
+				if (ENVIRONMENT_IS_WORKER) {
+					return function (t) {
+						postMessage({ print: t, ref: m.data.args });
+					};
+				} else if (ENVIRONMENT_IS_WEB) {
+					var element = document.getElementById(m.data.printErr);
+					if (element) element.value = ''; // clear browser cache
+					return function(text) {
+					  if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+					  // These replacements are necessary if you render to raw HTML
+					  //text = text.replace(/&/g, "&amp;");
+					  //text = text.replace(/</g, "&lt;");
+					  //text = text.replace(/>/g, "&gt;");
+					  //text = text.replace('\n', '<br>', 'g');
+					  if (GPAC.no_log)
+						console.log(text);
+					  else if (element) {
+						element.value += text + "\n";
+						element.scrollTop = element.scrollHeight; // focus on bottom
+					  }
+					};
+				}
 			}();
 		}
 

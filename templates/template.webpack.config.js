@@ -32,7 +32,12 @@ const config = {
     open: 'true',
     host: "localhost",
     contentBase: "@CMAKE_BINARY_DIR@",
-    port: 8081
+    port: 8081,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+      "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+    }
   },
 };
 

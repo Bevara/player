@@ -348,7 +348,9 @@ class UniversalCanvas extends HTMLCanvasElement {
                 showStats: this.getAttribute("stats"),
                 showGraph: this.getAttribute("graph"),
                 showReport: this.getAttribute("report"),
-                showStatus: this.getAttribute("status")
+                showStatus: this.getAttribute("status"),
+                print:this.getAttribute("print"),
+                printErr:this.getAttribute("printErr")
             };
 
             if (!js) {
