@@ -238,10 +238,11 @@ class UniversalVideo extends HTMLVideoElement {
                 src : src,
                 dst: "out." + this.out,
                 transcode:["c=avc", "c=aac"],
-                useWebcodec: this.getAttribute("use-webcodec") == "",
-                showStats: this.getAttribute("stats") == "",
-                showGraph: this.getAttribute("graph") == "",
-                showReport: this.getAttribute("report") == ""
+                useWebcodec: this.getAttribute("use-webcodec"),
+                showStats: this.getAttribute("stats"),
+                showGraph: this.getAttribute("graph"),
+                showReport: this.getAttribute("report"),
+                showStatus: this.getAttribute("status")
             };
 
             if (!js){

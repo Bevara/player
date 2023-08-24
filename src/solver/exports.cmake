@@ -128,6 +128,7 @@ SET(EMSCRIPTEN
 SET(SOLVER
     '_get_properties'
     '_getWidth'
+    '_set_properties'
 )
 
 SET(EXTERNAL_FN

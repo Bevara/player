@@ -1,5 +1,5 @@
 import JSZip = require("jszip");
-import {addScriptDirectoryAndExtIfNeeded} from "./UniversalFns";
+import { addScriptDirectoryAndExtIfNeeded } from "./UniversalFns";
 
 class UniversalCanvas extends HTMLCanvasElement {
     using: string;
@@ -16,141 +16,161 @@ class UniversalCanvas extends HTMLCanvasElement {
     error_attribute: Element | null;
 
     out = "mp4";
-    scriptDirectory = document.currentScript? this.initScriptDirectory((document.currentScript as any).src) :"";
+    scriptDirectory = document.currentScript ? this.initScriptDirectory((document.currentScript as any).src) : "";
     script = null;
     core = null;
-    src="";
-    enable_reports = false;
+    src = "";
 
     urlToRevoke = [];
 
     private _decodingPromise: Promise<string>;
 
-    private initScriptDirectory(src:string){
+    private initScriptDirectory(src: string) {
         if (src.indexOf('blob:') !== 0) {
-            return src.substr(0, src.replace(/[?#].*/, "").lastIndexOf('/')+1);
-          } else {
+            return src.substr(0, src.replace(/[?#].*/, "").lastIndexOf('/') + 1);
+        } else {
             return '';
         }
     }
-    
+
 
     get decodingPromise() {
         return this._decodingPromise;
     }
 
     get volume() {
-        console.log("volume");
-        return 0;
+        const message = {
+            event: "get_properties",
+            properties: ["volume"]
+        };
+
+        return this.sendMessage(message);
     }
 
     set volume(volume) {
-        console.log("volume :" + volume);
+        const message = {
+            event: "set_properties",
+            properties: { "volume": volume }
+        };
+
+        this.sendMessage(message);
     }
 
     set muted(muted) {
-        console.log("muted :" + muted);
+        const message = {
+            event: "set_properties",
+            properties: { "muted": muted }
+        };
+
+        this.sendMessage(message);
     }
 
     get muted() {
-        console.log("muted ");
-        return false;
+        const message = {
+            event: "get_properties",
+            properties: ["muted"]
+        };
+
+        return this.sendMessage(message);
+    }
+
+    set connections(value) {
+        const message = {
+            event: "set_properties",
+            properties: { "connections": value }
+        };
+
+        this.sendMessage(message);
+    }
+
+    get connections() {
+        const message = {
+            event: "get_properties",
+            properties: ["connections"]
+        };
+
+        return this.sendMessage(message);
+    }
+
+    get non_connected() {
+        const message = {
+            event: "get_properties",
+            properties: ["nonConnected"]
+        };
+
+        return this.sendMessage(message);
+    }
+
+    set non_connected(value) {
+        const message = {
+            event: "set_properties",
+            properties: { "nonConnected": value }
+        };
+
+        this.sendMessage(message);
+    }
+
+    set stats(value) {
+        const message = {
+            event: "set_properties",
+            properties: { "stats": value }
+        };
+
+        this.sendMessage(message);
+    }
+
+    get stats() {
+        const message = {
+            event: "get_properties",
+            properties: ["stats"]
+        };
+
+        return this.sendMessage(message);
+    }
+
+
+    set reports(value) {
+        const message = {
+            event: "set_properties",
+            properties: { "reports": value }
+        };
+
+        this.sendMessage(message);
     }
 
     get reports() {
-        return this.enable_reports;
-    }
-
-    set reports(value) {
-        this.enable_reports = value;
         const message = {
-            event:"reports",
-            enable:value
+            event: "get_properties",
+            properties: ["reports"]
         };
 
-        if (window[this.core]){
-            try{
-                (window as any)[this.core]({ data: message });
-            }catch(error){
-                console.log(error.message);
-            }
-        }
+        return this.sendMessage(message);
     }
 
 
-    play():void{
-        console.log("play");
+    play(): void {
+        const message = {
+            event: "set_properties",
+            properties: { "play": true }
+        };
+
+        this.sendMessage(message);
     }
 
-    pause():void{
-        console.log("pause");
+    pause(): void {
+        const message = {
+            event: "set_properties",
+            properties: { "pause": true }
+        };
+
+        this.sendMessage(message);
     }
 
-    load():void{
+    load(): void {
         console.log("load");
     }
 
-    print_graph(elt_id :string):void{
-        const message = {
-            event:"graph",
-            id:elt_id
-        };
-
-        if (window[this.core]){
-            try{
-                (window as any)[this.core]({ data: message });
-            }catch(error){
-                console.log(error.message);
-            }
-        }
-    }
-
-    print_stats(elt_id :string):void{
-        const message = {
-            event:"graph",
-            id:elt_id
-        };
-
-        if (window[this.core]){
-            try{
-                (window as any)[this.core]({ data: message });
-            }catch(error){
-                console.log(error.message);
-            }
-        }
-    }
-
-    print_status(elt_id :string):void{
-        const message = {
-            event:"status",
-            id:elt_id
-        };
-
-        if (window[this.core]){
-            try{
-                (window as any)[this.core]({ data: message });
-            }catch(error){
-                console.log(error.message);
-            }
-        }
-    }
-
-    print_reports(elt_id :string):void{
-        const message = {
-            event:"reports",
-            id:elt_id
-        };
-
-        if (window[this.core]){
-            try{
-                (window as any)[this.core]({ data: message });
-            }catch(error){
-                console.log(error.message);
-            }
-        }
-    }
-
-    canPlayType(type: string): CanPlayTypeResult{
+    canPlayType(type: string): CanPlayTypeResult {
         return "";
     }
 
@@ -180,6 +200,16 @@ class UniversalCanvas extends HTMLCanvasElement {
 
     }
 
+    sendMessage(message) {
+        if (window[this.core]) {
+            try {
+                return (window as any)[this.core]({ data: message });
+            } catch (error) {
+                console.log(error.message);
+            }
+        }
+    }
+
     launchNoWorker(script, message, resolve) {
         const self = this;
 
@@ -198,11 +228,11 @@ class UniversalCanvas extends HTMLCanvasElement {
         }
 
         function init() {
-            if (window[self.core]){
-                try{
+            if (window[self.core]) {
+                try {
                     (window as any)[self.core]({ data: message });
                     self.dispatchEvent(new CustomEvent('loadedmetadata'));
-                }catch(error){
+                } catch (error) {
                     console.log(error.message);
                 }
             }
@@ -229,18 +259,18 @@ class UniversalCanvas extends HTMLCanvasElement {
     async universal_decode(): Promise<string> {
         return new Promise(async (main_resolve, _main_reject) => {
             let mime = "";
-            try{
+            try {
                 const parsed_url = new URL(this.src);
-                if(parsed_url.protocol === 'blob:'){
+                if (parsed_url.protocol === 'blob:') {
                     // We can't fetch head of a blob
                     const response = await fetch(this.src);
                     mime = response.headers.get("Content-Type");
-                }else if(parsed_url.protocol === 'http:' || parsed_url.protocol === 'https:'){
+                } else if (parsed_url.protocol === 'http:' || parsed_url.protocol === 'https:') {
                     const response = await fetch(this.src, { method: 'HEAD' });
                     mime = response.headers.get("Content-Type");
                 }
-            }catch {
-                console.log("failed to fetch head of the content "+ this.src);
+            } catch {
+                console.log("failed to fetch head of the content " + this.src);
             }
 
 
@@ -298,16 +328,16 @@ class UniversalCanvas extends HTMLCanvasElement {
             }
 
             if (this.getAttribute("with")) {
-                const all_using = await Promise.all(this.getAttribute("with").split(';').map(x => addScriptDirectoryAndExtIfNeeded(scriptDirectory, x,".wasm")));
+                const all_using = await Promise.all(this.getAttribute("with").split(';').map(x => addScriptDirectoryAndExtIfNeeded(scriptDirectory, x, ".wasm")));
                 dynamicLibraries = dynamicLibraries.concat(all_using);
             }
 
             const message = {
-                event:"init",
-                self:this,
-                module: { 
-                    dynamicLibraries: dynamicLibraries ,
-                    canvas : document.getElementById("canvas"),
+                event: "init",
+                self: this,
+                module: {
+                    dynamicLibraries: dynamicLibraries,
+                    canvas: document.getElementById("canvas"),
                     noInitialRun: true,
                     noExitRuntime: true
 
@@ -315,12 +345,13 @@ class UniversalCanvas extends HTMLCanvasElement {
                 wasmBinaryFile: wasmBinaryFile,
                 src: this.getAttribute("data-url"),
                 useWebcodec: this.getAttribute("use-webcodec") == "",
-                showStats: this.getAttribute("stats") == "",
-                showGraph: this.getAttribute("graph") == "",
-                showReport: this.getAttribute("report") == ""
+                showStats: this.getAttribute("stats"),
+                showGraph: this.getAttribute("graph"),
+                showReport: this.getAttribute("report"),
+                showStatus: this.getAttribute("status")
             };
 
-            if (!js){
+            if (!js) {
                 console.log("Warning! no accessor is used on the universal, using a usual tag instead...");
                 main_resolve(this.src);
                 return;
@@ -381,7 +412,7 @@ class UniversalCanvas extends HTMLCanvasElement {
 }
 
 if (!customElements.get('universal-canvas')) {
-    customElements.define('universal-canvas', UniversalCanvas, {extends: 'canvas' });
+    customElements.define('universal-canvas', UniversalCanvas, { extends: 'canvas' });
 }
 
 export { UniversalCanvas };

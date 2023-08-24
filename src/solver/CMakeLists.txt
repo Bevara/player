@@ -7,6 +7,7 @@ add_compile_definitions(GPAC_HAVE_CONFIG_H GPAC_DISABLE_DOC)
 include(exports.cmake)
 
 SET(SOLVER_SRC
+  event.c
   filter_register.c
   common.c
   properties.cpp

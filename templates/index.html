@@ -3,36 +3,95 @@
 <head>
 </head>
 <body>
-	<canvas id="test_canvas" is="universal-canvas" using="solver_1" with="xiph_1" data-url="https://bevara.ddns.net/test-signals/ogv/Big_Buck_Bunny_Trailer_400p.ogv" data-autoplay=true></canvas>
+	<canvas id="test_canvas" is="universal-canvas" using="solver_1" with="xiph_1" data-url="https://bevara.ddns.net/test-signals/ogv/Big_Buck_Bunny_Trailer_400p.ogv" stats graph report status></canvas>
 
     <br>
-    <span><label>Reporting</label><input type="checkbox" checked id="reports" onclick="
+    <span><label>Reporting</label><input type="checkbox"  id="reports" onclick="
         toggle_reporting();
       ">
       </span>
 
-      <span><label>Graph</label><input type="checkbox" checked id="graph" onclick="
+      <span><label>Graph</label><input type="checkbox"  id="graph" onclick="
         toggle_graph();
       ">
       </span>
 
-      <span><label>Stats</label><input type="checkbox" checked id="stats" onclick="
+      <span><label>Stats</label><input type="checkbox"  id="stats" onclick="
         toggle_stats();
       ">
       </span>
 
+      <span><label>Status</label><input type="checkbox"  id="stats" onclick="
+        toggle_status();
+      ">
+      </span>
+
+      <span><label>Non connected</label><input type="checkbox"  id="stats" onclick="
+        toggle_nonConnected();
+      ">
+      </span>
+
+
+    <span><label></label><button type="checkbox" checked id="stats" onclick="
+        toggle_play();
+      ">Play</button>
+      </span>
+
+      <span><label></label><button type="checkbox" checked id="stats" onclick="
+        toggle_pause();
+      ">Pause</button>
+      </span>
+
+      <div class="slidecontainer">
+        <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+      </div>
+
     <script>  
+
+var slider = document.getElementById("myRange");
+
+    enable_graph = false;
+    enable_nonConnected = false;
+    enable_reports = false;
+    enable_stats = false;
+
+
     const test_canvas = document.getElementById("test_canvas");
     function toggle_reporting() {
-            test_canvas.reports = true;
+        enable_reports = !enable_reports;
+        test_canvas.reports = enable_reports;
+    };
+
+    // Update the current slider value (each time you drag the slider handle)
+    slider.oninput = function() {
+      test_canvas.volume = this.value;
+    }
+
+    function toggle_play() {
+        test_canvas.play();
+    };
+
+    function toggle_pause() {
+        test_canvas.pause();
     };
 
     function toggle_graph() {
-            test_canvas.print_graph();
+        enable_graph = !enable_graph;
+        test_canvas.connections = enable_graph;
     };
 
     function toggle_stats() {
-            test_canvas.print_stats();
+        enable_stats = !enable_stats;
+        test_canvas.stats = enable_stats;
+    };
+
+    function toggle_nonConnected() {
+        enable_nonConnected = !enable_nonConnected;
+        test_canvas.non_connected = enable_nonConnected;
+    };
+
+    function toggle_status() {
+        test_canvas.status = !test_canvas.status;
     };
     </script>
 </body>

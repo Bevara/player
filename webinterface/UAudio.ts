@@ -237,9 +237,10 @@ class UniversalAudio extends HTMLAudioElement {
                 src : src,
                 dst: "out." + this.out,
                 useWebcodec: this.getAttribute("use-webcodec") == "",
-                showStats: this.getAttribute("stats") == "",
-                showGraph: this.getAttribute("graph") == "",
-                showReport: this.getAttribute("report") == ""
+                showStats: this.getAttribute("stats"),
+                showGraph: this.getAttribute("graph"),
+                showReport: this.getAttribute("report"),
+                showStatus: this.getAttribute("status")
             };
 
             if (!js){

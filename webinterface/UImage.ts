@@ -270,10 +270,11 @@ class UniversalImage extends HTMLImageElement {
                 src : src,
                 dst: "out." + this.out,
                 useWebcodec : false,
-                showStats: this.getAttribute("stats") == "",
-                showGraph: this.getAttribute("graph") == "",
-                showReport: this.getAttribute("report") == "",
-                get: this.out == "rgb" || this.out == "rgba" ?["width", "height"] :[]
+                showStats: this.getAttribute("stats"),
+                showGraph: this.getAttribute("graph"),
+                showReport: this.getAttribute("report"),
+                showStatus: this.getAttribute("status"),
+                get: this.out == "rgb" || this.out == "rgba" ? ["width", "height"] :[]
             };
 
             

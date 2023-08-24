@@ -9,6 +9,24 @@
 	let reportElement = null;
 	let statsElement = null;
 
+	function get_properties(props) {
+		const json_str = JSON.stringify(props);
+		var res = module.ccall('get_properties', // name of C function
+			'string', // return type
+			['string'], // argument types
+			[json_str]);
+		return JSON.parse(res);
+	}
+
+	function set_properties(props) {
+		const json_str = JSON.stringify(props);
+		var res = module.ccall('set_properties', // name of C function
+			'string', // return type
+			['string'], // argument types
+			[json_str]);
+		return JSON.parse(res);
+	}
+
 	async function init(m) {
 		const params = m.data.module ? m.data.module : {};
 		let args = [];
@@ -104,36 +122,19 @@
 		}
 
 		register_fns = register_fns.concat(Object.keys(module).filter(x => x.startsWith("dynCall_") && x.endsWith("_register")));
-
-		if (m.data.showStats) {
+/*
+		if (m.data.showStats != null) {
 			args.push("-stats");
 		}
 
 		if (m.data.showGraph) {
-			args.push("-graph");
+			args.push("-graph" != null);
 		}
 
-		if (m.data.showReport) {
+		if (m.data.showReport != null) {
 			args.push("-r");
-		}
+		}*/
 
-		function getProperty(props) {
-			const json_str = JSON.stringify(props);
-			var res = module.ccall('get_properties', // name of C function
-				'string', // return type
-				['string'], // argument types
-				[json_str]);
-			return JSON.parse(res);
-		}
-
-		function setProperty(props) {
-			const json_str = JSON.stringify(props);
-			var res = module.ccall('set', // name of C function
-				'number', // return type
-				['number', 'string'], // argument types
-				[entry, json_str]);
-			return JSON.parse(res);
-		}
 		const GPAC = {};
 
 		//setProperty(args);
@@ -153,8 +154,9 @@
 			});
 			module.HEAP32[argv_ptr] = 0;
 
-			const gpac_em_sig_handler = module.cwrap('gpac_em_sig_handler', null, ['number']);
-			gpac_em_sig_handler(4);
+			//const gpac_em_sig_handler = module.cwrap('gpac_em_sig_handler', null, ['number']);
+			//gpac_em_sig_handler(4);
+			//setProperty({"graph":m.data.showGraph != null, "report":m.data.showReport  != null, "stats":m.data.showStats  != null})
 			try {
 				module["_main"](argc, argv);
 			} catch (e) {
@@ -174,36 +176,14 @@
 		}
 	};
 
-	async function reports(m) {		
-		const gpac_em_sig_handler = module.cwrap('gpac_em_sig_handler', null, ['number']);
-		gpac_em_sig_handler(4);
-	}
-
-	//set status
-	function set_status(str) {
-		statusElement.innerHTML = str;
-	}
-
-	function set_graph(str) {
-		graphElement.innerHTML = str;
-	}
-
-	function set_report(str) {
-		reportElement.innerHTML = str;
-	}
-
-	function set_stats(str) {
-		statsElement.innerHTML = str;
-	}
-
-
-
 	async function handle_message(m) {
 		switch (m.data.event) {
 			case "init":
 				return init(m);
-			case "reports":
-				return reports(m);
+			case "set_properties":
+				return set_properties(m.data.properties);
+			case "get_properties":
+				return get_properties(m.data.properties);				
 			default:
 				return;
 		}
