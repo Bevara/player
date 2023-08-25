@@ -126,17 +126,6 @@ void checkCallback()
 	}
 }
 
-const char* getConnections()
-{
-	gf_fs_print_connections(session);
-	return "test";
-}
-
-u32 getNonConnected()
-{
-	return enable_nonConnected;
-}
-
 u32 getStats()
 {
 	return enable_stats;

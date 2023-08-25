@@ -85,68 +85,48 @@ class UniversalCanvas extends HTMLCanvasElement {
 
     get connections() {
        const message = {
-            event: "get_properties",
-            properties: ["connections"]
+            event: "get_property",
+            property: "connections"
         };
 
-        return this.sendMessage(message)["connections"];
+        return this.sendMessage(message);
     }
+
+    get registered() {
+        const message = {
+             event: "get_properties",
+             properties: ["registered"]
+         };
+ 
+         return this.sendMessage(message)["registered"];
+     }
+
+     get connected() {
+        const message = {
+             event: "get_properties",
+             properties: ["connected"]
+         };
+ 
+         return this.sendMessage(message)["connected"];
+     }
+
+     properties(props : string[]){
+        const message = {
+            event: "get_properties",
+            properties: props
+        };
+
+        return this.sendMessage(message);
+     }
 
     get non_connected() {
         const message = {
-            event: "get_properties",
-            properties: ["nonConnected"]
+            event: "get_property",
+            property: "nonConnected"
         };
 
         return this.sendMessage(message);
     }
-
-    set non_connected(value) {
-        const message = {
-            event: "set_properties",
-            properties: { "nonConnected": value }
-        };
-
-        this.sendMessage(message);
-    }
-
-    set stats(value) {
-        const message = {
-            event: "set_properties",
-            properties: { "stats": value }
-        };
-
-        this.sendMessage(message);
-    }
-
-    get stats() {
-        const message = {
-            event: "get_properties",
-            properties: ["stats"]
-        };
-
-        return this.sendMessage(message);
-    }
-
-
-    set reports(value) {
-        const message = {
-            event: "set_properties",
-            properties: { "reports": value }
-        };
-
-        this.sendMessage(message);
-    }
-
-    get reports() {
-        const message = {
-            event: "get_properties",
-            properties: ["reports"]
-        };
-
-        return this.sendMessage(message);
-    }
-
 
     play(): void {
         const message = {

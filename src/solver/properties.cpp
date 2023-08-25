@@ -9,12 +9,15 @@ StringBuffer sb;
 
 extern "C"
 {
+   struct GF_FilterSession;
+   struct GF_FilterRegister;
+   struct GF_Filter;
+
+  extern GF_FilterSession *session;
 
   uint32_t getWidth();
    void printConnections(int);
-   const char *getConnections();
    void printNonConnected(int);
-   uint32_t getNonConnected();
    void printStats(int);
    uint32_t getStats();
    uint32_t getReports();
@@ -23,6 +26,12 @@ extern "C"
    void sendPlay();
    void sendPause();
    void sendVolume(const char *);
+   GF_Filter *gf_fs_get_filter(GF_FilterSession *session, uint32_t idx);
+   uint32_t gf_fs_filters_registers_count(GF_FilterSession *fsess);
+   uint32_t gf_fs_get_filters_count(GF_FilterSession *session);
+   GF_FilterRegister * gf_fs_get_filter_register(GF_FilterSession *fsess, uint32_t idx);
+   const char* gf_fs_filters_registers_name(GF_FilterRegister *reg);
+   const char *gf_filter_get_name(GF_Filter *filter);
 
    const char *get_properties(const char *json)
   {
@@ -45,14 +54,6 @@ extern "C"
       {
         out.AddMember(Value("height"), Value(0), out.GetAllocator());
       }
-      else if (strcmp(property, "connections") == 0)
-      {
-        out.AddMember(Value("connections"), Value(getConnections(), out.GetAllocator()), out.GetAllocator());
-      }
-      else if (strcmp(property, "nonConnected") == 0)
-      {
-        out.AddMember(Value("nonConnected"), Value(getNonConnected() ? true : false), out.GetAllocator());
-      }
       else if (strcmp(property, "stats") == 0)
       {
         out.AddMember(Value("stats"), Value(getStats() ? true : false), out.GetAllocator());
@@ -64,6 +65,39 @@ extern "C"
       else if (strcmp(property, "volume") == 0)
       {
         out.AddMember(Value("volume"), Value(getVolume()), out.GetAllocator());
+      }else if (strcmp(property, "registered") == 0)
+      {
+        uint32_t i, count;
+
+        Document registered;
+        registered.SetArray();
+        Document::AllocatorType& r = out.GetAllocator();
+
+
+        count=gf_fs_filters_registers_count(session);
+        for (i=0; i<count; i++) {
+          GF_FilterRegister* registered_filter = gf_fs_get_filter_register(session, i);
+          Value reg_name(gf_fs_filters_registers_name(registered_filter), r);
+          registered.PushBack(reg_name, r);
+	      }
+
+        out.AddMember(Value("registered"), registered, out.GetAllocator());
+      }else if (strcmp(property, "connected") == 0)
+      {
+        uint32_t i, count;
+
+        Document connected;
+        connected.SetArray();
+        Document::AllocatorType& r = out.GetAllocator();
+
+        count=gf_fs_get_filters_count(session);
+        for (i=0; i<count; i++) {
+          GF_Filter* filter = gf_fs_get_filter(session, i);
+          Value filter_name(gf_filter_get_name(filter), r);
+          connected.PushBack(filter_name, r);
+	      }
+
+        out.AddMember(Value("connected"), connected, out.GetAllocator());
       }
     }
 

@@ -18,6 +18,13 @@
 		return JSON.parse(res);
 	}
 
+	function get_property(prop) {
+		return module.ccall('get_property', // name of C function
+			'string', // return type
+			['string'], // argument types
+			[prop]);
+	}
+
 	function set_properties(props) {
 		const json_str = JSON.stringify(props);
 		var res = module.ccall('set_properties', // name of C function
@@ -225,7 +232,9 @@
 			case "set_properties":
 				return set_properties(m.data.properties);
 			case "get_properties":
-				return get_properties(m.data.properties);	
+				return get_properties(m.data.properties);
+			case "get_property":
+				return get_property(m.data.property);
 			default:
 				return;
 		}
