@@ -126,9 +126,10 @@ void checkCallback()
 	}
 }
 
-u32 getConnections()
+const char* getConnections()
 {
-	return enable_graph;
+	gf_fs_print_connections(session);
+	return "test";
 }
 
 u32 getNonConnected()

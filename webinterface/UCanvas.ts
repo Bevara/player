@@ -74,22 +74,22 @@ class UniversalCanvas extends HTMLCanvasElement {
         return this.sendMessage(message);
     }
 
-    set connections(value) {
+    /*set connections(value) {
         const message = {
             event: "set_properties",
             properties: { "connections": value }
         };
 
         this.sendMessage(message);
-    }
+    }*/
 
     get connections() {
-        const message = {
+       const message = {
             event: "get_properties",
             properties: ["connections"]
         };
 
-        return this.sendMessage(message);
+        return this.sendMessage(message)["connections"];
     }
 
     get non_connected() {
@@ -348,7 +348,7 @@ class UniversalCanvas extends HTMLCanvasElement {
                 showStats: this.getAttribute("stats"),
                 showGraph: this.getAttribute("graph"),
                 showReport: this.getAttribute("report"),
-                showStatus: this.getAttribute("status"),
+                showLogs: this.getAttribute("logs"),
                 print:this.getAttribute("print"),
                 printErr:this.getAttribute("printErr")
             };

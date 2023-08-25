@@ -240,7 +240,7 @@ class UniversalAudio extends HTMLAudioElement {
                 showStats: this.getAttribute("stats"),
                 showGraph: this.getAttribute("graph"),
                 showReport: this.getAttribute("report"),
-                showStatus: this.getAttribute("status"),
+                showLogs: this.getAttribute("logs"),
                 print:this.getAttribute("print"),
                 printErr:this.getAttribute("printErr")
             };

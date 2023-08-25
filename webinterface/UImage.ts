@@ -273,7 +273,7 @@ class UniversalImage extends HTMLImageElement {
                 showStats: this.getAttribute("stats"),
                 showGraph: this.getAttribute("graph"),
                 showReport: this.getAttribute("report"),
-                showStatus: this.getAttribute("status"),
+                showLogs: this.getAttribute("logs"),
                 get: this.out == "rgb" || this.out == "rgba" ? ["width", "height"] :[],
                 print:this.getAttribute("print"),
                 printErr:this.getAttribute("printErr")

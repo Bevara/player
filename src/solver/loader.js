@@ -160,18 +160,22 @@
 		}
 
 		register_fns = register_fns.concat(Object.keys(module).filter(x => x.startsWith("dynCall_") && x.endsWith("_register")));
-/*
+
 		if (m.data.showStats != null) {
 			args.push("-stats");
 		}
 
-		if (m.data.showGraph) {
-			args.push("-graph" != null);
+		if (m.data.showGraph != null) {
+			args.push("-graph");
 		}
 
 		if (m.data.showReport != null) {
 			args.push("-r");
-		}*/
+		}
+
+		if (m.data.showLogs != null) {
+			args.push("-logs="+m.data.showLogs);
+		}
 
 		const GPAC = {};
 
@@ -214,14 +218,14 @@
 		}
 	};
 
-	async function handle_message(m) {
+	function handle_message(m) {
 		switch (m.data.event) {
 			case "init":
 				return init(m);
 			case "set_properties":
 				return set_properties(m.data.properties);
 			case "get_properties":
-				return get_properties(m.data.properties);				
+				return get_properties(m.data.properties);	
 			default:
 				return;
 		}
