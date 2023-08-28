@@ -116,6 +116,7 @@ SET(STDLIB
     '_iconv_open'
     '___multi3'
     '_gmtime_r'
+    '_isalnum'
 )
 
 SET(EMSCRIPTEN

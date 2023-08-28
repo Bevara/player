@@ -62,9 +62,7 @@
 					  //text = text.replace(/</g, "&lt;");
 					  //text = text.replace(/>/g, "&gt;");
 					  //text = text.replace('\n', '<br>', 'g');
-					  if (GPAC.no_log)
-						console.log(text);
-					  else if (element) {
+					 if (element) {
 						element.value += text + "\n";
 						element.scrollTop = element.scrollHeight; // focus on bottom
 					  }
