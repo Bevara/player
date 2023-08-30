@@ -173,8 +173,8 @@ void sendPlay()
 		{
 			GF_FilterPid *pid = gf_filter_get_ipid(filter, 0);
 			GF_FilterEvent fevt;
-			GF_FEVT_INIT(fevt, GF_FEVT_PLAY,  pid);
-			gf_filter_send_event(filter, &fevt, GF_FALSE);
+			GF_FEVT_INIT(fevt, GF_FEVT_PLAY,  NULL);
+			gf_filter_pid_send_event(pid, &fevt);
 		}
 	}
 }
@@ -191,8 +191,8 @@ void sendPause()
 		{
 			GF_FilterPid *pid = gf_filter_get_ipid(filter, 0);
 			GF_FilterEvent fevt;
-			GF_FEVT_INIT(fevt, GF_FEVT_STOP,  pid);
-			gf_filter_send_event(filter, &fevt, GF_FALSE);
+			GF_FEVT_INIT(fevt, GF_FEVT_STOP,  NULL);
+			gf_filter_pid_send_event(pid, &fevt);
 		}
 	}
 }
