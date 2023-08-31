@@ -15,6 +15,7 @@ extern "C"
   struct GF_FilterPid;
   struct GF_List;
   struct GF_PropertyValue;
+  struct GF_FilterStats;
 
   extern GF_FilterSession *session;
 
@@ -54,6 +55,7 @@ extern "C"
   const char *gf_filter_pid_get_name(GF_FilterPid *pid);
   const GF_PropertyValue *gf_filter_pid_get_property(GF_FilterPid *PID, uint32_t prop_4cc);
   void gf_fs_lock_filters(GF_FilterSession *session, uint32_t do_lock);
+  const char* get_filter_stats(GF_Filter *filter);
 
   void print_filter_outputs(GF_Filter *f, Document *nodes, Document *links, Document::AllocatorType &allocator, GF_List *filters_done, GF_FilterPid *pid, GF_Filter *alias_for)
   {
@@ -181,7 +183,10 @@ extern "C"
     gf_list_del(dests);
   }
 
-  void print_filter_stats(const char* name, Document *stats, Document::AllocatorType &allocator){
+  void print_filter_stats(const char *name, Document *stats, Document::AllocatorType &allocator)
+  {
+    // GF_FilterStats stats;
+    // gf_fs_get_filter_stats(session, i, &stats);
     stats->AddMember(Value(name, allocator), Value("test"), allocator);
   }
 
@@ -192,6 +197,7 @@ extern "C"
     assert(document.IsArray());
 
     Document out;
+    Document::AllocatorType &r = out.GetAllocator();
     out.SetObject();
 
     for (Value::ConstValueIterator itr = document.Begin(); itr != document.End(); ++itr)
@@ -209,10 +215,6 @@ extern "C"
         {
           out.AddMember(Value("height"), Value(0), out.GetAllocator());
         }
-        else if (strcmp(property, "stats") == 0)
-        {
-          out.AddMember(Value("stats"), Value(getStats() ? true : false), out.GetAllocator());
-        }
         else if (strcmp(property, "reports") == 0)
         {
           out.AddMember(Value("reports"), Value(getReports() ? true : false), out.GetAllocator());
@@ -227,7 +229,6 @@ extern "C"
 
           Document registered;
           registered.SetArray();
-          Document::AllocatorType &r = out.GetAllocator();
 
           count = gf_fs_filters_registers_count(session);
           for (i = 0; i < count; i++)
@@ -245,7 +246,6 @@ extern "C"
 
           Document connected;
           connected.SetArray();
-          Document::AllocatorType &r = out.GetAllocator();
 
           count = gf_fs_get_filters_count(session);
           for (i = 0; i < count; i++)
@@ -268,7 +268,6 @@ extern "C"
           graph.SetObject();
           nodes.SetArray();
           links.SetArray();
-          Document::AllocatorType &r = out.GetAllocator();
 
           filters_done = gf_list_new();
 
@@ -295,23 +294,29 @@ extern "C"
           graph.AddMember(Value("nodes"), nodes, out.GetAllocator());
           graph.AddMember(Value("links"), links, out.GetAllocator());
           out.AddMember(Value("graph"), graph, out.GetAllocator());
-        }
-      }else if(itr->IsObject())
-      {
-        if (itr->HasMember("stats")){
-          assert(itr->GetObject()["stats"].IsArray());
-          Document stats;
-          stats.SetObject();
+        }else if (strcmp(property, "stats") == 0){
+            uint32_t i, count;
+            Document stats;
+            stats.SetObject();
 
-          gf_fs_lock_filters(session, 1);
-          for(const auto& filter_name : itr->GetObject()["stats"].GetArray()){
-            assert(filter_name.IsString());
+            count = gf_fs_get_filters_count(session);
 
-            print_filter_stats(filter_name.GetString(), &stats, out.GetAllocator());
-          }
-          gf_fs_lock_filters(session, 0);
+            for (i = 0; i < count; i++)
+            {
+              GF_Filter *filter = gf_fs_get_filter(session, i);
+              
+              const char* filter_stats = get_filter_stats(filter);
+              
+              Value filter_name(gf_filter_get_name(filter), r);
+              
+              if(filter_stats != NULL){
+                stats.AddMember(filter_name, Value(filter_stats, r), out.GetAllocator());
+              }else{
+                stats.AddMember(filter_name, Value(Type::kNullType), out.GetAllocator());
+              }
+            }
 
-          out.AddMember(Value("stats"), stats, out.GetAllocator());
+            out.AddMember(Value("stats"), stats, out.GetAllocator());
         }
       }
     }
