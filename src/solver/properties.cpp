@@ -55,8 +55,6 @@ extern "C"
   const GF_PropertyValue *gf_filter_pid_get_property(GF_FilterPid *PID, uint32_t prop_4cc);
   void gf_fs_lock_filters(GF_FilterSession *session, uint32_t do_lock);
 
-  void printallconnections();
-
   void print_filter_outputs(GF_Filter *f, Document *nodes, Document *links, Document::AllocatorType &allocator, GF_List *filters_done, GF_FilterPid *pid, GF_Filter *alias_for)
   {
     uint32_t i = 0;
@@ -183,8 +181,8 @@ extern "C"
     gf_list_del(dests);
   }
 
-  void print_filter_stats(const char* name){
-
+  void print_filter_stats(const char* name, Document *stats, Document::AllocatorType &allocator){
+    stats->AddMember(Value(name, allocator), Value("test"), allocator);
   }
 
   const char *get_properties(const char *json)
@@ -302,11 +300,18 @@ extern "C"
       {
         if (itr->HasMember("stats")){
           assert(itr->GetObject()["stats"].IsArray());
-          for (Value::ConstValueIterator itrStats =  itr->GetObject()["stats"].GetArray().Begin(); itr !=  itr->GetObject()["stats"].GetArray().End(); ++itr)
-          {
-            assert(itrStats->IsString());
-            print_filter_stats(itrStats->GetString());
+          Document stats;
+          stats.SetObject();
+
+          gf_fs_lock_filters(session, 1);
+          for(const auto& filter_name : itr->GetObject()["stats"].GetArray()){
+            assert(filter_name.IsString());
+
+            print_filter_stats(filter_name.GetString(), &stats, out.GetAllocator());
           }
+          gf_fs_lock_filters(session, 0);
+
+          out.AddMember(Value("stats"), stats, out.GetAllocator());
         }
       }
     }

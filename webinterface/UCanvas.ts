@@ -74,33 +74,6 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
         return this.sendMessage(message);
     }
 
-    /*set connections(value) {
-        const message = {
-            event: "set_properties",
-            properties: { "connections": value }
-        };
-
-        this.sendMessage(message);
-    }*/
-
-    get connections() {
-       const message = {
-            event: "get_property",
-            property: "connections"
-        };
-
-        return this.sendMessage(message);
-    }
-
-    get registered() {
-        const message = {
-             event: "get_properties",
-             properties: ["registered"]
-         };
- 
-         return this.sendMessage(message)["registered"];
-     }
-
      get connected() {
         const message = {
              event: "get_properties",
@@ -118,15 +91,6 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
 
         return this.sendMessage(message);
      }
-
-    get non_connected() {
-        const message = {
-            event: "get_property",
-            property: "nonConnected"
-        };
-
-        return this.sendMessage(message);
-    }
 
     play(): void {
         const message = {
