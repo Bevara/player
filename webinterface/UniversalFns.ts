@@ -31,6 +31,8 @@ function addScriptDirectoryAndExtIfNeeded(scriptDirectory, url, ext) {
 
 declare interface UniversalFn {
     properties(props : string[]);
+
+    set enable_reporting(value :boolean);
 }
 
 

@@ -83,6 +83,15 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
          return this.sendMessage(message)["connected"];
      }
 
+     set enable_reporting(value :boolean){
+        const message = {
+            event: "set_properties",
+            properties: { "enable_reporting": value }
+        };
+
+        this.sendMessage(message);
+     }
+
      properties(props : string[]){
         const message = {
             event: "get_properties",

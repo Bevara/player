@@ -41,6 +41,8 @@ extern "C"
   void sendPlay();
   void sendPause();
   void sendVolume(const char *);
+  
+  
   GF_Filter *gf_fs_get_filter(GF_FilterSession *session, uint32_t idx);
   uint32_t gf_fs_filters_registers_count(GF_FilterSession *fsess);
   uint32_t gf_fs_get_filters_count(GF_FilterSession *session);
@@ -55,6 +57,11 @@ extern "C"
   const char *gf_filter_pid_get_name(GF_FilterPid *pid);
   const GF_PropertyValue *gf_filter_pid_get_property(GF_FilterPid *PID, uint32_t prop_4cc);
   void gf_fs_lock_filters(GF_FilterSession *session, uint32_t do_lock);
+  void gf_fs_enable_reporting(GF_FilterSession *session, uint32_t reporting_on);
+
+
+
+
   const char* get_filter_stats(GF_Filter *filter);
 
   void print_filter_outputs(GF_Filter *f, Document *nodes, Document *links, Document::AllocatorType &allocator, GF_List *filters_done, GF_FilterPid *pid, GF_Filter *alias_for)
@@ -366,19 +373,11 @@ extern "C"
       }
     }
 
-    if (document.HasMember("stats"))
+    if (document.HasMember("enable_reporting"))
     {
-      assert(document["stats"].IsBool());
-      const bool stats = document["stats"].GetBool();
-
-      if (stats)
-      {
-        printStats(1);
-      }
-      else
-      {
-        printStats(0);
-      }
+      assert(document["enable_reporting"].IsBool());
+      const bool enable_reporting = document["enable_reporting"].GetBool();
+      gf_fs_enable_reporting(session, enable_reporting? 1 :0);
     }
 
     if (document.HasMember("reports"))

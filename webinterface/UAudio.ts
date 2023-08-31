@@ -47,8 +47,21 @@ class UniversalAudio extends HTMLAudioElement implements UniversalFn {
             properties: props
         };
 
-        return this.worker ? this.sendMessageWorker(message) : this.sendMessageNoWorker(message) ;
+        return this.sendMessage(message);
     }
+
+    set enable_reporting(value :boolean){
+        const message = {
+            event: "set_properties",
+            properties: { "enable_reporting": value }
+        };
+
+        this.sendMessage(message);
+     }
+
+     sendMessage(message){
+        return this.worker ? this.sendMessageWorker(message) : this.sendMessageNoWorker(message) ;
+     }
 
     sendMessageNoWorker(message) {
         if (window[this.core]) {
