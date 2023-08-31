@@ -1,7 +1,7 @@
 import JSZip = require("jszip");
-import { addScriptDirectoryAndExtIfNeeded } from "./UniversalFns";
+import { addScriptDirectoryAndExtIfNeeded,  UniversalFn} from "./UniversalFns";
 
-class UniversalCanvas extends HTMLCanvasElement {
+class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
     using: string;
     memory: Uint8Array;
 

@@ -29,4 +29,9 @@ function addScriptDirectoryAndExtIfNeeded(scriptDirectory, url, ext) {
       }
 }
 
-export {addScriptDirectoryAndExtIfNeeded};
+declare interface UniversalFn {
+    properties(props : string[]);
+}
+
+
+export {addScriptDirectoryAndExtIfNeeded, UniversalFn};

@@ -1,7 +1,7 @@
 import JSZip = require("jszip");
-import {addScriptDirectoryAndExtIfNeeded} from "./UniversalFns";
+import {addScriptDirectoryAndExtIfNeeded, UniversalFn} from "./UniversalFns";
 
-class UniversalImage extends HTMLImageElement {
+class UniversalImage extends HTMLImageElement implements UniversalFn {
     using: string;
     memory: Uint8Array;
 
@@ -111,6 +111,35 @@ class UniversalImage extends HTMLImageElement {
 
         }
 
+    }
+
+    properties(props : string[]){
+        const message = {
+            event: "get_properties",
+            properties: props
+        };
+
+        return this.worker ? this.sendMessageWorker(message) : this.sendMessageNoWorker(message) ;
+    }
+
+    sendMessageNoWorker(message) {
+        if (window[this.core]) {
+            try {
+                return (window as any)[this.core]({ data: message });
+            } catch (error) {
+                console.log(error.message);
+            }
+        }
+    }
+
+    sendMessageWorker(message) {
+        if (this.worker) {
+            this.worker.postMessage(message);
+
+            this.worker.addEventListener('message', m => {
+                return m.data;
+            });
+        }
     }
 
 

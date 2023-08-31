@@ -1,7 +1,7 @@
 import JSZip = require("jszip");
-import {addScriptDirectoryAndExtIfNeeded} from "./UniversalFns";
+import {addScriptDirectoryAndExtIfNeeded, UniversalFn} from "./UniversalFns";
 
-class UniversalAudio extends HTMLAudioElement {
+class UniversalAudio extends HTMLAudioElement implements UniversalFn {
     using: string;
     memory: Uint8Array;
 
@@ -41,6 +41,35 @@ class UniversalAudio extends HTMLAudioElement {
         return this._decodingPromise;
     }
 
+    properties(props : string[]){
+        const message = {
+            event: "get_properties",
+            properties: props
+        };
+
+        return this.worker ? this.sendMessageWorker(message) : this.sendMessageNoWorker(message) ;
+    }
+
+    sendMessageNoWorker(message) {
+        if (window[this.core]) {
+            try {
+                return (window as any)[this.core]({ data: message });
+            } catch (error) {
+                console.log(error.message);
+            }
+        }
+    }
+
+    sendMessageWorker(message) {
+        if (this.worker) {
+            this.worker.postMessage(message);
+
+            this.worker.addEventListener('message', m => {
+                return m.data;
+            });
+        }
+    }
+    
     dataURLToSrc(blob, cached) {
         if (!blob) return;
         if (this.useCache && this.cache && !cached) {
