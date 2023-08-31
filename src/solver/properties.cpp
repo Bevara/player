@@ -53,6 +53,7 @@ extern "C"
   GF_Filter *gf_filter_pid_enum_destinations(GF_FilterPid *pid, uint32_t idx);
   const char *gf_filter_pid_get_name(GF_FilterPid *pid);
   const GF_PropertyValue *gf_filter_pid_get_property(GF_FilterPid *PID, uint32_t prop_4cc);
+  void gf_fs_lock_filters(GF_FilterSession *session, uint32_t do_lock);
 
   void printallconnections();
 
@@ -61,15 +62,20 @@ extern "C"
     uint32_t i = 0;
     Document node;
     node.SetObject();
-    Value name(gf_filter_get_name(f), allocator);   
+    Value name(gf_filter_get_name(f), allocator);
     node.AddMember(Value("name"), name, allocator);
-    //node.AddMember(Value("index"), Value(idx), allocator);
+    // node.AddMember(Value("index"), Value(idx), allocator);
 
-    if (gf_filter_is_source(f)){
+    if (gf_filter_is_source(f))
+    {
       node.AddMember(Value("group"), Value(0), allocator);
-    }else if (gf_filter_is_sink(f)){
+    }
+    else if (gf_filter_is_sink(f))
+    {
       node.AddMember(Value("group"), Value(2), allocator);
-    }else {
+    }
+    else
+    {
       node.AddMember(Value("group"), Value(1), allocator);
     }
 
@@ -146,16 +152,16 @@ extern "C"
               break;
             alias = NULL;
           }
-          
+
           Document link;
           link.SetObject();
-          Value source_name(gf_filter_get_name(f), allocator);   
+          Value source_name(gf_filter_get_name(f), allocator);
           link.AddMember(Value("source"), source_name, allocator);
 
           if (alias)
           {
 
-            Value target_name(gf_filter_get_name(alias), allocator);            
+            Value target_name(gf_filter_get_name(alias), allocator);
             link.AddMember(Value("target"), target_name, allocator);
             links->PushBack(link, allocator);
             print_filter_outputs(alias, nodes, links, allocator, filters_done, pidout, fout);
@@ -177,6 +183,10 @@ extern "C"
     gf_list_del(dests);
   }
 
+  void print_filter_stats(const char* name){
+
+  }
+
   const char *get_properties(const char *json)
   {
     Document document;
@@ -188,99 +198,116 @@ extern "C"
 
     for (Value::ConstValueIterator itr = document.Begin(); itr != document.End(); ++itr)
     {
-      const char *property = itr->GetString();
+      if (itr->IsString())
+      {
 
-      if (strcmp(property, "width") == 0)
-      {
-        out.AddMember(Value("width"), Value(getWidth()), out.GetAllocator());
-      }
-      else if (strcmp(property, "height") == 0)
-      {
-        out.AddMember(Value("height"), Value(0), out.GetAllocator());
-      }
-      else if (strcmp(property, "stats") == 0)
-      {
-        out.AddMember(Value("stats"), Value(getStats() ? true : false), out.GetAllocator());
-      }
-      else if (strcmp(property, "reports") == 0)
-      {
-        out.AddMember(Value("reports"), Value(getReports() ? true : false), out.GetAllocator());
-      }
-      else if (strcmp(property, "volume") == 0)
-      {
-        out.AddMember(Value("volume"), Value(getVolume()), out.GetAllocator());
-      }
-      else if (strcmp(property, "registered") == 0)
-      {
-        uint32_t i, count;
+        const char *property = itr->GetString();
 
-        Document registered;
-        registered.SetArray();
-        Document::AllocatorType &r = out.GetAllocator();
-
-        count = gf_fs_filters_registers_count(session);
-        for (i = 0; i < count; i++)
+        if (strcmp(property, "width") == 0)
         {
-          GF_FilterRegister *registered_filter = gf_fs_get_filter_register(session, i);
-          Value reg_name(gf_fs_filters_registers_name(registered_filter), r);
-          registered.PushBack(reg_name, r);
+          out.AddMember(Value("width"), Value(getWidth()), out.GetAllocator());
         }
-
-        out.AddMember(Value("registered"), registered, out.GetAllocator());
-      }
-      else if (strcmp(property, "connected") == 0)
-      {
-        uint32_t i, count;
-
-        Document connected;
-        connected.SetArray();
-        Document::AllocatorType &r = out.GetAllocator();
-
-        count = gf_fs_get_filters_count(session);
-        for (i = 0; i < count; i++)
+        else if (strcmp(property, "height") == 0)
         {
-          GF_Filter *filter = gf_fs_get_filter(session, i);
-          Value filter_name(gf_filter_get_name(filter), r);
-          connected.PushBack(filter_name, r);
+          out.AddMember(Value("height"), Value(0), out.GetAllocator());
         }
-
-        out.AddMember(Value("connected"), connected, out.GetAllocator());
-      }
-      else if (strcmp(property, "graph") == 0)
-      {
-        uint32_t i, count;
-        Document graph;
-        Document nodes;
-        Document links;
-        GF_List *filters_done;
-
-        graph.SetObject();
-        nodes.SetArray();
-        links.SetArray();
-        Document::AllocatorType &r = out.GetAllocator();
-
-        filters_done = gf_list_new();
-
-        count = gf_fs_get_filters_count(session);
-
-        for (i = 0; i < count; i++)
+        else if (strcmp(property, "stats") == 0)
         {
-          GF_Filter *filter = gf_fs_get_filter(session, i);
-
-          if (gf_filter_get_ipid_count(filter) > 0)
-            continue;
-
-          if (gf_filter_get_opid_count(filter) == 0)
-            continue;
-
-          print_filter_outputs(filter, &nodes, &links, out.GetAllocator(), filters_done, NULL, NULL);
+          out.AddMember(Value("stats"), Value(getStats() ? true : false), out.GetAllocator());
         }
+        else if (strcmp(property, "reports") == 0)
+        {
+          out.AddMember(Value("reports"), Value(getReports() ? true : false), out.GetAllocator());
+        }
+        else if (strcmp(property, "volume") == 0)
+        {
+          out.AddMember(Value("volume"), Value(getVolume()), out.GetAllocator());
+        }
+        else if (strcmp(property, "registered") == 0)
+        {
+          uint32_t i, count;
 
-        gf_list_del(filters_done);
+          Document registered;
+          registered.SetArray();
+          Document::AllocatorType &r = out.GetAllocator();
 
-        graph.AddMember(Value("nodes"), nodes, out.GetAllocator());
-        graph.AddMember(Value("links"), links, out.GetAllocator());
-        out.AddMember(Value("graph"), graph, out.GetAllocator());
+          count = gf_fs_filters_registers_count(session);
+          for (i = 0; i < count; i++)
+          {
+            GF_FilterRegister *registered_filter = gf_fs_get_filter_register(session, i);
+            Value reg_name(gf_fs_filters_registers_name(registered_filter), r);
+            registered.PushBack(reg_name, r);
+          }
+
+          out.AddMember(Value("registered"), registered, out.GetAllocator());
+        }
+        else if (strcmp(property, "connected") == 0)
+        {
+          uint32_t i, count;
+
+          Document connected;
+          connected.SetArray();
+          Document::AllocatorType &r = out.GetAllocator();
+
+          count = gf_fs_get_filters_count(session);
+          for (i = 0; i < count; i++)
+          {
+            GF_Filter *filter = gf_fs_get_filter(session, i);
+            Value filter_name(gf_filter_get_name(filter), r);
+            connected.PushBack(filter_name, r);
+          }
+
+          out.AddMember(Value("connected"), connected, out.GetAllocator());
+        }
+        else if (strcmp(property, "graph") == 0)
+        {
+          uint32_t i, count;
+          Document graph;
+          Document nodes;
+          Document links;
+          GF_List *filters_done;
+
+          graph.SetObject();
+          nodes.SetArray();
+          links.SetArray();
+          Document::AllocatorType &r = out.GetAllocator();
+
+          filters_done = gf_list_new();
+
+          count = gf_fs_get_filters_count(session);
+          gf_fs_lock_filters(session, 1);
+
+          for (i = 0; i < count; i++)
+          {
+            GF_Filter *filter = gf_fs_get_filter(session, i);
+
+            if (gf_filter_get_ipid_count(filter) > 0)
+              continue;
+
+            if (gf_filter_get_opid_count(filter) == 0)
+              continue;
+
+            print_filter_outputs(filter, &nodes, &links, out.GetAllocator(), filters_done, NULL, NULL);
+          }
+
+          gf_fs_lock_filters(session, 0);
+
+          gf_list_del(filters_done);
+
+          graph.AddMember(Value("nodes"), nodes, out.GetAllocator());
+          graph.AddMember(Value("links"), links, out.GetAllocator());
+          out.AddMember(Value("graph"), graph, out.GetAllocator());
+        }
+      }else if(itr->IsObject())
+      {
+        if (itr->HasMember("stats")){
+          assert(itr->GetObject()["stats"].IsArray());
+          for (Value::ConstValueIterator itrStats =  itr->GetObject()["stats"].GetArray().Begin(); itr !=  itr->GetObject()["stats"].GetArray().End(); ++itr)
+          {
+            assert(itrStats->IsString());
+            print_filter_stats(itrStats->GetString());
+          }
+        }
       }
     }
 
