@@ -318,7 +318,8 @@ class UniversalImage extends HTMLImageElement implements UniversalFn {
                 showLogs: this.getAttribute("logs"),
                 get: this.out == "rgb" || this.out == "rgba" ? ["width", "height"] :[],
                 print:this.getAttribute("print"),
-                printErr:this.getAttribute("printErr")
+                printErr:this.getAttribute("printErr"),
+                noCleanupOnExit:this.getAttribute("noCleanupOnExit")
             };
 
             

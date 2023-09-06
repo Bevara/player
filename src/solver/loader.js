@@ -182,6 +182,10 @@
 			args.push("-logs="+m.data.showLogs);
 		}
 
+		if (m.data.noCleanupOnExit != null) {
+			args.push("-qe");
+		}
+
 		const GPAC = {};
 
 		//setProperty(args);

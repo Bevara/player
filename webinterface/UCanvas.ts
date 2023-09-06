@@ -303,7 +303,8 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
                 showReport: this.getAttribute("report"),
                 showLogs: this.getAttribute("logs"),
                 print:this.getAttribute("print"),
-                printErr:this.getAttribute("printErr")
+                printErr:this.getAttribute("printErr"),
+                noCleanupOnExit:this.getAttribute("noCleanupOnExit")
             };
 
             if (!js) {
