@@ -11,7 +11,7 @@ SET(SOLVER_SRC
   filter_register.c
   common.c
   properties.cpp
-  property.c
+  stats.c
   ${GPAC_LOCATION}/applications/gpac/gpac.c
   ${GPAC_LOCATION}/applications/gpac/gpac_help.c
 )

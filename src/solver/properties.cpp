@@ -60,10 +60,8 @@ extern "C"
   void gf_fs_enable_reporting(GF_FilterSession *session, uint32_t reporting_on);
 
 
-
-
-  const char* get_filter_stats(GF_Filter *filter);
-
+  #include "stats.h"
+  
   void print_filter_outputs(GF_Filter *f, Document *nodes, Document *links, Document::AllocatorType &allocator, GF_List *filters_done, GF_FilterPid *pid, GF_Filter *alias_for)
   {
     uint32_t i = 0;
@@ -190,13 +188,6 @@ extern "C"
     gf_list_del(dests);
   }
 
-  void print_filter_stats(const char *name, Document *stats, Document::AllocatorType &allocator)
-  {
-    // GF_FilterStats stats;
-    // gf_fs_get_filter_stats(session, i, &stats);
-    stats->AddMember(Value(name, allocator), Value("test"), allocator);
-  }
-
   const char *get_properties(const char *json)
   {
     Document document;
@@ -310,17 +301,39 @@ extern "C"
 
             for (i = 0; i < count; i++)
             {
+              Document stat;
+              stat.SetObject();
+
               GF_Filter *filter = gf_fs_get_filter(session, i);
-              
-              const char* filter_stats = get_filter_stats(filter);
-              
               Value filter_name(gf_filter_get_name(filter), r);
-              
-              if(filter_stats != NULL){
-                stats.AddMember(filter_name, Value(filter_stats, r), out.GetAllocator());
-              }else{
-                stats.AddMember(filter_name, Value(Type::kNullType), out.GetAllocator());
+
+              set_filter_stats(session, filter);
+              const char* filter_status = get_filter_status();
+              if(filter_status != NULL){
+                stat.AddMember(Value("Status"), Value(filter_status, out.GetAllocator()), out.GetAllocator());
               }
+
+              if (get_stream_type() != NULL){
+                stat.AddMember(Value("Stream type"), Value(get_stream_type(), out.GetAllocator()), out.GetAllocator());
+              }
+              
+              if (get_codecid() != NULL){
+                stat.AddMember(Value("Codec ID"), Value(get_codecid(), out.GetAllocator()), out.GetAllocator());
+              }
+              
+              //stat.AddMember(Value("EOS"), Value(is_in_eos() == 1? Type::kTrueType :  Type::kFalseType), out.GetAllocator());
+
+              if (gf_filter_get_ipid_count(filter) >0){
+                stat.AddMember(Value("Number of inputs"), Value(gf_filter_get_ipid_count(filter)), out.GetAllocator());
+                stat.AddMember(Value("Number of input packets"), Value(nb_in_packet()), out.GetAllocator());
+              }
+
+              if (gf_filter_get_opid_count(filter) >0){
+                stat.AddMember(Value("Number of outputs"), Value(gf_filter_get_opid_count(filter)), out.GetAllocator());
+                stat.AddMember(Value("Number of output packets"), Value(nb_out_packet()), out.GetAllocator());
+              }
+              
+              stats.AddMember(filter_name, stat, out.GetAllocator());
             }
 
             out.AddMember(Value("stats"), stats, out.GetAllocator());
