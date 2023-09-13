@@ -26,7 +26,7 @@ const char* get_stream_type(){
 }
 
 const char* get_codecid(){
-	const char* name = gf_codecid_name(stats.stream_type);
+	const char* name = gf_codecid_name(stats.codecid);
 
 	if(strcmp(name, "Codec Not Supported") == 0)
 		return NULL;
