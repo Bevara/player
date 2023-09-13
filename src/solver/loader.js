@@ -110,14 +110,20 @@
 		params["gpac_done"] = (code) => {
 			//const props  = getProperty(["width", "height"]);
 			if (code) console.log('(exit code ' + code + ')');
+			const message = {
+				"exit_code":code
+			};
+
 			if (m.data.dst) {
 				const res = FS.readFile(m.data.dst, { encoding: "binary" });
 				const blob = new Blob([res], { type: "application/octet-stream" });
-				if (ENVIRONMENT_IS_WORKER) {
-					postMessage({ blob: blob });
-				} else if (ENVIRONMENT_IS_WEB) {
-					on_done_resolve({ blob: blob });
-				}
+				message["blob"] = blob;
+			}
+
+			if (ENVIRONMENT_IS_WORKER) {
+				postMessage(message);
+			} else if (ENVIRONMENT_IS_WEB) {
+				on_done_resolve(message);
 			}
 		};
 

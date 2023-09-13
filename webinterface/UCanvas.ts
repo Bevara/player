@@ -183,7 +183,7 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
         function init() {
             if (window[self.core]) {
                 try {
-                    (window as any)[self.core]({ data: message });
+                    this._decodingPromise = (window as any)[self.core]({ data: message });
                     self.dispatchEvent(new CustomEvent('loadedmetadata'));
                 } catch (error) {
                     console.log(error.message);
