@@ -9,7 +9,6 @@ static u32 enable_nonConnected = 0;
 static u32 enable_stats = 0;
 static u32 enable_callbck = 0;
 
-
 static void bevara_print_report(GF_FilterSession *fsess, Bool is_init, Bool is_final)
 {
 	u32 i, count, nb_active;
@@ -160,7 +159,6 @@ void printReports(int value)
 	checkCallback();
 }
 
-
 void sendPlay()
 {
 	u32 i, count;
@@ -173,7 +171,7 @@ void sendPlay()
 		{
 			GF_FilterPid *pid = gf_filter_get_ipid(filter, 0);
 			GF_FilterEvent fevt;
-			GF_FEVT_INIT(fevt, GF_FEVT_PLAY,  NULL);
+			GF_FEVT_INIT(fevt, GF_FEVT_PLAY, NULL);
 			gf_filter_pid_send_event(pid, &fevt);
 		}
 	}
@@ -191,18 +189,65 @@ void sendPause()
 		{
 			GF_FilterPid *pid = gf_filter_get_ipid(filter, 0);
 			GF_FilterEvent fevt;
-			GF_FEVT_INIT(fevt, GF_FEVT_STOP,  NULL);
+			GF_FEVT_INIT(fevt, GF_FEVT_STOP, NULL);
 			gf_filter_pid_send_event(pid, &fevt);
 		}
 	}
 }
 
-void sendVolume(const char* vol)
+void sendVolume(const char *vol)
 {
-	gf_fs_send_update(session, "aout", NULL, "vol", vol,0);
+	gf_fs_send_update(session, "aout", NULL, "vol", vol, 0);
 }
 
 u32 getVolume()
 {
 	return 0;
+}
+
+GF_FilterPid *getFirstPidSink()
+{
+	u32 i, count;
+	count = gf_fs_get_filters_count(session);
+	for (i = 0; i < count; i++)
+	{
+		GF_Filter *filter;
+		filter = gf_fs_get_filter(session, i);
+		if (gf_filter_is_sink(filter))
+		{
+			return gf_filter_get_ipid(filter, 0);
+		}
+	}
+	return NULL;
+}
+
+u32 getWidth()
+{
+	u32 width = 0;
+	GF_FilterPid *ipid = getFirstPidSink();
+	if (ipid)
+	{
+		const GF_PropertyValue *p = gf_filter_pid_get_property(ipid, GF_PROP_PID_WIDTH);
+		return p->value.uint;
+	}
+
+	return 0;
+}
+
+u32 getHeight()
+{
+	u32 width = 0;
+	GF_FilterPid *ipid = getFirstPidSink();
+	if (ipid)
+	{
+		const GF_PropertyValue *p = gf_filter_pid_get_property(ipid, GF_PROP_PID_HEIGHT);
+		return p->value.uint;
+	}
+
+	return 0;
+}
+
+void destroy()
+{
+	gf_fs_del(session);
 }

@@ -9,7 +9,6 @@ include(exports.cmake)
 SET(SOLVER_SRC
   event.c
   filter_register.c
-  common.c
   properties.cpp
   stats.c
   ${GPAC_LOCATION}/applications/gpac/gpac.c

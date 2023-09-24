@@ -25,6 +25,13 @@
 			[prop]);
 	}
 
+	function destroy() {
+		return module.ccall('destroy', // name of C function
+			null, // return type
+			[], // argument types
+			[]);
+	}
+
 	function set_properties(props) {
 		const json_str = JSON.stringify(props);
 		var res = module.ccall('set_properties', // name of C function
@@ -234,17 +241,32 @@
 	};
 
 	function handle_message(m) {
+		let res = null;
 		switch (m.data.event) {
 			case "init":
-				return init(m);
+				res = init(m);
+				break;
 			case "set_properties":
-				return set_properties(m.data.properties);
+				res = set_properties(m.data.properties);
+				break;
 			case "get_properties":
-				return get_properties(m.data.properties);
+				res = get_properties(m.data.properties);
+				break;
 			case "get_property":
-				return get_property(m.data.property);
+				res = get_property(m.data.property);
+				break;
+			case "destroy":
+				res = destroy();
+				break;
 			default:
-				return;
+		}
+		
+		if (ENVIRONMENT_IS_WORKER) {
+			if (res.then == null){
+				postMessage(res);
+			}
+		} else if (ENVIRONMENT_IS_WEB) {
+			return res;
 		}
 	}
 

@@ -31,6 +31,8 @@ extern "C"
   uint32_t gf_filter_is_sink(GF_Filter *filter);
 
   uint32_t getWidth();
+  uint32_t getHeight();
+  
   void printConnections(int);
   void printNonConnected(int);
   void printStats(int);
@@ -211,7 +213,7 @@ extern "C"
         }
         else if (strcmp(property, "height") == 0)
         {
-          out.AddMember(Value("height"), Value(0), out.GetAllocator());
+          out.AddMember(Value("height"), Value(getHeight()), out.GetAllocator());
         }
         else if (strcmp(property, "reports") == 0)
         {
