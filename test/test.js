@@ -73,7 +73,7 @@ describe('solver', () => {
     create_test('img',
       'universal-img',
       "solver_1",
-      "libjxl_1;pngenc_1",
+      "libjxl_1;pngenc_1;jpgenc_1",
       "https://bevara.ddns.net/test-signals/JXL/test.jxl",
       "https://bevara.ddns.net/test-signals/out/jxl/test.png",
       done,
@@ -150,6 +150,20 @@ describe('#jxldec', () => {
       false);
   }).timeout(60000);
 
+  it('should decode test.jxl to jpeg with worker', (done) => {
+    create_test('img',
+      'universal-img',
+      "solver_1",
+      "libjxl_1;jpgenc_1",
+      "https://bevara.ddns.net/test-signals/JXL/test.jxl",
+      "https://bevara.ddns.net/test-signals/out/jxl/test.jpg",
+      done,
+      "jpg",
+      false,
+      false);
+  }).timeout(60000);
+
+
   it('should decode test.jxl to canvas with worker', (done) => {
     create_test('img',
       'universal-img',
@@ -174,5 +188,18 @@ describe('#jxldec', () => {
       "rgba",
       false,
       true);
+  }).timeout(60000);
+
+  it('should decode test.jxl to canvas with worker', (done) => {
+    create_test('img',
+      'universal-img',
+      "solver_1",
+      "libjxl_1",
+      "https://bevara.ddns.net/test-signals/JXL/test.jxl",
+      "https://bevara.ddns.net/test-signals/out/jxl/canvas.png",
+      done,
+      "rgb",
+      false,
+      false);
   }).timeout(60000);
 });
