@@ -122,9 +122,13 @@
 			};
 
 			if (m.data.dst) {
-				const res = FS.readFile(m.data.dst, { encoding: "binary" });
-				const blob = new Blob([res], { type: "application/octet-stream" });
-				message["blob"] = blob;
+				try{
+					const res = FS.readFile(m.data.dst, { encoding: "binary" });
+					const blob = new Blob([res], { type: "application/octet-stream" });
+					message["blob"] = blob;
+				}catch(e){
+					message["blob"] = null;
+				}
 			}
 
 			if (ENVIRONMENT_IS_WORKER) {

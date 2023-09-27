@@ -94,10 +94,15 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
     }
 
     processMessages(self, core, resolve) {
-        if (core.blob) {
-            self.dataURLToSrc(core.blob, false);
-            resolve(self.src);
+        if ("exit_code" in core){
+            if (core.blob) {
+                self.dataURLToSrc(core.blob, false);
+                resolve(self.src);
+            }else{
+                resolve(null);
+            }
         }
+        
 
         function clear_text(text) {
             return text
@@ -157,8 +162,7 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
 
         async function init() {
             const res = await (window as any)[self.core]({ data: message });
-            self.dataURLToSrc(res.blob, false);
-            resolve(self.src);
+            self.processMessages(self, res, resolve);
         }
 
         const scripts = document.querySelectorAll(`script[src$="${script}"]`);

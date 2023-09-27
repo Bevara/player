@@ -86,11 +86,6 @@ class UniversalImage extends HTMLImageElement implements UniversalFn {
     }
 
     async processMessages(self, core, resolve) {
-        if (core.blob) {
-            await self.dataURLToSrc(core.blob, false);
-            resolve(self.srcset);
-        }
-
         function clear_text(text) {
             return text
                 .replaceAll("[37m", '')
@@ -111,7 +106,15 @@ class UniversalImage extends HTMLImageElement implements UniversalFn {
             } else {
                 console.log(core.printErr);
             }
+        }
 
+        if ("exit_code" in core){
+            if (core.blob) {
+                await self.dataURLToSrc(core.blob, false);
+                resolve(self.srcset);
+            }else{
+                resolve(null);
+            }
         }
 
     }
@@ -195,8 +198,7 @@ class UniversalImage extends HTMLImageElement implements UniversalFn {
 
         async function init() {
             const res = await (window as any)[self.core]({ data: message });
-            await self.dataURLToSrc(res.blob, false);
-            resolve(self.srcset);
+            self.processMessages(self, res, resolve);
         }
 
         const scripts = document.querySelectorAll(`script[src$="${script}"]`);
