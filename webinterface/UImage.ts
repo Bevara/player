@@ -47,21 +47,22 @@ class UniversalImage extends HTMLImageElement implements UniversalFn {
 
         const canvas = new OffscreenCanvas(props.width, props.height);
         const data = new Uint8ClampedArray(await blob.arrayBuffer());
-        const imgData = new ImageData(data, props.width, props.height);
         const ctx = canvas.getContext('2d') as any;
-
+        let imgData;
         switch (format) {
             case "rgba":
+                imgData = new ImageData(data, props.width, props.height);
                 ctx.putImageData(imgData, 0, 0);
                 return await (canvas as any).convertToBlob();
             case "rgb":
+                imgData = new ImageData(props.width, props.height);
                 const dest = imgData.data;
                 const n = 4 * props.width * props.height;
                 let s = 0, d = 0;
                 while (d < n) {
-                    dest[d++] = res[s++];
-                    dest[d++] = res[s++];
-                    dest[d++] = res[s++];
+                    dest[d++] = data[s++];
+                    dest[d++] = data[s++];
+                    dest[d++] = data[s++];
                     dest[d++] = 255;    // skip alpha byte
                 }
 
