@@ -210,7 +210,7 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
     }
 
     async universal_decode(): Promise<string> {
-        return new Promise(async (main_resolve, _main_reject) => {
+        return new Promise(async (main_resolve, main_reject) => {
             let mime = "";
             try {
                 const parsed_url = new URL(this.src);
@@ -238,7 +238,7 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
                 const fetched_bvr = await fetch(this.src);
 
                 if (!fetched_bvr.ok) {
-                    main_resolve("");
+                    main_reject();
                     return;
                 }
 
@@ -309,11 +309,14 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
 
             if (!js) {
                 console.log("Warning! no accessor is used on the universal, using a usual tag instead...");
-                main_resolve(this.src);
+                main_reject(this.src);
                 return;
             }
-
-            this.launchNoWorker(js, message, main_resolve);
+            try {
+                this.launchNoWorker(js, message, main_resolve);
+            }catch(e){
+                main_reject();
+            }
         });
     }
 

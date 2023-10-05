@@ -1,5 +1,5 @@
 import JSZip = require("jszip");
-import {addScriptDirectoryAndExtIfNeeded, UniversalFn} from "./UniversalFns";
+import { addScriptDirectoryAndExtIfNeeded, UniversalFn } from "./UniversalFns";
 
 class UniversalAudio extends HTMLAudioElement implements UniversalFn {
     using: string;
@@ -16,7 +16,7 @@ class UniversalAudio extends HTMLAudioElement implements UniversalFn {
     error_attribute: Element | null;
 
     out = "wav";
-    scriptDirectory = document.currentScript? this.initScriptDirectory((document.currentScript as any).src) :"";
+    scriptDirectory = document.currentScript ? this.initScriptDirectory((document.currentScript as any).src) : "";
     useCache = false;
     useWorker = false;
     printProgess = false;
@@ -29,19 +29,19 @@ class UniversalAudio extends HTMLAudioElement implements UniversalFn {
 
     private _decodingPromise: Promise<string>;
 
-    private initScriptDirectory(src:string){
+    private initScriptDirectory(src: string) {
         if (src.indexOf('blob:') !== 0) {
-            return src.substr(0, src.replace(/[?#].*/, "").lastIndexOf('/')+1);
-          } else {
+            return src.substr(0, src.replace(/[?#].*/, "").lastIndexOf('/') + 1);
+        } else {
             return '';
         }
     }
-    
+
     get decodingPromise() {
         return this._decodingPromise;
     }
 
-    properties(props : string[]){
+    properties(props: string[]) {
         const message = {
             event: "get_properties",
             properties: props
@@ -50,18 +50,18 @@ class UniversalAudio extends HTMLAudioElement implements UniversalFn {
         return this.sendMessage(message);
     }
 
-    set enable_reporting(value :boolean){
+    set enable_reporting(value: boolean) {
         const message = {
             event: "set_properties",
             properties: { "enable_reporting": value }
         };
 
         this.sendMessage(message);
-     }
+    }
 
-     sendMessage(message){
-        return this.worker ? this.sendMessageWorker(message) : this.sendMessageNoWorker(message) ;
-     }
+    sendMessage(message) {
+        return this.worker ? this.sendMessageWorker(message) : this.sendMessageNoWorker(message);
+    }
 
     sendMessageNoWorker(message) {
         if (window[this.core]) {
@@ -82,7 +82,7 @@ class UniversalAudio extends HTMLAudioElement implements UniversalFn {
             });
         }
     }
-    
+
     dataURLToSrc(blob, cached) {
         if (!blob) return;
         if (this.useCache && this.cache && !cached) {
@@ -93,15 +93,15 @@ class UniversalAudio extends HTMLAudioElement implements UniversalFn {
     }
 
     processMessages(self, core, resolve) {
-        if ("exit_code" in core){
+        if ("exit_code" in core) {
             if (core.blob) {
                 self.dataURLToSrc(core.blob, false);
                 resolve(self.src);
-            }else{
+            } else {
                 resolve(null);
             }
         }
-        
+
 
         function clear_text(text) {
             return text
@@ -183,7 +183,7 @@ class UniversalAudio extends HTMLAudioElement implements UniversalFn {
     }
 
     async universal_decode(): Promise<string> {
-        return new Promise(async (main_resolve, _main_reject) => {
+        return new Promise(async (main_resolve, main_reject) => {
             if (this.useCache) {
                 try {
                     this.cache = this.cache || await caches.open('universal-audio');
@@ -198,33 +198,33 @@ class UniversalAudio extends HTMLAudioElement implements UniversalFn {
             }
 
             let mime = "";
-            try{
+            try {
                 const parsed_url = new URL(this.src);
-                if(parsed_url.protocol === 'blob:'){
+                if (parsed_url.protocol === 'blob:') {
                     // We can't fetch head of a blob
                     const response = await fetch(this.src);
                     mime = response.headers.get("Content-Type");
-                }else if(parsed_url.protocol === 'http:' || parsed_url.protocol === 'https:'){
+                } else if (parsed_url.protocol === 'http:' || parsed_url.protocol === 'https:') {
                     const response = await fetch(this.src, { method: 'HEAD' });
                     mime = response.headers.get("Content-Type");
                 }
-            }catch {
-                console.log("failed to fetch head of the content "+ this.src);
+            } catch {
+                console.log("failed to fetch head of the content " + this.src);
             }
 
-            
+
 
             let src = this.src;
             let js = null;
             let wasmBinaryFile = null;
-            let dynamicLibraries :string[] = [];
+            let dynamicLibraries: string[] = [];
 
             if (this.src.endsWith(".bvr") || mime == "application/x-bevara") {
                 const jszip = new JSZip();
                 const fetched_bvr = await fetch(this.src);
 
                 if (!fetched_bvr.ok) {
-                    main_resolve("");
+                    main_reject();
                     return;
                 }
 
@@ -234,12 +234,12 @@ class UniversalAudio extends HTMLAudioElement implements UniversalFn {
                 this.core = json_meta.core;
 
                 const getURLData = async (name) => {
-                    if (Array.isArray(name)){
-                        const blobs = await Promise.all(name.map(x=> zip.file(x).async("blob")));
-                        const urls = blobs.map(x=> URL.createObjectURL(x));
+                    if (Array.isArray(name)) {
+                        const blobs = await Promise.all(name.map(x => zip.file(x).async("blob")));
+                        const urls = blobs.map(x => URL.createObjectURL(x));
                         this.urlToRevoke = this.urlToRevoke.concat(urls);
                         return urls;
-                    }else if (typeof name == 'string') {
+                    } else if (typeof name == 'string') {
                         const blob = await zip.file(name).async("blob");
                         const url = URL.createObjectURL(blob);
                         this.urlToRevoke.push(url);
@@ -251,62 +251,65 @@ class UniversalAudio extends HTMLAudioElement implements UniversalFn {
                 src = (await getURLData(json_meta.source) as string);
                 js = await getURLData(json_meta.core + ".js");
                 wasmBinaryFile = await getURLData(json_meta.core + ".wasm");
-                dynamicLibraries = (await getURLData(json_meta.decoders.map(x=> x+".wasm")) as string[]);
+                dynamicLibraries = (await getURLData(json_meta.decoders.map(x => x + ".wasm")) as string[]);
             }
-            const scriptDirectory = this.getAttribute("script-directory")?this.getAttribute("script-directory"):"";
+            const scriptDirectory = this.getAttribute("script-directory") ? this.getAttribute("script-directory") : "";
 
-            if (this.getAttribute("using")){
+            if (this.getAttribute("using")) {
                 this.core = this.getAttribute("using");
-                js = await addScriptDirectoryAndExtIfNeeded(scriptDirectory, this.getAttribute("using"),".js");
-                wasmBinaryFile = await addScriptDirectoryAndExtIfNeeded(scriptDirectory, this.getAttribute("using"),".wasm");
+                js = await addScriptDirectoryAndExtIfNeeded(scriptDirectory, this.getAttribute("using"), ".js");
+                wasmBinaryFile = await addScriptDirectoryAndExtIfNeeded(scriptDirectory, this.getAttribute("using"), ".wasm");
             }
 
-            if (this.getAttribute("js")){
+            if (this.getAttribute("js")) {
                 //Overwrite js attribute
-                js = await addScriptDirectoryAndExtIfNeeded(scriptDirectory, this.getAttribute("js"),"");
+                js = await addScriptDirectoryAndExtIfNeeded(scriptDirectory, this.getAttribute("js"), "");
             }
 
-            if (this.getAttribute("with")){
-                const all_using = await Promise.all(this.getAttribute("with").split(';').map(x => addScriptDirectoryAndExtIfNeeded(scriptDirectory, x,".wasm")));
+            if (this.getAttribute("with")) {
+                const all_using = await Promise.all(this.getAttribute("with").split(';').map(x => addScriptDirectoryAndExtIfNeeded(scriptDirectory, x, ".wasm")));
                 dynamicLibraries = dynamicLibraries.concat(all_using);
             }
 
             const message = {
-                event:"init",
-                module: { 
-                    dynamicLibraries: dynamicLibraries ,
+                event: "init",
+                module: {
+                    dynamicLibraries: dynamicLibraries,
                     noInitialRun: true,
                     noExitRuntime: true
 
                 },
                 wasmBinaryFile: wasmBinaryFile,
-                src : src,
+                src: src,
                 dst: "out." + this.out,
                 useWebcodec: this.getAttribute("use-webcodec") == "",
                 showStats: this.getAttribute("stats"),
                 showGraph: this.getAttribute("graph"),
                 showReport: this.getAttribute("report"),
                 showLogs: this.getAttribute("logs"),
-                print:this.getAttribute("print"),
-                printErr:this.getAttribute("printErr"),
-                noCleanupOnExit:this.getAttribute("noCleanupOnExit")
+                print: this.getAttribute("print"),
+                printErr: this.getAttribute("printErr"),
+                noCleanupOnExit: this.getAttribute("noCleanupOnExit")
             };
 
-            if (!js){
+            if (!js) {
                 console.log("Warning! no accessor is used on the universal, using a usual tag instead...");
                 main_resolve(this.src);
                 return;
             }
-
-            this.getAttribute("use-worker") == "" ? this.launchWorker(js, message, main_resolve): this.launchNoWorker(js, message, main_resolve);
+            try {
+                this.getAttribute("use-worker") == "" ? this.launchWorker(js, message, main_resolve) : this.launchNoWorker(js, message, main_resolve);
+            } catch (e) {
+                main_reject();
+            }
         });
     }
 
 
     connectedCallback() {
         if (this.scriptDirectory.indexOf('blob:') !== 0) {
-            this.scriptDirectory = this.scriptDirectory.substr(0, this.scriptDirectory.replace(/[?#].*/, "").lastIndexOf('/')+1);
-          } else {
+            this.scriptDirectory = this.scriptDirectory.substr(0, this.scriptDirectory.replace(/[?#].*/, "").lastIndexOf('/') + 1);
+        } else {
             this.scriptDirectory = '';
         }
 
@@ -325,10 +328,10 @@ class UniversalAudio extends HTMLAudioElement implements UniversalFn {
             const core = this.getAttribute("using");
             document.head.removeChild(this.script);
             this.script = null;
-            if ((window as any)[core]){
+            if ((window as any)[core]) {
                 (window as any)[core] = null;
             }
-            
+
         }
     }
 

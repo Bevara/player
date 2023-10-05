@@ -36,6 +36,8 @@ SET(ZLIB
     '_inflate'
     '_inflateEnd'
     '_inflateInit2_'
+    '_inflateReset'
+    '_inflateReset2'
 )
 
 SET(STDLIB

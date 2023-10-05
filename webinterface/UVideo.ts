@@ -184,7 +184,7 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
     }
 
     async universal_decode(): Promise<string> {
-        return new Promise(async (main_resolve, _main_reject) => {
+        return new Promise(async (main_resolve, main_reject) => {
             if (this.useCache) {
                 try {
                     this.cache = this.cache || await caches.open('universal-video');
@@ -225,7 +225,7 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
                 const fetched_bvr = await fetch(this.src);
 
                 if (!fetched_bvr.ok) {
-                    main_resolve("");
+                    main_reject("");
                     return;
                 }
 
@@ -296,11 +296,14 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
 
             if (!js){
                 console.log("Warning! no accessor is used on the universal, using a usual tag instead...");
-                main_resolve(this.src);
+                main_reject(this.src);
                 return;
             }
-
-            this.getAttribute("use-worker") == "" ? this.launchWorker(js, message, main_resolve): this.launchNoWorker(js, message, main_resolve);
+            try {
+                this.getAttribute("use-worker") == "" ? this.launchWorker(js, message, main_resolve): this.launchNoWorker(js, message, main_resolve);
+            }catch(e){
+                main_reject();
+            }
         });
     }
 
