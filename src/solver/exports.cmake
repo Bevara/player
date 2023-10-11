@@ -120,6 +120,9 @@ SET(STDLIB
     '___multi3'
     '_gmtime_r'
     '_isalnum'
+    '_fmemopen'
+    '_fread'
+    '_fclose'
 )
 
 SET(EMSCRIPTEN
