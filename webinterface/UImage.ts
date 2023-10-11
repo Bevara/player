@@ -15,7 +15,7 @@ class UniversalImage extends HTMLImageElement implements UniversalFn {
     print_attribute: Element | null;
     error_attribute: Element | null;
 
-    out = "rgba";
+    out = "rgb";
     scriptDirectory = document.currentScript ? this.initScriptDirectory((document.currentScript as any).src) : "";
     useCache = false;
     useWorker = false;

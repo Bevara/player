@@ -10,6 +10,7 @@ SET(GPAC
     '_fin_register'
     '_httpin_register'
     '_writegen_register'
+    '_writeuf_register'
     '_wcdec_register'
     '_wcenc_register'
     '_webgrab_register'
