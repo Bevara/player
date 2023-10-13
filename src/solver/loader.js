@@ -266,7 +266,9 @@
 		}
 		
 		if (ENVIRONMENT_IS_WORKER) {
-			postMessage(res);
+			if (res && res.then == null){
+				postMessage(res);
+			}
 		} else if (ENVIRONMENT_IS_WEB) {
 			return res;
 		}
