@@ -1,5 +1,6 @@
 import JSZip = require("jszip");
 import { addScriptDirectoryAndExtIfNeeded, UniversalFn } from "./UniversalFns";
+const version = require("../version.js").version;
 
 class UniversalImage extends HTMLImageElement implements UniversalFn {
     using: string;
@@ -223,7 +224,7 @@ class UniversalImage extends HTMLImageElement implements UniversalFn {
         return new Promise(async (main_resolve, main_reject) => {
             if (this.useCache) {
                 try {
-                    this.cache = this.cache || await caches.open('universal-img');
+                    this.cache = this.cache || await caches.open('universal-img_'+version);
                 } catch (e) { }
                 const cachedImg = this.cache && await this.cache.match(this.src);
                 if (cachedImg) {
@@ -414,8 +415,8 @@ class UniversalImage extends HTMLImageElement implements UniversalFn {
     static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress', 'script-directory', 'use-worker', "debug", "js"]; }
 }
 
-if (!customElements.get('universal-img')) {
-    customElements.define('universal-img', UniversalImage, { extends: 'img' });
+if (!customElements.get('universal-img_'+version)) {
+    customElements.define('universal-img_'+version, UniversalImage, { extends: 'img' });
 }
 
 export { UniversalImage };

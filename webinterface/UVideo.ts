@@ -1,5 +1,6 @@
 import JSZip = require("jszip");
 import {addScriptDirectoryAndExtIfNeeded, UniversalFn} from "./UniversalFns";
+const version = require("../version.js").version;
 
 class UniversalVideo extends HTMLVideoElement implements UniversalFn {
     using: string;
@@ -187,7 +188,7 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
         return new Promise(async (main_resolve, main_reject) => {
             if (this.useCache) {
                 try {
-                    this.cache = this.cache || await caches.open('universal-video');
+                    this.cache = this.cache || await caches.open('universal-video_'+version);
                 } catch (e) { }
                 const cachedImg = this.cache && await this.cache.match(this.src);
                 if (cachedImg) {
@@ -369,8 +370,8 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
     static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress', 'script-directory', 'use-worker', "debug", "js"]; }
 }
 
-if (!customElements.get('universal-video')) {
-    customElements.define('universal-video', UniversalVideo, { extends: 'video' });
+if (!customElements.get('universal-video_'+version)) {
+    customElements.define('universal-video_'+version, UniversalVideo, { extends: 'video' });
 }
 
 export { UniversalVideo };

@@ -1,5 +1,6 @@
 import JSZip = require("jszip");
 import { addScriptDirectoryAndExtIfNeeded,  UniversalFn} from "./UniversalFns";
+const version = require("../version.js").version;
 
 class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
     using: string;
@@ -370,8 +371,8 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
     static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'progress', 'script-directory', "debug", "js", "use-webcodec"]; }
 }
 
-if (!customElements.get('universal-canvas')) {
-    customElements.define('universal-canvas', UniversalCanvas, { extends: 'canvas' });
+if (!customElements.get('universal-canvas_'+version)) {
+    customElements.define('universal-canvas_'+version, UniversalCanvas, { extends: 'canvas' });
 }
 
 export { UniversalCanvas };

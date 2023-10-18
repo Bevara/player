@@ -1,5 +1,6 @@
 import JSZip = require("jszip");
 import { addScriptDirectoryAndExtIfNeeded, UniversalFn } from "./UniversalFns";
+const version = require("../version.js").version;
 
 class UniversalAudio extends HTMLAudioElement implements UniversalFn {
     using: string;
@@ -186,7 +187,7 @@ class UniversalAudio extends HTMLAudioElement implements UniversalFn {
         return new Promise(async (main_resolve, main_reject) => {
             if (this.useCache) {
                 try {
-                    this.cache = this.cache || await caches.open('universal-audio');
+                    this.cache = this.cache || await caches.open('universal-audio_'+version);
                 } catch (e) { }
                 const cachedImg = this.cache && await this.cache.match(this.src);
                 if (cachedImg) {
@@ -373,8 +374,8 @@ class UniversalAudio extends HTMLAudioElement implements UniversalFn {
     static get observedAttributes() { return ['src', 'using', 'with', 'print', 'printerr', 'out', 'use-cache', 'progress', 'script-directory', 'use-worker', "debug", "use-webcodec"]; }
 }
 
-if (!customElements.get('universal-audio')) {
-    customElements.define('universal-audio', UniversalAudio, { extends: 'audio' });
+if (!customElements.get('universal-audio_'+version)) {
+    customElements.define('universal-audio_'+version, UniversalAudio, { extends: 'audio' });
 }
 
 export { UniversalAudio };
