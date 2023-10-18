@@ -9,7 +9,7 @@ module.exports = function (config) {
     files: [{ pattern: '@CMAKE_BINARY_DIR@/dist/universal-tags_'+version+'.js', watched: false, included: true },
     { pattern: '@CMAKE_BINARY_DIR@/dist/*.wasm', watched: false, included: false, served: true, nocache: false },
     { pattern: '@CMAKE_BINARY_DIR@/dist/*.js', watched: false, included: false, served: true, nocache: false },
-      'test/**/*.js'],
+      'test-player/**/*.js'],
     reporters: ['dots', 'junit'],
     port: 9876,  // karma web server port
     colors: true,
