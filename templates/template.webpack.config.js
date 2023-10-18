@@ -21,7 +21,7 @@ const config = {
     extensions: ['.tsx', '.ts', '.js'],
   },
   output: {
-    filename: 'universal-tags.v'+version+'.js',
+    filename: 'universal-tags_'+version+'.js',
     path: path.resolve("@CMAKE_BINARY_DIR@", 'dist'),
   },
   plugins: [
@@ -45,7 +45,7 @@ const config = {
 const config_img = {
   entry: './webinterface/UImage.ts',
   output: {
-    filename: 'universal-img.v'+version+'.js',
+    filename: 'universal-img_'+version+'.js',
     path: path.resolve("@CMAKE_BINARY_DIR@", 'dist'),
   },
   module: {
@@ -80,7 +80,7 @@ const config_img = {
 const config_audio = {
   entry: './webinterface/UAudio.ts',
   output: {
-    filename: 'universal-audio.v'+version+'.js',
+    filename: 'universal-audio_'+version+'.js',
     path: path.resolve("@CMAKE_BINARY_DIR@", 'dist'),
   },
   module: {
@@ -115,7 +115,7 @@ const config_audio = {
 const config_video = {
   entry: './webinterface/UVideo.ts',
   output: {
-    filename: 'universal-video.v'+version+'.js',
+    filename: 'universal-video_'+version+'.js',
     path: path.resolve("@CMAKE_BINARY_DIR@", 'dist'),
   },
   module: {
@@ -150,7 +150,7 @@ const config_video = {
 const config_canvas = {
   entry: './webinterface/UCanvas.ts',
   output: {
-    filename: 'universal-canvas.v'+version+'.js',
+    filename: 'universal-canvas_'+version+'.js',
     path: path.resolve("@CMAKE_BINARY_DIR@", 'dist'),
   },
   resolve: {
