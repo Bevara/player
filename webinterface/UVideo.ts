@@ -221,7 +221,7 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
             let wasmBinaryFile = null;
             let dynamicLibraries: string[] = [];
 
-            if (this.src.endsWith(".bvr") || mime == "application/x-bevara") {
+            if ((this.src && this.src.endsWith(".bvr")) || mime == "application/x-bevara") {
                 const jszip = new JSZip();
                 const fetched_bvr = await fetch(this.src);
 
