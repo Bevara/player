@@ -4,3 +4,6 @@
 [submodule "filters"]
 	path = filters
 	url = https://github.com/Bevara/filters.git
+[submodule "test-player"]
+	path = test-player
+	url = https://github.com/Bevara/test-player.git
