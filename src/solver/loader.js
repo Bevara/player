@@ -234,13 +234,15 @@
 				}
 			}
 		};
-		call_gpac();
 
 		if (ENVIRONMENT_IS_WEB) {
 			return new Promise((resolve, reject) => {
 				on_done_resolve = resolve;
 				on_done_reject = reject;
+				call_gpac();
 			});
+		}else{
+			call_gpac();
 		}
 	};
 
