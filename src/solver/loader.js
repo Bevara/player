@@ -1,4 +1,4 @@
-(() => {
+(async () => {
 	const ENVIRONMENT_IS_WEB = typeof window == 'object';
 	const ENVIRONMENT_IS_WORKER = typeof importScripts == 'function';
 
@@ -201,6 +201,10 @@
 
 		if (m.data.noCleanupOnExit != null) {
 			args.push("-qe");
+		}
+
+		if (m.data.autoplay != null && m.data.autoplay == true) {
+			args.push("-sloop");
 		}
 
 		const GPAC = {};

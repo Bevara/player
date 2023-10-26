@@ -181,10 +181,18 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
             }
         }
 
-        function init() {
+        async function init() {
             if (window[self.core]) {
                 try {
-                    this._decodingPromise = (window as any)[self.core]({ data: message });
+                    const ret = await (window as any)[self.core]({ data: message });
+                    
+
+                    if (self.getAttribute("autoplay") == null){
+                        self.createPlayButton(ret);
+                    }else{
+                        this._decodingPromise = ret;
+                    }
+
                     self.dispatchEvent(new CustomEvent('loadedmetadata'));
                 } catch (error) {
                     console.log(error.message);
@@ -305,7 +313,8 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
                 showLogs: this.getAttribute("logs"),
                 print:this.getAttribute("print"),
                 printErr:this.getAttribute("printErr"),
-                noCleanupOnExit:this.getAttribute("noCleanupOnExit")
+                noCleanupOnExit:this.getAttribute("noCleanupOnExit"),
+                autoplay:true
             };
 
             if (!js) {
@@ -313,12 +322,49 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
                 main_reject(this.src);
                 return;
             }
+
             try {
                 this.launchNoWorker(js, message, main_resolve);
             }catch(e){
                 main_reject();
             }
         });
+    }
+
+    createPlayButton(call_fn){
+        this.addEventListener('click', function(event) {
+            console.log("playing");
+            call_fn();
+        }, false);
+        /*
+        function addStyles(element, styles) {
+            for (const name in styles) {
+                element.style[name] = styles[name];
+            }
+        }
+
+        this.width = 960;
+        this.height = 540;
+        addStyles(this, {
+            display: 'block',
+            width: '100%'
+        });
+
+        const playButton = document.createElement('div');
+        playButton.innerHTML = PLAY_BUTTON;
+        
+        addStyles(playButton, {
+            zIndex: 2, position: 'absolute',
+            top: '0', bottom: '0', left: '0', right: '0',
+            maxWidth: '75px', maxHeight: '75px',
+            margin: 'auto',
+            opacity: '0.7',
+            cursor: 'pointer'
+        });*/
+        /*const ctx = this.getContext("2d");
+
+        ctx.fillStyle = "#FF0000";
+        ctx.fillRect(0, 0, 150, 75);*/
     }
 
 
