@@ -172,7 +172,12 @@
 			register_fns.push("_aout_register");
 			register_fns.push("_vout_register");
 			args.push("aout");
-			args.push("vout");
+
+			if (m.data.width != null && m.data.height != null) {
+				args.push("vout:wsize="+m.data.width+"x"+m.data.height);
+			}else{
+				args.push("vout");
+			}
 		}
 
 		if (m.data.useWebcodec) {
