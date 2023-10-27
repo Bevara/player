@@ -314,7 +314,7 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
                 print:this.getAttribute("print"),
                 printErr:this.getAttribute("printErr"),
                 noCleanupOnExit:this.getAttribute("noCleanupOnExit"),
-                autoplay:true
+                loop:this.getAttribute("noloop") == ""?false:true,
             };
 
             if (!js) {

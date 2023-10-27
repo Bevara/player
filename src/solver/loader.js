@@ -203,7 +203,7 @@
 			args.push("-qe");
 		}
 
-		if (m.data.autoplay != null && m.data.autoplay == true) {
+		if (m.data.loop != null && m.data.loop == true) {
 			args.push("-sloop");
 		}
 
