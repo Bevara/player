@@ -292,7 +292,8 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
                 showLogs: this.getAttribute("logs"),
                 print:this.getAttribute("print"),
                 printErr:this.getAttribute("printErr"),
-                noCleanupOnExit:this.getAttribute("noCleanupOnExit")
+                noCleanupOnExit:this.getAttribute("noCleanupOnExit"),
+                test : this.getAttribute("test")
             };
 
             if (!js){

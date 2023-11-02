@@ -212,6 +212,10 @@
 			args.push("-sloop");
 		}
 
+		if (m.data.test != null) {
+			args.push("-for-test");
+		}
+
 		const GPAC = {};
 
 		//setProperty(args);
