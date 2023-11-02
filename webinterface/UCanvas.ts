@@ -1,5 +1,5 @@
 import JSZip = require("jszip");
-import { addScriptDirectoryAndExtIfNeeded,  UniversalFn} from "./UniversalFns";
+import { addScriptDirectoryAndExtIfNeeded, launchNoWorker, sendMessageNoWorker, UniversalFn} from "./UniversalFns";
 const version = require("../version.js").version;
 
 class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
@@ -25,6 +25,7 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
     urlToRevoke = [];
 
     private _decodingPromise: Promise<string>;
+    private _messageHandlerNoWorker = null;
 
     private initScriptDirectory(src: string) {
         if (src.indexOf('blob:') !== 0) {
@@ -45,7 +46,7 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
             properties: ["volume"]
         };
 
-        return this.sendMessage(message);
+        return sendMessageNoWorker(this, message);
     }
 
     set volume(volume) {
@@ -54,7 +55,7 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
             properties: { "volume": volume }
         };
 
-        this.sendMessage(message);
+        sendMessageNoWorker(this, message);
     }
 
     set muted(muted) {
@@ -63,7 +64,7 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
             properties: { "muted": muted }
         };
 
-        this.sendMessage(message);
+        sendMessageNoWorker(this, message);
     }
 
     get muted() {
@@ -72,7 +73,7 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
             properties: ["muted"]
         };
 
-        return this.sendMessage(message);
+        return sendMessageNoWorker(this, message);
     }
 
      get connected() {
@@ -81,7 +82,7 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
              properties: ["connected"]
          };
  
-         return this.sendMessage(message)["connected"];
+         return sendMessageNoWorker(this, message)["connected"];
      }
 
      set enable_reporting(value :boolean){
@@ -90,7 +91,7 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
             properties: { "enable_reporting": value }
         };
 
-        this.sendMessage(message);
+        sendMessageNoWorker(this, message);
      }
 
      properties(props : string[]){
@@ -99,7 +100,7 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
             properties: props
         };
 
-        return this.sendMessage(message);
+        return sendMessageNoWorker(this, message);
      }
 
     play(): void {
@@ -108,7 +109,7 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
             properties: { "play": true }
         };
 
-        this.sendMessage(message);
+        sendMessageNoWorker(this, message);
     }
 
     pause(): void {
@@ -117,7 +118,7 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
             properties: { "pause": true }
         };
 
-        this.sendMessage(message);
+        sendMessageNoWorker(this, message);
     }
 
     load(): void {
@@ -152,70 +153,6 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
 
         }
 
-    }
-
-    sendMessage(message) {
-        if (window[this.core]) {
-            try {
-                return (window as any)[this.core]({ data: message });
-            } catch (error) {
-                console.log(error.message);
-            }
-        }
-    }
-
-    launchNoWorker(script, message, resolve) {
-        const self = this;
-
-        function addLoadEvent(script, func) {
-            var oldonload = script.onload;
-            if (typeof script.onload != 'function') {
-                script.onload = func;
-            } else {
-                script.onload = function () {
-                    if (oldonload) {
-                        oldonload();
-                    }
-                    func();
-                };
-            }
-        }
-
-        async function init() {
-            if (window[self.core]) {
-                try {
-                    const ret = await (window as any)[self.core]({ data: message });
-                    
-
-                    if (self.getAttribute("autoplay") == null){
-                        self.createPlayButton(ret);
-                    }else{
-                        this._decodingPromise = ret;
-                    }
-
-                    self.dispatchEvent(new CustomEvent('loadedmetadata'));
-                } catch (error) {
-                    console.log(error.message);
-                }
-            }
-        }
-
-        const scripts = document.querySelectorAll(`script[src$="${script}"]`);
-
-        if (scripts.length > 0) {
-            const coreInit = (window as any)[self.core];
-            if (coreInit) {
-                init();
-            } else {
-                addLoadEvent(scripts[0], init);
-            }
-        } else {
-            const script_elt = document.createElement('script');
-            script_elt.src = script;
-            addLoadEvent(script_elt, init);
-            document.head.appendChild(script_elt);
-            this.script = script_elt;
-        }
     }
 
     async universal_decode(): Promise<string> {
@@ -326,47 +263,11 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
             }
 
             try {
-                this.launchNoWorker(js, message, main_resolve);
+                launchNoWorker(this, js, message, main_resolve);
             }catch(e){
                 main_reject();
             }
         });
-    }
-
-    createPlayButton(call_fn){
-        this.addEventListener('click', function(event) {
-            console.log("playing");
-            call_fn();
-        }, false);
-        /*
-        function addStyles(element, styles) {
-            for (const name in styles) {
-                element.style[name] = styles[name];
-            }
-        }
-
-        this.width = 960;
-        this.height = 540;
-        addStyles(this, {
-            display: 'block',
-            width: '100%'
-        });
-
-        const playButton = document.createElement('div');
-        playButton.innerHTML = PLAY_BUTTON;
-        
-        addStyles(playButton, {
-            zIndex: 2, position: 'absolute',
-            top: '0', bottom: '0', left: '0', right: '0',
-            maxWidth: '75px', maxHeight: '75px',
-            margin: 'auto',
-            opacity: '0.7',
-            cursor: 'pointer'
-        });*/
-        /*const ctx = this.getContext("2d");
-
-        ctx.fillStyle = "#FF0000";
-        ctx.fillRect(0, 0, 150, 75);*/
     }
 
 
