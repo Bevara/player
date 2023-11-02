@@ -1,6 +1,7 @@
 import JSZip = require("jszip");
 import { addScriptDirectoryAndExtIfNeeded, launchNoWorker, sendMessageNoWorker, UniversalFn} from "./UniversalFns";
 const version = require("../version.js").version;
+import '@ungap/custom-elements';
 
 class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
     using: string;
