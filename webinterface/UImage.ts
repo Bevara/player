@@ -1,5 +1,5 @@
 import JSZip = require("jszip");
-import { addScriptDirectoryAndExtIfNeeded, UniversalFn } from "./UniversalFns";
+import { addScriptDirectoryAndExtIfNeeded, launchNoWorker, sendMessageNoWorker, UniversalFn } from "./UniversalFns";
 const version = require("../version.js").version;
 
 class UniversalImage extends HTMLImageElement implements UniversalFn {
@@ -30,6 +30,8 @@ class UniversalImage extends HTMLImageElement implements UniversalFn {
 
     private _decodingPromise: Promise<string>;
 
+    private _messageHandlerNoWorker = null;
+
     private initScriptDirectory(src: string) {
         if (src.indexOf('blob:') !== 0) {
             return src.substr(0, src.replace(/[?#].*/, "").lastIndexOf('/') + 1);
@@ -45,6 +47,14 @@ class UniversalImage extends HTMLImageElement implements UniversalFn {
     async convertWithCanvas(format, blob) {
         const res = blob;
         const props = await this.properties(["width", "height"]);
+
+        if (this.getAttribute("noCleanupOnExit") == null){
+            const message = {
+                event: "destroy"
+            };
+    
+            this.sendMessage(message);
+        }
 
         const canvas = new OffscreenCanvas(props.width, props.height);
         const data = new Uint8ClampedArray(await blob.arrayBuffer());
@@ -139,17 +149,7 @@ class UniversalImage extends HTMLImageElement implements UniversalFn {
     }
 
     sendMessage(message) {
-        return this.worker ? this.sendMessageWorker(message) : this.sendMessageNoWorker(message);
-    }
-
-    sendMessageNoWorker(message) {
-        if (window[this.core]) {
-            try {
-                return (window as any)[this.core]({ data: message });
-            } catch (error) {
-                console.log(error.message);
-            }
-        }
+        return this.worker ? this.sendMessageWorker(message) : sendMessageNoWorker(this, message);
     }
 
     sendMessageWorker(message) {
@@ -178,46 +178,6 @@ class UniversalImage extends HTMLImageElement implements UniversalFn {
         }
 
         this.worker = worker;
-    }
-
-    launchNoWorker(script, message, resolve) {
-        const self = this;
-
-        function addLoadEvent(script, func) {
-            var oldonload = script.onload;
-            if (typeof script.onload != 'function') {
-                script.onload = func;
-            } else {
-                script.onload = function () {
-                    if (oldonload) {
-                        oldonload();
-                    }
-                    func();
-                };
-            }
-        }
-
-        async function init() {
-            const res = await (window as any)[self.core]({ data: message });
-            self.processMessages(self, res, resolve);
-        }
-
-        const scripts = document.querySelectorAll(`script[src$="${script}"]`);
-
-        if (scripts.length > 0) {
-            const coreInit = (window as any)[self.core];
-            if (coreInit) {
-                init();
-            } else {
-                addLoadEvent(scripts[0], init);
-            }
-        } else {
-            const script_elt = document.createElement('script');
-            script_elt.src = script;
-            addLoadEvent(script_elt, init);
-            document.head.appendChild(script_elt);
-            this.script = script_elt;
-        }
     }
 
     async universal_decode(): Promise<string> {
@@ -329,8 +289,8 @@ class UniversalImage extends HTMLImageElement implements UniversalFn {
                 get: this.out == "rgb" || this.out == "rgba" ? ["width", "height"] : [],
                 print: this.getAttribute("print"),
                 printErr: this.getAttribute("printErr"),
-                //noCleanupOnExit:this.getAttribute("noCleanupOnExit")
-                noCleanupOnExit: true
+                noCleanupOnExit:this.getAttribute("noCleanupOnExit") || this.out == "rgb" || this.out == "rgba"
+                //noCleanupOnExit: true
             };
 
 
@@ -340,7 +300,7 @@ class UniversalImage extends HTMLImageElement implements UniversalFn {
                 return;
             }
             try {
-                this.getAttribute("use-worker") == "" ? this.launchWorker(js, message, main_resolve) : this.launchNoWorker(js, message, main_resolve);    
+                this.getAttribute("use-worker") == "" ? this.launchWorker(js, message, main_resolve) : launchNoWorker(this, js, message, main_resolve);    
             }catch(e){
                 main_reject();
             }

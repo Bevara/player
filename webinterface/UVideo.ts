@@ -1,5 +1,5 @@
 import JSZip = require("jszip");
-import {addScriptDirectoryAndExtIfNeeded, UniversalFn} from "./UniversalFns";
+import { addScriptDirectoryAndExtIfNeeded, launchNoWorker, sendMessageNoWorker, UniversalFn } from "./UniversalFns";
 const version = require("../version.js").version;
 
 class UniversalVideo extends HTMLVideoElement implements UniversalFn {
@@ -29,6 +29,8 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
     urlToRevoke = [];
 
     private _decodingPromise: Promise<string>;
+
+    private _messageHandlerNoWorker = null;
 
     private initScriptDirectory(src:string){
         if (src.indexOf('blob:') !== 0) {
@@ -60,20 +62,9 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
         this.sendMessage(message);
      }
 
-     sendMessage(message){
-        return this.worker ? this.sendMessageWorker(message) : this.sendMessageNoWorker(message) ;
-     }
-
-    sendMessageNoWorker(message) {
-        if (window[this.core]) {
-            try {
-                return (window as any)[this.core]({ data: message });
-            } catch (error) {
-                console.log(error.message);
-            }
-        }
+    sendMessage(message) {
+        return this.worker ? this.sendMessageWorker(message) : sendMessageNoWorker(this, message);
     }
-
     sendMessageWorker(message) {
         if (this.worker) {
             this.worker.postMessage(message);
@@ -142,46 +133,6 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
         }
 
         this.worker = worker;
-    }
-
-    launchNoWorker(script, message, resolve) {
-        const self = this;
-
-        function addLoadEvent(script, func) {
-            var oldonload = script.onload;
-            if (typeof script.onload != 'function') {
-                script.onload = func;
-            } else {
-                script.onload = function () {
-                    if (oldonload) {
-                        oldonload();
-                    }
-                    func();
-                };
-            }
-        }
-
-        async function init() {
-            const res = await (window as any)[self.core]({ data: message });
-            self.processMessages(self, res, resolve);
-        }
-
-        const scripts = document.querySelectorAll(`script[src$="${script}"]`);
-
-        if (scripts.length > 0) {
-            const coreInit = (window as any)[self.core];
-            if (coreInit) {
-                init();
-            } else {
-                addLoadEvent(scripts[0], init);
-            }
-        } else {
-            const script_elt = document.createElement('script');
-            script_elt.src = script;
-            addLoadEvent(script_elt, init);
-            document.head.appendChild(script_elt);
-            this.script = script_elt;
-        }
     }
 
     async universal_decode(): Promise<string> {
@@ -302,7 +253,7 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
                 return;
             }
             try {
-                this.getAttribute("use-worker") == "" ? this.launchWorker(js, message, main_resolve): this.launchNoWorker(js, message, main_resolve);
+                this.getAttribute("use-worker") == "" ? this.launchWorker(js, message, main_resolve) : launchNoWorker(this, js, message, main_resolve);
             }catch(e){
                 main_reject();
             }

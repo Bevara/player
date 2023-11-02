@@ -37,4 +37,56 @@ declare interface UniversalFn {
 }
 
 
-export {addScriptDirectoryAndExtIfNeeded, UniversalFn};
+
+
+function launchNoWorker(self, script, message, resolve) {
+
+    function addLoadEvent(script, func) {
+        var oldonload = script.onload;
+        if (typeof script.onload != 'function') {
+            script.onload = func;
+        } else {
+            script.onload = function () {
+                if (oldonload) {
+                    oldonload();
+                }
+                func();
+            };
+        }
+    }
+
+    async function init() {
+        self._messageHandlerNoWorker = await (window as any)[self.core]();
+        const res = await self._messageHandlerNoWorker({data:message}); 
+        self.processMessages(self, res, resolve);
+    }
+
+    const scripts = document.querySelectorAll(`script[src$="${script}"]`);
+
+    if (scripts.length > 0) {
+        const coreInit = (window as any)[self.core];
+        if (coreInit) {
+            init();
+        } else {
+            addLoadEvent(scripts[0], init);
+        }
+    } else {
+        const script_elt = document.createElement('script');
+        script_elt.src = script;
+        addLoadEvent(script_elt, init);
+        document.head.appendChild(script_elt);
+        this.script = script_elt;
+    }
+}
+
+function sendMessageNoWorker(self, message) {
+    if (window[self.core]) {
+        try {
+            return self._messageHandlerNoWorker({data:message});
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+}
+
+export {addScriptDirectoryAndExtIfNeeded, launchNoWorker, sendMessageNoWorker, UniversalFn};
