@@ -3,7 +3,7 @@
 
 GF_Err evt_ret_val;
 extern GF_FilterSession *session;
-void cleanup_file_io();
+//void cleanup_file_io();
 
 static u32 enable_reports = 0;
 static u32 enable_graph = 0;
@@ -252,5 +252,5 @@ u32 getHeight()
 void destroy()
 {
 	gf_fs_del(session);
-	cleanup_file_io();
+	//cleanup_file_io();
 }
