@@ -52,6 +52,8 @@ else
     $source_path/filters/configure --enable-debug
 fi
 
+make "${MAKEFLAGS}"
+
 echo "Configuring nodejs dependencies"
 cd $source_path
 npm install
