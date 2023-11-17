@@ -45,7 +45,7 @@ git submodule update --init --recursive
 
 echo "Configuring filters"
 cd $BUILD_DIR
-mkdir filters
+mkdir -p filters
 cd filters
 if test "$debuginfo" = "no"; then
     $source_path/filters/configure
