@@ -1,7 +1,22 @@
-set (THIRD_PARTIES ${CMAKE_SOURCE_DIR}/third_parties)
-set (THIRD_PARTIES_BINARIES ${CMAKE_BINARY_DIR}/third_parties)
+set (THIRD_PARTIES ${CMAKE_SOURCE_DIR}/filters/third_parties)
+set (THIRD_PARTIES_BINARIES ${CMAKE_BINARY_DIR}/filters/third_parties)
 set (GPAC_LOCATION ${THIRD_PARTIES}/gpac)
+set (GPAC_BINARIES ${THIRD_PARTIES_BINARIES}/gpac)
+
 set(VERSION "1")
+
+set(USE_DEBUG "-g")
+set(USE_OPT "-O3")
+
+if(DEBUG_MODE)
+  set(USE_FLAGS "${USE_DEBUG}")
+else()
+  set(USE_FLAGS "${USE_OPT}")
+endif()
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${USE_FLAGS}")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${USE_FLAGS}")
+
 add_compile_definitions(GPAC_HAVE_CONFIG_H GPAC_DISABLE_DOC)
 
 include(exports.cmake)
@@ -37,4 +52,12 @@ target_link_libraries(solver_${VERSION}
   libgpac_static.a
 )
 
-target_include_directories(solver_${VERSION} PRIVATE ${GPAC_LOCATION}/src/utils)
+target_include_directories(solver_${VERSION} PRIVATE 
+  ${GPAC_BINARIES}
+  ${THIRD_PARTIES}/rapidjson/include
+  ${GPAC_LOCATION}/src/utils 
+  ${GPAC_LOCATION}/include 
+  )
+
+target_link_directories(solver_${VERSION} PRIVATE   
+${GPAC_BINARIES}/bin/gcc)

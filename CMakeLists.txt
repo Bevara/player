@@ -11,31 +11,13 @@ configure_file(templates/template.webpack.config.js ${CMAKE_SOURCE_DIR}/webpack.
 configure_file(templates/template.karma.conf.js ${CMAKE_SOURCE_DIR}/karma.conf.js)
 configure_file(webinterface/Bevara.ico ${CMAKE_BINARY_DIR}/favicon.ico)
 
-set(USE_DEBUG "-g")
-set(USE_OPT "-O3")
-
-if(DEBUG_MODE)
-  set(USE_FLAGS "${USE_DEBUG}")
-else()
-  set(USE_FLAGS "${USE_OPT}")
-endif()
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${USE_FLAGS}")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${USE_FLAGS}")
-
-include_directories(include
-                    third_parties/gpac/include 
-                    third_parties/rapidjson/include 
-                    ${CMAKE_BINARY_DIR}/third_parties/gpac
+file(GLOB WASM_FILTERS
+  "${CMAKE_BINARY_DIR}/filters/*.wasm"
 )
 
-
-link_directories(${CMAKE_BINARY_DIR}/third_parties/gpac/bin/gcc)
+file(COPY ${WASM_FILTERS} DESTINATION ${CMAKE_BINARY_DIR})
 
 add_subdirectory(src)
-add_subdirectory(filters)
-
-list(APPEND WASM_FILES ${CMAKE_BINARY_DIR}/core.wasm ${CMAKE_BINARY_DIR}/player.wasm)
 
 add_custom_target (serve
   COMMAND npm run serve
