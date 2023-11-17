@@ -44,6 +44,7 @@ echo "Init submodules"
 git submodule update --init --recursive
 
 echo "Configuring filters"
+cd $BUILD_DIR
 mkdir filters
 cd filters
 if test "$debuginfo" = "no"; then
