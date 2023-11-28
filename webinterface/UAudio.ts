@@ -82,7 +82,7 @@ class UniversalAudio extends HTMLAudioElement implements UniversalFn {
         if (this.useCache && this.cache && !cached) {
             this.cache.put(this.src, new Response(blob));
         }
-
+        
         this.src = URL.createObjectURL(blob);
     }
 
@@ -243,7 +243,8 @@ class UniversalAudio extends HTMLAudioElement implements UniversalFn {
                 showLogs: this.getAttribute("logs"),
                 print: this.getAttribute("print"),
                 printErr: this.getAttribute("printErr"),
-                noCleanupOnExit: this.getAttribute("noCleanupOnExit")
+                noCleanupOnExit: this.getAttribute("noCleanupOnExit"),
+                mime_type : this.out == "wav" ? "audio/wav": null
             };
 
             if (!js) {

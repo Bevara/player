@@ -1,7 +1,7 @@
 (async () => {
 	const ENVIRONMENT_IS_WEB = typeof window == 'object';
 	const ENVIRONMENT_IS_WORKER = typeof importScripts == 'function';
-	
+
 	async function initSolver() {
 
 
@@ -127,8 +127,14 @@
 				if (m.data.dst) {
 					try {
 						const res = FS.readFile(m.data.dst, { encoding: "binary" });
-						const blob = new Blob([res], { type: "application/octet-stream" });
-						message["blob"] = blob;
+						if (m.data.mime_type) {
+							message["blob"] = new Blob([res], { type: m.data.mime_type });
+						}
+
+						else {
+							message["blob"] = new Blob([res], { type: "application/octet-stream" });
+						}
+
 					} catch (e) {
 						message["blob"] = null;
 					}
