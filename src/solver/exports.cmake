@@ -127,6 +127,7 @@ SET(STDLIB
 
 SET(EMSCRIPTEN
     '_emscripten_longjmp'
+    '_saveSetjmp'
     '___threwValue'
     '___THREW__'
 )
