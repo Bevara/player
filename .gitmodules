@@ -4,3 +4,6 @@
 [submodule "test-player"]
 	path = test-player
 	url = https://github.com/Bevara/test-player.git
+[submodule "solver"]
+	path = solver
+	url = https://github.com/Bevara/solver.git

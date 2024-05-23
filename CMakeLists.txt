@@ -18,7 +18,7 @@ file(GLOB WASM_FILTERS
 file(COPY ${WASM_FILTERS} DESTINATION ${CMAKE_BINARY_DIR})
 
 add_subdirectory(filters)
-add_subdirectory(src)
+add_subdirectory(solver)
 
 add_custom_target (serve
   COMMAND npm run serve
