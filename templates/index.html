@@ -5,9 +5,14 @@
 </head>
 
 <body>
-    <audio is="universal-audio_1" src="https://bevara.ddns.net/test-signals/ogg/Median_test.ogg"
-        using="solver_1" with="vorbis_1" controls graph>
+  <div id="console" rows="8" readonly></div>
+  <canvas is="universal-canvas_1" data-url="https://bevara.ddns.net/test-signals/xvid/Big_Buck_Bunny_Trailer_400p.avi"
+        using="solver_1" with="avidmx_1;libxvid_1;libmad_1" graph print="console" printerr="console">
 
+           <!-- <canvas is="universal-canvas_1" data-url="https://bevara.ddns.net/test-signals/mpeg1/medical_demo.mpg"
+        using="solver_1" with="ffmpeg-mpeg1_1" graph > -->
+
+        <script src="universal-canvas_1.js"></script>
 </body>
 
 </html>
