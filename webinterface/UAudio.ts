@@ -82,7 +82,7 @@ class UniversalAudio extends HTMLAudioElement implements UniversalFn {
         if (this.useCache && this.cache && !cached) {
             this.cache.put(this.src, new Response(blob));
         }
-        
+
         this.src = URL.createObjectURL(blob);
     }
 
@@ -164,6 +164,7 @@ class UniversalAudio extends HTMLAudioElement implements UniversalFn {
                 }
             } catch {
                 console.log("failed to fetch head of the content " + this.src);
+                return;
             }
 
 
@@ -253,7 +254,7 @@ class UniversalAudio extends HTMLAudioElement implements UniversalFn {
                 return;
             }
             try {
-                this.getAttribute("use-worker") == "" ? this.launchWorker(js, message, main_resolve) : launchNoWorker(this, js, message, main_resolve); 
+                this.getAttribute("use-worker") == "" ? this.launchWorker(js, message, main_resolve) : launchNoWorker(this, js, message, main_resolve);
             } catch (e) {
                 main_reject();
             }

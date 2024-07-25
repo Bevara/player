@@ -53,7 +53,7 @@ class UniversalImage extends HTMLImageElement implements UniversalFn {
             const message = {
                 event: "destroy"
             };
-    
+
             this.sendMessage(message);
         }
 
@@ -209,6 +209,7 @@ class UniversalImage extends HTMLImageElement implements UniversalFn {
                 }
             } catch {
                 console.log("failed to fetch head of the content " + this.src);
+                return;
             }
 
 
@@ -301,11 +302,11 @@ class UniversalImage extends HTMLImageElement implements UniversalFn {
                 return;
             }
             try {
-                this.getAttribute("use-worker") == "" ? this.launchWorker(js, message, main_resolve) : launchNoWorker(this, js, message, main_resolve);    
+                this.getAttribute("use-worker") == "" ? this.launchWorker(js, message, main_resolve) : launchNoWorker(this, js, message, main_resolve);
             }catch(e){
                 main_reject();
             }
-            
+
         });
     }
 
