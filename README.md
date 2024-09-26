@@ -1,6 +1,6 @@
-# Bevara vscode editor
+# Bevara universal tags
 
-This is yet a small extension to help debugging decoders from Bevara products.
+These are the tags used to integrate Bevara player.
 
 ## Demo
 
