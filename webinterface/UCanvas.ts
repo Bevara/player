@@ -171,7 +171,6 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
                 }
             } catch {
                 console.log("failed to fetch head of the content " + this.src);
-                return;
             }
 
 
