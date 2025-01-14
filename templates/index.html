@@ -5,14 +5,13 @@
 </head>
 
 <body>
-  <div id="console" rows="8" readonly></div>
-  <canvas is="universal-canvas_1" data-url="https://bevara.ddns.net/test-signals/xvid/Big_Buck_Bunny_Trailer_400p.avi"
-        using="solver_1" with="avidmx_1;libxvid_1;libmad_1" graph print="console" printerr="console">
+  <img is="universal-img_1" src="https://bevara.com/demo/shoreline_JPEG2000.jp2" using="solver_1" with="openjpeg_1"  >
+  <img is="universal-img_1" src="https://bevara.com/demo/seastack_JPEGXL.jxl"
+        using="solver_1" with="libjxl_1">
 
-           <!-- <canvas is="universal-canvas_1" data-url="https://bevara.ddns.net/test-signals/mpeg1/medical_demo.mpg"
-        using="solver_1" with="ffmpeg-mpeg1_1" graph > -->
-
-        <script src="universal-canvas_1.js"></script>
+  <audio is="universal-audio_1" src="https://bevara.com/demo/Motivation.ac3" using="solver_1" with="liba52_1" controls>
+  </audio>
+  <canvas is="universal-canvas_1" data-url="https://bevara.com/demo/medical_demo_short.mpg" using="solver_1" with="ffmpeg-mpeg1_1" >
 </body>
 
 </html>
