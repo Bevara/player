@@ -249,6 +249,7 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
                 showGraph: this.getAttribute("graph"),
                 showReport: this.getAttribute("report"),
                 showLogs: this.getAttribute("logs"),
+                vbench: this.getAttribute("vbench"),
                 print:this.getAttribute("print"),
                 printErr:this.getAttribute("printErr"),
                 noCleanupOnExit:this.getAttribute("noCleanupOnExit"),
