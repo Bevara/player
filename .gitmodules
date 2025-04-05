@@ -7,3 +7,9 @@
 [submodule "solver"]
 	path = solver
 	url = https://github.com/Bevara/solver.git
+[submodule "solver_with_sdl"]
+	path = solver_with_sdl
+	url = https://github.com/Bevara/solver_with_sdl.git
+[submodule "solver_minimal"]
+	path = solver_minimal
+	url = https://github.com/Bevara/solver_minimal.git
