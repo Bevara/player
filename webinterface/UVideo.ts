@@ -40,7 +40,7 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
             return '';
         }
     }
-    
+
     get decodingPromise() {
         return this._decodingPromise;
     }
@@ -75,7 +75,7 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
             });
         }
     }
-    
+
     dataURLToSrc(blob, cached) {
         if (!blob) return;
         if (this.useCache && this.cache && !cached) {
@@ -95,7 +95,7 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
                 resolve(null);
             }
         }
-        
+
 
         function clear_text(text) {
             return text
@@ -227,7 +227,7 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
 
             const message = {
                 event:"init",
-                module: { 
+                module: {
                     dynamicLibraries: dynamicLibraries ,
                     noInitialRun: true,
                     noExitRuntime: true
@@ -235,9 +235,9 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
                 },
                 wasmBinaryFile: wasmBinaryFile,
                 src : src,
-                dst: "out." + this.out,
-                transcode:["c=avc", "c=aac"],
-                useWebcodec: this.getAttribute("use-webcodec"),
+                dst: "out.mp4",
+                transcode:["c=vp8"],
+                useWebcodec: this.getAttribute("use-webcodec") == "" ? true : false,
                 showStats: this.getAttribute("stats"),
                 showGraph: this.getAttribute("graph"),
                 showReport: this.getAttribute("report"),
