@@ -13,3 +13,6 @@
 [submodule "solver_minimal"]
 	path = solver_minimal
 	url = https://github.com/Bevara/solver_minimal.git
+[submodule "solver_with_webcodecs"]
+	path = solver_with_webcodecs
+	url = https://github.com/Bevara/solver_with_webcodecs.git
