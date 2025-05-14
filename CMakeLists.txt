@@ -21,7 +21,7 @@ add_subdirectory(filters)
 add_subdirectory(solver)
 add_subdirectory(solver_minimal)
 add_subdirectory(solver_with_sdl)
-#add_subdirectory(solver_with_webcodecs)
+add_subdirectory(solver_with_webcodecs)
 
 add_custom_target (serve
   COMMAND npm run serve

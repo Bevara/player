@@ -236,7 +236,7 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
                 wasmBinaryFile: wasmBinaryFile,
                 src : src,
                 dst: "out.mp4",
-                transcode:["c=vp8"],
+                transcode:["c=avc"],
                 useWebcodec: this.getAttribute("use-webcodec") == "" ? true : false,
                 showStats: this.getAttribute("stats"),
                 showGraph: this.getAttribute("graph"),
