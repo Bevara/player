@@ -65,6 +65,12 @@ cd $source_path/filters/third_parties/emsdk
 ./emsdk activate $EMSDK_VERS
 . ./emsdk_env.sh
 
+echo "Updating solver libs"
+cp $build_path/filters/third_parties/gpac/bin/gcc/libgpac_static.a $source_path/solver/lib/
+cp $build_path/filters/third_parties/gpac/bin/gcc/libgpac_static.a $source_path/solver_minimal/lib/
+cp $build_path/filters/third_parties/gpac/bin/gcc/libgpac_static.a $source_path/solver_with_sdl/lib/
+cp $build_path/filters/third_parties/gpac/bin/gcc/libgpac_static.a $source_path/solver_with_webcodecs/lib/
+
 echo "Configuring player"
 cd $BUILD_DIR
 if test "$debuginfo" = "no"; then
