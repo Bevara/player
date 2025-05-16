@@ -244,6 +244,8 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
         },
         wasmBinaryFile: wasmBinaryFile,
         src: this.getAttribute("data-url"),
+        interactive : this.getAttribute("interactive")  == "",
+        vr : this.getAttribute("vr")  == "",
         useWebcodec: this.getAttribute("use-webcodec") == "",
         showStats: this.getAttribute("stats"),
         showGraph: this.getAttribute("graph"),
