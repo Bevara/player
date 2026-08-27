@@ -39,9 +39,8 @@ if test "$debuginfo" = "yes"; then
 else
     CMAKE_BUILD_TYPE="-DCMAKE_BUILD_TYPE=Release"
 fi
-
 echo "Init submodules"
-git submodule update --init --recursive
+git submodule update --init
 
 echo "Configuring filters"
 cd $BUILD_DIR
@@ -74,7 +73,7 @@ cp $build_path/filters/third_parties/gpac/bin/gcc/libgpac_static.a $source_path/
 echo "Configuring player"
 cd $BUILD_DIR
 if test "$debuginfo" = "no"; then
-    emcmake cmake $source_path -DDEBUG_MODE=OFF
+    emcmake cmake $source_path -DDEBUG_MODE=OFF $CMAKE_BUILD_TYPE
 else
-    emcmake cmake $source_path -DDEBUG_MODE=ON
+    emcmake cmake $source_path -DDEBUG_MODE=ON $CMAKE_BUILD_TYPE
 fi
