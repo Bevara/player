@@ -10,7 +10,7 @@ module.exports = function (config) {
     { pattern: '@CMAKE_BINARY_DIR@/dist/*.wasm', watched: false, included: false, served: true, nocache: false },
     { pattern: '@CMAKE_BINARY_DIR@/dist/*.js', watched: false, included: false, served: true, nocache: false },
       'test-player/**/*.js'],
-    reporters: ['dots', 'junit'],
+    reporters: ['progress', 'junit'],
     port: 9876,  // karma web server port
     colors: true,
     logLevel: config.LOG_INFO,
@@ -29,7 +29,6 @@ module.exports = function (config) {
     autoWatch: false,
     // singleRun: false, // Karma captures browsers, runs the tests and exits
     concurrency: Infinity,
-    reporters: ['progress', 'nunit'],
     nunitReporter: {
       outputFile: 'test-results.xml',
       suite: ''
