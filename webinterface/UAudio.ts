@@ -123,7 +123,7 @@ class UniversalAudio extends HTMLAudioElement implements UniversalFn {
     }
 
 
-    launchWorker(script, message, resolve) {
+    launchWorker(script, message, resolve, reject) {
         const worker = new Worker(script);
         if (worker) {
             worker.postMessage(message);
@@ -254,7 +254,7 @@ class UniversalAudio extends HTMLAudioElement implements UniversalFn {
                 return;
             }
             try {
-                this.getAttribute("use-worker") == "" ? this.launchWorker(js, message, main_resolve) : launchNoWorker(this, js, message, main_resolve);
+                this.getAttribute("use-worker") == "" ? this.launchWorker(js, message, main_resolve, main_reject) : launchNoWorker(this, js, message, main_resolve);
             } catch (e) {
                 main_reject();
             }
