@@ -28,6 +28,7 @@
     },
     "homepage": "https://github.com/Bevara/Player#readme",
     "devDependencies": {
+        "@types/minimatch": "^5.1.2",
         "@webpack-cli/generators": "^2.2.0",
         "chai": "^4.3.4",
         "html-webpack-plugin": "^5.3.2",
