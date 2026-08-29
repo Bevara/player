@@ -9,4 +9,4 @@ webpack.config.js
 package-lock.json
 test-results.xml
 templates/index.html
-TESTS-Chrome_Headless_*.xml
+TESTS-Chrome_*.xml

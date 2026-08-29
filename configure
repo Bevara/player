@@ -3,6 +3,7 @@ echo "Setting environnement"
 BUILD_DIR=$PWD
 debuginfo="no"
 no_gcc_opt="no"
+release_mode="no"
 
 # Find source path
 source_path="`echo $0 | sed -e 's#/configure##'`"
@@ -19,6 +20,8 @@ fi
 for opt do
     case "$opt" in
         --enable-debug) debuginfo="yes"; no_gcc_opt="yes"
+            ;;
+        --enable-release) release_mode="yes"
             ;;
     esac
 done
@@ -39,6 +42,27 @@ if test "$debuginfo" = "yes"; then
 else
     CMAKE_BUILD_TYPE="-DCMAKE_BUILD_TYPE=Release"
 fi
+
+RELEASE_CMAKE_ARGS=()
+if test "$release_mode" = "yes"; then
+    echo "Release mode: optimizing every emcc/em++ invocation for smallest wasm output"
+    RELEASE_OPT_FLAGS="-Oz -DNDEBUG -sASSERTIONS=0"
+    # EMCC_CFLAGS is read by emcc itself and appended to every invocation
+    # made *within this script's own process* (autotools/make-based
+    # third-party libs built below), overriding any -O level their own
+    # build system passes, since it wins as the last flag on the line.
+    export EMCC_CFLAGS="$RELEASE_OPT_FLAGS"
+    # For the CMake-based filters/solver build (run later, from a separate
+    # `make`/`emmake make` invocation where the export above no longer
+    # applies), bake the same flags into CMAKE_C(XX)_FLAGS_RELEASE instead:
+    # unlike CMAKE_C_FLAGS, individual filters' CMakeLists.txt never
+    # override that build-type-specific variable, and CMake appends it
+    # after the base flags on the compile line, so -Oz still wins over any
+    # hardcoded -O3. Kept as an array so the space-separated flag string
+    # survives as a single -D value instead of being word-split apart.
+    RELEASE_CMAKE_ARGS=("-DCMAKE_C_FLAGS_RELEASE=$RELEASE_OPT_FLAGS" "-DCMAKE_CXX_FLAGS_RELEASE=$RELEASE_OPT_FLAGS")
+fi
+
 echo "Init submodules"
 #git submodule update --init
 
@@ -47,7 +71,11 @@ cd $BUILD_DIR
 mkdir -p filters
 cd filters
 if test "$debuginfo" = "no"; then
-    $source_path/filters/configure
+    if test "$release_mode" = "yes"; then
+        $source_path/filters/configure --enable-release
+    else
+        $source_path/filters/configure
+    fi
 else
     $source_path/filters/configure --enable-debug
 fi
@@ -66,14 +94,14 @@ cd $source_path/filters/third_parties/emsdk
 
 echo "Updating solver libs"
 cp $build_path/filters/third_parties/gpac/bin/gcc/libgpac_static.a $source_path/solver/lib/
-cp $build_path/filters/third_parties/gpac/bin/gcc/libgpac_static.a $source_path/solver_minimal/lib/
+cp $build_path/filters/third_parties/gpac_minimal/bin/gcc/libgpac_static.a $source_path/solver_minimal/lib/
 cp $build_path/filters/third_parties/gpac/bin/gcc/libgpac_static.a $source_path/solver_with_sdl/lib/
 cp $build_path/filters/third_parties/gpac/bin/gcc/libgpac_static.a $source_path/solver_with_webcodecs/lib/
 
 echo "Configuring player"
 cd $BUILD_DIR
 if test "$debuginfo" = "no"; then
-    emcmake cmake $source_path -DDEBUG_MODE=OFF $CMAKE_BUILD_TYPE
+    emcmake cmake $source_path -DDEBUG_MODE=OFF $CMAKE_BUILD_TYPE "${RELEASE_CMAKE_ARGS[@]}"
 else
     emcmake cmake $source_path -DDEBUG_MODE=ON $CMAKE_BUILD_TYPE
 fi
