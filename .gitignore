@@ -10,3 +10,4 @@ package-lock.json
 test-results.xml
 templates/index.html
 TESTS-Chrome_*.xml
+.claude/launch.json

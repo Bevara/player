@@ -284,6 +284,8 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
         const base = window.location.origin;
         const fullSrc = `${base}/${data_url.replace(/^\/+/, '')}`;
         this.src  = fullSrc;
+      } else {
+        this.src = data_url;
       }
     }catch(e){
       this.src = data_url;
