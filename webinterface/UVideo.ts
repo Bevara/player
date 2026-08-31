@@ -1,5 +1,5 @@
 import JSZip = require("jszip");
-import { addScriptDirectoryAndExtIfNeeded, launchNoWorker, sendMessageNoWorker, UniversalFn } from "./UniversalFns";
+import { addScriptDirectoryAndExtIfNeeded, launchNoWorker, sendMessageNoWorker, setupProgressive, launchProgressive, UniversalFn } from "./UniversalFns";
 const version = require("../version.js").version;
 import '@ungap/custom-elements';
 
@@ -225,7 +225,35 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
                 dynamicLibraries = dynamicLibraries.concat(all_using);
             }
 
-            const message = {
+            const isProgressive = this.getAttribute("progressive") == "";
+            const useWebcodec = this.getAttribute("use-webcodec") == "" ? true : false;
+            /* MSE can't play the source's original audio codec (e.g.
+             * Vorbis) remuxed as-is into mp4 - it needs an actual
+             * MSE-supported codec. MP3 was tried first (libmp3lame) but
+             * ruled out: Chrome's MSE does not accept MP3 inside an mp4
+             * container under ANY codec string (confirmed via
+             * MediaSource.isTypeSupported - only bare "audio/mpeg" works,
+             * which would need a second, separate SourceBuffer/GPAC
+             * destination). Opus-in-mp4 IS MSE-supported and fits this
+             * single-mp4-destination architecture directly, so "libopusenc"
+             * is used instead. "c=aac"/"c=opus" are pushed as *global* GPAC
+             * session args (see loader.js), not scoped to a single PID: if
+             * no filter capable of producing that codec is registered, the
+             * constraint fails the whole session, not just the audio track
+             * - so only request one when a capable filter is actually
+             * present. use-webcodec makes "wcenc" (AAC) available;
+             * explicitly listing "libopusenc_1" in "with" makes the native
+             * "encopus" (Opus) filter available. Prefer AAC (use-webcodec)
+             * when both are present. Not forcing useWebcodec unconditionally
+             * here because doing so would also make "wcenc" a candidate for
+             * the *video* track, which can lose to libx264_1/encx264 in
+             * "with" the same way the non-progressive path was fixed to
+             * avoid today. */
+            const withAttr = this.getAttribute("with") || "";
+            const hasOpusEncoder = withAttr.indexOf("libopusenc") !== -1;
+            const audioTranscode = useWebcodec ? "c=aac" : (hasOpusEncoder ? "c=opus" : null);
+
+            const message: any = {
                 event:"init",
                 module: {
                     dynamicLibraries: dynamicLibraries ,
@@ -236,8 +264,8 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
                 wasmBinaryFile: wasmBinaryFile,
                 src : src,
                 dst: "out.mp4",
-                transcode:["c=avc"],
-                useWebcodec: this.getAttribute("use-webcodec") == "" ? true : false,
+                transcode: isProgressive ? (audioTranscode ? ["c=avc", audioTranscode] : ["c=avc"]) : ["c=avc"],
+                useWebcodec: useWebcodec,
                 showStats: this.getAttribute("stats"),
                 showGraph: this.getAttribute("graph"),
                 showReport: this.getAttribute("report"),
@@ -254,7 +282,67 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
                 return;
             }
             try {
-                this.getAttribute("use-worker") == "" ? this.launchWorker(js, message, main_resolve) : launchNoWorker(this, js, message, main_resolve);
+                if (isProgressive) {
+                    /* Progressive/MSE playback needs (a) fragmented mp4 output so
+                     * the file is valid to append incrementally to a
+                     * SourceBuffer, and (b) a JS function reference
+                     * (onProgress) passed straight through the message object,
+                     * which only works when the handler is called directly -
+                     * so this always runs no-worker, regardless of the
+                     * use-worker attribute. */
+                    /* GPAC's default (no destination-link override) already
+                     * picks the single correct transcoded avc1 PID for
+                     * video - confirmed via MP4Box after ruling out a false
+                     * lead: any "SID=*#..." destination filter, REGARDLESS
+                     * of its refinement (stream-type match/negation or even
+                     * a CodecID property match), bypasses GPAC's normal
+                     * single-path caps arbitration for same-type PIDs and
+                     * either links every matching video-typed PID (original
+                     * Theora passthrough AND transcoded avc1 both end up
+                     * muxed - 2 video tracks, confirmed via MP4Box) or, for
+                     * the CodecID-based variant specifically, hangs the
+                     * whole GPAC session indefinitely (confirmed: output
+                     * stuck at 903 bytes after 45s, vs a few seconds
+                     * normally) - so no "SID=" override is used here at all.
+                     * Without an audioTranscode target (see above), GPAC
+                     * still passthrough-muxes the original audio codec
+                     * (e.g. Vorbis) by default, which is not a valid MSE
+                     * codec in any mp4 mime type - the SourceBuffer's
+                     * mimeCodecs below only ever declares an audio codec
+                     * when audioTranscode actually makes the mux produce
+                     * one, so a source with un-transcodable audio simply
+                     * plays back video-only. "tfdt_traf=true" forces GPAC to
+                     * write a "tfdt" (track fragment base media decode time)
+                     * box in every traf: GPAC's mp4mx only does this
+                     * automatically when "tsalign=false" (an unrelated
+                     * timeline-realignment setting, off by default), so
+                     * plain fragmented output otherwise omits tfdt entirely.
+                     * Chrome's MSE ChunkDemuxer requires tfdt per the ISO
+                     * BMFF Byte Stream Format spec and rejects fragments
+                     * without one ("RunSegmentParserLoop: stream parsing
+                     * failed"), even though regular (non-MSE) playback
+                     * tolerates the omission - this was the actual root
+                     * cause behind every "parsing failed" error seen while
+                     * debugging progressive audio (confirmed missing via a
+                     * byte-level diff against an ffmpeg-generated reference
+                     * fragmented mp4, which Chrome's MSE accepted). */
+                    const dstOptsDefault = "store=sfrag:cdur=1:tfdt_traf=true";
+                    message.dst_opts = this.getAttribute("dst-opts") || dstOptsDefault;
+                    const videoCodec = this.getAttribute("codecs") || "avc1.640028";
+                    const audioCodec = this.getAttribute("audio-codecs") ||
+                        (audioTranscode == "c=aac" ? "mp4a.40.2" : audioTranscode == "c=opus" ? "opus" : null);
+                    const codecs = audioCodec ? (videoCodec + "," + audioCodec) : videoCodec;
+                    const progressive = setupProgressive(this, 'video/mp4; codecs="' + codecs + '"');
+                    /* self.src (the MediaSource object URL) is already set
+                     * synchronously by setupProgressive - the element is
+                     * playable as soon as the first fragment lands, no need
+                     * to wait for the whole transcode to resolve this
+                     * promise the way the non-progressive path does. */
+                    main_resolve(this.src);
+                    launchProgressive(this, js, message, () => {}, progressive);
+                } else {
+                    this.getAttribute("use-worker") == "" ? this.launchWorker(js, message, main_resolve) : launchNoWorker(this, js, message, main_resolve);
+                }
             }catch(e){
                 main_reject();
             }

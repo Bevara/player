@@ -75,7 +75,7 @@ function launchNoWorker(self, script, message, resolve) {
         script_elt.src = script;
         addLoadEvent(script_elt, init);
         document.head.appendChild(script_elt);
-        this.script = script_elt;
+        self.script = script_elt;
     }
 }
 
@@ -89,4 +89,85 @@ function sendMessageNoWorker(self, message) {
     }
 }
 
-export {addScriptDirectoryAndExtIfNeeded, launchNoWorker, sendMessageNoWorker, UniversalFn};
+/* Sets up progressive (streaming) playback via Media Source Extensions: the
+ * caller (UVideo.ts/UAudio.ts) attaches a MediaSource to the element up
+ * front instead of waiting for the whole transcode to finish and reading
+ * back one final blob. loader.js's fragmented-mp4mx output (dst:
+ * "out.mp4:store=sfrag:cdur=...") is polled from the Emscripten virtual FS
+ * as it grows (see the onProgress/onProgressDone hooks wired in
+ * launchProgressive below) and each new byte range is fed to the
+ * SourceBuffer as soon as it's available, so playback can start well
+ * before transcoding completes.
+ *
+ * mimeCodecs must be a full MSE mime string, e.g.
+ * 'video/mp4; codecs="avc1.640028"' or 'audio/mp4; codecs="mp4a.40.2"' -
+ * MSE requires the caller to know the codec ahead of time, same as any
+ * other manual MSE integration; this repo's transcode targets are fixed
+ * (see UVideo.ts/UAudio.ts) so a matching default is provided there. */
+function setupProgressive(self, mimeCodecs) {
+    const mediaSource = new MediaSource();
+    self.src = URL.createObjectURL(mediaSource);
+
+    let sourceBuffer = null;
+    const queue = [];
+    let ended = false;
+    let openError = null;
+
+    function pump() {
+        if (!sourceBuffer || sourceBuffer.updating || !queue.length) return;
+        const chunk = queue.shift();
+        try {
+            sourceBuffer.appendBuffer(chunk);
+        } catch (e) {
+            console.log('[progressive] appendBuffer failed: ' + e.message);
+        }
+    }
+
+    function maybeEnd() {
+        if (ended && sourceBuffer && !sourceBuffer.updating && !queue.length && mediaSource.readyState === 'open') {
+            try { mediaSource.endOfStream(); } catch (e) { }
+        }
+    }
+
+    mediaSource.addEventListener('sourceopen', () => {
+        try {
+            sourceBuffer = mediaSource.addSourceBuffer(mimeCodecs);
+        } catch (e) {
+            openError = e;
+            console.log('[progressive] addSourceBuffer failed for "' + mimeCodecs + '": ' + e.message);
+            return;
+        }
+        sourceBuffer.addEventListener('updateend', () => {
+            pump();
+            maybeEnd();
+        });
+        pump();
+    });
+
+    return {
+        push(bytes) {
+            if (!bytes || !bytes.length) return;
+            queue.push(bytes);
+            pump();
+        },
+        finish() {
+            ended = true;
+            maybeEnd();
+        },
+        get error() { return openError; }
+    };
+}
+
+/* Like launchNoWorker, but for progressive playback: wires message.onProgress
+ * (called with each new chunk of bytes as the output file grows) and
+ * message.onProgressDone (called once transcoding is complete) to the
+ * MediaSource handle returned by setupProgressive, in addition to the
+ * normal resolve-on-exit_code flow. */
+function launchProgressive(self, script, message, resolve, progressive) {
+    message.progressive = true;
+    message.onProgress = (bytes) => progressive.push(bytes);
+    message.onProgressDone = () => progressive.finish();
+    launchNoWorker(self, script, message, resolve);
+}
+
+export {addScriptDirectoryAndExtIfNeeded, launchNoWorker, sendMessageNoWorker, setupProgressive, launchProgressive, UniversalFn};
