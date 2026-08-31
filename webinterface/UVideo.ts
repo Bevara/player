@@ -264,6 +264,16 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
                 wasmBinaryFile: wasmBinaryFile,
                 src : src,
                 dst: "out.mp4",
+                /* Bare "c=avc" for both branches - loader.js already gates the
+                 * "wcenc:" prefix behind useWebcodec itself (registers/expects
+                 * the wcenc filter only when use-webcodec is set). Hardcoding
+                 * "wcenc:c=avc" here for the non-progressive case bypassed that
+                 * gating and requested wcenc regardless of use-webcodec - only
+                 * worked by accident when an earlier use-webcodec test in the
+                 * same page left wcenc registered, and failed with "Failed to
+                 * find filter wcenc:c=avc" otherwise (confirmed via a
+                 * non-progressive, non-use-webcodec video tag run in
+                 * isolation). */
                 transcode: isProgressive ? (audioTranscode ? ["c=avc", audioTranscode] : ["c=avc"]) : ["c=avc"],
                 useWebcodec: useWebcodec,
                 showStats: this.getAttribute("stats"),
