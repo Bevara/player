@@ -1,5 +1,5 @@
 import JSZip = require("jszip");
-import { addScriptDirectoryAndExtIfNeeded, launchNoWorker, sendMessageNoWorker, setupProgressive, launchProgressive, UniversalFn } from "./UniversalFns";
+import { addScriptDirectoryAndExtIfNeeded, launchNoWorker, sendMessageNoWorker, UniversalFn } from "./UniversalFns";
 const version = require("../version.js").version;
 import '@ungap/custom-elements';
 
@@ -226,7 +226,6 @@ class UniversalAudio extends HTMLAudioElement implements UniversalFn {
                 dynamicLibraries = dynamicLibraries.concat(all_using);
             }
 
-            const isProgressive = this.getAttribute("progressive") == "";
             const useWebcodec = this.getAttribute("use-webcodec") == "";
             const withAttr = this.getAttribute("with") || "";
             const hasOpusEncoder = withAttr.indexOf("libopusenc") !== -1;
@@ -242,10 +241,7 @@ class UniversalAudio extends HTMLAudioElement implements UniversalFn {
                 },
                 wasmBinaryFile: wasmBinaryFile,
                 src: src,
-                /* progressive playback needs a fragmented mp4 container to be
-                 * appendable to a SourceBuffer - "out.<out>" (e.g. out.wav)
-                 * is only valid for the regular whole-file blob path */
-                dst: isProgressive ? "out.mp4" : "out." + this.out,
+                dst: "out." + this.out,
                 useWebcodec: useWebcodec,
                 showStats: this.getAttribute("stats"),
                 showGraph: this.getAttribute("graph"),
@@ -256,20 +252,6 @@ class UniversalAudio extends HTMLAudioElement implements UniversalFn {
                 noCleanupOnExit: this.getAttribute("noCleanupOnExit"),
                 mime_type : this.out == "wav" ? "audio/wav": null
             };
-            if (isProgressive) {
-                /* mirrors UVideo.ts's transcode field, which regular audio
-                 * decode (dst: out.wav) doesn't need - MSE requires an
-                 * actual compressed codec in the mp4, not raw PCM. use-webcodec
-                 * makes "wcenc" (AAC) available; explicitly listing
-                 * "libopusenc_1" in "with" makes the native "encopus" (Opus)
-                 * filter available - see the matching comment in UVideo.ts
-                 * for why MP3 was tried and ruled out (Chrome's MSE won't
-                 * accept MP3 inside an mp4 container under any codec
-                 * string). If neither is available this constraint is
-                 * omitted, which will simply fail to produce a working
-                 * progressive audio track. */
-                if (audioTranscode) message.transcode = [audioTranscode];
-            }
 
             if (!js) {
                 console.log("Warning! no accessor is used on the universal, using a usual tag instead...");
@@ -277,20 +259,7 @@ class UniversalAudio extends HTMLAudioElement implements UniversalFn {
                 return;
             }
             try {
-                if (isProgressive) {
-                    /* "tfdt_traf=true" - see the matching comment in
-                     * UVideo.ts: without it GPAC's mp4mx omits the "tfdt"
-                     * box in fragmented output, which Chrome's MSE
-                     * ChunkDemuxer requires and rejects otherwise. */
-                    message.dst_opts = this.getAttribute("dst-opts") || "store=sfrag:cdur=1:tfdt_traf=true";
-                    const codecs = this.getAttribute("codecs") ||
-                        (audioTranscode == "c=aac" ? "mp4a.40.2" : audioTranscode == "c=opus" ? "opus" : "mp4a.40.2");
-                    const progressive = setupProgressive(this, 'audio/mp4; codecs="' + codecs + '"');
-                    main_resolve(this.src);
-                    launchProgressive(this, js, message, () => {}, progressive);
-                } else {
-                    this.getAttribute("use-worker") == "" ? this.launchWorker(js, message, main_resolve, main_reject) : launchNoWorker(this, js, message, main_resolve);
-                }
+                this.getAttribute("use-worker") == "" ? this.launchWorker(js, message, main_resolve, main_reject) : launchNoWorker(this, js, message, main_resolve);
             } catch (e) {
                 main_reject();
             }

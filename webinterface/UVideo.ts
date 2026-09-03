@@ -1,5 +1,5 @@
 import JSZip = require("jszip");
-import { addScriptDirectoryAndExtIfNeeded, launchNoWorker, sendMessageNoWorker, setupProgressive, launchProgressive, UniversalFn } from "./UniversalFns";
+import { addScriptDirectoryAndExtIfNeeded, launchNoWorker, sendMessageNoWorker, UniversalFn } from "./UniversalFns";
 const version = require("../version.js").version;
 import '@ungap/custom-elements';
 
@@ -225,7 +225,6 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
                 dynamicLibraries = dynamicLibraries.concat(all_using);
             }
 
-            const isProgressive = this.getAttribute("progressive") == "";
             const useWebcodec = this.getAttribute("use-webcodec") == "" ? true : false;
             /* MSE can't play the source's original audio codec (e.g.
              * Vorbis) remuxed as-is into mp4 - it needs an actual
@@ -247,8 +246,7 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
              * when both are present. Not forcing useWebcodec unconditionally
              * here because doing so would also make "wcenc" a candidate for
              * the *video* track, which can lose to libx264_1/encx264 in
-             * "with" the same way the non-progressive path was fixed to
-             * avoid today. */
+             * "with". */
             const withAttr = this.getAttribute("with") || "";
             const hasOpusEncoder = withAttr.indexOf("libopusenc") !== -1;
             const audioTranscode = useWebcodec ? "c=aac" : (hasOpusEncoder ? "c=opus" : null);
@@ -264,17 +262,17 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
                 wasmBinaryFile: wasmBinaryFile,
                 src : src,
                 dst: "out.mp4",
-                /* Bare "c=avc" for both branches - loader.js already gates the
+                /* Bare "c=avc" - loader.js already gates the
                  * "wcenc:" prefix behind useWebcodec itself (registers/expects
                  * the wcenc filter only when use-webcodec is set). Hardcoding
-                 * "wcenc:c=avc" here for the non-progressive case bypassed that
+                 * "wcenc:c=avc" here bypassed that
                  * gating and requested wcenc regardless of use-webcodec - only
                  * worked by accident when an earlier use-webcodec test in the
                  * same page left wcenc registered, and failed with "Failed to
                  * find filter wcenc:c=avc" otherwise (confirmed via a
-                 * non-progressive, non-use-webcodec video tag run in
+                 * video tag without use-webcodec, run in
                  * isolation). */
-                transcode: isProgressive ? (audioTranscode ? ["c=avc", audioTranscode] : ["c=avc"]) : ["c=avc"],
+                transcode: ["c=avc"],
                 useWebcodec: useWebcodec,
                 showStats: this.getAttribute("stats"),
                 showGraph: this.getAttribute("graph"),
@@ -292,67 +290,7 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
                 return;
             }
             try {
-                if (isProgressive) {
-                    /* Progressive/MSE playback needs (a) fragmented mp4 output so
-                     * the file is valid to append incrementally to a
-                     * SourceBuffer, and (b) a JS function reference
-                     * (onProgress) passed straight through the message object,
-                     * which only works when the handler is called directly -
-                     * so this always runs no-worker, regardless of the
-                     * use-worker attribute. */
-                    /* GPAC's default (no destination-link override) already
-                     * picks the single correct transcoded avc1 PID for
-                     * video - confirmed via MP4Box after ruling out a false
-                     * lead: any "SID=*#..." destination filter, REGARDLESS
-                     * of its refinement (stream-type match/negation or even
-                     * a CodecID property match), bypasses GPAC's normal
-                     * single-path caps arbitration for same-type PIDs and
-                     * either links every matching video-typed PID (original
-                     * Theora passthrough AND transcoded avc1 both end up
-                     * muxed - 2 video tracks, confirmed via MP4Box) or, for
-                     * the CodecID-based variant specifically, hangs the
-                     * whole GPAC session indefinitely (confirmed: output
-                     * stuck at 903 bytes after 45s, vs a few seconds
-                     * normally) - so no "SID=" override is used here at all.
-                     * Without an audioTranscode target (see above), GPAC
-                     * still passthrough-muxes the original audio codec
-                     * (e.g. Vorbis) by default, which is not a valid MSE
-                     * codec in any mp4 mime type - the SourceBuffer's
-                     * mimeCodecs below only ever declares an audio codec
-                     * when audioTranscode actually makes the mux produce
-                     * one, so a source with un-transcodable audio simply
-                     * plays back video-only. "tfdt_traf=true" forces GPAC to
-                     * write a "tfdt" (track fragment base media decode time)
-                     * box in every traf: GPAC's mp4mx only does this
-                     * automatically when "tsalign=false" (an unrelated
-                     * timeline-realignment setting, off by default), so
-                     * plain fragmented output otherwise omits tfdt entirely.
-                     * Chrome's MSE ChunkDemuxer requires tfdt per the ISO
-                     * BMFF Byte Stream Format spec and rejects fragments
-                     * without one ("RunSegmentParserLoop: stream parsing
-                     * failed"), even though regular (non-MSE) playback
-                     * tolerates the omission - this was the actual root
-                     * cause behind every "parsing failed" error seen while
-                     * debugging progressive audio (confirmed missing via a
-                     * byte-level diff against an ffmpeg-generated reference
-                     * fragmented mp4, which Chrome's MSE accepted). */
-                    const dstOptsDefault = "store=sfrag:cdur=1:tfdt_traf=true";
-                    message.dst_opts = this.getAttribute("dst-opts") || dstOptsDefault;
-                    const videoCodec = this.getAttribute("codecs") || "avc1.640028";
-                    const audioCodec = this.getAttribute("audio-codecs") ||
-                        (audioTranscode == "c=aac" ? "mp4a.40.2" : audioTranscode == "c=opus" ? "opus" : null);
-                    const codecs = audioCodec ? (videoCodec + "," + audioCodec) : videoCodec;
-                    const progressive = setupProgressive(this, 'video/mp4; codecs="' + codecs + '"');
-                    /* self.src (the MediaSource object URL) is already set
-                     * synchronously by setupProgressive - the element is
-                     * playable as soon as the first fragment lands, no need
-                     * to wait for the whole transcode to resolve this
-                     * promise the way the non-progressive path does. */
-                    main_resolve(this.src);
-                    launchProgressive(this, js, message, () => {}, progressive);
-                } else {
-                    this.getAttribute("use-worker") == "" ? this.launchWorker(js, message, main_resolve) : launchNoWorker(this, js, message, main_resolve);
-                }
+                this.getAttribute("use-worker") == "" ? this.launchWorker(js, message, main_resolve) : launchNoWorker(this, js, message, main_resolve);
             }catch(e){
                 main_reject();
             }
