@@ -1,5 +1,5 @@
 import JSZip = require("jszip");
-import { addScriptDirectoryAndExtIfNeeded, launchNoWorker, sendMessageNoWorker, UniversalFn } from "./UniversalFns";
+import { addScriptDirectoryAndExtIfNeeded, launchNoWorker, sendMessageNoWorker, setupProgressive, launchProgressive, UniversalFn } from "./UniversalFns";
 const version = require("../version.js").version;
 import '@ungap/custom-elements';
 
@@ -225,6 +225,7 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
                 dynamicLibraries = dynamicLibraries.concat(all_using);
             }
 
+            const isProgressive = this.getAttribute("progressive") == "";
             const useWebcodec = this.getAttribute("use-webcodec") == "" ? true : false;
             /* MSE can't play the source's original audio codec (e.g.
              * Vorbis) remuxed as-is into mp4 - it needs an actual
@@ -272,7 +273,11 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
                  * find filter wcenc:c=avc" otherwise (confirmed via a
                  * video tag without use-webcodec, run in
                  * isolation). */
-                transcode: ["c=avc"],
+                /* MSE ne sait pas lire l'audio d'origine (Vorbis par exemple)
+                 * remuxe tel quel dans un mp4 : en mode progressif on demande
+                 * donc aussi un codec audio, quand un encodeur est disponible.
+                 * Hors mode progressif, le comportement reste inchange. */
+                transcode: isProgressive ? (audioTranscode ? ["c=avc", audioTranscode] : ["c=avc"]) : ["c=avc"],
                 useWebcodec: useWebcodec,
                 showStats: this.getAttribute("stats"),
                 showGraph: this.getAttribute("graph"),
@@ -290,7 +295,40 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
                 return;
             }
             try {
-                this.getAttribute("use-worker") == "" ? this.launchWorker(js, message, main_resolve) : launchNoWorker(this, js, message, main_resolve);
+                if (isProgressive) {
+                    /* The source audio (e.g. Vorbis) cannot be remuxed as-is:
+                     * MSE rejects it outright ("audio object type 0xdd does not
+                     * match what is specified in the mimetype"), so it has to be
+                     * re-encoded to something MSE accepts inside mp4. Two routes,
+                     * both verified with MediaSource.isTypeSupported:
+                     *   - use-webcodec makes "wcenc" available -> AAC
+                     *   - libopusenc_1 in "with" makes "encopus" available -> Opus
+                     * MP3 is not an option: 'codecs="mp3"' in an mp4 mime type is
+                     * rejected by Chrome's MSE. */
+                    const videoCodec = this.getAttribute("codecs") || "avc1.640028";
+                    const audioCodec = this.getAttribute("audio-codecs")
+                        || (audioTranscode === "c=aac" ? "mp4a.40.2"
+                            : audioTranscode === "c=opus" ? "opus" : null);
+                    const mime = 'video/mp4; codecs="' + videoCodec
+                        + (audioCodec ? ',' + audioCodec : '') + '"';
+                    if (!audioTranscode) {
+                        console.log('Warning! progressive playback has no MSE-compatible audio encoder available - add "libopusenc_1" to "with" (Opus) or the "use-webcodec" attribute (AAC). Falling back to whole-file decode.');
+                    }
+                    if (!audioTranscode || !("MediaSource" in window) || !MediaSource.isTypeSupported(mime)) {
+                        console.log('Warning! progressive playback unavailable for "' + mime + '", falling back to whole-file decode');
+                        this.getAttribute("use-worker") == "" ? this.launchWorker(js, message, main_resolve) : launchNoWorker(this, js, message, main_resolve);
+                    } else {
+                        const progressive = setupProgressive(this, mime);
+                        /* self.src is already the MediaSource object URL, set
+                         * synchronously by setupProgressive - the element is
+                         * playable as soon as the first segment lands, so this
+                         * resolves now rather than at end of transcode. */
+                        main_resolve(this.src);
+                        launchProgressive(this, js, message, () => {}, progressive);
+                    }
+                } else {
+                    this.getAttribute("use-worker") == "" ? this.launchWorker(js, message, main_resolve) : launchNoWorker(this, js, message, main_resolve);
+                }
             }catch(e){
                 main_reject();
             }
