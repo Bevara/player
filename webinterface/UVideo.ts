@@ -1,5 +1,5 @@
 import JSZip = require("jszip");
-import { addScriptDirectoryAndExtIfNeeded, launchNoWorker, sendMessageNoWorker, setupProgressive, launchProgressive, UniversalFn } from "./UniversalFns";
+import { addScriptDirectoryAndExtIfNeeded, launchNoWorker, sendMessageNoWorker, setupProgressive, launchProgressive, UniversalFn, isConsoleRelay } from "./UniversalFns";
 const version = require("../version.js").version;
 import '@ungap/custom-elements';
 
@@ -87,7 +87,7 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
     }
 
     processMessages(self, core, resolve) {
-        if ("exit_code" in core){
+        if (("exit_code" in core) && !isConsoleRelay(core)) {
             if (core.blob) {
                 self.dataURLToSrc(core.blob, false);
                 resolve(self.src);

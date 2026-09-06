@@ -170,4 +170,17 @@ function launchProgressive(self, script, message, resolve, progressive) {
     launchNoWorker(self, script, message, resolve);
 }
 
-export {addScriptDirectoryAndExtIfNeeded, launchNoWorker, sendMessageNoWorker, setupProgressive, launchProgressive, UniversalFn};
+/* A worker message is not necessarily a termination. solver/loader.js wraps
+ * console.error and console.warn inside the worker and relays each call as
+ * { exit_code: -1, printErr: "WORKER CONSOLE.ERROR: ..." } - so any graph that
+ * writes to stderr (x264's stats, GPAC's "Reading the file and constructing a
+ * filter pipeline...") posts an exit_code long before it is done. Treating
+ * those as the end resolved decodingPromise with null while the real
+ * { exit_code: 0, blob } was still 80 ms away: the caller then fetched "null"
+ * and hashed a 404 page. Genuine failures relayed the same way carry
+ * "WORKER EXCEPTION" instead, and those must still terminate. */
+function isConsoleRelay(core): boolean {
+    return typeof core.printErr === "string" && core.printErr.indexOf("WORKER CONSOLE.") === 0;
+}
+
+export {addScriptDirectoryAndExtIfNeeded, launchNoWorker, sendMessageNoWorker, setupProgressive, launchProgressive, isConsoleRelay, UniversalFn};

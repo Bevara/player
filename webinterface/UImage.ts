@@ -1,5 +1,5 @@
 import JSZip = require("jszip");
-import { addScriptDirectoryAndExtIfNeeded, launchNoWorker, sendMessageNoWorker, UniversalFn } from "./UniversalFns";
+import { addScriptDirectoryAndExtIfNeeded, launchNoWorker, sendMessageNoWorker, UniversalFn, isConsoleRelay } from "./UniversalFns";
 const version = require("../version.js").version;
 import '@ungap/custom-elements';
 
@@ -122,7 +122,7 @@ class UniversalImage extends HTMLImageElement implements UniversalFn {
       }
     }
 
-    if ("exit_code" in core) {
+    if (("exit_code" in core) && !isConsoleRelay(core)) {
       if (core.compileStart) {
         self.compileStart = core.compileStart;
       }

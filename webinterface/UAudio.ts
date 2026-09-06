@@ -1,5 +1,5 @@
 import JSZip = require("jszip");
-import { addScriptDirectoryAndExtIfNeeded, launchNoWorker, sendMessageNoWorker, UniversalFn } from "./UniversalFns";
+import { addScriptDirectoryAndExtIfNeeded, launchNoWorker, sendMessageNoWorker, UniversalFn, isConsoleRelay } from "./UniversalFns";
 const version = require("../version.js").version;
 import '@ungap/custom-elements';
 
@@ -87,7 +87,7 @@ class UniversalAudio extends HTMLAudioElement implements UniversalFn {
     }
 
     processMessages(self, core, resolve) {
-        if ("exit_code" in core) {
+        if (("exit_code" in core) && !isConsoleRelay(core)) {
             if (core.blob) {
                 self.dataURLToSrc(core.blob, false);
                 resolve(self.src);
