@@ -63,7 +63,7 @@ décodeur autonome auditable derrière chaque format.
 
 **Audio** — PCM, MP1/MP2/MP3, AAC (LC et HE), Vorbis, Opus, **Speex**, **ALAC**,
 **GSM 06.10**, **SBC**, **LC3**, **TTA**, **Codec 2**, **iLBC**,
-**G.711 / G.721 / G.723**, AC-3 et E-AC-3, DTS
+**G.711 / G.721 / G.723**, **SILK**, **iSAC**, AC-3 et E-AC-3, DTS
 Coherent Acoustics, AMR-NB et AMR-WB, Musepack, WavPack, FLAC, Monkey's Audio,
 ADPCM (via les conteneurs), MIDI, et les formats tracker (MOD, XM, S3M, IT et
 une centaine d'autres via libxmp).
@@ -194,7 +194,7 @@ de plus de 1** (moyenne 0,016) — l'arrondi flottant du build wasm.
 **Vidéo** — MPEG-1 Part 2, **H.261**, H.262/MPEG-2, **H.263**, MPEG-4 Part 2
 (Xvid), H.264/AVC, H.265/HEVC, H.266/VVC, AV1, VP8, VP9, Theora,
 **Motion JPEG**, **Motion JPEG 2000**, **AVS2**, **AVS3**, **MPEG-5 EVC**,
-**Ut Video** et **Dirac**.
+**Ut Video**, **Dirac** et **FFV1**.
 
 **Motion JPEG** et **Motion JPEG 2000** n'ont demandé aucun décodeur : chaque
 trame est une image complète, donc `libjpeg` et `openjpeg` conviennent tels
@@ -224,10 +224,48 @@ déjà cadré — c'est la sixième limite de `AGENTS.md`, le graphe se résout 
 court-circuité par `mp4mx`. Profil Constrained Baseline uniquement, ce qui est
 le périmètre de h264bsd et non une limite du portage.
 
+**SILK**, **iSAC** et **FFV1** étaient les trois dernières entrées du §2, et
+chacune a demandé une réponse différente de celle que ce document annonçait.
+
+**SILK** n'était pas « déjà dans libopus, simplement pas exposé ». libopus
+porte bien un décodeur SILK, mais pas ce flux : en entrant dans Opus, SILK a vu
+son en-tête de trame passer dans l'octet TOC d'Opus, si bien que le
+`silk_Decode` de libopus attend de l'appelant la fréquence interne et le nombre
+de trames du paquet et ne les lit plus du flux. Un fichier `.silk` autonome les
+porte toujours dans la trame, là où le SDK les avait laissés. Mesuré plutôt que
+supposé : décoder un vrai `.silk` avec le SILK de libopus donne **−20 dB de
+SNR** face au décodage du SDK sur le même fichier. Ce n'est pas un écart
+d'arrondi, c'est un autre format. `libsilk` s'appuie donc sur le SDK de Skype,
+sous licence BSD, et le résultat est **exact au bit près** — 240 000
+échantillons, aucun ne diffère.
+
+**iSAC** n'a ni bibliothèque ni format de fichier. Il a été retiré de WebRTC en
+2022 et aucune distribution ne l'empaquette, donc les sources sont un instantané
+figé de la dernière révision où le codec et les routines de traitement du signal
+qu'il appelle concordaient encore (`m93_release`, commit `9ea05f1`). C'est ce
+qui justifie d'épingler : `WebRtcSpl_AnalysisQMF` est passé plus tard de int16 à
+float alors qu'`isac/main` continue d'appeler la forme int16 — un arbre qui
+mélange les deux compile avec des avertissements et décode du bruit. Et comme
+iSAC n'a jamais circulé qu'en RTP, le seul conteneur qui existe est le vidage de
+flux du programme de test de WebRTC : par trame, une longueur 16 bits gros-boutien
+puis la charge utile, sans magie ni fréquence d'échantillonnage — d'où `srate` en
+option. Face aux mêmes sources compilées nativement : sur 159 840 échantillons,
+1 230 diffèrent et aucun de plus de 1, l'écart arithmétique entre un build x86-64
+et un build wasm sur un codec en virgule flottante.
+
+**FFV1** est le seul codec vidéo dont l'implémentation de référence *est*
+ffmpeg : il a été conçu dedans et il n'existe pas de second décodeur. C'est donc
+l'exception assumée, comme H.261 et H.263 : ffmpeg réduit à ce seul décodeur,
+**774 Ko** là où le même source avec les réglages par défaut d'ffmpeg en produit
+14,8 Mo. GPAC porte `GF_CODECID_FFV1` depuis toujours, mais `ff_common.c` amont
+n'a aucune entrée pour lui — rien ne pouvait donc router un pid FFV1 vers
+`ffdec`. FFV1 étant sans perte, la seule perte de la chaîne est le réencodage
+x264 : 63,4 dB.
+
 Mesures, chacune contre un décodage natif du même fichier, à travers toute la
 chaîne y compris le réencodage x264 : H.261 59,4 dB, H.262 61,5 dB, H.263
-59,5 dB, H.264 61,7 dB, Motion JPEG 48,8 dB — 50 trames sur 50 dans les cinq
-cas. Le décodage MPEG-2 en rendait 48 sur 50 avant ce travail : libmpeg2 garde
+59,5 dB, H.264 61,7 dB, Motion JPEG 48,8 dB, FFV1 63,4 dB — 50 trames sur 50
+dans les six Le décodage MPEG-2 en rendait 48 sur 50 avant ce travail : libmpeg2 garde
 les dernières images tant qu'il n'a pas vu ce qui suit, et un flux qui se
 termine sans code de fin de séquence les emportait avec lui.
 
@@ -407,8 +445,6 @@ peine de travailler.
 |---|---|---|
 | **G.726 / G.727** | code Sun du domaine public | G.711, G.721 et G.723 sont faits (`libg711`) ; G.726/G.727 ajoutent les débits 16 et 40 kbit/s à empaquetage différent, et n'ont pas de conteneur `.au` normalisé |
 | **VC-2 profil HQ** | `vc2-reference` (BBC) | Dirac est fait (`libschro`), mais schroedinger est antérieur au profil HQ — le seul décodeur libre qui le couvre est `vc2-reference`, qui dépend d'un sous-ensemble d'en-têtes boost à embarquer |
-| **iSAC**, **SILK** | WebRTC / Opus | SILK est déjà dans `libopus` mais n'est pas exposé seul |
-| **FFV1** | — | libre, mais l'implémentation de référence *est* ffmpeg |
 | **Draco**, **meshopt** | `libdraco`, `meshoptimizer` | maillages 3D : hors du domaine d'un player audio/vidéo/image |
 
 ## 3. Non supporté : décodeur libre uniquement dans ffmpeg
@@ -468,8 +504,8 @@ Rien à intégrer, quelle que soit la politique sur ffmpeg.
 
 | | Codecs |
 |---|---|
-| Supportés | ~57 |
-| Adressables, bibliothèque autonome existante | ~5 (§2) |
+| Supportés | ~60 |
+| Adressables, bibliothèque autonome existante | ~2 (§2) |
 | Libres mais seulement dans ffmpeg | ~200 (§3) |
 | Sans implémentation libre | ~90 (§4) |
 | Hors périmètre | ~15 (§5) |
@@ -477,8 +513,9 @@ Rien à intégrer, quelle que soit la politique sur ffmpeg.
 Faits depuis : **Speex**, **ALAC**, **GSM 06.10**, **SBC**, **LC3**,
 **Codec 2**, **AVS3**, **AVS2**, **MPEG-5 EVC**, **Ut Video**, **Dirac**,
 **iLBC**, **G.711 / G.721 / G.723**, **Motion JPEG**, **Motion JPEG 2000**,
-**H.261**, **H.263** et **H.264** (le filtre existait mais ne décodait rien).
-Il reste de §2 : **VC-2 profil HQ**, **G.726/G.727**, **iSAC** et **SILK**.
+**H.261**, **H.263** et **H.264** (le filtre existait mais ne décodait rien),
+**SILK**, **iSAC** et **FFV1**. Il ne reste du §2 que **VC-2 profil HQ** et
+**G.726/G.727**.
 
 **Le chemin WAV de `rfpcm` reste cassé**, et c'est ce qui a fait passer G.711
 par le `.au`. L'état exact, après diagnostic :

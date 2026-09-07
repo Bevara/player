@@ -150,7 +150,7 @@ au `settimer` en mémorisant le délai, avancer soi-même le compteur de
 millisecondes et reprendre (`mng_display_resume`) au lieu d'attendre. Prévoir un
 garde-fou : un fichier qui boucle indéfiniment ne s'arrête jamais tout seul.
 
-### Six limites de ce build, à respecter
+### Sept limites de ce build, à respecter
 
 1. **Sortir du RGB, jamais du RGBA ni du GREYSCALE.** Un pid RGBA ou gris n'a pas
    de chemin d'adaptation vers `writegen` (« No suitable filter to adapt caps »).
@@ -242,6 +242,18 @@ garde-fou : un fichier qui boucle indéfiniment ne s'arrête jamais tout seul.
    d'avoir lu les données, donc après la résolution. C'est ce qui bloque encore
    Motion JPEG 2000 en MOV, et c'est ce qui a fait réécrire `h264bsd` en
    maillon sur un pid AVC.
+
+7. **Un `min_max_enum` avec des `|` transforme un `GF_PROP_UINT` en énumération.**
+   La valeur par défaut est alors résolue comme un *index* dans la liste, pas
+   comme un nombre :
+
+   ```c
+   {OFFS(srate), "...", GF_PROP_UINT, "16000", "16000|32000", 0},  /* srate == 0 */
+   ```
+
+   Le filtre reçoit 0 et refuse de se connecter, avec un message qui accuse
+   l'appelant plutôt que la déclaration. Laisser `NULL` et valider dans
+   `configure_pid` (voir `libisac/dec_isac.c`).
 
 ### Quand les en-têtes de la bibliothèque et ceux de GPAC se disputent
 
@@ -504,6 +516,29 @@ le corps commun.
 
 Ne publier qu'un filtre vérifié : un dépôt public avec un filtre qui ne se
 charge pas ou fige la page est pire que pas de dépôt.
+
+**Le `.gitignore` que traîne l'arbre d'en-têtes recopié.** `git add -A` respecte
+les `.gitignore` présents *dans* ce qu'on ajoute. Un `include/` recopié depuis
+ffmpeg embarque `include/libavutil/.gitignore`, qui exclut `avconfig.h` et
+`ffversion.h` — des en-têtes générés par `configure` que toute la bibliothèque
+inclut. Le fichier reste dans l'arbre de travail local, donc la compilation
+passe sur la machine et échoue au premier `#include` sur toute machine qui
+part d'un clone :
+
+```
+include/libavutil/macros.h:28:10: fatal error: 'libavutil/avconfig.h' file not found
+```
+
+Le contrôle qui l'attrape, avant de pousser :
+
+```bash
+cd <nom> && comm -23 <(find . -type f -not -path './.git/*' | sed 's|^\./||' | sort) \
+                     <(git ls-files | sort)
+```
+
+Tout ce qui sort de là et n'est pas volontairement absent se force au
+`git add -f`. Et le seul contrôle qui ne ment pas est de construire depuis un
+clone neuf, pas depuis l'arbre de travail.
 
 ## 11. Démo Showcase
 
