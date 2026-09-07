@@ -492,12 +492,16 @@ ce qui lui manque ici, ce sont les bibliothèques boost **compilées**
 test d'architecture qui refuse tout ce qui n'est pas x86_64 (contourné, une
 ligne).
 
-Le filtre est écrit — `filters/ffmpeg-vc2`, découpage des unités `BBCD`,
-lecture de la taille dans l'en-tête de séquence en Golomb exponentiel
-entrelacé, conversion en 4:2:0 par swscale — et il fait traverser 50 trames à
-la chaîne. Il n'est pas publié parce qu'il n'est pas vérifiable : son seul
-signal de test décode en gris chez tout le monde. Il manque un flux de
-conformité VC-2 HQ, ou boost pour construire l'encodeur de référence.
+Le filtre est écrit et publié — [`ffmpeg-vc2`](https://github.com/Bevara/ffmpeg-vc2),
+800 Ko : découpage des unités `BBCD`, lecture de la taille dans l'en-tête de
+séquence en Golomb exponentiel entrelacé, conversion en 4:2:0 par swscale. Il
+fait traverser 50 trames à la chaîne. Il reste **non vérifié**, et c'est la
+première chose que dit son README : son seul signal de test décode en gris chez
+tout le monde. Il est laissé hors de la liste de construction par défaut, comme
+les autres modules ffmpeg, et pour une raison de plus qu'eux — `vc2dec`
+revendique l'extension `.vc2`, que le `diracdec` de `libschro` revendique aussi
+sans pouvoir la servir. Il manque un flux de conformité VC-2 HQ, ou boost pour
+construire l'encodeur de référence.
 
 Au passage, le `configure` d'ffmpeg oublie `qpeldsp` dans
 `dirac_decoder_select` alors que `diracdsp` en tire ses
