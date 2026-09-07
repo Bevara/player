@@ -63,7 +63,7 @@ décodeur autonome auditable derrière chaque format.
 
 **Audio** — PCM, MP1/MP2/MP3, AAC (LC et HE), Vorbis, Opus, **Speex**, **ALAC**,
 **GSM 06.10**, **SBC**, **LC3**, **TTA**, **Codec 2**, **iLBC**,
-**G.711 / G.721 / G.723**, **SILK**, **iSAC**, AC-3 et E-AC-3, DTS
+**G.711 / G.721 / G.723**, **G.726**, **SILK**, **iSAC**, AC-3 et E-AC-3, DTS
 Coherent Acoustics, AMR-NB et AMR-WB, Musepack, WavPack, FLAC, Monkey's Audio,
 ADPCM (via les conteneurs), MIDI, et les formats tracker (MOD, XM, S3M, IT et
 une centaine d'autres via libxmp).
@@ -262,6 +262,28 @@ n'a aucune entrée pour lui — rien ne pouvait donc router un pid FFV1 vers
 `ffdec`. FFV1 étant sans perte, la seule perte de la chaîne est le réencodage
 x264 : 63,4 dB.
 
+**G.726** a démenti l'entrée qui l'annonçait. Le dépôt porte déjà le code g72x
+de Sun via `libg711`, et G.726 est la fusion de 1988-1990 de G.721 et G.723 :
+il ne devait donc rester qu'à ajouter un débit. Mesuré sur les mêmes flux, face
+à la source :
+
+| débit | g72x de Sun | ffmpeg |
+|---|---|---|
+| 16 kbit/s | 11,6 dB | 11,8 dB |
+| 24 kbit/s | 17,1 dB | 17,7 dB |
+| 32 kbit/s | 21,4 dB | 23,4 dB |
+| 40 kbit/s | **−3,4 dB** | 28,5 dB |
+
+Et la réciproque tient : sur un `.au` de Sun codé à 40 kbit/s, le code de Sun
+donne 28,6 dB et ffmpeg 8,0 dB. Au-delà de 24 kbit/s ce ne sont **pas les mêmes
+flux**. `audec` reste donc ce qu'il est — un lecteur de `.au` — et G.726 est
+`ffmpeg-g726`, 264 Ko. Exact au bit près face à un décodage natif à 32 kbit/s.
+Un flux G.726 nu ne porte aucun en-tête, donc la taille du mot de code, la
+fréquence et l'ordre des bits sont des options ; la page ne sait pas encore en
+passer (rien dans les balises universelles ne transmet un argument de filtre),
+donc seul le défaut — 4 bits, 8 kHz, MSB d'abord, ce qu'écrit le multiplexeur
+`.g726` d'ffmpeg — est exercé par le test.
+
 Mesures, chacune contre un décodage natif du même fichier, à travers toute la
 chaîne y compris le réencodage x264 : H.261 59,4 dB, H.262 61,5 dB, H.263
 59,5 dB, H.264 61,7 dB, Motion JPEG 48,8 dB, FFV1 63,4 dB — 50 trames sur 50
@@ -443,9 +465,44 @@ peine de travailler.
 
 | Codec | Bibliothèque autonome | État |
 |---|---|---|
-| **G.726 / G.727** | code Sun du domaine public | G.711, G.721 et G.723 sont faits (`libg711`) ; G.726/G.727 ajoutent les débits 16 et 40 kbit/s à empaquetage différent, et n'ont pas de conteneur `.au` normalisé |
-| **VC-2 profil HQ** | `vc2-reference` (BBC) | Dirac est fait (`libschro`), mais schroedinger est antérieur au profil HQ — le seul décodeur libre qui le couvre est `vc2-reference`, qui dépend d'un sous-ensemble d'en-têtes boost à embarquer |
+| **G.727** | aucune | G.726 est fait (`ffmpeg-g726`), mais G.727 est de l'ADPCM *emboîté* — bits de cœur et bits d'enrichissement — que ni le code de Sun ni ffmpeg n'implémentent. La seule référence est le module G.727 de la STL de l'UIT-T (G.191), dont la licence n'est pas une licence libre |
+| **VC-2 profil HQ** | `vc2-reference` (BBC), peut-être ffmpeg | Voir ci-dessous : l'entrée précédente était inexacte sur deux points, et le blocage réel n'est pas celui qu'elle décrivait |
 | **Draco**, **meshopt** | `libdraco`, `meshoptimizer` | maillages 3D : hors du domaine d'un player audio/vidéo/image |
+
+### VC-2 profil HQ : ce qui bloque vraiment
+
+L'entrée du tableau disait que le seul décodeur libre couvrant le profil HQ
+était `vc2-reference`, et que son obstacle était un sous-ensemble d'en-têtes
+boost à embarquer. Les deux points sont faux.
+
+ffmpeg **a** un décodeur Dirac qui annonce VC-2, et il décode correctement le
+`.drc` Dirac de `test_signals` (min 14, max 237 sur la luminance de la première
+trame). Mais **ffmpeg ne décode pas la sortie de son propre encodeur `vc2`** :
+la trame décodée est un gris uniforme, 128 sur toute la luminance — la valeur
+qu'on obtient quand la transformée en ondelettes n'a rien écrit et que
+`put_signed_rect_clamped` ajoute son décalage. Reproduit avec ffmpeg 8.x du
+système et avec le 6.1.2 du dépôt. Impossible donc de dire, sans troisième
+implémentation, si c'est l'encodeur `vc2` qui n'est pas conforme ou le chemin
+HQ du décodeur qui ne fonctionne pas — et impossible de se servir d'ffmpeg
+comme référence.
+
+Et `vc2-reference` embarque déjà son sous-ensemble de boost, dans `src/boost` :
+ce qui lui manque ici, ce sont les bibliothèques boost **compilées**
+(`program_options`, `thread`, `system`) que réclame son `configure.ac`, plus un
+test d'architecture qui refuse tout ce qui n'est pas x86_64 (contourné, une
+ligne).
+
+Le filtre est écrit — `filters/ffmpeg-vc2`, découpage des unités `BBCD`,
+lecture de la taille dans l'en-tête de séquence en Golomb exponentiel
+entrelacé, conversion en 4:2:0 par swscale — et il fait traverser 50 trames à
+la chaîne. Il n'est pas publié parce qu'il n'est pas vérifiable : son seul
+signal de test décode en gris chez tout le monde. Il manque un flux de
+conformité VC-2 HQ, ou boost pour construire l'encodeur de référence.
+
+Au passage, le `configure` d'ffmpeg oublie `qpeldsp` dans
+`dirac_decoder_select` alors que `diracdsp` en tire ses
+`ff_put_dirac_pixels*` : avec `--disable-everything`, le module ne se lie pas.
+Corrigé dans `third_parties/ffmpeg.patch`.
 
 ## 3. Non supporté : décodeur libre uniquement dans ffmpeg
 
@@ -504,7 +561,7 @@ Rien à intégrer, quelle que soit la politique sur ffmpeg.
 
 | | Codecs |
 |---|---|
-| Supportés | ~60 |
+| Supportés | ~61 |
 | Adressables, bibliothèque autonome existante | ~2 (§2) |
 | Libres mais seulement dans ffmpeg | ~200 (§3) |
 | Sans implémentation libre | ~90 (§4) |
@@ -514,8 +571,9 @@ Faits depuis : **Speex**, **ALAC**, **GSM 06.10**, **SBC**, **LC3**,
 **Codec 2**, **AVS3**, **AVS2**, **MPEG-5 EVC**, **Ut Video**, **Dirac**,
 **iLBC**, **G.711 / G.721 / G.723**, **Motion JPEG**, **Motion JPEG 2000**,
 **H.261**, **H.263** et **H.264** (le filtre existait mais ne décodait rien),
-**SILK**, **iSAC** et **FFV1**. Il ne reste du §2 que **VC-2 profil HQ** et
-**G.726/G.727**.
+**SILK**, **iSAC**, **FFV1** et **G.726**. Il ne reste du §2 que **VC-2 profil
+HQ**, faute de flux de conformité pour le vérifier, et **G.727**, faute de
+toute implémentation libre.
 
 **Le chemin WAV de `rfpcm` reste cassé**, et c'est ce qui a fait passer G.711
 par le `.au`. L'état exact, après diagnostic :

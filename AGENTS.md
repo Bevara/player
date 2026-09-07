@@ -150,7 +150,7 @@ au `settimer` en mémorisant le délai, avancer soi-même le compteur de
 millisecondes et reprendre (`mng_display_resume`) au lieu d'attendre. Prévoir un
 garde-fou : un fichier qui boucle indéfiniment ne s'arrête jamais tout seul.
 
-### Sept limites de ce build, à respecter
+### Huit limites de ce build, à respecter
 
 1. **Sortir du RGB, jamais du RGBA ni du GREYSCALE.** Un pid RGBA ou gris n'a pas
    de chemin d'adaptation vers `writegen` (« No suitable filter to adapt caps »).
@@ -254,6 +254,15 @@ garde-fou : un fichier qui boucle indéfiniment ne s'arrête jamais tout seul.
    Le filtre reçoit 0 et refuse de se connecter, avec un message qui accuse
    l'appelant plutôt que la déclaration. Laisser `NULL` et valider dans
    `configure_pid` (voir `libisac/dec_isac.c`).
+
+8. **La page ne sait pas passer d'argument de filtre.** `with=` ne porte que
+   des noms de modules, `using=` le solveur ; rien dans `UAudio.ts`,
+   `UVideo.ts` ni `loader.js` ne transmet un `filtre:opt=valeur` à la session
+   GPAC. Un filtre qui a besoin d'une information absente du fichier — le
+   débit d'un G.726 nu, la fréquence de sortie d'un `.silk`, celle d'un iSAC —
+   ne peut donc être exercé que sur sa valeur par défaut. La choisir est une
+   décision de conception, pas un détail : prendre ce qu'écrit l'outil le plus
+   répandu du format.
 
 ### Quand les en-têtes de la bibliothèque et ceux de GPAC se disputent
 
