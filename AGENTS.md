@@ -317,6 +317,23 @@ Un symbole que le module exporte **et** importe (`GOT.mem`/`GOT.func`) est norma
 en PIC : c'est le loader qui le résout. Seuls comptent ceux qui ne sont ni
 exportés par le module ni par le solveur.
 
+Les deux solveurs sont en `MAIN_MODULE=2` : ils n'exportent que ce que leur
+`exports.cmake` nomme. Un filtre nouveau ou reconstruit peut donc importer un
+symbole que libgpac définit mais que le solveur n'exporte pas ; la liste se
+régénère plutôt qu'elle ne se complète à la main :
+
+```bash
+python3 solver/tools/side_module_exports.py build/dist/solver_1.wasm build/dist/*_1.wasm
+```
+
+(lecture directe des sections import/export du `.wasm`, pas de `wasm-dis` —
+sur 88 modules la différence est de plusieurs minutes). Comparer au bloc
+`SIDE_MODULES` de `solver/exports.cmake`, ajouter ce qui manque, relier
+**après** `cmake .` : `make` ne relie pas quand seule la ligne de lien a
+changé, il faut supprimer `build/solver_1.wasm` d'abord. Les `invoke_*` ne
+manquent jamais : le glue les synthétise à la demande, et un scan qui les
+signale absents se trompe.
+
 ### Le symptôme le plus trompeur : `reportUndefinedSymbols`
 
 ```
