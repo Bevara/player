@@ -1,5 +1,5 @@
 import JSZip = require("jszip");
-import { addScriptDirectoryAndExtIfNeeded, launchNoWorker, sendMessageNoWorker, UniversalFn } from "./UniversalFns";
+import { addScriptDirectoryAndExtIfNeeded, launchNoWorker, sendMessageNoWorker, UniversalFn, isConsoleRelay } from "./UniversalFns";
 const version = require("../version.js").version;
 import '@ungap/custom-elements';
 
@@ -25,6 +25,7 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
 
   urlToRevoke = [];
 
+  timings: any = null;
   private _decodingPromise: Promise<string>;
   private _messageHandlerNoWorker = null;
 
@@ -131,6 +132,16 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
   }
 
   processMessages(self, core, resolve) {
+    /* Fin de session : le canvas n'a pas de blob a rendre (vout dessine
+     * directement), mais decodingPromise doit se resoudre pour qu'un appelant
+     * puisse attendre la fin de la lecture - les bancs de mesure s'en servent. */
+    if (("exit_code" in core) && !isConsoleRelay(core)) {
+      if (core.timings) {
+        self.timings = core.timings;
+      }
+      resolve(core.exit_code === 0 ? self.src : null);
+    }
+
     function clear_text(text) {
       return text
         .replaceAll("[37m", '')
@@ -159,18 +170,34 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
   async universal_decode(): Promise<string> {
     return new Promise(async (main_resolve, main_reject) => {
       let mime = "";
+      let head_url: URL = null;
       try {
-        const parsed_url = new URL(this.src);
-        if (parsed_url.protocol === 'blob:') {
+        head_url = new URL(this.src);
+      } catch { /* src relatif : pas de HEAD, la session le résoudra */ }
+      try {
+        if (head_url && head_url.protocol === 'blob:') {
           // We can't fetch head of a blob
           const response = await fetch(this.src);
           mime = response.headers.get("Content-Type");
-        } else if (parsed_url.protocol === 'http:' || parsed_url.protocol === 'https:') {
+        } else if (head_url && (head_url.protocol === 'http:' || head_url.protocol === 'https:')) {
           const response = await fetch(this.src, { method: 'HEAD' });
           mime = response.headers.get("Content-Type");
         }
       } catch {
+        /* Le navigateur a refusé la requête elle-même (source absente, hors CORS,
+         * réseau) : la session GPAC échouerait de la même façon, mais sans jamais
+         * rendre la main — httpin reprogramme indéfiniment une session dont le
+         * fetch a été rejeté, et le module reste avec une requête en vol. C'est ce
+         * qui, sur un signal de test non publié, faisait expirer le test concerné
+         * PUIS échouer tous les suivants de la page (le `libgpac` global est
+         * remplacé au chargement du solveur suivant : les rappels de la requête
+         * restée en vol lèvent alors `_get_fetcher is not a function`). Échouer
+         * tout de suite, et le dire. */
         console.log("failed to fetch head of the content " + this.src);
+        if (head_url && (head_url.protocol === 'http:' || head_url.protocol === 'https:')) {
+          main_reject(new Error("cannot fetch " + this.src + " (missing, blocked by CORS, or network error)"));
+          return;
+        }
       }
 
 
@@ -243,7 +270,10 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
 
         },
         wasmBinaryFile: wasmBinaryFile,
-        src: this.getAttribute("data-url"),
+        // this.src, not the raw attribute: the compositor resolves the source
+        // inside GPAC's own virtual filesystem, so it needs the absolute form
+        // computed in connectedCallback.
+        src: this.src,
         interactive : this.getAttribute("interactive")  == "",
         vr : this.getAttribute("vr")  == "",
         useWebcodec: this.getAttribute("use-webcodec") == "",
@@ -252,6 +282,7 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
         showReport: this.getAttribute("report"),
         showLogs: this.getAttribute("logs"),
         vbench: this.getAttribute("vbench") == "" ? true : false,
+        preload: this.getAttribute("preload-source") == "",
         print: this.getAttribute("print"),
         printErr: this.getAttribute("printErr"),
         noCleanupOnExit: this.getAttribute("noCleanupOnExit"),
@@ -278,15 +309,15 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
   connectedCallback() {
     this.setAttribute("id", "canvas");
     const data_url = this.getAttribute("data-url");
+    // The compositor resolves the source inside GPAC's own virtual filesystem,
+    // where a relative path has nothing to resolve against, so it has to be made
+    // absolute here. Resolving against the document rather than against the
+    // origin keeps a path relative to the page working - "movie.mp4" on
+    // /demo/page.html is /demo/movie.mp4, not /movie.mp4 - and leaves an address
+    // that already carries a scheme untouched, blob: and data: included, which a
+    // bare "://" test rejected.
     try{
-      const isAbsolute = /^(?:[a-z]+:)?\/\//i.test(data_url);
-      if (!isAbsolute) {
-        const base = window.location.origin;
-        const fullSrc = `${base}/${data_url.replace(/^\/+/, '')}`;
-        this.src  = fullSrc;
-      } else {
-        this.src = data_url;
-      }
+      this.src = new URL(data_url, window.location.href).href;
     }catch(e){
       this.src = data_url;
     }

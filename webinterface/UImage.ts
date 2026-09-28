@@ -31,6 +31,7 @@ class UniversalImage extends HTMLImageElement implements UniversalFn {
 
   urlToRevoke = [];
 
+  timings: any = null;
   private _decodingPromise: Promise<string>;
 
   private _messageHandlerNoWorker = null;
@@ -123,6 +124,9 @@ class UniversalImage extends HTMLImageElement implements UniversalFn {
     }
 
     if (("exit_code" in core) && !isConsoleRelay(core)) {
+      if (core.timings) {
+        self.timings = core.timings;
+      }
       if (core.compileStart) {
         self.compileStart = core.compileStart;
       }
@@ -214,19 +218,34 @@ class UniversalImage extends HTMLImageElement implements UniversalFn {
       }
 
       let mime = "";
+      let head_url: URL = null;
       try {
-        const parsed_url = new URL(this.src);
-        if (parsed_url.protocol === 'blob:') {
+        head_url = new URL(this.src);
+      } catch { /* src relatif : pas de HEAD, la session le résoudra */ }
+      try {
+        if (head_url && head_url.protocol === 'blob:') {
           // We can't fetch head of a blob
           const response = await fetch(this.src);
           mime = response.headers.get("Content-Type");
-        } else if (parsed_url.protocol === 'http:' || parsed_url.protocol === 'https:') {
+        } else if (head_url && (head_url.protocol === 'http:' || head_url.protocol === 'https:')) {
           const response = await fetch(this.src, { method: 'HEAD' });
           mime = response.headers.get("Content-Type");
         }
       } catch {
+        /* Le navigateur a refusé la requête elle-même (source absente, hors CORS,
+         * réseau) : la session GPAC échouerait de la même façon, mais sans jamais
+         * rendre la main — httpin reprogramme indéfiniment une session dont le
+         * fetch a été rejeté, et le module reste avec une requête en vol. C'est ce
+         * qui, sur un signal de test non publié, faisait expirer le test concerné
+         * PUIS échouer tous les suivants de la page (le `libgpac` global est
+         * remplacé au chargement du solveur suivant : les rappels de la requête
+         * restée en vol lèvent alors `_get_fetcher is not a function`). Échouer
+         * tout de suite, et le dire. */
         console.log("failed to fetch head of the content " + this.src);
-        //return;
+        if (head_url && (head_url.protocol === 'http:' || head_url.protocol === 'https:')) {
+          main_reject(new Error("cannot fetch " + this.src + " (missing, blocked by CORS, or network error)"));
+          return;
+        }
       }
 
 
@@ -300,6 +319,10 @@ class UniversalImage extends HTMLImageElement implements UniversalFn {
         wasmBinaryFile: wasmBinaryFile,
         src: src,
         dst: "out." + this.out,
+        /* preload-source : source chargee en memoire avant la session, comme
+         * pour la video ; sans cela httpin la telecharge pendant la session et
+         * le temps de reseau se retrouve dans la mesure de decodage */
+        preload: this.getAttribute("preload-source") == "",
         useWebcodec: false,
         bench: this.benchmode,
         showStats: this.getAttribute("stats"),

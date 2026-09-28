@@ -20,6 +20,7 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
     out = "mp4";
     scriptDirectory = document.currentScript? this.initScriptDirectory((document.currentScript as any).src) :"";
     useCache = false;
+    fromCache = false;
     useWorker = false;
     printProgess = false;
     cache = null;
@@ -29,6 +30,7 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
 
     urlToRevoke = [];
 
+    timings: any = null;
     private _decodingPromise: Promise<string>;
 
     private _messageHandlerNoWorker = null;
@@ -82,12 +84,19 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
             this.cache.put(this.src, new Response(blob));
         }
 
+
+        this.fromCache = !!cached;
+
         this.src = URL.createObjectURL(blob);
-        this.dispatchEvent(new CustomEvent('ready'));
+        this.dispatchEvent(new CustomEvent('ready', { detail: { cached: !!cached } }));
     }
 
     processMessages(self, core, resolve) {
         if (("exit_code" in core) && !isConsoleRelay(core)) {
+            if (core.timings) {
+                self.timings = core.timings;
+                self.dispatchEvent(new CustomEvent('sessionend', { detail: core.timings }));
+            }
             if (core.blob) {
                 self.dataURLToSrc(core.blob, false);
                 resolve(self.src);
@@ -152,18 +161,25 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
             }
 
             let mime = "";
-            try{
-                const parsed_url = new URL(this.src);
-                if(parsed_url.protocol === 'blob:'){
-                    // We can't fetch head of a blob
-                    const response = await fetch(this.src);
-                    mime = response.headers.get("Content-Type");
-                }else if(parsed_url.protocol === 'http:' || parsed_url.protocol === 'https:'){
-                    const response = await fetch(this.src, { method: 'HEAD' });
-                    mime = response.headers.get("Content-Type");
-                }
-            }catch {
-                console.log("failed to fetch head of the content "+ this.src);
+            let head_url: URL = null;
+            try {
+              head_url = new URL(this.src);
+            } catch { /* src relatif : pas de HEAD, la session le résoudra */ }
+            try {
+              if (head_url && head_url.protocol === 'blob:') {
+                // We can't fetch head of a blob
+                const response = await fetch(this.src);
+                mime = response.headers.get("Content-Type");
+              } else if (head_url && (head_url.protocol === 'http:' || head_url.protocol === 'https:')) {
+                const response = await fetch(this.src, { method: 'HEAD' });
+                mime = response.headers.get("Content-Type");
+              }
+            } catch {
+              console.log("failed to fetch head of the content " + this.src);
+              if (head_url && (head_url.protocol === 'http:' || head_url.protocol === 'https:')) {
+                main_reject(new Error("cannot fetch " + this.src + " (missing, blocked by CORS, or network error)"));
+                return;
+              }
             }
 
 
@@ -226,31 +242,14 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
             }
 
             const isProgressive = this.getAttribute("progressive") == "";
-            const useWebcodec = this.getAttribute("use-webcodec") == "" ? true : false;
-            /* MSE can't play the source's original audio codec (e.g.
-             * Vorbis) remuxed as-is into mp4 - it needs an actual
-             * MSE-supported codec. MP3 was tried first (libmp3lame) but
-             * ruled out: Chrome's MSE does not accept MP3 inside an mp4
-             * container under ANY codec string (confirmed via
-             * MediaSource.isTypeSupported - only bare "audio/mpeg" works,
-             * which would need a second, separate SourceBuffer/GPAC
-             * destination). Opus-in-mp4 IS MSE-supported and fits this
-             * single-mp4-destination architecture directly, so "libopusenc"
-             * is used instead. "c=aac"/"c=opus" are pushed as *global* GPAC
-             * session args (see loader.js), not scoped to a single PID: if
-             * no filter capable of producing that codec is registered, the
-             * constraint fails the whole session, not just the audio track
-             * - so only request one when a capable filter is actually
-             * present. use-webcodec makes "wcenc" (AAC) available;
-             * explicitly listing "libopusenc_1" in "with" makes the native
-             * "encopus" (Opus) filter available. Prefer AAC (use-webcodec)
-             * when both are present. Not forcing useWebcodec unconditionally
-             * here because doing so would also make "wcenc" a candidate for
-             * the *video* track, which can lose to libx264_1/encx264 in
-             * "with". */
+            const decodeOnly = this.getAttribute("decode-only") == "";
+            const wcAttr = this.getAttribute("use-webcodec");
+            const webcodecRole = (wcAttr === "enc" || wcAttr === "dec") ? wcAttr : "both";
+            const useWebcodec = wcAttr === "" || wcAttr === "both" || wcAttr === "enc" || wcAttr === "dec";
+            const hasWcEncoder = useWebcodec && webcodecRole !== "dec";
             const withAttr = this.getAttribute("with") || "";
             const hasOpusEncoder = withAttr.indexOf("libopusenc") !== -1;
-            const audioTranscode = useWebcodec ? "c=aac" : (hasOpusEncoder ? "c=opus" : null);
+            const audioTranscode = hasWcEncoder ? "c=aac" : (hasOpusEncoder ? "c=opus" : null);
 
             const message: any = {
                 event:"init",
@@ -262,7 +261,11 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
                 },
                 wasmBinaryFile: wasmBinaryFile,
                 src : src,
-                dst: "out.mp4",
+                dst: decodeOnly ? null : "out.mp4",
+                decodeOnly: decodeOnly,
+                /* preload-source : source chargee en memoire avant la session
+                 * (bancs de mesure), voir loader.js */
+                preload: this.getAttribute("preload-source") == "",
                 /* Bare "c=avc" - loader.js already gates the
                  * "wcenc:" prefix behind useWebcodec itself (registers/expects
                  * the wcenc filter only when use-webcodec is set). Hardcoding
@@ -277,8 +280,9 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
                  * remuxe tel quel dans un mp4 : en mode progressif on demande
                  * donc aussi un codec audio, quand un encodeur est disponible.
                  * Hors mode progressif, le comportement reste inchange. */
-                transcode: isProgressive ? (audioTranscode ? ["c=avc", audioTranscode] : ["c=avc"]) : ["c=avc"],
+                transcode: decodeOnly ? null : (isProgressive ? (audioTranscode ? ["c=avc", audioTranscode] : ["c=avc"]) : ["c=avc"]),
                 useWebcodec: useWebcodec,
+                webcodecRole: webcodecRole,
                 showStats: this.getAttribute("stats"),
                 showGraph: this.getAttribute("graph"),
                 showReport: this.getAttribute("report"),

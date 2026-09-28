@@ -11,3 +11,8 @@ test-results.xml
 templates/index.html
 TESTS-Chrome_*.xml
 .claude/launch.json
+bench/results/*
+!bench/results/.gitkeep
+bench/media/*
+!bench/media/.gitkeep
+bench/certs/
