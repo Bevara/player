@@ -1,0 +1,9 @@
+{
+    "name": "universal-tags",
+    "kind": "tags",
+    "description": "The universal elements: <img>, <audio>, <video> and <canvas> that decode through the Bevara pipeline",
+    "help": "Customised built-in elements (is=\"universal-img_1\"…): each loads the solver named by using=\"…\" and the accessors named by with=\"…\", and renders what they decode. universal-tags_1.js defines them all.",
+    "tags": ["universal-img_1.js", "universal-audio_1.js", "universal-video_1.js", "universal-canvas_1.js", "universal-tags_1.js"],
+    "main": "build/dist",
+    "scripts": { "build": "npm run build" }
+}

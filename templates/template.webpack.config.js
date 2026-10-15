@@ -1,6 +1,9 @@
 const path = require('path');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WorkboxWebpackPlugin = require("workbox-webpack-plugin");
+// webpack's own minimizer, to configure where licence comments go.
+let TerserPlugin = null;
+try { TerserPlugin = require("terser-webpack-plugin"); } catch { /* minified with webpack's defaults */ }
 
 const isProduction = process.env.NODE_ENV == "production";
 const version = require("./version.js").version;
@@ -204,6 +207,13 @@ module.exports = () => {
       "bufferutil": false
     }
   };
+
+  // Keep the licence notices of the bundled code (JSZip, pako...) inside each
+  // script: a tag script is copied alone next to a page (bevara update-page),
+  // without the .LICENSE.txt webpack would otherwise write beside it.
+  for (const c of [config, config_img, config_audio, config_video, config_canvas]) {
+    if (TerserPlugin) c.optimization = { ...c.optimization, minimizer: [new TerserPlugin({ extractComments: false })] };
+  }
 
   return [config, config_img, config_audio, config_video, config_canvas];
 };
