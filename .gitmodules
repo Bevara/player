@@ -10,3 +10,6 @@
 [submodule "solver_minimal"]
 	path = solver_minimal
 	url = https://github.com/Bevara/solver_minimal.git
+[submodule "webinterface/ArtPlayer"]
+	path = webinterface/ArtPlayer
+	url = https://github.com/Bevara/ArtPlayer.git
