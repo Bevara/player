@@ -16,3 +16,4 @@ bench/results/*
 bench/media/*
 !bench/media/.gitkeep
 bench/certs/
+bench/vendor/

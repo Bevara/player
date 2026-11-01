@@ -306,9 +306,15 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
   }
 
 
+  // The attribute holding the source: a canvas has no src, so the universal
+  // canvas reads data-url; a tag built on it may read another one.
+  protected sourceAttribute(): string {
+    return "data-url";
+  }
+
   connectedCallback() {
     this.setAttribute("id", "canvas");
-    const data_url = this.getAttribute("data-url");
+    const data_url = this.getAttribute(this.sourceAttribute());
     // The compositor resolves the source inside GPAC's own virtual filesystem,
     // where a relative path has nothing to resolve against, so it has to be made
     // absolute here. Resolving against the document rather than against the

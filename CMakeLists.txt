@@ -37,4 +37,4 @@ add_custom_target (test-watch
   COMMAND npm run test-watch
 )
 
-add_dependencies(test release solver_1)
+add_dependencies(test release mm_solver_1.0.1)
