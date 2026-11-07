@@ -1,4 +1,8 @@
-process.env.CHROME_BIN = require('puppeteer').executablePath();
+/* A CI image can provide its own Chrome, which is what the filters-builder
+ * agent does (CHROME_BIN=/usr/bin/chromium, PUPPETEER_SKIP_DOWNLOAD=1):
+ * puppeteer is then installed without downloading a browser, and this must not
+ * ask it for a path it never fetched. With no CHROME_BIN set, nothing changes. */
+process.env.CHROME_BIN = process.env.CHROME_BIN || require('puppeteer').executablePath();
 
 const version = require("./version.js").version;
 
