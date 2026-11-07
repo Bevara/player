@@ -1,0 +1,15 @@
+# The Dockerfile copies ./build/ wholesale into the nginx document root, but
+# build/ is also the CMake build tree: without this, the image picks up ~460 MB
+# of object files and any test media left in there. Keep only what nginx is
+# meant to serve - the solvers and accessors at the root, plus the webpack
+# output in dist/.
+build/CMakeFiles/
+build/CMakeCache.txt
+build/Makefile
+build/cmake_install.cmake
+build/filters/
+build/solver/
+build/solver_minimal/
+# local test corpora, not part of the player
+build/wc/
+build/rg/

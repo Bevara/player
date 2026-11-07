@@ -283,10 +283,18 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
                  * video tag without use-webcodec, run in
                  * isolation). */
                 /* MSE ne sait pas lire l'audio d'origine (Vorbis par exemple)
-                 * remuxe tel quel dans un mp4 : en mode progressif on demande
-                 * donc aussi un codec audio, quand un encodeur est disponible.
-                 * Hors mode progressif, le comportement reste inchange. */
-                transcode: decodeOnly ? null : (isProgressive ? (audioTranscode ? ["c=avc", audioTranscode] : ["c=avc"]) : ["c=avc"]),
+                 * remuxe tel quel dans un mp4 : on demande donc aussi un codec
+                 * audio, quand un encodeur est disponible.
+                 *
+                 * Ce reglage s'appliquait au seul mode progressif : hors de ce
+                 * mode, demander un second codec faisait tourner la session
+                 * indefiniment. La cause etait dans le solver - GPAC resout un
+                 * lien a travers les *registres* de filtres, et comme "c=avc"
+                 * et "c=aac" instancient tous deux wcenc, le PID audio
+                 * resolvait sa chaine vers l'instance video puis se trouvait
+                 * sans destination. Corrige dans mm_solver 1.0.4, donc les deux
+                 * modes demandent desormais la meme chose. */
+                transcode: decodeOnly ? null : (audioTranscode ? ["c=avc", audioTranscode] : ["c=avc"]),
                 useWebcodec: useWebcodec,
                 webcodecRole: webcodecRole,
                 showStats: this.getAttribute("stats"),
