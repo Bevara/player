@@ -1,0 +1,17 @@
+{
+  "comment": [
+    "Karma tests that do not pass on the Jenkins agent today, with the reason.",
+    "ci/baseline.mjs rewrites them as skipped in the JUnit report, so the job",
+    "goes red on a NEW failure rather than on the backlog it inherited.",
+    "",
+    "Keyed by the test name as karma writes it. Two guards: an entry that starts",
+    "passing is reported as a failure, so the list cannot rot; and if every",
+    "failure in a run is on the list AND nothing passed, the run fails anyway."
+  ],
+  "known": {
+    "#libutvideo should decode testcard.avi with worker": "avidmx cannot open the downloaded file: its gmem blob is flagged GF_BLOB_CORRUPTED (flags 0x2) although it holds the whole 654386 bytes. Not a network problem - the same file downloads in 15 ms with curl from a pod in this cluster - and not /dev/shm, which --disable-dev-shm-usage did not change. GF_EOS is only ever concluded from total_size == bytes_done in downloader_emscripten.c, so a download the fetcher finished without a usable total_size lands in the error branch and the complete blob is declared corrupted. Under investigation; an instrument printing fetch_err, bytes_done and total_size is ready.",
+    "#mjpeg should decode testcard.avi with worker": "Same cause as #libutvideo, on the 323112-byte MJPEG AVI.",
+    "#libvpx should decode UshaikaRiverEmb_640x360.webm (VP9) with worker": "Same cause as #libutvideo, on the 1729334-byte VP9 WebM, through webmdmx rather than avidmx.",
+    "#libheif should decode example_flower_hevc to rgb with worker": "60 s timeout with no assertion. The failure signature differs from the three above - a TypeError in reportUndefinedSymbols, which is the same crash the Showcase avif and midi demos hit when an accessor wants a symbol the solver does not export. Not yet diagnosed."
+  }
+}
