@@ -26,6 +26,15 @@ module.exports = function (config) {
           '--no-sandbox',
           '--headless',
           '--disable-gpu',
+          /* A Kubernetes pod gets 64 MB of /dev/shm by default, and Chromium
+           * passes response bodies from the network service to the renderer
+           * through Mojo data pipes backed by shared memory. Fetches of a few
+           * hundred KB then fail while small ones succeed - which is how the
+           * three largest test signals (MJPEG 323 KB, UTVIDEO 654 KB, VP9
+           * 1.7 MB) and libheif's 216 KB reference PNG came out red on the
+           * agent while curl from the same pod downloaded them in 15 ms. This
+           * makes Chromium use /tmp instead; no effect outside a container. */
+          '--disable-dev-shm-usage',
           '--remote-debugging-port=9222'
         ]
       }
