@@ -20,23 +20,20 @@ stay readable.
 
 ## What is on the list today
 
-Four karma tests, all failing only on the agent:
+One karma test, failing only on the agent:
 
 | test | state |
 |---|---|
-| `#libutvideo`, `#mjpeg`, `#libvpx` | one cause: `avidmx`/`webmdmx` cannot open the downloaded file because its gmem blob is flagged `GF_BLOB_CORRUPTED` although it holds the whole file |
-| `#libheif` | a 60 s timeout with a different signature - a `TypeError` in `reportUndefinedSymbols`, the same crash the Showcase `avif` and `midi` demos hit |
+| `#libheif` | a 60 s timeout with a `TypeError` in `reportUndefinedSymbols` - the crash an accessor causes when it wants a symbol the solver does not export, and the function meant to name that symbol fails on it. Not yet diagnosed. |
 
-What has been ruled out for the first three, by measurement: the network (the
-files download in 15 ms with `curl` from a pod in that cluster), `/dev/shm`
-(`--disable-dev-shm-usage` changed nothing), compression (no
-`content-encoding`, `Content-Length` correct), a slow, truncated or stalled
-transfer (none reproduces it locally), and an aborted session (no abort is
-logged). `GF_EOS` is only ever concluded from `total_size == bytes_done` in
-`downloader_emscripten.c`, so a download the fetcher finished without a usable
-`total_size` lands in the error branch and the complete blob is declared
-corrupted. An instrument printing `fetch_err`, `bytes_done` and `total_size` is
-written and waiting.
+Three others were here until build #143 and are the reason this mechanism
+earned its keep: `#libutvideo`, `#mjpeg` and `#libvpx`. On the agent the
+emscripten download manager never learns a response's length (`total_size`
+stays 0), and it took the fetcher's final EOS-with-no-bytes for an error,
+flagging a complete blob corrupted so that `avidmx` and `webmdmx` refused their
+input. The fix is one condition in `downloader_emscripten.c` - an EOS is not an
+error. Build #143 passed all three and this script failed the build on purpose,
+asking for their entries to be removed.
 
 ## Running it
 
