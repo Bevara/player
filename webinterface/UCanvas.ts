@@ -276,19 +276,19 @@ class UniversalCanvas extends HTMLCanvasElement implements UniversalFn {
         src: this.src,
         interactive : this.getAttribute("interactive")  == "",
         vr : this.getAttribute("vr")  == "",
-        /* use-webcodec="dec" asks for the WebCodecs decoder, which is what a
-         * canvas needs when "with" names a demultiplexer and no wasm decoder:
-         * the 360 ServiceWorker demo leaves AVC and AAC to the browser this
-         * way. This tag used to count the flag only when it was empty and to
-         * pass no role, so "dec" switched WebCodecs off altogether, and a
-         * bare flag got the solver's default since 1.0.3 - the encoder alone
-         * - leaving "No filter chain found for PID V1 in filter mp4dmx".
-         * Values are honoured now, as on the video tag; a bare flag still
-         * means the solver's default, because wcdec put forward for every
-         * track takes over codecs WebCodecs cannot decode (Theora). */
+        /* use-webcodec        -> encoder and decoder
+         * use-webcodec="enc"  -> the encoder alone
+         * use-webcodec="dec"  -> the decoder alone, what a canvas wants when
+         *                        "with" names a demultiplexer and leaves the
+         *                        codecs to the browser (the 360 demo)
+         * This tag used to count the flag only when it was empty and to pass
+         * no role, so "dec" switched WebCodecs off altogether and a bare flag
+         * got the solver's default since 1.0.3, the encoder alone - which is
+         * how the 360 demo came to fail with "No filter chain found for PID
+         * V1 in filter mp4dmx". The role is now always explicit. */
         useWebcodec: ["", "dec", "enc", "both"].includes(this.getAttribute("use-webcodec")),
         webcodecRole: ["dec", "enc", "both"].includes(this.getAttribute("use-webcodec"))
-          ? this.getAttribute("use-webcodec") : undefined,
+          ? this.getAttribute("use-webcodec") : "both",
         showStats: this.getAttribute("stats"),
         showGraph: this.getAttribute("graph"),
         showReport: this.getAttribute("report"),

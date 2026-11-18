@@ -244,13 +244,17 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
             const isProgressive = this.getAttribute("progressive") == "";
             const decodeOnly = this.getAttribute("decode-only") == "";
             const wcAttr = this.getAttribute("use-webcodec");
-            /* A bare use-webcodec asks for the encoder only. wcdec puts
-             * itself forward for any track the resolver offers it, fails to
-             * initialise on a codec WebCodecs does not know (Theora, for
-             * one) and does not hand back to the wasm decoder named in
-             * "with"; the output is then a track the browser refuses. Ask
-             * for "both" explicitly to get the historical behaviour. */
-            const webcodecRole = (wcAttr === "enc" || wcAttr === "dec" || wcAttr === "both") ? wcAttr : "enc";
+            /* use-webcodec        -> encoder and decoder
+             * use-webcodec="enc"  -> the encoder alone
+             * use-webcodec="dec"  -> the decoder alone
+             * The role is always passed explicitly, so the solver's own
+             * default for a bare flag (the encoder, since 1.0.3) never
+             * applies to a page. Ask for "enc" when transcoding a codec
+             * WebCodecs cannot decode: wcdec puts itself forward for any
+             * track the resolver offers it, fails to initialise on such a
+             * codec (Theora, VVC) and does not hand back to the wasm decoder
+             * named in "with". */
+            const webcodecRole = (wcAttr === "enc" || wcAttr === "dec" || wcAttr === "both") ? wcAttr : "both";
             const useWebcodec = wcAttr === "" || wcAttr === "both" || wcAttr === "enc" || wcAttr === "dec";
             const hasWcEncoder = useWebcodec && webcodecRole !== "dec";
             const withAttr = this.getAttribute("with") || "";
