@@ -104,22 +104,49 @@ function sendMessageNoWorker(self, message) {
  * MSE requires the caller to know the codec ahead of time, same as any
  * other manual MSE integration; this repo's transcode targets are fixed
  * (see UVideo.ts/UAudio.ts) so a matching default is provided there. */
-function setupProgressive(self, mimeCodecs) {
+function setupProgressive(self, mimeCodecs, onFail?: (reason: string) => void) {
     const mediaSource = new MediaSource();
-    self.src = URL.createObjectURL(mediaSource);
+    const mseUrl = URL.createObjectURL(mediaSource);
+    self.src = mseUrl;
 
     let sourceBuffer = null;
     const queue = [];
     let ended = false;
     let openError = null;
+    let pushed = 0;
+    let detached = false;
+    let retryTimer = null;
+
+    /* Anything that leaves the stream unplayable is reported once, to the
+     * caller's onFail - which falls back to a whole-file decode. Before
+     * that, every one of these failures was a log line and a player that
+     * stayed black. */
+    function fail(reason) {
+        if (detached) return;
+        console.log('[progressive] ' + reason);
+        if (onFail) onFail(reason);
+    }
 
     function pump() {
-        if (!sourceBuffer || sourceBuffer.updating || !queue.length) return;
+        if (detached || !sourceBuffer || sourceBuffer.updating || !queue.length) return;
         const chunk = queue.shift();
         try {
             sourceBuffer.appendBuffer(chunk);
         } catch (e) {
-            console.log('[progressive] appendBuffer failed: ' + e.message);
+            /* A full buffer is not a failure: a long video fed faster than it
+             * plays fills the SourceBuffer's quota. The segment used to be
+             * dropped right there, leaving a hole in the timeline. Free what
+             * has already been played and try again. */
+            if (e && e.name === 'QuotaExceededError') {
+                queue.unshift(chunk);
+                const keepFrom = self.currentTime - 10;
+                if (keepFrom > 0 && sourceBuffer.buffered.length && sourceBuffer.buffered.start(0) < keepFrom) {
+                    try { sourceBuffer.remove(0, keepFrom); return; } catch (e2) { }
+                }
+                if (!retryTimer) retryTimer = setTimeout(() => { retryTimer = null; pump(); }, 1000);
+                return;
+            }
+            fail('appendBuffer failed: ' + e.message);
         }
     }
 
@@ -129,24 +156,32 @@ function setupProgressive(self, mimeCodecs) {
         }
     }
 
+    function onElementError() {
+        if (self.src === mseUrl) fail('the media element rejected the stream: ' + (self.error && self.error.message));
+    }
+    self.addEventListener('error', onElementError);
+
     mediaSource.addEventListener('sourceopen', () => {
+        if (detached || sourceBuffer) return;
         try {
             sourceBuffer = mediaSource.addSourceBuffer(mimeCodecs);
         } catch (e) {
             openError = e;
-            console.log('[progressive] addSourceBuffer failed for "' + mimeCodecs + '": ' + e.message);
+            fail('addSourceBuffer failed for "' + mimeCodecs + '": ' + e.message);
             return;
         }
         sourceBuffer.addEventListener('updateend', () => {
             pump();
             maybeEnd();
         });
+        sourceBuffer.addEventListener('error', () => fail('the SourceBuffer rejected a segment'));
         pump();
     });
 
     return {
         push(bytes) {
-            if (!bytes || !bytes.length) return;
+            if (detached || !bytes || !bytes.length) return;
+            pushed++;
             queue.push(bytes);
             pump();
         },
@@ -154,6 +189,19 @@ function setupProgressive(self, mimeCodecs) {
             ended = true;
             maybeEnd();
         },
+        /* Stop feeding this MediaSource for good: late segments from a
+         * session being torn down are ignored, and its URL is released. */
+        detach() {
+            if (detached) return;
+            detached = true;
+            queue.length = 0;
+            if (retryTimer) clearTimeout(retryTimer);
+            self.removeEventListener('error', onElementError);
+            URL.revokeObjectURL(mseUrl);
+        },
+        /* Media segments delivered so far - the first push is the
+         * initialisation segment, which alone plays nothing. */
+        get segments() { return Math.max(0, pushed - 1); },
         get error() { return openError; }
     };
 }

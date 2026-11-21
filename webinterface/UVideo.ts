@@ -340,13 +340,56 @@ class UniversalVideo extends HTMLVideoElement implements UniversalFn {
                         console.log('Warning! progressive playback unavailable for "' + mime + '", falling back to whole-file decode');
                         this.getAttribute("use-worker") == "" ? this.launchWorker(js, message, main_resolve) : launchNoWorker(this, js, message, main_resolve);
                     } else {
-                        const progressive = setupProgressive(this, mime);
+                        /* Fallback at run time. The checks above only catch
+                         * what can be known before starting; a browser can
+                         * still accept the mime type and then refuse the
+                         * stream, and a source without an audio track never
+                         * produces a segment at all - its session does not end
+                         * either (measured: theora_short.ogv, 4 s long, still
+                         * running after 60 s). Each of those left a black
+                         * player. Now any of them stops the progressive
+                         * session and decodes the whole file instead, as if
+                         * "progressive" had not been asked for.
+                         *
+                         * progressive-timeout="<seconds>" bounds the wait for
+                         * the first segment (30 s by default; the first one
+                         * lands after about 2 s on a 400p Theora+Vorbis
+                         * trailer). */
+                        const timeoutAttr = parseFloat(this.getAttribute("progressive-timeout"));
+                        const timeoutS = timeoutAttr > 0 ? timeoutAttr : 30;
+                        let fellBack = false;
+                        let firstSegmentTimer = null;
+                        const fallback = (reason: string) => {
+                            if (fellBack) return;
+                            fellBack = true;
+                            if (firstSegmentTimer) clearTimeout(firstSegmentTimer);
+                            /* removed from the page meanwhile: nothing to play into */
+                            if (!this.isConnected) { progressive.detach(); return; }
+                            console.log('Warning! progressive playback failed (' + reason + '), falling back to whole-file decode');
+                            const resumeAt = this.currentTime || 0;
+                            progressive.detach();
+                            try { sendMessageNoWorker(this, { event: "destroy" }); } catch (e) { }
+                            const fileMessage = { ...message, progressive: false };
+                            delete fileMessage.onProgress;
+                            delete fileMessage.onProgressDone;
+                            if (resumeAt > 0) {
+                                this.addEventListener('loadedmetadata', () => { this.currentTime = resumeAt; }, { once: true });
+                            }
+                            this.dispatchEvent(new CustomEvent('progressivefallback', { detail: { reason: reason } }));
+                            this.getAttribute("use-worker") == "" ? this.launchWorker(js, fileMessage, () => {}) : launchNoWorker(this, js, fileMessage, () => {});
+                        };
+                        const progressive = setupProgressive(this, mime, fallback);
+                        firstSegmentTimer = setTimeout(() => {
+                            if (!progressive.segments) fallback('no segment after ' + timeoutS + ' s');
+                        }, timeoutS * 1000);
                         /* self.src is already the MediaSource object URL, set
                          * synchronously by setupProgressive - the element is
                          * playable as soon as the first segment lands, so this
                          * resolves now rather than at end of transcode. */
                         main_resolve(this.src);
-                        launchProgressive(this, js, message, () => {}, progressive);
+                        launchProgressive(this, js, message, () => {
+                            if (!fellBack && !progressive.segments) fallback('the session ended without a segment');
+                        }, progressive);
                     }
                 } else {
                     this.getAttribute("use-worker") == "" ? this.launchWorker(js, message, main_resolve) : launchNoWorker(this, js, message, main_resolve);
